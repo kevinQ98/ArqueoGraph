@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_060
+Correlativo de diapo: 1128
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 80
+Celda con coincidencia: C4 (Morro 1): MORRO 1 T23 C1
+fila_completa_resumida: C1: 1128 | C2: MADE IN USA | C3: - | C4: MORRO 1 T23 C1 | C5: Cultural | C6: Herramientas | C7: - | C8: - | C9: Herramienta para sacar moluscos

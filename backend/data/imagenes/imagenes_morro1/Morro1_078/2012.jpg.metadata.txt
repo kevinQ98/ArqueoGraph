@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_078
+Correlativo de diapo: 2012
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 100
+Celda con coincidencia: C4 (Morro 1): MORRO 1 T-25 C-2
+fila_completa_resumida: C1: 2012 | C2: FEB 84 (15) | C3: _ | C4: MORRO 1 T-25 C-2 | C5: Física | C6: Restos momificados | C7: _ | C8: Piernas | C9: Piernas momificadas

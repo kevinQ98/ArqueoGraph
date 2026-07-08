@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_048
+Correlativo de diapo: 2113
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 201
+Celda con coincidencia: C3 (Morro 1): MORRO 1 T-19
+fila_completa_resumida: C1: 2113 | C2: PAKON | C3: MORRO 1 T-19 | C4: _ | C5: Física | C7: _ | C8: _

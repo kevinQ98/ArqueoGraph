@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_071
+Correlativo de diapo: 1452
+Archivo Excel origen: disco 16 (NUEVO) (1397 al 1499).xls
+Hoja: Hoja1
+Fila Excel: 57
+Celda con coincidencia: C3 (Morro 1): MORRO-1 CHINCHORRO T-23 C-12 CON PATINA 009-02
+fila_completa_resumida: C1: 1452 | C2: Ektachrome Slide (11) JUN84 | C3: MORRO-1 CHINCHORRO T-23 C-12 CON PATINA 009-02 | C4: - | C5: Física | C6: Momia | C7: - | C8: - | C9: Momia en rescate

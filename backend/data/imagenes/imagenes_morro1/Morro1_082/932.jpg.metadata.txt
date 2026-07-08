@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_082
+Correlativo de diapo: 932
+Archivo Excel origen: disco 13 (NUEVO) (931 al 1049).xls
+Hoja: Hoja1
+Fila Excel: 3
+Celda con coincidencia: C3 (Morro 1): MORRO 1; C4 (Morro 1): MORRO 1 t-25 C-6 1-84
+fila_completa_resumida: C1: 932 | C2: FEB 84? (24) | C3: MORRO 1 | C4: MORRO 1 t-25 C-6 1-84 | C5: Física | C6: Momia | C7: _ | C8: Cuerpo | C9: Momia, cuerpo sin cabeza

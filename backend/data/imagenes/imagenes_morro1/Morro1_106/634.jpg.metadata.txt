@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_106
+Correlativo de diapo: 634
+Archivo Excel origen: disco 6 (625 al 680).xls
+Hoja: Hoja1
+Fila Excel: 11
+Celda con coincidencia: C4 (Morro 1): Morro-1 T-28 C-3
+fila_completa_resumida: C1: 634 | C2: Ektachrome Slide JUL 84 | C3: _ | C4: Morro-1 T-28 C-3 | C5: Física | C6: Mandíbula | C8: Mandíbula | C9: Hueso inferior mandíbula

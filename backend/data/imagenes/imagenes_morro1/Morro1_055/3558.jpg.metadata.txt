@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_055
+Correlativo de diapo: 3558
+Archivo Excel origen: Carpeta Chinchorro MO-1 MO-5 - Diapositivas 3523-3758.xlsx
+Hoja: Hoja2
+Fila Excel: 37
+Celda con coincidencia: C4 (MO 1): MO-1 T-22 C-3 MO-1 T-1 C-4
+fila_completa_resumida: C1: 3558 | C2: 565 - ACA | C3: Kodachrome slide MAY 87F | C4: MO-1 T-22 C-3 MO-1 T-1 C-4 | C5: Chinchorro , Arika ,Chille 187 | C6: Antropología Física | C7: Momia | C8: - | C9: Cráneo | C10: Dos cráneos de distintas tumbas

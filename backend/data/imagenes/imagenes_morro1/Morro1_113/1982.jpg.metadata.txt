@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_113
+Correlativo de diapo: 1982
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 70
+Celda con coincidencia: C3 (Morro 1): T-28 C-9 MORRO 1
+fila_completa_resumida: C1: 1982 | C2: Ektachrome Slide APR | C3: T-28 C-9 MORRO 1 | C4: _ | C5: Física | C6: Momia | C8: _ | C9: Brazos y manos esqueletizados

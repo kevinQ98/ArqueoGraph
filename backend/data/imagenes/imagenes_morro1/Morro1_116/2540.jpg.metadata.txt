@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_116
+Correlativo de diapo: 2540
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 382
+Celda con coincidencia: C4 (Morro 1): MORRO – 1 T-28 C-11 Cobertor púbico
+fila_completa_resumida: C1: 2540 | C2: Ektachrome slide | C3: - | C4: MORRO – 1 T-28 C-11 Cobertor púbico | C5: Arqueología | C6: Artículos | C7: - | C8: - | C9: Cobertor púbico

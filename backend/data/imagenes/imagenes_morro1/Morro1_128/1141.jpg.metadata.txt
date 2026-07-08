@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_128
+Correlativo de diapo: 1141
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 93
+Celda con coincidencia: C4 (Morro 1): MORRO-1 t-28 C-22 10-4-84
+fila_completa_resumida: C1: 1141 | C2: Kodachrome Slide (08) AUG 87 H | C3: - | C4: MORRO-1 t-28 C-22 10-4-84 | C5: Física | C6: Vertebras | C8: Vertebras | C9: Vertebras

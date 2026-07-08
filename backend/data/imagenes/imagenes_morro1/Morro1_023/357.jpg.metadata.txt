@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_023
+Correlativo de diapo: 357
+Archivo Excel origen: disco 2 (201 al 390).xls
+Hoja: Hoja1
+Fila Excel: 158
+Celda con coincidencia: C4 (Morro 1): MORRO 1 t-7 C-6
+fila_completa_resumida: C1: 357 | C2: Kodachrome Film (23) MAR 91P10 | C3: _ | C4: MORRO 1 t-7 C-6 | C5: Física | C6: Momias | C8: Cuerpo | C9: Momia Chinchorro

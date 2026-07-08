@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_007
+Correlativo de diapo: 1526
+Archivo Excel origen: disco 17 (NUEVO) (1500 al 1597).xls
+Hoja: Hoja1
+Fila Excel: 28
+Celda con coincidencia: C4 (Morro 1): MORRO-1 T-1 C-7
+fila_completa_resumida: C1: 1526 | C2: Ektachrome Slide JUL94 | C3: n (12) | C4: MORRO-1 T-1 C-7 | C5: Cultural | C6: Momificación | C7: - | C8: Cabeza y tronco | C9: Momia con patina, parte superior

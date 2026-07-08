@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_014
+Correlativo de diapo: 3604
+Archivo Excel origen: Carpeta Chinchorro MO-1 MO-5 - Diapositivas 3523-3758.xlsx
+Hoja: Hoja2
+Fila Excel: 83
+Celda con coincidencia: C4 (MO 1): MO-1 T-5,I
+fila_completa_resumida: C1: 3604 | C2: 611 - ACA | C3: Fujichrome | C4: MO-1 T-5,I | C5: Lung | C6: Antropología Física | C7: Momia | C8: - | C9: Pulmón | C10: Pulmón momificado

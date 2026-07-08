@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_128
+Correlativo de diapo: 2128
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 216
+Celda con coincidencia: C4 (MO 1): MO1 T-28 C-22
+fila_completa_resumida: C1: 2128 | C2: Kodachrome Film JUN 90P12 (23) | C3: M1T28C22 Vert. fusionadas | C4: MO1 T-28 C-22 | C5: Física | C6: Vertebras | C7: Vertebras fusionadas | C8: Vertebras | C9: Vertebras fusionadas

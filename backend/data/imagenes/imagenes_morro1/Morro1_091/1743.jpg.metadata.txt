@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_091
+Correlativo de diapo: 1743
+Archivo Excel origen: disco 19 (NUEVO) (1662 al 1865).xls
+Hoja: Hoja1
+Fila Excel: 83
+Celda con coincidencia: C4 (Morro 1): MORRO 1
+fila_completa_resumida: C1: 1743 | C2: pakon | C3: M1 T27 C8 ulna.izq | C4: MORRO 1 | C5: Física | C6: Huesos | C8: _ | C9: Huesos | C13: _

@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_003
+Correlativo de diapo: 2577
+Archivo Excel origen: disco 23 - (2563-2730)2.xls
+Hoja: Hoja1
+Fila Excel: 16
+Celda con coincidencia: C4 (Morro 1): Morro-1 T-1 C-3
+fila_completa_resumida: C1: 2577 | C2: Ektachrome Slide | C3: - | C4: Morro-1 T-1 C-3 | C5: Antropologia Fisica | C6: Momia | C8: - | C9: Momia same as 2573

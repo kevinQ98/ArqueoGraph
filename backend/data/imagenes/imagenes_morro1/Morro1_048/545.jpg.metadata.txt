@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_048
+Correlativo de diapo: 545
+Archivo Excel origen: disco 4 (500 al 570).xls
+Hoja: Hoja1
+Fila Excel: 47
+Celda con coincidencia: C4 (Morro 1): Morro 1 T-19
+fila_completa_resumida: C1: 545 | C2: Kodachrome Film (13) MAR91PO4 | C3: _ | C4: Morro 1 T-19 | C5: Insumos Investigación | C6: Radiografía | C8: Radiografía huesos | C9: Huesos

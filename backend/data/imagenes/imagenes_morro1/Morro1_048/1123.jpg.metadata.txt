@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_048
+Correlativo de diapo: 1123
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 75
+Celda con coincidencia: C3 (Morro 1): MORRO1 T 19
+fila_completa_resumida: C1: 1123 | C2: Kodachrome Film (6) JUN 90P12 | C3: MORRO1 T 19 | C4: - | C5: Cultural | C6: Momificación | C7: - | C8: Tronco | C9: Vista dorso superior momificado

@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_007
+Correlativo de diapo: 1464
+Archivo Excel origen: disco 16 (NUEVO) (1397 al 1499).xls
+Hoja: Hoja1
+Fila Excel: 69
+Celda con coincidencia: C4 (Morro 1): MORRO-1 T-1 C-7
+fila_completa_resumida: C1: 1464 | C2: Ektachrome Slide JUL84 | C3: (17) Detalle proceso de conservación | C4: MORRO-1 T-1 C-7 | C5: Cultural | C6: Momificación | C7: - | C9: Momia con patina negra, vista lateral

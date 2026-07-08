@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_023
+Correlativo de diapo: 1113
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 65
+Celda con coincidencia: C3 (Morro 1): Morro-1 T-7 C-6 (3)
+fila_completa_resumida: C1: 1113 | C2: PAKON | C3: Morro-1 T-7 C-6 (3) | C4: C-6 | C5: Cultural | C6: Momificación | C7: - | C8: Cuerpo | C9: Momia en rescate

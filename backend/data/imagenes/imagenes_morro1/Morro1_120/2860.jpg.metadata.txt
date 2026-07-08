@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_120
+Correlativo de diapo: 2860
+Archivo Excel origen: disco 25 - (2831-2899).xls
+Hoja: Hoja1
+Fila Excel: 31
+Celda con coincidencia: C3 (Morro 1): Morro 1 T28 C14 Arica, Feb 2003
+fila_completa_resumida: C1: 2860 | C3: Morro 1 T28 C14 Arica, Feb 2003 | C5: Antropología Física | C6: Momia | C9: Momia

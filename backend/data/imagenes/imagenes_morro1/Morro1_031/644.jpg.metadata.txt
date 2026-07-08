@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_031
+Correlativo de diapo: 644
+Archivo Excel origen: disco 6 (625 al 680).xls
+Hoja: Hoja1
+Fila Excel: 21
+Celda con coincidencia: C4 (Morro 1): MORRO-1 T-012 OSTEOPOROSIS
+fila_completa_resumida: C1: 644 | C2: Ektachrome Slide JUL 84 | C3: _ | C4: MORRO-1 T-012 OSTEOPOROSIS | C5: Física | C6: Hueso | C7: Osteoporosis | C8: Vertebras | C9: Vertebras con osteoporosis

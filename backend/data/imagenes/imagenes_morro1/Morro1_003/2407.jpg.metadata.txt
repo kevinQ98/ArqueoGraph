@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_003
+Correlativo de diapo: 2407
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 249
+Celda con coincidencia: C4 (Morro 1): MORRO-1 t-1 c-3
+fila_completa_resumida: C1: 2407 | C2: Ektachrome slide | C3: - | C4: MORRO-1 t-1 c-3 | C5: Antropología física | C6: Momia | C7: - | C8: Pierna momificada sin pié | C9: Pierna momificada sin pié

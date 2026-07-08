@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_140
+Correlativo de diapo: 1528
+Archivo Excel origen: disco 17 (NUEVO) (1500 al 1597).xls
+Hoja: Hoja1
+Fila Excel: 30
+Celda con coincidencia: C3 (Morro 1): Cultural- MORRO 1 (3); C4 (Morro 1): MORRO-1 t-30 c-1
+fila_completa_resumida: C1: 1528 | C2: n (28) | C3: Cultural- MORRO 1 (3) | C4: MORRO-1 t-30 c-1 | C5: Cultural | C6: Implementos | C7: - | C8: - | C9: Herramientas

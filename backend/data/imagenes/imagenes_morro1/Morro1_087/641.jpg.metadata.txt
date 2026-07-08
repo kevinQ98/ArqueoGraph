@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_087
+Correlativo de diapo: 641
+Archivo Excel origen: disco 6 (625 al 680).xls
+Hoja: Hoja1
+Fila Excel: 18
+Celda con coincidencia: C4 (Morro 1): MORRO-1 t-27 C-4
+fila_completa_resumida: C1: 641 | C2: Ektachrome Slide JUL 84 | C3: _ | C4: MORRO-1 t-27 C-4 | C5: Física | C6: Momia | C8: Cabeza | C9: Cabeza momia

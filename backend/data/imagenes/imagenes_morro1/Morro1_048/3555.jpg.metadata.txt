@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_048
+Correlativo de diapo: 3555
+Archivo Excel origen: Carpeta Chinchorro MO-1 MO-5 - Diapositivas 3523-3758.xlsx
+Hoja: Hoja2
+Fila Excel: 34
+Celda con coincidencia: C4 (MO 1): MO-1 T-19
+fila_completa_resumida: C1: 3555 | C2: 562 - ACA | C3: Pakon | C4: MO-1 T-19 | C5: Chinchorro antropogenic mummification faldellin 1985 blue book | C6: Cultural | C7: Artefacto | C8: - | C9: - | C10: Faldellín de fibras vegetales

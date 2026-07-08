@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_058
+Correlativo de diapo: 16
+Archivo Excel origen: disco 1 (1 al 200).xls
+Hoja: Hoja1
+Fila Excel: 17
+Celda con coincidencia: C3 (Morro 1): Morro 1 T22 C5a
+fila_completa_resumida: C1: 16 | C2: pakon | C3: Morro 1 T22 C5a | C4: _ | C5: Física | C6: Cráneo | C7: Fractura nasal | C8: Nasal | C9: Fractura nasal-frontal, lado izquierdo | C11: √

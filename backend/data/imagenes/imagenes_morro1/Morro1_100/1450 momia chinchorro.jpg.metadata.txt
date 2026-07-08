@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_100
+Correlativo de diapo: 1450
+Archivo Excel origen: disco 16 (NUEVO) (1397 al 1499).xls
+Hoja: Hoja1
+Fila Excel: 55
+Celda con coincidencia: C3 (Morro 1): MORRO-1 T-27 C-17
+fila_completa_resumida: C1: 1450 | C2: Ektachrome Slide SEP84 | C3: MORRO-1 T-27 C-17 | C4: - | C5: Física | C6: Momia | C7: - | C8: - | C9: Momia pequeña

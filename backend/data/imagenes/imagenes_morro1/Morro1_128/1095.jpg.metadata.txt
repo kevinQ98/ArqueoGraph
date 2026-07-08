@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_128
+Correlativo de diapo: 1095
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 47
+Celda con coincidencia: C4 (Morro 1): MORRO-1 T-28 C-22
+fila_completa_resumida: C1: 1095 | C2: Ektachrome Slide APR 84 | C3: n (13) BAT | C4: MORRO-1 T-28 C-22 | C5: Física | C6: Vertebras | C7: - | C8: Columna vertebral | C9: Columna vertebral

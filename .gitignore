@@ -13,8 +13,8 @@ frontend/.vite/
 # Bases de datos locales y archivos de datos (excepto muestras)
 backend/data/*.sqlite
 backend/data/*.sqlite-journal
-backend/data/uploads/
-backend/data/imagenes/
+# backend/data/uploads/
+# backend/data/imagenes/
 !backend/data/sample_data/
 !backend/data/catalogo_momias.json
 !backend/data/morro1_maestro.json

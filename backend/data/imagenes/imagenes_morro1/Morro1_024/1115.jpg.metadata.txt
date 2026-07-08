@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_024
+Correlativo de diapo: 1115
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 67
+Celda con coincidencia: C4 (Morro 1): Morro1 T-7 Cuerpo 5
+fila_completa_resumida: C1: 1115 | C2: pakon DUPLICATE SLIDE (12) | C3: - | C4: Morro1 T-7 Cuerpo 5 | C5: Cultural | C6: Momificación | C7: - | C8: Cuerpo | C9: Resquebrajamiento de pasta en estómago

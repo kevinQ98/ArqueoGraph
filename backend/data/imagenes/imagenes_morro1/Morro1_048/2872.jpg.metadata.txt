@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_048
+Correlativo de diapo: 2872
+Archivo Excel origen: disco 25 - (2831-2899).xls
+Hoja: Hoja1
+Fila Excel: 43
+Celda con coincidencia: C3 (Morro 1): Arica Feb 2003 Morro 1 T19
+fila_completa_resumida: C1: 2872 | C2: Pakon | C3: Arica Feb 2003 Morro 1 T19 | C5: Antropología Física | C6: Restos momificados | C7: - | C9: Faldellin

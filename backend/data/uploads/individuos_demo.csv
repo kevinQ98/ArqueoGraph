@@ -1,0 +1,13 @@
+id_individuo,id_documento,numero_cuerpo,sexo,edad,sitio,cementerio,cronologia,estilo_momificacion,referencia_bibliografica
+"caso_1","Caso 1","T1C1","Femenino","Adulto","Morro 1","Morro 1","5500-5000 a.p.","Negro","Standen 1991:6"
+"caso_2","Caso 2","T1C2","Masculino","Lactante","Morro 1","Morro 1","5500-5000 a.p.","Negro","Standen 1991:6"
+"caso_3","Caso 3","T1C3","Masculino","Adulto","Morro 1","Morro 1","5500-5000 a.p.","Negro","Standen 1991:7"
+"caso_4","Caso 4","T1C4","Masculino","Mayor 30 años","Morro 1","Morro 1","5160 ± 110 a.p.","Negro","Arriaza 1995; Standen 1991"
+"caso_5","Caso 5","T1C5","No determinado","Lactante","Morro 1","Morro 1","5500-5000 a.p.","Negro","Arriaza 1995; Standen 1991"
+"caso_8","Caso 8","T7C1","Femenino","Subadulto","Morro 1","Morro 1","4520 ± 90 a.p.","Rojo","Standen 1991:12"
+"caso_11","Caso 11","T7C4","Femenino","Adulto","Morro 1","Morro 1","4500-4000 a.p.","Rojo","Standen 1991; Standen 1997"
+"caso_12","Caso 12","T7C5","Masculino","6-7 años","Morro 1","Morro 1","4174 ± 86 a.p.","Rojo","Allison et al. 1984; Standen 1991"
+"caso_18","Caso 18","T23C9","Femenino probable","18-22 años","Morro 1","Morro 1","4000 a.p.","Variante estilo rojo","Standen 1991:20"
+"caso_19","Caso 19","T23C10","No determinado","0-6 meses","Morro 1","Morro 1","4000 a.p.","Variante estilo rojo","Arriaza 1995; Standen 1991"
+"caso_28","Caso 28","T25C6","Masculino","5-6 años","Morro 1","Morro 1","4570 ± 100 a.p.","Pátina de barro","Standen 1991:27"
+"caso_35","Caso 35","T10B","Femenino","30-35 años","Morro 1","Morro 1","5434 ± 59 a.p.","No determinado","Standen 1991; 1997"

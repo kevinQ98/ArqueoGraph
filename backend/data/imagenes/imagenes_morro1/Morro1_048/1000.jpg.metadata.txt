@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_048
+Correlativo de diapo: 1000
+Archivo Excel origen: disco 13 (NUEVO) (931 al 1049).xls
+Hoja: Hoja1
+Fila Excel: 71
+Celda con coincidencia: C3 (Morro 1): Morro 1 T19
+fila_completa_resumida: C1: 1000 | C2: Kodachrome Film (3) JUN 90P12 | C3: Morro 1 T19 | C4: _ | C5: Física | C6: Momia | C8: Cuerpo | C9: Cuerpo desmembrado

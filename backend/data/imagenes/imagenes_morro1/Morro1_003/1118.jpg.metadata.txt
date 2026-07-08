@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_003
+Correlativo de diapo: 1118
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 70
+Celda con coincidencia: C4 (Morro 1): MORRO-1 t-1 C-3
+fila_completa_resumida: C1: 1118 | C2: Ektachrome Slide AUG 84 | C3: - | C4: MORRO-1 t-1 C-3 | C5: Cultural | C6: Momificación | C7: - | C8: Cabeza de momia | C9: Momia con máscara negra

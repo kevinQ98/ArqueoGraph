@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_048
+Correlativo de diapo: 1462
+Archivo Excel origen: disco 16 (NUEVO) (1397 al 1499).xls
+Hoja: Hoja1
+Fila Excel: 67
+Celda con coincidencia: C3 (Morro 1): MORRO 1 Mujer T-19 CHINCHORRO Incisión y sutura. (29)
+fila_completa_resumida: C1: 1462 | C2: Ektachrome Slide (34) NOV83 | C3: MORRO 1 Mujer T-19 CHINCHORRO Incisión y sutura. (29) | C4: - | C5: Cultural | C6: Momificación | C7: - | C9: Momia muestra sutura

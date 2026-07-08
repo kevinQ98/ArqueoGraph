@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_082
+Correlativo de diapo: 2006
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 94
+Celda con coincidencia: C4 (Morro 1): MORRO-1 T-25 C-6 I-84
+fila_completa_resumida: C1: 2006 | C2: FEB 84 (21) | C3: CHINCHORRO | C4: MORRO-1 T-25 C-6 I-84 | C5: Física | C6: Momia | C7: _ | C8: _ | C9: Momia

@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_031
+Correlativo de diapo: 1987
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 75
+Celda con coincidencia: C4 (Morro 1): T-12 MORRO 1
+fila_completa_resumida: C1: 1987 | C2: Ektachrome Slide DEC 83 (13) | C3: _ | C4: T-12 MORRO 1 | C5: Física | C6: Momia | C7: _ | C8: _ | C9: Cabeza de momia envuelta en estera

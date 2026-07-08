@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_098
+Correlativo de diapo: 2467
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 309
+Celda con coincidencia: C3 (Morro 1): MORRO 1 T-27 C-15
+fila_completa_resumida: C1: 2467 | C2: Ektachrome slide | C3: MORRO 1 T-27 C-15 | C4: - | C5: Antropología física | C6: Momias | C7: - | C8: - | C9: Manta y restos momificados

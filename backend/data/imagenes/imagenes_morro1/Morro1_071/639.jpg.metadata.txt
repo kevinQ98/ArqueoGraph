@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_071
+Correlativo de diapo: 639
+Archivo Excel origen: disco 6 (625 al 680).xls
+Hoja: Hoja1
+Fila Excel: 16
+Celda con coincidencia: C4 (Morro 1): MORRO 1
+fila_completa_resumida: C1: 639 | C2: Ektachrome Slide (3) | C3: M1 T-23 C-12 Carilla extna squalling facets | C4: MORRO 1 | C5: Física | C6: Hueso | C7: Fractura | C9: Carilla externa squalling facets

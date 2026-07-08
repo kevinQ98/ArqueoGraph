@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_138
+Correlativo de diapo: 1338
+Archivo Excel origen: disco 15 (NUEVO) (1181 al 1396).xls
+Hoja: Hoja1
+Fila Excel: 159
+Celda con coincidencia: C4 (MO 1): Mo1 T29
+fila_completa_resumida: C1: 1338 | C2: Kodachrome Slide (22) AUG 87H | C3: _ | C4: Mo1 T29 | C5: Física | C6: Huesos | C8: Cadera y piernas | C9: Cadera y piernas

@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_059
+Correlativo de diapo: 1744
+Archivo Excel origen: disco 19 (NUEVO) (1662 al 1865).xls
+Hoja: Hoja1
+Fila Excel: 84
+Celda con coincidencia: C4 (Morro 1): MORRO1 t-22 C-6
+fila_completa_resumida: C1: 1744 | C2: Kodachrome Film (6) MAR91P10 | C3: M1T22C6 | C4: MORRO1 t-22 C-6 | C5: Insumos investigación | C6: Radiografías | C8: _ | C9: Radiografía huesos | C13: _

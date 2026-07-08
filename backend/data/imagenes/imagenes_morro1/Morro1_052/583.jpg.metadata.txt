@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_052
+Correlativo de diapo: 583
+Archivo Excel origen: disco 5 (571 al 624).xls
+Hoja: Hoja1
+Fila Excel: 14
+Celda con coincidencia: C4 (Morro 1): MORRO 1 T-21 C-1
+fila_completa_resumida: C1: 583 | C2: Fuji | C3: _ | C4: MORRO 1 T-21 C-1 | C5: Insumos Investigación | C6: Radiografía | C9: Huesos, Líneas de Harris

@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_123
+Correlativo de diapo: 1989
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 77
+Celda con coincidencia: C4 (Morro 1): MORRO-1 t-28 C-17
+fila_completa_resumida: C1: 1989 | C2: Ektachrome Slide APR 84 | C3: Tapón de fibra en nariz | C4: MORRO-1 t-28 C-17 | C5: Física | C6: Momia | C7: _ | C8: _ | C9: Cabeza de momia muestra tapón de fibra en nariz

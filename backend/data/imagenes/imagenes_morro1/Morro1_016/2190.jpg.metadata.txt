@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_016
+Correlativo de diapo: 2190
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 32
+Celda con coincidencia: C4 (Morro 1): Morro-1 t-17
+fila_completa_resumida: C1: 2190 | C2: - | C3: Chede tumb (ilegible) ó AZ-8 T5B | C4: Morro-1 t-17 | C5: Antropología física | C6: Hueso | C7: ¿? | C8: Cráneo | C9: Cráneo

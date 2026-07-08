@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_031
+Correlativo de diapo: 2405
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 247
+Celda con coincidencia: C4 (Morro 1): MORRO-1 T-012 OSTEOPOROSIS
+fila_completa_resumida: C1: 2405 | C2: Ektachrome slide | C3: - | C4: MORRO-1 T-012 OSTEOPOROSIS | C5: Antropología física | C6: Huesos | C7: Osteoporosis | C8: Vértebras | C9: Vértebras

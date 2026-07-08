@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_058
+Correlativo de diapo: 1815
+Archivo Excel origen: disco 19 (NUEVO) (1662 al 1865).xls
+Hoja: Hoja1
+Fila Excel: 155
+Celda con coincidencia: C3 (Morro 1): Morro 1 T22C5a Fractura Frontal & lt. Nasal
+fila_completa_resumida: C1: 1815 | C2: pakon | C3: Morro 1 T22C5a Fractura Frontal & lt. Nasal | C4: _ | C5: Física | C6: Cráneo | C7: Fractura frontal y nasal | C8: Cráneo | C9: Cráneo muestra fractura frontal y nasal | C13: _

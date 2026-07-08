@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_087
+Correlativo de diapo: 2397
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 239
+Celda con coincidencia: C4 (MO 1): MO1 T-27 C4 PLACA #7/90
+fila_completa_resumida: C1: 2397 | C2: Kodachrome Film | C3: M1 T27 C4 | C4: MO1 T-27 C4 PLACA #7/90 | C5: Antropología física | C6: Huesos | C7: ¿? | C8: Huesos | C9: Huesos

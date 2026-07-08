@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_092
+Correlativo de diapo: 1959
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 47
+Celda con coincidencia: C4 (Morro 1): MORRO-1 t-27 C-9
+fila_completa_resumida: C1: 1959 | C2: Ektachrome Slide JUL 84 | C3: _ | C4: MORRO-1 t-27 C-9 | C5: Física | C6: Huesos | C8: Hueso | C9: Hueso

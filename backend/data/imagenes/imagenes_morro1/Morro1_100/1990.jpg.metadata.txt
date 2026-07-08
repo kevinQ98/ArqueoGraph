@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_100
+Correlativo de diapo: 1990
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 78
+Celda con coincidencia: C3 (Morro 1): MORRO-1 CHINCHORRO T-27 C-17
+fila_completa_resumida: C1: 1990 | C2: Ektachrome Slide JUN 84 | C3: MORRO-1 CHINCHORRO T-27 C-17 | C4: _ | C5: Física | C6: Momia | C7: _ | C8: _ | C9: Momia parte inferior

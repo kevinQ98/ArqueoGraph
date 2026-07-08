@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_059
+Correlativo de diapo: 631
+Archivo Excel origen: disco 6 (625 al 680).xls
+Hoja: Hoja1
+Fila Excel: 8
+Celda con coincidencia: C3 (Morro 1): Trepanomatosis?? MORRO 1 T-22-C6; C4 (Morro 1): Morro 1 T-22 C-6
+fila_completa_resumida: C1: 631 | C2: FEB 84 (38) | C3: Trepanomatosis?? MORRO 1 T-22-C6 | C4: Morro 1 T-22 C-6 | C5: Insumos investigación | C6: Radiografía | C7: Trepallomatosis | C8: Huesos | C9: Huesos

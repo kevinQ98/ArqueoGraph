@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_082
+Correlativo de diapo: 1479
+Archivo Excel origen: disco 16 (NUEVO) (1397 al 1499).xls
+Hoja: Hoja1
+Fila Excel: 84
+Celda con coincidencia: C4 (Morro 1): MORRO-1 t-25 c-6 1 84
+fila_completa_resumida: C1: 1479 | C2: - | C3: n (14) | C4: MORRO-1 t-25 c-6 1 84 | C5: Física | C6: Momia | C7: - | C8: Cuerpo | C9: Cuerpo momificado con cráneo sobrepuesto

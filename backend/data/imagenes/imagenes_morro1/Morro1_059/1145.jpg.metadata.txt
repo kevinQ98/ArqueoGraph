@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_059
+Correlativo de diapo: 1145
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 97
+Celda con coincidencia: C3 (MO 1): Mo 1 T22 C6 Male 15-16 años
+fila_completa_resumida: C1: 1145 | C2: Kodachrome Film (19) JUN 90P12 | C3: Mo 1 T22 C6 Male 15-16 años | C4: - | C5: Física | C6: Huesos | C8: Huesos | C9: Huesos de hombre de 15 o 16 años

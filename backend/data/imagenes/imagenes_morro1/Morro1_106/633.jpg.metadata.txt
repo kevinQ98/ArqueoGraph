@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_106
+Correlativo de diapo: 633
+Archivo Excel origen: disco 6 (625 al 680).xls
+Hoja: Hoja1
+Fila Excel: 10
+Celda con coincidencia: C3 (Morro 1): Morro-1 T-28 C-3
+fila_completa_resumida: C1: 633 | C2: Ektachrome Slide JUL 84 | C3: Morro-1 T-28 C-3 | C4: _ | C5: Física | C6: Hueso | C8: Hueso | C9: Hueso

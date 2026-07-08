@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_091
+Correlativo de diapo: 1345
+Archivo Excel origen: disco 15 (NUEVO) (1181 al 1396).xls
+Hoja: Hoja1
+Fila Excel: 166
+Celda con coincidencia: C3 (Morro 1): Morro1T27C8 Osteop-fractura
+fila_completa_resumida: C1: 1345 | C2: Kodachrome Film JUN 90P12 (28) | C3: Morro1T27C8 Osteop-fractura | C4: _ | C5: Física | C6: Vertebras | C7: Fractura | C8: Vertebras | C9: Vertebras

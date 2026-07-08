@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_066
+Correlativo de diapo: 2013
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 101
+Celda con coincidencia: C4 (Morro 1): T-23 C-7 MORRO 1
+fila_completa_resumida: C1: 2013 | C2: Ektachrome Slide | C3: _ | C4: T-23 C-7 MORRO 1 | C5: Física | C6: Restos momificados | C7: _ | C8: Tronco | C9: Tronco momificado

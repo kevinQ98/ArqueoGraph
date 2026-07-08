@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_066
+Correlativo de diapo: 1478
+Archivo Excel origen: disco 16 (NUEVO) (1397 al 1499).xls
+Hoja: Hoja1
+Fila Excel: 83
+Celda con coincidencia: C4 (Morro 1): MORRO-1 t-23 C-7
+fila_completa_resumida: C1: 1478 | C2: Ektachrome Slide | C3: - | C4: MORRO-1 t-23 C-7 | C5: Física | C6: Momia | C7: - | C8: Extremidades inferiores | C9: Momia, extremidades inferiores

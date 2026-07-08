@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_003
+Correlativo de diapo: 1463
+Archivo Excel origen: disco 16 (NUEVO) (1397 al 1499).xls
+Hoja: Hoja1
+Fila Excel: 68
+Celda con coincidencia: C4 (Morro 1): MORRO-1 t-1 c-3
+fila_completa_resumida: C1: 1463 | C2: Fuji | C3: n (9) | C4: MORRO-1 t-1 c-3 | C5: Cultural | C6: Momificación | C7: - | C9: Momia con patina negra

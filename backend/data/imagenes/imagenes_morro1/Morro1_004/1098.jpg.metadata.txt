@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_004
+Correlativo de diapo: 1098
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 50
+Celda con coincidencia: C3 (MO 1): Mo1 T1 C4
+fila_completa_resumida: C1: 1098 | C2: Kodachrome Film (31) JUN 90P12 | C3: Mo1 T1 C4 | C4: - | C5: Cultural | C6: Momificación | C7: Fractura | C8: Cabeza | C9: Cabeza vista lateral

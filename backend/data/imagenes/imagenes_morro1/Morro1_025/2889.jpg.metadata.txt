@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_025
+Correlativo de diapo: 2889
+Archivo Excel origen: disco 25 - (2831-2899).xls
+Hoja: Hoja1
+Fila Excel: 60
+Celda con coincidencia: C3 (Morro 1): Morro 1 T8 Arica, Marzo 2003
+fila_completa_resumida: C1: 2889 | C3: Morro 1 T8 Arica, Marzo 2003 | C5: Antropologia Física | C6: Restos momificados | C9: Mano con punta lítica

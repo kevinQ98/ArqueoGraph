@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_105
+Correlativo de diapo: 1798
+Archivo Excel origen: disco 19 (NUEVO) (1662 al 1865).xls
+Hoja: Hoja1
+Fila Excel: 138
+Celda con coincidencia: C4 (Morro 1): Morro-1 t-28 C-2
+fila_completa_resumida: C1: 1798 | C2: pakon | C3: M1 T28C2 Fract. occipital | C4: Morro-1 t-28 C-2 | C5: Física | C6: Cráneo | C7: Fractura | C8: Cráneo | C9: Cráneo muestra fractura occipital | C13: _

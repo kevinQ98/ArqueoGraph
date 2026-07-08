@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_128
+Correlativo de diapo: 1789
+Archivo Excel origen: disco 19 (NUEVO) (1662 al 1865).xls
+Hoja: Hoja1
+Fila Excel: 129
+Celda con coincidencia: C4 (Morro 1): MORRO-1 t-28 C-22 10-4-84
+fila_completa_resumida: C1: 1789 | C2: _ | C3: _ | C4: MORRO-1 t-28 C-22 10-4-84 | C5: Física | C6: Vertebras | C8: Vertebras | C9: Vertebras | C13: Sin dato alguno de revelado. Un lado plástico negro.

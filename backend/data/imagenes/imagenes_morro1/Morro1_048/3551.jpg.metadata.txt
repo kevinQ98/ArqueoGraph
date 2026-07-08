@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_048
+Correlativo de diapo: 3551
+Archivo Excel origen: Carpeta Chinchorro MO-1 MO-5 - Diapositivas 3523-3758.xlsx
+Hoja: Hoja2
+Fila Excel: 30
+Celda con coincidencia: C4 (MO 1): MO-1 T19
+fila_completa_resumida: C1: 3551 | C2: 558 - ACA | C3: Ektachrome JUN85R5 | C4: MO-1 T19 | C5: Chinchorro | C6: Antropología Física | C7: Momia | C8: - | C9: Pie | C10: Pie izquierdo momificado

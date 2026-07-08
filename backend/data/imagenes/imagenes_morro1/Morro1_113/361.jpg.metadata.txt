@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_113
+Correlativo de diapo: 361
+Archivo Excel origen: disco 2 (201 al 390).xls
+Hoja: Hoja1
+Fila Excel: 162
+Celda con coincidencia: C4 (Morro 1): MORRO 1/ t28 C9
+fila_completa_resumida: C1: 361 | C2: Kodachrome Film (12) MAR 91P10 | C3: _ | C4: MORRO 1/ t28 C9 | C5: Física | C6: Huesos | C8: Huesos | C9: Huesos

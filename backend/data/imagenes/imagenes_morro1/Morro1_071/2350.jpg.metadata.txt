@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_071
+Correlativo de diapo: 2350
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 192
+Celda con coincidencia: C4 (Morro 1): MORRO 1 T-23 C-12
+fila_completa_resumida: C1: 2350 | C2: Ektachrome slide | C3: Artritis | C4: MORRO 1 T-23 C-12 | C5: Antropología física | C6: Momias | C7: ¿? | C8: Vértebras | C9: Vértebras

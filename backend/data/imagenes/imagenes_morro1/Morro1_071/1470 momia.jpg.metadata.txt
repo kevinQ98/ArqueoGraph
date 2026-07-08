@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_071
+Correlativo de diapo: 1470
+Archivo Excel origen: disco 16 (NUEVO) (1397 al 1499).xls
+Hoja: Hoja1
+Fila Excel: 75
+Celda con coincidencia: C4 (Morro 1): MORRO1 T-23 C-12
+fila_completa_resumida: C1: 1470 | C2: pakon Duplicate Slide (11) | C3: - | C4: MORRO1 T-23 C-12 | C5: Física | C6: Momia | C7: -

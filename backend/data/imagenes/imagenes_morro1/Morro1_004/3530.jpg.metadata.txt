@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_004
+Correlativo de diapo: 3530
+Archivo Excel origen: Carpeta Chinchorro MO-1 MO-5 - Diapositivas 3523-3758.xlsx
+Hoja: Hoja2
+Fila Excel: 9
+Celda con coincidencia: C4 (MO 1): MO-1/ T-1 C-4
+fila_completa_resumida: C1: 3530 | C2: 537 - ACA | C3: Gepe | C4: MO-1/ T-1 C-4 | C5: - | C6: Insumos investigación | C7: Radiografía | C8: - | C9: Maxilar | C10: Radiografía de dientes

@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_119
+Correlativo de diapo: 3563
+Archivo Excel origen: Carpeta Chinchorro MO-1 MO-5 - Diapositivas 3523-3758.xlsx
+Hoja: Hoja2
+Fila Excel: 42
+Celda con coincidencia: C4 (MO 1): MO-1 T-28 C-13
+fila_completa_resumida: C1: 3563 | C2: 570 - ACA | C3: Kodachrome slide JUL87F04 | C4: MO-1 T-28 C-13 | C5: - | C6: Antropología Física | C7: Momia | C8: - | C9: Maxilar y palatino | C10: Mandíbula con piezas dentales

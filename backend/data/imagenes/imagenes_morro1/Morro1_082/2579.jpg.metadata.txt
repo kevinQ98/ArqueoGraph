@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_082
+Correlativo de diapo: 2579
+Archivo Excel origen: disco 23 - (2563-2730)2.xls
+Hoja: Hoja1
+Fila Excel: 18
+Celda con coincidencia: C3 (Morro 1): Morro-1 Chinchorro T-25 C-6 Tipo 3 4570 +/- 100 BP; C4 (Morro 1): Morro-1 T-25 C-6/-84
+fila_completa_resumida: C1: 2579 | C2: Ektachrome Slide | C3: Morro-1 Chinchorro T-25 C-6 Tipo 3 4570 +/- 100 BP | C4: Morro-1 T-25 C-6/-84 | C5: Antropologia Fisica | C6: Momia | C8: - | C9: Momia

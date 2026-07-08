@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_022
+Correlativo de diapo: 1819
+Archivo Excel origen: disco 19 (NUEVO) (1662 al 1865).xls
+Hoja: Hoja1
+Fila Excel: 159
+Celda con coincidencia: C3 (Morro 1): Morro -1 CHINCHORRO T-7 C-5
+fila_completa_resumida: C1: 1819 | C2: FEB 8 (34) | C3: Morro -1 CHINCHORRO T-7 C-5 | C4: _ | C5: Física | C6: Momias | C9: Momia | C13: Fecha revelado puede estar incompleta

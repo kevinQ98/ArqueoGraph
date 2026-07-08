@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_071
+Correlativo de diapo: 1100
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 52
+Celda con coincidencia: C3 (Morro 1): MORRO 1 T- 23 CHINCHORRO C-12 (30); C4 (Morro 1): MORRO-1 t-23 C-12
+fila_completa_resumida: C1: 1100 | C2: Ektachrome Slide Jun 84 | C3: MORRO 1 T- 23 CHINCHORRO C-12 (30) | C4: MORRO-1 t-23 C-12 | C5: Cultural | C6: Momificación | C7: - | C8: Cuerpo momificado | C9: Cuerpo momificado en rescate

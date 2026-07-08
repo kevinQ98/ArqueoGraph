@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_039
+Correlativo de diapo: 579
+Archivo Excel origen: disco 5 (571 al 624).xls
+Hoja: Hoja1
+Fila Excel: 10
+Celda con coincidencia: C4 (Morro 1): Morro1 T-17 C1 Morro1 T-21 C1
+fila_completa_resumida: C1: 579 | C2: Fuji | C3: _ | C4: Morro1 T-17 C1 Morro1 T-21 C1 | C5: Insumos Investigación | C6: Radiografía | C8: Radiografía huesos | C9: Huesos

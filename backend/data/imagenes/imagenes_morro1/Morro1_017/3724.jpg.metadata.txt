@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_017
+Correlativo de diapo: 3724
+Archivo Excel origen: Carpeta Chinchorro MO-1 MO-5 - Diapositivas 3523-3758.xlsx
+Hoja: Hoja2
+Fila Excel: 203
+Celda con coincidencia: C4 (MO 1): MO1-5 ,T-6, XII
+fila_completa_resumida: C1: 3724 | C2: 731 - ACA | C3: Plasticmounts | C4: MO1-5 ,T-6, XII | C5: - | C6: Antropología Física | C7: Momia | C8: - | C9: Cuerpo | C10: Acercamiento al cráneo (fragmentado) y al tercio superior del tórax

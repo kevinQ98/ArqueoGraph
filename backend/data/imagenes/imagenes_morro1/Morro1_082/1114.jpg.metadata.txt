@@ -1,0 +1,8 @@
+Sitio buscado: Morro 1
+FK: Morro1_082
+Correlativo de diapo: 1114
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 66
+Celda con coincidencia: C3 (Morro 1): MORRO1 CHINCHORRO T-25 C-6 con patina 4570 + 100 BP.; C4 (Morro 1): MORRO1 T-25 C-6 /-84
+fila_completa_resumida: C1: 1114 | C2: 29618 | C3: MORRO1 CHINCHORRO T-25 C-6 con patina 4570 + 100 BP. | C4: MORRO1 T-25 C-6 /-84 | C5: Cultural | C6: Momificación | C7: - | C8: Cuerpo | C9: Momia en rescate
