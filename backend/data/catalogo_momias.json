@@ -1,0 +1,2471 @@
+[
+  {
+    "id_documento": "Caso 1",
+    "pagina_pdf": 15,
+    "pagina_impresa": 14,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_001_pagina_015_img_00.jpeg",
+      "./imagenes_momias/caso_001_pagina_016_img_00.jpeg",
+      "./imagenes_momias/caso_001_pagina_017_img_00.jpeg",
+      "./imagenes_momias/caso_001_pagina_018_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 1",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T1C1",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Negro",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "5500-5000 a.p. (3500-3000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "220° SO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente extremidades inferiores",
+        "deterioro": "Buena conservación, a excepción de hombro derecho",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Adulto",
+        "edad_basado_en": "Tamaño corporal y desarrollo óseo",
+        "sexo": "Femenino",
+        "sexo_basado_en": "Modelado de pechos",
+        "largo_maximo": "Largo cabeza-muslo: 103 cm",
+        "ancho_maximo": "Ancho tórax (hombros): 28 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal",
+        "vestimenta_ornamentacion": "Cobertor púbico de fibra de camélido. Peluca",
+        "tratamiento": "Cuerpo descarnado y modelado en arcilla gris sobre la estructura ósea, la cual está reforzada con maderos y embarrilado en estera y cuerdas de fibra vegetal. Cara modelada con una mascarilla ovoidal de arcilla gris, sobre ésta se observa una delgada piel pintada de negro. La nariz está modelada con los dos orificios nasales, los ojos y la boca están sólo señalados por incisiones horizontales. Sobre la peluca tiene un envoltorio de piel de animal. El cuerpo fue pintado íntegramente de color negro. Nota: La estólica y los huesos de cetáceos están ofrendados al conjunto de cuerpos de la tumba 1.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Estólica y huesos de cetáceos"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:6 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 2",
+    "pagina_pdf": 19,
+    "pagina_impresa": 18,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_002_pagina_019_img_00.jpeg",
+      "./imagenes_momias/caso_002_pagina_020_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 2",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T1C2",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Negro",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "5500-5000 a.p. (3500-3000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "225° SO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente piernas y pies",
+        "deterioro": "Mala conservación, en general, con cabeza parcialmente destruida",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Lactante",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Modelado de genitales",
+        "largo_maximo": "Largo cabeza-rodillas: 44 cm",
+        "ancho_maximo": "Ancho tórax (hombros): 12,3 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No hay información",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Cuerpo descarnado y modelado en arcilla gris sobre la estructura ósea, la cual está reforzada con maderos y embarrilado en fibra vegetal. Cara modelada con una mascarilla ovoidal de arcilla gris, sobre ésta se observa una delgada piel amarilla pintada de negro. Los ojos, la boca y la nariz están sólo señalados por incisiones horizontales. No se observa peluca. El cuerpo fue pintado íntegramente de color negro. Nota: La estólica y los huesos de cetáceos están ofrendados al conjunto de cuerpos de la tumba 1.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Estólica y huesos de cetáceos"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:6 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 3",
+    "pagina_pdf": 21,
+    "pagina_impresa": 20,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_003_pagina_021_img_00.jpeg",
+      "./imagenes_momias/caso_003_pagina_022_img_00.jpeg",
+      "./imagenes_momias/caso_003_pagina_023_img_00.jpeg",
+      "./imagenes_momias/caso_003_pagina_024_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 3",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T1C3",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Negro",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "5500-5000 a.p. (3500-3000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "220° SO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente pies",
+        "deterioro": "Buena conservación",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Adulto",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Modelado de genitales",
+        "largo_maximo": "Largo cabeza-tobillo: 142 cm",
+        "ancho_maximo": "Ancho tórax (hombros): 35 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal",
+        "vestimenta_ornamentacion": "Peluca",
+        "tratamiento": "Cuerpo descarnado y modelado en arcilla gris sobre la estructura ósea, la cual está reforzada con maderos y embarrilado con esteras y cuerdas de fibra vegetal. La cara fue modelada con una mascarilla ovoidal de arcilla gris, sobre ésta se observa una delgada piel pintada de negro. La nariz está modelada con los dos orificios nasales, los ojos y la boca están sólo señalados por incisiones horizontales. Conserva restos de una peluca adherida al cráneo. El cuerpo fue pintado íntegramente de color negro. Nota: La estólica y los huesos de cetáceos están ofrendados al conjunto de cuerpos de la tumba 1.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Una bolsita de piel de camélido muy destruida, estólica y huesos de cetáceo"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:7 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 4",
+    "pagina_pdf": 25,
+    "pagina_impresa": 24,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_004_pagina_025_img_00.jpeg",
+      "./imagenes_momias/caso_004_pagina_026_img_00.jpeg",
+      "./imagenes_momias/caso_004_pagina_027_img_00.jpeg",
+      "./imagenes_momias/caso_004_pagina_028_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 4",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T1C4",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Negro",
+        "fechado_radiocarbonico": "5160 ± 110 a.p.(3210 a.C.)",
+        "cronologia_relativa_ap": null,
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "230° SO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente piernas y pies",
+        "deterioro": "Buena conservación",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "Mayor 30 años",
+        "edad_basado_en": "Desarrollo óseo",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Modelado de genitales",
+        "largo_maximo": "Largo cabeza-rodilla: 123 cm",
+        "ancho_maximo": "Ancho tórax (hombros): 34 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "Muy buena",
+        "salud_osea": "Fractura nasal y maxilar izq., sanada"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal",
+        "vestimenta_ornamentacion": "Peluca",
+        "tratamiento": "El cuerpo fue descarnado y modelado en arcilla gris sobre la estructura ósea, la cual está reforzada con maderos y embarrilado con esteras y cuerdas de fibra vegetal. La cara fue modelada con una mascarilla ovoidal de arcilla gris, sobre ésta se observa una delgada piel pintada de negro. La nariz está modelada con los dos orificios nasales, los ojos y la boca están sólo señalados por incisiones horizontales. Tiene una peluca de 24 cm de largo adherida al cráneo. El cuerpo fue íntegramente pintado de color negro. Nota 1: cuerpo sometido a autopsia en 1983. Nota 2: La estólica y los huesos de cetáceos están ofrendados al conjunto de cuerpos de la tumba 1.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Estólica y huesos de cetáceos"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Arriaza 1995; Standen 1991:7-8 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 5",
+    "pagina_pdf": 29,
+    "pagina_impresa": 28,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_005_pagina_029_img_00.jpeg",
+      "./imagenes_momias/caso_005_pagina_030_img_00.jpeg",
+      "./imagenes_momias/caso_005_pagina_031_img_00.jpeg",
+      "./imagenes_momias/caso_005_pagina_032_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 5",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T1C5",
+        "museo_que_alberga_el_cuerpo": "Museo Chileno de Arte Precolombino",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Negro",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "5500-5000 a.p. (3500 -3000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "230° SO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente piernas, pies y brazo derecho",
+        "deterioro": "Mala conservación, fragmentado en cráneo, tronco y extremidades",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Lactante",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Largo cabeza-fémur: 52 cm",
+        "ancho_maximo": "Ancho tórax (hombros): 16 cm aprox."
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "Hiperostosis porótica en parietales"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal",
+        "vestimenta_ornamentacion": "Peluca",
+        "tratamiento": "Cuerpo descarnado y modelado en arcilla gris sobre la estructura ósea, la cual está reforzada con maderos y embarrilado con esteras y cuerdas de fibra vegetal. La cara fue modelada con una mascarilla ovoidal de arcilla gris, sobre ésta se observa una delgada piel café pintada de negro con una pátina de manganeso. La nariz está fragmentada pero conserva dos orificios nasales, los ojos y la boca están claramente diseñados en forma elíptica. Se observan pequeños manojos de pelo (peluca) en los huesos del cráneo. El cuerpo fue íntegramente pintado de color negro. Nota: La estólica y los huesos de cetáceos están ofrendados al conjunto de cuerpos de la tumba 1.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Estólica y huesos de cetáceos"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Arriaza 1995; Arriaza y Standen 2002; Standen 1991:7-9 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 6",
+    "pagina_pdf": 33,
+    "pagina_impresa": 32,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_006_pagina_033_img_00.jpeg",
+      "./imagenes_momias/caso_006_pagina_034_img_00.jpeg",
+      "./imagenes_momias/caso_006_pagina_035_img_00.jpeg",
+      "./imagenes_momias/caso_006_pagina_036_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 6",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T1C6",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Negro",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "5500-5000 a.p. (3500 -3000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "230° SO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente extremidades inferiores y mano derecha",
+        "deterioro": "Buena conservación, a excepción de piel de mascarilla desprendida.",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Adulto",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo cabeza-fémur: 52 cm",
+        "ancho_maximo": "Ancho hombros: 31 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Piel de animal y estera vegetal",
+        "vestimenta_ornamentacion": "Peluca",
+        "tratamiento": "Cuerpo descarnado y modelado con arcilla gris sobre la estructura ósea y reforzado con maderos y fibra vegetal. Mascarilla facial modelada en arcilla gris cubierta con una piel pintada con manganeso. Los ojos están señalados por incisiones horizontales al igual que la boca, la nariz está modelada con los orificios nasales. Tiene una peluca adherida al cráneo. El cuerpo fue pintado íntegramente de color negro. Nota: La estólica y los huesos de cetáceos están ofrendados al conjunto de cuerpos de la tumba 1.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No se puede determinar",
+        "bienes_funerarios": "Estólica y huesos de cetáceos"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Arriaza 1995; Arriaza y Standen 2002; Standen 1991:7-9 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 7",
+    "pagina_pdf": 37,
+    "pagina_impresa": 36,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_007_pagina_037_img_00.jpeg",
+      "./imagenes_momias/caso_007_pagina_038_img_00.jpeg",
+      "./imagenes_momias/caso_007_pagina_039_img_00.jpeg",
+      "./imagenes_momias/caso_007_pagina_040_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 7",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T1C7",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Negro",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "5500-5000 a.p. (3500 -3000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "230° SO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente parte del tronco y extremidades inferiores",
+        "deterioro": "Buena conservación, a excepción de la nariz que está destruida",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Infante",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Largo cabeza-codos: 48 cm",
+        "ancho_maximo": "Ancho tórax (incluyendo brazos): 25 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Piel de animal y estera vegetal",
+        "vestimenta_ornamentacion": "Peluca",
+        "tratamiento": "Cuerpo descarnado y modelado en arcilla gris con la estructura ósea reforzada con maderos y envuelta en estera. La mascarilla de arcilla gris, está modelada en forma ovoidal, sobre ésta se observa una delgada piel amarilla que fue pintada de negro. Los ojos y la boca están sólo señalados por incisiones horizontales, la nariz erosionada. Se observa sólo haces de pelo puestos sobre la piel que recubre el casquete del cráneo. El cuerpo fue pintado íntegramente de color negro. Nota: La estólica y los huesos de cetáceos están ofrendados al conjunto de cuerpos de la tumba 1.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Estólica y huesos de cetáceos"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:9 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 8",
+    "pagina_pdf": 41,
+    "pagina_impresa": 40,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_008_pagina_041_img_00.jpeg",
+      "./imagenes_momias/caso_008_pagina_042_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 8",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T7C1",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci y V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": "4520 ± 90 a.p. (2750 a.C)",
+        "cronologia_relativa_ap": null,
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "3° NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente segmentos del cráneo",
+        "deterioro": "Regular conservación, cuerpo muy fragmentado, cráneo completamente destruido",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "Subadulto",
+        "edad_basado_en": "Desarrollo óseo",
+        "sexo": "Femenino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "No determinado",
+        "ancho_maximo": "No determinado"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "Faldellín de fibra vegetal pintado de rojo",
+        "tratamiento": "Cuerpo eviscerado y rellenado con tierra de colores, piel de camélido, plumas y probablemente algas. Reforzado con maderos a nivel de la columna y extremidades inferiores. Se observan incisiones de la piel a nivel abdominal y rodillas. El cuerpo fue íntegramente pintado de color rojo. Sobre los pies, estaba cubierto con un tejido anillado (tipo red) elaborado en fibra vegetal.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No se puede determinar",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:12 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 9",
+    "pagina_pdf": 43,
+    "pagina_impresa": 42,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_009_pagina_043_img_00.jpeg",
+      "./imagenes_momias/caso_009_pagina_044_img_00.jpeg",
+      "./imagenes_momias/caso_009_pagina_044_img_01.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 9",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T7C2",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci y V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4500-4000 a.p. (2500-2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "335° NO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente segmentos del cráneo",
+        "deterioro": "Mala conservación, cuerpo fragmentado y erosionado",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "14-16 años",
+        "edad_basado_en": "Desarrollo óseo",
+        "sexo": "Femenino probable",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "No determinado",
+        "ancho_maximo": "No determinado"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "Faldellín de fibra vegetal",
+        "tratamiento": "Cuerpo eviscerado y descarnado, relleno con piel de camélido, ceniza y algas marinas y reforzado con maderos a nivel de tronco y extremidades inferiores. El cuerpo fue pintado íntegramente de color rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No se puede determinar",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:12 (apéndice1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 10",
+    "pagina_pdf": 45,
+    "pagina_impresa": 44,
+    "imagen_ruta_local": "./imagenes_momias/caso_010_pagina_045_img_00.jpeg",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_010_pagina_045_img_00.jpeg",
+      "./imagenes_momias/caso_010_pagina_046_img_00.jpeg",
+      "./imagenes_momias/caso_010_pagina_047_img_00.jpeg",
+      "./imagenes_momias/caso_010_pagina_048_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 10",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T7C3",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci y V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4500-4000 a.p. (2500-2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "352° NO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente pies",
+        "deterioro": "Regular conservación, piel agrietada en tórax y mascarilla facial destruida",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Infante",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo cabeza-tobillos: 72 cm",
+        "ancho_maximo": "Ancho hombros: 20 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "Cobertor púbico de cuero de animal. Peluca",
+        "tratamiento": "Cuerpo eviscerado y descarnado, rellenado con piel de camélido, ceniza y reforzado con maderos a nivel de tronco y extremidades inferiores. No se observan incisiones por estar la piel agrietada y con arena adherida. Peluca de 15 cm de largo fijada al cráneo con un casquete de arcilla negra. El cuerpo fue íntegramente pintado de color rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No se puede determinar",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:13 (apéndice1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 11",
+    "pagina_pdf": 49,
+    "pagina_impresa": 48,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_011_pagina_049_img_00.jpeg",
+      "./imagenes_momias/caso_011_pagina_050_img_00.jpeg",
+      "./imagenes_momias/caso_011_pagina_050_img_01.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 11",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T7C4",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci y V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4500-4000 a.p. (2500-2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "349° NO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo",
+        "deterioro": "Mala conservación, cuerpo severamente erosionado y agrietado",
+        "almacenamiento_actual": "Caja"
+      },
+      "perfil_biologico": {
+        "edad": "Adulto",
+        "edad_basado_en": "Tamaño corporal y desarrollo óseo",
+        "sexo": "Femenino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "No determinado",
+        "ancho_maximo": "No determinado"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Piel de camélido y estera vegetal",
+        "vestimenta_ornamentacion": "Faldellín de fibra vegetal y bajo éste un cobertor púbico de cuero",
+        "tratamiento": "Cuerpo eviscerado y descarnado, rellenado con sedimento fino café rojizo, algas y piel de camélido. Fue reforzado con maderos a nivel de tronco y extremidades inferiores. Se observan incisiones en la piel de la ingle derecha y rodillas. El cuerpo fue íntegramente pintado de color rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:13-14 (apéndice 1); Standen 1997: 145"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 12",
+    "pagina_pdf": 51,
+    "pagina_impresa": 50,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_012_pagina_051_img_00.jpeg",
+      "./imagenes_momias/caso_012_pagina_052_img_00.jpeg",
+      "./imagenes_momias/caso_012_pagina_053_img_00.jpeg",
+      "./imagenes_momias/caso_012_pagina_054_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 12",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T7C5",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci y V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": "4174 ± 86 a.p. (2150 a.C.)",
+        "cronologia_relativa_ap": null,
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "346° NO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente pies",
+        "deterioro": "Regular conservación, cuerpo partido a nivel abdominal y extremidades",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "6-7 años",
+        "edad_basado_en": "Dentadura",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo cabeza–tobillos: 88 cm",
+        "ancho_maximo": "Ancho hombros: 22 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "Bueno",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal",
+        "vestimenta_ornamentacion": "Peluca bajo casquete de arcilla negra, cobertor púbico de cuero de animal",
+        "tratamiento": "Cuerpo eviscerado, se observan incisiones en hombros, rodillas y tobillos. Está relleno de tierra café rojiza y piel de camélido. Al nivel de cuello un cordón de pelo humano torcido. La mascarilla facial fue modelada en arcilla, con la nariz en relieve y los orificios nasales; los ojos están sólo insinuados por incisiones horizontales y la boca está modelada en forma circular. Peluca fijada por debajo del casquete de arcilla negra pintada de rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Bolsita de piel con manganeso, dos yesqueros (maderos para producir fuego)"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Allison et al. 1984; Arriaza 1995:37; Standen 1991:15 (apéndice 1); Standen 1997:145"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 13",
+    "pagina_pdf": 55,
+    "pagina_impresa": 54,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_013_pagina_055_img_00.jpeg",
+      "./imagenes_momias/caso_013_pagina_056_img_00.jpeg",
+      "./imagenes_momias/caso_013_pagina_057_img_00.jpeg",
+      "./imagenes_momias/caso_013_pagina_058_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 13",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T7C6",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci y V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": "4093 ± 81 a.p. (2000 a.C.)",
+        "cronologia_relativa_ap": null,
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "2° NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente piernas, pies, manos y cara",
+        "deterioro": "Mala conservación, partido a nivel de abdomen, tórax y extremidades, cara destruida",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Lactante",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo cabeza–rodillas: 61 cm",
+        "ancho_maximo": "Ancho hombros: 21 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal",
+        "vestimenta_ornamentacion": "Faldellín de fibra de camélido pintado de rojo. Peluca",
+        "tratamiento": "Cuerpo eviscerado y rellenado con tierra café rojiza y piel de camélido. Reforzado con maderos a nivel de la columna y extremidades inferiores. No se observan incisiones debido a lo agrietada de la piel. Aunque los huesos de la cara están destruidos, se observan vestigios de mascarilla facial, y a nivel de la bóveda craneana se observan restos de peluca de 16 cm de largo. El cuerpo fue íntegramente pintado de color rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen; 1991:16 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 14",
+    "pagina_pdf": 59,
+    "pagina_impresa": 58,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_014_pagina_059_img_00.jpeg",
+      "./imagenes_momias/caso_014_pagina_060_img_00.jpeg",
+      "./imagenes_momias/caso_014_pagina_061_img_00.jpeg",
+      "./imagenes_momias/caso_014_pagina_062_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 14",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T22C1",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Completo",
+        "deterioro": "Mala conservación, cuerpo partido y mascarilla destruida",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "Lactante",
+        "edad_basado_en": "Tamaño corporal y dentadura",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo cabeza–pies: 68 cm",
+        "ancho_maximo": "Ancho hombros: 17 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Cuerpo recubierto con piel de animal y estera vegetal",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Cuerpo eviscerado (aunque no se observan incisiones por la cobertura de la piel) y relleno de arcilla gris y motas de piel de camélido. La piel del cuerpo está pintada de rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Bolsita de piel de ave con manganeso, dos bolitas de cuero pintado de rojo y una piedra"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Arriaza y Standen 2002; Standen 1991:34 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 15",
+    "pagina_pdf": 63,
+    "pagina_impresa": 62,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_015_pagina_063_img_00.jpeg",
+      "./imagenes_momias/caso_015_pagina_064_img_00.jpeg",
+      "./imagenes_momias/caso_015_pagina_065_img_00.jpeg",
+      "./imagenes_momias/caso_015_pagina_066_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 15",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T22C2",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Completo",
+        "deterioro": "Regular conservación, cuerpo partido en muslos y extremidades, mascarilla facial destruida",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Lactante",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo cabeza-pies: 61,3 cm",
+        "ancho_maximo": "Ancho hombros: 15 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Envuelto con cuero de animal, pintado de rojo",
+        "vestimenta_ornamentacion": "Cintillo cefálico y peluca",
+        "tratamiento": "Cuerpo eviscerado (aunque no se observan incisiones por la cobertura de piel). Por los segmentos partidos se observa relleno de arcilla negra, no hay maderos aparentes. Tiene una mascarilla de arcilla gris, pintada con manganeso, con los rasgos faciales modelados. Sobre el cráneo un casquete de arcilla. Tiene una peluca y un cintillo cefálico de pelo humano sobre el casquete.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Bolsita de piel de ave"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Arriaza y Standen 2002:28; Standen 1991:35 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 16",
+    "pagina_pdf": 67,
+    "pagina_impresa": 66,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_016_pagina_067_img_00.jpeg",
+      "./imagenes_momias/caso_016_pagina_068_img_00.jpeg",
+      "./imagenes_momias/caso_016_pagina_069_img_00.jpeg",
+      "./imagenes_momias/caso_016_pagina_070_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 16",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T23C7",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": "4040 ± 100 a.p. (2090 a.C.)",
+        "cronologia_relativa_ap": null,
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "50º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo, hombros y extremidad superior izquierda",
+        "deterioro": "Mala conservación, tronco totalmente destruido",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "20-23 años",
+        "edad_basado_en": "Desarrollo óseo",
+        "sexo": "Femenino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo tronco-pie: 125 cm",
+        "ancho_maximo": "No determinado"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Restos de piel de ave",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Cuerpo eviscerado y descarnado relleno con fibra vegetal, piel de camélido y arcilla negra. Internamente fue reforzado con maderos a nivel de tronco y extremidades inferiores. No se observan incisiones, debido probablemente a lo agrietado de la piel. El cuerpo fue pintado de color rojo, pero no tiene una distribución homogénea.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "Lito subcircular no modificado"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:17 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 17",
+    "pagina_pdf": 71,
+    "pagina_impresa": 70,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_017_pagina_071_img_00.jpeg",
+      "./imagenes_momias/caso_017_pagina_072_img_00.jpeg",
+      "./imagenes_momias/caso_017_pagina_073_img_00.jpeg",
+      "./imagenes_momias/caso_017_pagina_074_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 17",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T23C8",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983 - 1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "17º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo, tórax y extremidades superiores",
+        "deterioro": "Mala conservación, piel agrietada y dedos erosionados",
+        "almacenamiento_actual": "Caja"
+      },
+      "perfil_biologico": {
+        "edad": "Adulto",
+        "edad_basado_en": "Fusión de las epífisis y desarrollo óseo",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Largo extremidades: 38 cm",
+        "ancho_maximo": "Ancho pelvis: 27 cm aprox."
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Restos de piel de ave",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Se conservó sólo el segmento anatómico de las piernas (tibias y peroné) las cuales fueron descarnadas, a través de incisiones en la piel realizadas en ambas rodillas, para luego introducir sedimento fino negro y piel de camélido. Se observan maderos internos por la cara posterior de las piernas. Los tobillos fueron reforzados externamente con cuerdas de fibra de camélido.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:18 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 18",
+    "pagina_pdf": 75,
+    "pagina_impresa": 74,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_018_pagina_075_img_00.jpeg",
+      "./imagenes_momias/caso_018_pagina_076_img_00.jpeg",
+      "./imagenes_momias/caso_018_pagina_077_img_00.jpeg",
+      "./imagenes_momias/caso_018_pagina_078_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 18",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T23C9",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983 - 1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Variante estilo rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "32º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo, tórax y extremidades superiores",
+        "deterioro": "Mala conservación, cuerpo partido y erosionado",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "18-22 años",
+        "edad_basado_en": "Tamaño corporal y desarrollo óseo",
+        "sexo": "Femenino probable",
+        "sexo_basado_en": "Pelvis",
+        "largo_maximo": "Largo pelvis-pies: 95 cm aprox.",
+        "ancho_maximo": "Ancho pelvis: 28 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Cuerpo eviscerado y descarnado, rellenado con sedimento fino (manganeso) y piel de camélido. No se observan incisiones debido probablemente a lo agrietado de la piel. Sobre la piel humana se observan embarrilados de fibra vegetal a modo de reforzamiento y sobre ésta una piel de ave. No se observan maderos evidentes.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "Concha de chorito y un fragmento de sal"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:20 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 19",
+    "pagina_pdf": 79,
+    "pagina_impresa": 78,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_019_pagina_079_img_00.jpeg",
+      "./imagenes_momias/caso_019_pagina_080_img_00.jpeg",
+      "./imagenes_momias/caso_019_pagina_081_img_00.jpeg",
+      "./imagenes_momias/caso_019_pagina_082_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 19",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T23C10",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Variante estilo rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "45º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Completo",
+        "deterioro": "Regular conservación, pero fracturado en cabeza, tronco y extremidades; pérdida de Bendajes",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "0-6 meses",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Largo cabeza-pies: 58 cm",
+        "ancho_maximo": "Ancho caderas más brazos: 16 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "Peluca y tocado cefálico",
+        "tratamiento": "Cuerpo eviscerado y descarnado, rellenado con ceniza y sedimento. Reforzado internamente con maderos. Presenta la particularidad que la piel fue cortada en bandas longitudinales y puesta a modo de un vendaje. A nivel de tobillos, éstos fueron reforzados externamente con hilados de fibra de camélidos. Sobre el cráneo moldearon una mascarilla facial (manganeso) con los rasgos faciales marcados con incisiones lineales para ojos y circular para la boca. La nariz y las cejas están modeladas en relieve. El cráneo fue vaciado y rellenado con arcilla. Además adosaron una peluca de 28 cm de largo elaborada con manojos de pelo humano y sobre éste pusieron un tocado cefálico de piel de ave. El cuerpo fue pintado de color rojo, a excepción de la mascarilla que es negra.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No presenta",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Allison et al. 1984; Arriaza 1995:38; Arriaza y Standen 2002:35-37; Standen 1991:20-22 (apéndice 1); Standen 1997:142"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 20",
+    "pagina_pdf": 83,
+    "pagina_impresa": 82,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_020_pagina_083_img_00.jpeg",
+      "./imagenes_momias/caso_020_pagina_084_img_00.jpeg",
+      "./imagenes_momias/caso_020_pagina_085_img_00.jpeg",
+      "./imagenes_momias/caso_020_pagina_086_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 20",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T23C11",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "33º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo, tronco superior y brazo izquierdo.",
+        "deterioro": "Mala conservación, severamente dañado y fragmentado",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "3-4 años",
+        "edad_basado_en": "Desarrollo óseo",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo pelvis–talón: 70 cm",
+        "ancho_maximo": "Ancho pelvis: 16 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Cuerpo eviscerado y parcialmente descarnado, rellenado con sedimento fino (manganeso) y piel de camélido. Fue reforzado internamente con maderos a nivel de tronco y extremidades inferiores. En rodilla derecha y ambos tobillos, se observan incisiones suturadas con fibra vegetal. El cuerpo fue pintado de color rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:22 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 21",
+    "pagina_pdf": 87,
+    "pagina_impresa": 86,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_021_pagina_087_img_00.jpeg",
+      "./imagenes_momias/caso_021_pagina_088_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 21",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T23C15A",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Doble y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Variante estilo rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "310º NO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Completo",
+        "deterioro": "Mala conservación, daño severo en cráneo, tórax y extremidades inferiores destruidas",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "0-6 meses",
+        "edad_basado_en": "Tamaño corporal y desarrollo óseo",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Largo fardo: 50 cm",
+        "ancho_maximo": "Ancho fardo: 35 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Piel de camélido",
+        "vestimenta_ornamentacion": "Cintillo cefálico de fibra de camélido",
+        "tratamiento": "Cuerpo eviscerado sólo en tronco y relleno con arcilla blanca. La cabeza y extremidades no fueron intervenidas, sólo se observa el pelo pintado de color rojo. Nota: Los cuerpos 15a y 15b fueron puestos en un cuero de camélido, uno sobre otro en forma de cruz.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:28 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 22",
+    "pagina_pdf": 89,
+    "pagina_impresa": 88,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_022_pagina_089_img_00.jpeg",
+      "./imagenes_momias/caso_022_pagina_090_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 22",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T23C15B",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Doble y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "48º NO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente extremidades inferiores",
+        "deterioro": "Mala conservación, cabeza fuera de su posición anatómica y tórax destruido",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "0-6 meses",
+        "edad_basado_en": "Tamaño corporal y desarrollo óseo",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Largo fardo: 50 cm",
+        "ancho_maximo": "Ancho fardo: 35 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Piel de camélido",
+        "vestimenta_ornamentacion": "Cintillo cefálico de pelo humano",
+        "tratamiento": "Cuerpo eviscerado sólo en tronco y relleno con arcilla blanca y piel de camélido. Reforzado con un madero en columna vertebral. La cabeza y extremidades superiores no fueron tratadas. Nota: Los cuerpos 15a y 15b fueron puestos en un cuero de camélido, uno sobre otro en forma de cruz.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:28 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 23",
+    "pagina_pdf": 91,
+    "pagina_impresa": 90,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_023_pagina_091_img_00.jpeg",
+      "./imagenes_momias/caso_023_pagina_092_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 23",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T25C1",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "54º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo, brazo derecho y tórax",
+        "deterioro": "Mala conservación, fragmentado",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "5-6 años",
+        "edad_basado_en": "Desarrollo óseo",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo talón-pelvis: 48 cm",
+        "ancho_maximo": "No determinado"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No determinado"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Cuerpo eviscerado en cavidad pélvica y relleno con manganeso, sedimento y piel de camélido. Las extremidades fueron parcialmente descarnadas y rellenas con los mismos elementos. Fue reforzado con maderos a nivel de tronco y extremidades, y en ingle derecha se observa una incisión suturada con fibra tendinosa. Finalmente la piel fue pintada de rojo y la mano derecha fue forrada con una piel de ave fijada con un embarrilado de fibra tendinosa.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "Dos fragmentos de concha de choro, con bordes desgastados"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:23 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 24",
+    "pagina_pdf": 93,
+    "pagina_impresa": 92,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_024_pagina_093_img_00.jpeg",
+      "./imagenes_momias/caso_024_pagina_094_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 24",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T25C2",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4500-4000 a.p. (2500-2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "53º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo, brazos y tórax",
+        "deterioro": "Mala conservación, cuerpo fragmentado",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "8-10 años",
+        "edad_basado_en": "Desarrollo óseo",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "No determinado",
+        "ancho_maximo": "No determinado"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal y cuero de animal",
+        "vestimenta_ornamentacion": "Faldellín vegetal",
+        "tratamiento": "Cuerpo eviscerado en cavidad pélvica con evidencias de haber sido expuesto al fuego y rellenado con arcilla blanca. Las extremidades inferiores fueron parcialmente descarnadas y rellenadas con fibra de camélido y arcilla. Fue reforzado con maderos a nivel de las extremidades. Finalmente la piel fue pintada de rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "Un ovillito de pelo torcido"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:23-24 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 25",
+    "pagina_pdf": 95,
+    "pagina_impresa": 94,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_025_pagina_095_img_00.jpeg",
+      "./imagenes_momias/caso_025_pagina_096_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 25",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T25C3",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4500-4000 a.p. (2500-2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "55º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo y extremidades superiores",
+        "deterioro": "Mala conservación, cuerpo fragmentado",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "20-22 años",
+        "edad_basado_en": "Tamaño corporal y desarrollo óseo",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "No determinado",
+        "ancho_maximo": "No determinado"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal y cuero de animal",
+        "vestimenta_ornamentacion": "Faja de cuero en pelvis",
+        "tratamiento": "Cuerpo eviscerado en cavidad pélvica y relleno con sedimento fino de color café y piel de camélido. Las extremidades inferiores fueron parcialmente descarnadas. Fue reforzado con maderos a nivel de las extremidades y columna. En abdomen se observan evidencias de una incisión. Finalmente la piel fue pintada de rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:25 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 26",
+    "pagina_pdf": 97,
+    "pagina_impresa": 96,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_026_pagina_097_img_00.jpeg",
+      "./imagenes_momias/caso_026_pagina_098_img_00.jpeg",
+      "./imagenes_momias/caso_026_pagina_098_img_01.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 26",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T25C4",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4500-4000 a.p. (2500-2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "79º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo, extremidades superiores y tronco",
+        "deterioro": "Regular conservación",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Feto o recién nacido",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "No determinado",
+        "ancho_maximo": "No determinado"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Estos restos muestran la particularidad que los maderos usados para reforzar el cuerpo, fueron puestos externamente en la cara posterior y fijados a la pierna con amarres de cordelillos de fibra de camélido. No se observa un descarnado de las piernas, la piel y los maderos fueron pintados de rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:26 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 27",
+    "pagina_pdf": 99,
+    "pagina_impresa": 98,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_027_pagina_099_img_00.jpeg",
+      "./imagenes_momias/caso_027_pagina_100_img_00.jpeg",
+      "./imagenes_momias/caso_027_pagina_101_img_00.jpeg",
+      "./imagenes_momias/caso_027_pagina_101_img_01.jpeg",
+      "./imagenes_momias/caso_027_pagina_102_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 27",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T25C5",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4500 a.p. (2500 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "75º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cara",
+        "deterioro": "Regular conservación, cuerpo fragmentado y mascarilla destruida",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "0-4 meses",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "Femenino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo cabeza–pies: 56 cm",
+        "ancho_maximo": "Ancho tronco: 18 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "Peluca",
+        "tratamiento": "Cráneo eviscerado y rellenado con fibra vegetal. El tronco fue descarnado, eviscerado y relleno con sedimento fino rojizo. Se observa una sutura horizontal en abdomen. Las extremidades muestran un relleno semejante. La piel del cuerpo fue pintada de rojo, a excepción de la mascarilla facial que es de color negro. La peluca de 10 cm de largo fue fijada con el casquete de manganeso al cráneo. Nota: la mascarilla se desprendió durante el traslado desde el sitio al museo debido a su severa fragmentación.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No se puede determinar",
+        "bienes_funerarios": "Bolsita de cuero de camélido pintada de rojo, depositado sobre tórax"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Arriaza y Standen 2002:26; Standen 1991:26 (apéndice 1); Standen 1997:142"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 28",
+    "pagina_pdf": 103,
+    "pagina_impresa": 102,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_028_pagina_103_img_00.jpeg",
+      "./imagenes_momias/caso_028_pagina_104_img_00.jpeg",
+      "./imagenes_momias/caso_028_pagina_104_img_01.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 28",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T25C6",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Pátina de barro",
+        "fechado_radiocarbonico": "4570 ± 100 a.p. (2620 a.C.)",
+        "cronologia_relativa_ap": null,
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "60º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente mandíbula",
+        "deterioro": "Regular conservación",
+        "almacenamiento_actual": "Bandeja"
+      },
+      "perfil_biologico": {
+        "edad": "5-6 años",
+        "edad_basado_en": "Tamaño corporal y desarrollo de epífisis",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo cráneo-pies: 72 cm aprox.",
+        "ancho_maximo": "Ancho pelvis (incluyendo manos): 22 cm aprox."
+      },
+      "perfil_salud": {
+        "salud_dental": "No se observan alteraciones dentales",
+        "salud_osea": "No se observan alteraciones óseas"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Eviscerado en tronco y relleno con arcilla blanca, las extremidades no fueron tratadas. El cráneo fue completamente descarnado pero no pusieron mascarilla ni peluca. Sobre la piel modelaron una gruesa capa de barro arenoso relativamente compacta. En tórax se observan vestigios de una incisión de orientación vertical. Este cuerpo corresponde al único caso que se conoce para chinchorro con este tipo de tratamiento, es decir, cuerpo eviscerado y cubierto con barro. Nota: El cuerpo fue autopsiado en 1984.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:27 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 29",
+    "pagina_pdf": 105,
+    "pagina_impresa": 104,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_029_pagina_105_img_00.jpeg",
+      "./imagenes_momias/caso_029_pagina_106_img_00.jpeg",
+      "./imagenes_momias/caso_029_pagina_106_img_01.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 29",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T27C16",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Individual y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Vendada, variante rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "20º NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente manos y pies",
+        "deterioro": "Moderada conservación, tiene la cara y mascarilla destruidas",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "Recién nacido",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "Femenino probable",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Largo cabeza-tobillo: 46 cm (aprox.)",
+        "ancho_maximo": "Ancho hombros: 12 cm (aprox.)"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "Peluca",
+        "tratamiento": "Cuerpo eviscerado y descarnado, rellenado con piel de camélido y tierra negra. No se observan maderos aparentes. Piel en forma de vendajes en tronco y extremidades superiores y pintada de rojo. Cráneo rellenado con piel de camélido. Peluca de 26 cm de largo fijada con un casquete de arcilla negra pintada de rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:29 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 30",
+    "pagina_pdf": 107,
+    "pagina_impresa": 106,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_030_pagina_107_img_00.jpeg",
+      "./imagenes_momias/caso_030_pagina_108_img_00.jpeg",
+      "./imagenes_momias/caso_030_pagina_108_img_01.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 30",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T27C17",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983 -1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Individual y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Variada estilo rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "317º NO",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente brazo izquierdo",
+        "deterioro": "Buena conservación, sólo la mascarilla facial erosionada y hombro derecho partido",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Lactante",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Largo cabeza-pies: 52 cm",
+        "ancho_maximo": "Ancho tórax:12 cm (sin brazo izquierdo)"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se observan anomalías en la radiografía",
+        "salud_osea": "No se observan anomalías en la radiografía"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Cuerpo eviscerado y rellenado con sedimento negro. Fue envuelto en piel, posiblemente de ave, sobre ésta se observan marcas de amarre, aunque no conservó la cuerda. La mascarilla elaborada con manganeso, tiene un modelado circular de boca e incisiones que señalan los ojos. Sobre los huesos del cráneo conserva restros de casquete de manganeso, aunque no se observa peluca. El cuerpo fue pintado de color rojo y la mascarilla de color negro.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1997:142"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 31",
+    "pagina_pdf": 109,
+    "pagina_impresa": 108,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_031_pagina_109_img_00.jpeg",
+      "./imagenes_momias/caso_031_pagina_110_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 31",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "Cráneo 01",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "No determinado",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente tronco y extremidades superiores e inferiores",
+        "deterioro": "Mala conservación, huesos de la cara y mascarilla destruida",
+        "almacenamiento_actual": "Caja de poliuretano"
+      },
+      "perfil_biologico": {
+        "edad": "Feto",
+        "edad_basado_en": "Dimensiones de la cabeza",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Alto cabeza: 10 cm",
+        "ancho_maximo": "Ancho cabeza: 9,4 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "Peluca",
+        "tratamiento": "El cráneo fue descarnado y rellenado con distintos sedimentos. Tiene un casquete de arcilla negra pintada de color rojo sobre los huesos de la bóveda y sobre éste modelaron una línea sagital. Conserva una peluca de 17 cm de largo. Los huesos de la cara y la mascarilla están completamente destruidos.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:32 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 32",
+    "pagina_pdf": 111,
+    "pagina_impresa": 110,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_032_pagina_111_img_00.jpeg",
+      "./imagenes_momias/caso_032_pagina_112_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 32",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "Cráneo 02",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "No determinado",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente tronco y extremidades superiores e inferiores",
+        "deterioro": "Mala conservación, mascarilla facial y base del cráneo desprendida de la cabeza",
+        "almacenamiento_actual": "Caja de poliuretano"
+      },
+      "perfil_biologico": {
+        "edad": "Feto",
+        "edad_basado_en": "Dimensiones de la cabeza",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Alto cabeza: 8 cm",
+        "ancho_maximo": "Ancho cabeza: 8 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "Peluca",
+        "tratamiento": "El cráneo fue descarnado y rellenado con cenizas y piel de camélido, tiene un casquete de arcilla negra pintada de color rojo sobre los huesos de la bóveda y sobre éste modelaron una linea sagital. conserva una peluca de 24 cm de largo. Los huesos de la cara y la mascarilla están completamente destruidos.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:32 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 33",
+    "pagina_pdf": 113,
+    "pagina_impresa": 112,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_033_pagina_113_img_00.jpeg",
+      "./imagenes_momias/caso_033_pagina_114_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 33",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "Cráneo 06",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Negro",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "5500-5000 a.p. (3500-3000 a.C.)",
+        "profundidad_inhumacion": "No determinado",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente tronco y extremidades superiores e inferiores",
+        "deterioro": "Buena conservación",
+        "almacenamiento_actual": "Caja de poliuretano"
+      },
+      "perfil_biologico": {
+        "edad": "0-1 Mes",
+        "edad_basado_en": "Dimensiones de la cabeza",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Alto cabeza: 12 cm",
+        "ancho_maximo": "Ancho cabeza: 10,3 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No presenta"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "Peluca",
+        "tratamiento": "La cabeza tiene una mascarilla de arcilla gris, sobre ésta se observa una capa que pareciera corresponder a la piel humana de la cara, pintada de negro. La nariz está modelada con los dos orificios nasales, los ojos y la boca están sólo señalados por incisiones horizontales. No se observa peluca.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 34",
+    "pagina_pdf": 115,
+    "pagina_impresa": 114,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_034_pagina_115_img_00.jpeg",
+      "./imagenes_momias/caso_034_pagina_116_img_00.jpeg",
+      "./imagenes_momias/caso_034_pagina_116_img_01.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 34",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T19",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1984",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": "4350 ± 280 a.p. (2400 a.C.)",
+        "cronologia_relativa_ap": null,
+        "profundidad_inhumacion": "No determinado",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo y cuello (conserva sólo mandíbula)",
+        "deterioro": "Regular conservación, tórax destruido",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "2-3 años",
+        "edad_basado_en": "Desarrollo dental",
+        "sexo": "Femenino probable",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo base cráneo- pies: 57 cm",
+        "ancho_maximo": "Ancho máximo a nivel de hombro: 13 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "Ausencia de caries y procesos infecciosos",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Cubierta con una estera vegetal",
+        "vestimenta_ornamentacion": "Faldellín de fibra vegetal, restos de peluca y cintillo cefálico",
+        "tratamiento": "Tronco eviscerado y relleno con cenizas y piel de camélido. Se observa una incisión en abdomen que fue suturada con hilo vegetal. Cuerpo pintado de color rojo. Nota: Este cuerpo fue cubierto con cuero de lobo marino, amarrado con cuerdas de pelo humano y sobre ésta una estera vegetal.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Allison et al. 1984; Standen 1991:33 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 35",
+    "pagina_pdf": 117,
+    "pagina_impresa": 116,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_035_pagina_117_img_00.jpeg",
+      "./imagenes_momias/caso_035_pagina_118_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 35",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T10B",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "No determinado",
+        "fechado_radiocarbonico": "5434 ± 59 a.p. (3484 a.C.)",
+        "cronologia_relativa_ap": null,
+        "profundidad_inhumacion": "1 mt aprox.",
+        "orientacion_cuerpo": "45° NE",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Completo",
+        "deterioro": "Buena conservación, cráneo fracturado post mortem",
+        "almacenamiento_actual": "Camilla"
+      },
+      "perfil_biologico": {
+        "edad": "30-35 años",
+        "edad_basado_en": "Desarrollo óseo y tamaño corporal",
+        "sexo": "Femenino",
+        "sexo_basado_en": "Morfología de pelvis y cráneo",
+        "largo_maximo": "No determinado",
+        "ancho_maximo": "No determinado"
+      },
+      "perfil_salud": {
+        "salud_dental": "Ausencia de procesos infecciosos",
+        "salud_osea": "Osteofitos incipientes en columna lumbar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Huesos de cetáceo, estera, piel lobo marino y camélido",
+        "vestimenta_ornamentacion": "Faldellín vegetal y cintillo cefálico de fibra de camélido",
+        "tratamiento": "El cuerpo fue eviscerado en tórax y pelvis; y rellenado con fibra vegetal, arcilla ocre y material carbonoso. Hay evidencias que fue expuesto a fuego o brazas. Las extremidades y el cráneo no fueron tratados. Reforzaron la columna con un madero. En tórax se observan vestigios de una incisión de orientación vertical. El cuerpo fue cubierto con piel de lobo marino y camélido; y sobre éstos una estera vegetal. Finalmente fue sellado con dos lajas líticas, huesos de cetáceo y lobo marino, de los cuales una escápula tiene impactada una punta lítica.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Moluscos, restos óseos de aves y peces; y artefactos líticos"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:30 (apéndice 1); 1997:143"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 36",
+    "pagina_pdf": 119,
+    "pagina_impresa": 118,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_036_pagina_119_img_00.jpeg",
+      "./imagenes_momias/caso_036_pagina_120_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 36",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T14B",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Sin información",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "No determinado",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo, partes del tronco y extremidades superiores",
+        "deterioro": "Mala conservación, restos erosionados y fragmentados",
+        "almacenamiento_actual": "Bandeja"
+      },
+      "perfil_biologico": {
+        "edad": "20-22 años",
+        "edad_basado_en": "Tamaño corporal y desarrollo óseo",
+        "sexo": "Femenino",
+        "sexo_basado_en": "Morfología de pelvis",
+        "largo_maximo": "No determinado",
+        "ancho_maximo": "No determinado"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "Periostitis moderada en tibias y peronés"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Tronco eviscerado y relleno con manganeso y piel de camélido. Hay evidencias que el cuerpo fue expuesto al fuego o brazas. En las extremidades extrajeron la musculatura y rellenaron con los mismos elementos más piel de ave marina. Reforzaron internamente con un madero en columna vertebral y extremidades. Se observan incisiones en ambas rodillas. Finalmente el cuerpo fue pintado de rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:34 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 37",
+    "pagina_pdf": 121,
+    "pagina_impresa": 120,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_037_pagina_121_img_00.jpeg",
+      "./imagenes_momias/caso_037_pagina_122_img_00.jpeg",
+      "./imagenes_momias/caso_037_pagina_122_img_01.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 37",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "03",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Negro",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "5500-5000 a.p. (3500-3000 a.C.)",
+        "profundidad_inhumacion": "No determinado",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausentes manos, pies y tibia derecha",
+        "deterioro": "Buena conservación",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "Recién nacido",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Largo cabeza–tobillos: 46 cm",
+        "ancho_maximo": "Ancho tórax incluyendo brazos: 10 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Cuerpo cubierto con una piel de animal",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Cuerpo descarnado y modelado en arcilla gris con la estructura ósea reforzada con maderos y estera. La mascarilla está modelada en forma ovoidal, sobre ésta se observa una delgada piel pintada de negro. La nariz está señalada con dos orificios, los ojos por incisiones horizontales y la boca de forma circular. El cuerpo está cubierto con una piel de animal, se observan restos de estera vegetal y cuerda de fibra de camélido hilada y torcida a nivel de la cabeza.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Arriaza y Standen 2002:15; Standen 1991:32 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 38",
+    "pagina_pdf": 123,
+    "pagina_impresa": 122,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_038_pagina_123_img_00.jpeg",
+      "./imagenes_momias/caso_038_pagina_124_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 38",
+        "cementerio": "Morro 1",
+        "numero_cuerpo": "T30",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1",
+        "anio_excavacion": "1983",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Sin información",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "No determinado",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo, manos y pies",
+        "deterioro": "Regular conservación, piel agrietada en tórax y cuerpo partido",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "0-6 meses",
+        "edad_basado_en": "Tamaño corporal y desarrollo óseo",
+        "sexo": "Masculino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo cuello-talón: 43 cm",
+        "ancho_maximo": "Ancho hombros: 16,5 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "No presenta",
+        "vestimenta_ornamentacion": "No presenta",
+        "tratamiento": "Eviscerado en tronco y relleno con arcilla ocre, manganeso y piel de camélido. Las extremidades descarnadas y rellenas con manganeso. No se observan maderos evidentes. La piel está muy agrietada, lo que no permite identificar incisiones. El cuerpo fue íntegramente pintado de color rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "No presenta"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Standen 1991:33 (apéndice 1)"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 39",
+    "pagina_pdf": 125,
+    "pagina_impresa": 124,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_039_pagina_125_img_00.jpeg",
+      "./imagenes_momias/caso_039_pagina_126_img_00.jpeg",
+      "./imagenes_momias/caso_039_pagina_127_img_00.jpeg",
+      "./imagenes_momias/caso_039_pagina_128_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 39",
+        "cementerio": "Morro 1-5",
+        "numero_cuerpo": "IV",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1-5",
+        "anio_excavacion": "1985",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Variante estilo rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "No determinado",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente cráneo y extremidad superior derecha",
+        "deterioro": "Regular conservación, fragmentado a nivel de las extremidades",
+        "almacenamiento_actual": "Caja de poliuretano"
+      },
+      "perfil_biologico": {
+        "edad": "6-12 meses",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "No determinado",
+        "sexo_basado_en": "No determinado",
+        "largo_maximo": "Largo cuello-pies: 52,3 cm",
+        "ancho_maximo": "Ancho pelvis: 18,5 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal",
+        "vestimenta_ornamentacion": "Faldellín de fibra de camélido. Restos de peluca",
+        "tratamiento": "Tronco eviscerado y rellenado con arcilla y piel de camélido, con maderos introducidos en tórax. Las extremidades están embarriladas externamente con cuerdas de fibra de camélido. Los restos de peluca se encontraron con manojos embarrilados. El cuerpo fue íntegramente pintado de color rojo.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "Cráneo ausente",
+        "bienes_funerarios": "Bolsa fibra vegetal, chope de madera y bolsa de piel"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Guillén 1992:105-106"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 40",
+    "pagina_pdf": 129,
+    "pagina_impresa": 128,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_040_pagina_129_img_00.jpeg",
+      "./imagenes_momias/caso_040_pagina_130_img_00.jpeg",
+      "./imagenes_momias/caso_040_pagina_131_img_00.jpeg",
+      "./imagenes_momias/caso_040_pagina_132_img_00.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 40",
+        "cementerio": "Morro 1-5",
+        "numero_cuerpo": "V",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1-5",
+        "anio_excavacion": "1985",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "G. Focacci",
+        "tipo_inhumacion": "Colectiva y secundaria",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000 a.p. (2000 a.C.)",
+        "profundidad_inhumacion": "No determinado",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Completo",
+        "deterioro": "Buena conservación, extremidades inferiores y superior izquierda fragmentadas",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "6-12 meses",
+        "edad_basado_en": "Tamaño corporal",
+        "sexo": "Femenino",
+        "sexo_basado_en": "Genitales",
+        "largo_maximo": "Largo cabeza-pies: 65 cm",
+        "ancho_maximo": "Ancho hombros: 13,5 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "No se puede determinar",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Estera vegetal y piel de animal",
+        "vestimenta_ornamentacion": "Restos de faldellín de fibra de camélido. Cintillo",
+        "tratamiento": "El cuerpo fue pintado de color rojo, no hay claridad si fue eviscerado, sobre la cara una emplaste de barro cubierto con piel de animal, abultado cintillo cefálico elavorado con hilados de fibra de camélido con pigmentos ocre, bajo éste una peluca de pelo corto.",
+        "presenta_deformacion": "No",
+        "tipo_deformacion": "No deformado",
+        "bienes_funerarios": "Brocha y bolsita chinguillo de fibra vegetal"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "Guillén 1992:106-107"
+      }
+    }
+  },
+  {
+    "id_documento": "Caso 41",
+    "pagina_pdf": 133,
+    "pagina_impresa": 132,
+    "imagen_ruta_local": "./imagenes",
+    "imagenes_rutas_locales": [
+      "./imagenes_momias/caso_041_pagina_133_img_00.jpeg",
+      "./imagenes_momias/caso_041_pagina_134_img_00.jpeg",
+      "./imagenes_momias/caso_041_pagina_135_img_00.jpeg",
+      "./imagenes_momias/caso_041_pagina_136_img_00.jpeg",
+      "./imagenes_momias/caso_041_pagina_136_img_01.jpeg"
+    ],
+    "datos_completos": {
+      "referencia_arqueologica": {
+        "caso_numero": "Caso 41",
+        "cementerio": "Morro 1B",
+        "numero_cuerpo": "C1",
+        "museo_que_alberga_el_cuerpo": "MASMA",
+        "procedencia": "Morro de Arica",
+        "sitio": "Morro 1B",
+        "anio_excavacion": "1985",
+        "tipo_excavacion": "Rescate",
+        "excavado_por": "V. Standen y C. Santoro",
+        "tipo_inhumacion": "Secundaria e individual",
+        "tipo_momificacion": "Artificial",
+        "estilo_momificacion": "Rojo",
+        "fechado_radiocarbonico": null,
+        "cronologia_relativa_ap": "4000-3800 a.p. (2000-1800 a.C.)",
+        "profundidad_inhumacion": "No determinado",
+        "orientacion_cuerpo": "No determinado",
+        "posicion_cuerpo": "Extendido decúbito dorsal"
+      },
+      "referencia_conservacion": {
+        "integridad": "Incompleto: ausente parte de las piernas y pies",
+        "deterioro": "Regular conservación, superficie externa deteriorada y huesos de las piernas erosionados",
+        "almacenamiento_actual": "Cama de arena"
+      },
+      "perfil_biologico": {
+        "edad": "25-30 años",
+        "edad_basado_en": "Desarrollo óseo y dentadura",
+        "sexo": "Femenino",
+        "sexo_basado_en": "Morfología ósea de cráneo y pelvis",
+        "largo_maximo": "Largo cráneo-segmento distal de tibia: 142 cm",
+        "ancho_maximo": "Ancho hombros: 38 cm"
+      },
+      "perfil_salud": {
+        "salud_dental": "Excelente",
+        "salud_osea": "No se puede determinar"
+      },
+      "perfil_social": {
+        "tipo_fardo_envoltorio": "Piel de animal con finas costuras",
+        "vestimenta_ornamentacion": "Faldellín vegetal y restos de un cintillo cefálico",
+        "tratamiento": "El cuerpo fue eviscerado y rearmado con haces de fibra vegetal, maderos longitudinales en las extremidades y piel de camélido. Conserva restos de casquete de arcilla negra pintada de rojo en el lado izquierdo del cráneo, hay además evidencias de peluca, fue cubierto con piel de animal, con evidencias de finas costuras en hombro izquierdo y muslo izquierdo.",
+        "presenta_deformacion": "Si",
+        "tipo_deformacion": "Circular erecta",
+        "bienes_funerarios": "Moluscos y fragmentos de madero (no trabajados)"
+      },
+      "referencia_bibliografica": {
+        "publicaciones": "No hay"
+      }
+    }
+  }
+]

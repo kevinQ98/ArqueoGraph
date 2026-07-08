@@ -1,0 +1,1999 @@
+{
+  "morro_1": {
+    "area": "ARICA",
+    "sitio": "morro1",
+    "casos": [
+      {
+        "id": "Morro1_001",
+        "referencia": "morro1 T1C1",
+        "tumba": "T1C1",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_002",
+        "referencia": "morro1 T1C2",
+        "tumba": "T1C2",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE / 0-6M",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_003",
+        "referencia": "morro1 T1C3",
+        "tumba": "T1C3",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_004",
+        "referencia": "morro1 T1C4",
+        "tumba": "T1C4",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_005",
+        "referencia": "morro1 T1C5",
+        "tumba": "T1C5",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE /6-12M",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_006",
+        "referencia": "morro1 T1C6",
+        "tumba": "T1C6",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_007",
+        "referencia": "morro1 T1C7",
+        "tumba": "T1C7",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "infante / 2-4",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_008",
+        "referencia": "morro1 T2C1",
+        "tumba": "T2C1",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE / 0-6M",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_009",
+        "referencia": "morro1 T2C2",
+        "tumba": "T2C2",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "02-mar",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_010",
+        "referencia": "morro1 T2C4",
+        "tumba": "T2C4",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_011",
+        "referencia": "morro1 T2C5",
+        "tumba": "T2C5",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "17 - 19",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS OSEOS Y CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_012",
+        "referencia": "morro1 T3",
+        "tumba": "T3",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_013",
+        "referencia": "morro1 T4",
+        "tumba": "T4",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25-30",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_014",
+        "referencia": "morro1 T5",
+        "tumba": "T5",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_015",
+        "referencia": "morro1 T5A",
+        "tumba": "T5A",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35-40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_016",
+        "referencia": "morro1 T5B",
+        "tumba": "T5B",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "06-jul",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS ÓSEOS Y CRÁNEO"
+        }
+      },
+      {
+        "id": "Morro1_017",
+        "referencia": "morro1 T6",
+        "tumba": "T6",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_018",
+        "referencia": "morro1 T7C1",
+        "tumba": "T7C1",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_019",
+        "referencia": "morro1 T7C2",
+        "tumba": "T7C2",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_020",
+        "referencia": "morro1 T7C3",
+        "tumba": "T7C3",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "infante / 1-2",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_021",
+        "referencia": "morro1 T7C4",
+        "tumba": "T7C4",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_022",
+        "referencia": "morro1 T7C5",
+        "tumba": "T7C5",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "infante  / 6-7",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_023",
+        "referencia": "morro1 T7C6",
+        "tumba": "T7C6",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "infante / 6-12m",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_024",
+        "referencia": "morro1 T7",
+        "tumba": "T7",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "indeterminado",
+          "grupo_edad": "indeterminado",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_025",
+        "referencia": "morro1 T8",
+        "tumba": "T8",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": ">45",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_026",
+        "referencia": "morro1 T9",
+        "tumba": "T9",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35-40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_027",
+        "referencia": "morro1 T10A",
+        "tumba": "T10A",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_028",
+        "referencia": "morro1 T10B",
+        "tumba": "T10B",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_029",
+        "referencia": "morro1 T11 (22C4)",
+        "tumba": "T11 (22C4)",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_030",
+        "referencia": "morro1 T11A",
+        "tumba": "T11A",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_031",
+        "referencia": "morro1 T12",
+        "tumba": "T12",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18-20",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_032",
+        "referencia": "morro1 T13A",
+        "tumba": "T13A",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "4 - 8m",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_033",
+        "referencia": "morro1 T13B",
+        "tumba": "T13B",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "4 - 8m",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_034",
+        "referencia": "morro1 T14B (ex 14)",
+        "tumba": "T14B (ex 14)",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_035",
+        "referencia": "morro1 T14C2",
+        "tumba": "T14C2",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "infante",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS MOMIA ROJA"
+        }
+      },
+      {
+        "id": "Morro1_036",
+        "referencia": "morro1 T15",
+        "tumba": "T15",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_037",
+        "referencia": "morro1 T16A",
+        "tumba": "T16A",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_038",
+        "referencia": "morro1 T16B",
+        "tumba": "T16B",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_039",
+        "referencia": "morro1 T17C1",
+        "tumba": "T17C1",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "16 - 18",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_040",
+        "referencia": "morro1 T17C2",
+        "tumba": "T17C2",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_041",
+        "referencia": "morro1 T17C3",
+        "tumba": "T17C3",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "03-abr",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_042",
+        "referencia": "morro1 T17C4",
+        "tumba": "T17C4",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "08-oct",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_043",
+        "referencia": "morro1 T17C5",
+        "tumba": "T17C5",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE / 2-3",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_044",
+        "referencia": "morro1 T17C6",
+        "tumba": "T17C6",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "10-dic",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_045",
+        "referencia": "morro1 T18C1",
+        "tumba": "T18C1",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "FETO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_046",
+        "referencia": "morro1 T18C2",
+        "tumba": "T18C2",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_047",
+        "referencia": "morro1 T18C3",
+        "tumba": "T18C3",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_048",
+        "referencia": "morro1 T19",
+        "tumba": "T19",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE / 1-2",
+          "grupo_edad": "sub adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_049",
+        "referencia": "morro1 T19C1",
+        "tumba": "T19C1",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_050",
+        "referencia": "morro1 T20C1",
+        "tumba": "T20C1",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_051",
+        "referencia": "morro1 T21B",
+        "tumba": "T21B",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "16 - 18",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_052",
+        "referencia": "morro1 T21C1",
+        "tumba": "T21C1",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "10-dic",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_053",
+        "referencia": "morro1 T22C1",
+        "tumba": "T22C1",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "infante / 6-12m",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_054",
+        "referencia": "morro1 T22C2",
+        "tumba": "T22C2",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE / 6-12m",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_055",
+        "referencia": "morro1 T22C3",
+        "tumba": "T22C3",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_056",
+        "referencia": "morro1 T22C4",
+        "tumba": "T22C4",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_057",
+        "referencia": "morro1 T22C5",
+        "tumba": "T22C5",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_058",
+        "referencia": "morro1 T22C5A",
+        "tumba": "T22C5A",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_059",
+        "referencia": "morro1 T22C6",
+        "tumba": "T22C6",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "17 - 18",
+          "grupo_edad": "sub adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_060",
+        "referencia": "morro1 T23C1",
+        "tumba": "T23C1",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_061",
+        "referencia": "morro1 T23C2",
+        "tumba": "T23C2",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "FETO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO, AUSENTE DORSO CON FRAG. FALDELLÍN"
+        }
+      },
+      {
+        "id": "Morro1_062",
+        "referencia": "morro1 T23C3",
+        "tumba": "T23C3",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_063",
+        "referencia": "morro1 T23C4",
+        "tumba": "T23C4",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_064",
+        "referencia": "morro1 T23C5",
+        "tumba": "T23C5",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_065",
+        "referencia": "morro1 T23C6B",
+        "tumba": "T23C6B",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "FETO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_066",
+        "referencia": "morro1 T23C7",
+        "tumba": "T23C7",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_067",
+        "referencia": "morro1 T23C8",
+        "tumba": "T23C8",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_068",
+        "referencia": "morro1 T23C9",
+        "tumba": "T23C9",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_069",
+        "referencia": "morro1 T23C10",
+        "tumba": "T23C10",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "infante / 0-6M",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_070",
+        "referencia": "morro1 T23C11",
+        "tumba": "T23C11",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "infante / 2-4",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_071",
+        "referencia": "morro1 T23C12",
+        "tumba": "T23C12",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_072",
+        "referencia": "morro1 T23C13",
+        "tumba": "T23C13",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_073",
+        "referencia": "morro1 T23C14",
+        "tumba": "T23C14",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_074",
+        "referencia": "morro1 T23C15A",
+        "tumba": "T23C15A",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE / 0-6M",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_075",
+        "referencia": "morro1 T23C15B",
+        "tumba": "T23C15B",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE / 0-6M",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_076",
+        "referencia": "morro1 T24",
+        "tumba": "T24",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "infante indeterminado / 2-3",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_077",
+        "referencia": "morro1 T25C1",
+        "tumba": "T25C1",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "infante indeterminado / 5-6",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_078",
+        "referencia": "morro1 T25C2",
+        "tumba": "T25C2",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "infante / 8-10",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_079",
+        "referencia": "morro1 T25C3",
+        "tumba": "T25C3",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_080",
+        "referencia": "morro1 T25C4",
+        "tumba": "T25C4",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "FETO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_081",
+        "referencia": "morro1 T25C5",
+        "tumba": "T25C5",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "LACTANTE / 0-6M",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_082",
+        "referencia": "morro1 T25C6",
+        "tumba": "T25C6",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "infante indeterminado /5-6",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_083",
+        "referencia": "morro1 T26",
+        "tumba": "T26",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_084",
+        "referencia": "morro1 T27C1",
+        "tumba": "T27C1",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_085",
+        "referencia": "morro1 T27C2",
+        "tumba": "T27C2",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE / 1-2",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_086",
+        "referencia": "morro1 T27C3",
+        "tumba": "T27C3",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE / 1-2",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_087",
+        "referencia": "morro1 T27C4",
+        "tumba": "T27C4",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_088",
+        "referencia": "morro1 T27C5",
+        "tumba": "T27C5",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_089",
+        "referencia": "morro1 T27C6",
+        "tumba": "T27C6",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "dic-14",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_090",
+        "referencia": "morro1 T27C7",
+        "tumba": "T27C7",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE / 1-2",
+          "grupo_edad": "sub adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_091",
+        "referencia": "morro1 T27C8",
+        "tumba": "T27C8",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_092",
+        "referencia": "morro1 T27C9",
+        "tumba": "T27C9",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35-40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_093",
+        "referencia": "morro1 T27C10",
+        "tumba": "T27C10",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_094",
+        "referencia": "morro1 T27C11",
+        "tumba": "T27C11",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_095",
+        "referencia": "morro1 T27C12",
+        "tumba": "T27C12",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40-45",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_096",
+        "referencia": "morro1 T27C13",
+        "tumba": "T27C13",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40- 45",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_097",
+        "referencia": "morro1 T27C14",
+        "tumba": "T27C14",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25-35",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_098",
+        "referencia": "morro1 T27C15",
+        "tumba": "T27C15",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_099",
+        "referencia": "morro1 T27C16",
+        "tumba": "T27C16",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_100",
+        "referencia": "morro1 T27C17",
+        "tumba": "T27C17",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_101",
+        "referencia": "morro1 T27C18",
+        "tumba": "T27C18",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_102",
+        "referencia": "morro1 T27C19",
+        "tumba": "T27C19",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "infante  / 4-6",
+          "grupo_edad": "sub adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_103",
+        "referencia": "morro1 T27C20",
+        "tumba": "T27C20",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_104",
+        "referencia": "morro1 T28C1",
+        "tumba": "T28C1",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_105",
+        "referencia": "morro1 T28C2",
+        "tumba": "T28C2",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_106",
+        "referencia": "morro1 T28C3",
+        "tumba": "T28C3",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45 CK",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_107",
+        "referencia": "morro1 T28C4",
+        "tumba": "T28C4",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "25 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_108",
+        "referencia": "morro1 T28C5",
+        "tumba": "T28C5",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_109",
+        "referencia": "morro1 T28C6",
+        "tumba": "T28C6",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25-30",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_110",
+        "referencia": "morro1 T28C7",
+        "tumba": "T28C7",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_111",
+        "referencia": "morro1 T28C7A",
+        "tumba": "T28C7A",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "FETO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_112",
+        "referencia": "morro1 T28C8",
+        "tumba": "T28C8",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35-40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_113",
+        "referencia": "morro1 T28C9",
+        "tumba": "T28C9",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_114",
+        "referencia": "morro1 T28C10",
+        "tumba": "T28C10",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_115",
+        "referencia": "morro1 T28C10A",
+        "tumba": "T28C10A",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_116",
+        "referencia": "morro1 T28C11",
+        "tumba": "T28C11",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_117",
+        "referencia": "morro1 T28C11A",
+        "tumba": "T28C11A",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_118",
+        "referencia": "morro1 T28C12",
+        "tumba": "T28C12",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "infante indeterminado / 3-4",
+          "grupo_edad": "sub adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_119",
+        "referencia": "morro1 T28C13",
+        "tumba": "T28C13",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_120",
+        "referencia": "morro1 T28C14",
+        "tumba": "T28C14",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_121",
+        "referencia": "morro1 T28C15",
+        "tumba": "T28C15",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_122",
+        "referencia": "morro1 T28C16",
+        "tumba": "T28C16",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_123",
+        "referencia": "morro1 T28C17",
+        "tumba": "T28C17",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_124",
+        "referencia": "morro1 T28C18",
+        "tumba": "T28C18",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_125",
+        "referencia": "morro1 T28C19",
+        "tumba": "T28C19",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35-40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_126",
+        "referencia": "morro1 T28C20",
+        "tumba": "T28C20",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_127",
+        "referencia": "morro1 T28C21",
+        "tumba": "T28C21",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_128",
+        "referencia": "morro1 T28C22",
+        "tumba": "T28C22",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_129",
+        "referencia": "morro1 T28C23",
+        "tumba": "T28C23",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_130",
+        "referencia": "morro1 T28C24",
+        "tumba": "T28C24",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_131",
+        "referencia": "morro1 T28C25",
+        "tumba": "T28C25",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_132",
+        "referencia": "morro1 T28C26",
+        "tumba": "T28C26",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "FETO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_133",
+        "referencia": "morro1 T28C27",
+        "tumba": "T28C27",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "FETO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_134",
+        "referencia": "morro1 T28C28",
+        "tumba": "T28C28",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_135",
+        "referencia": "morro1 T28C29",
+        "tumba": "T28C29",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_136",
+        "referencia": "morro1 T28C30",
+        "tumba": "T28C30",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_137",
+        "referencia": "morro1 T28P0",
+        "tumba": "T28P0",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_138",
+        "referencia": "morro1 T29",
+        "tumba": "T29",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_139",
+        "referencia": "morro1 T30",
+        "tumba": "T30",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "POST-CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_140",
+        "referencia": "morro1 T30C1",
+        "tumba": "T30C1",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO / 6-12 m",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_141",
+        "referencia": "morro1 CH4",
+        "tumba": "CH4",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "indeterminado",
+          "grupo_edad": "indeterminado",
+          "conservacion": "null"
+        }
+      },
+      {
+        "id": "Morro1_142",
+        "referencia": "morro1 CH10",
+        "tumba": "CH10",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_143",
+        "referencia": "morro1 CH12",
+        "tumba": "CH12",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_144",
+        "referencia": "morro1 CH13",
+        "tumba": "CH13",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_145",
+        "referencia": "morro1 CH14",
+        "tumba": "CH14",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_146",
+        "referencia": "morro1 CH15",
+        "tumba": "CH15",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_147",
+        "referencia": "morro1 CH17",
+        "tumba": "CH17",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_148",
+        "referencia": "morro1 CH18",
+        "tumba": "CH18",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_149",
+        "referencia": "morro1 CH20",
+        "tumba": "CH20",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "indeterminado",
+          "grupo_edad": "indeterminado",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_150",
+        "referencia": "morro1 CH22",
+        "tumba": "CH22",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_151",
+        "referencia": "morro1 0,1 (CR01)",
+        "tumba": "0,1 (CR01)",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "FETO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_152",
+        "referencia": "morro1 CR02",
+        "tumba": "CR02",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "FETO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS MOMIFICADOS"
+        }
+      },
+      {
+        "id": "Morro1_153",
+        "referencia": "morro1 0,3 (C03)",
+        "tumba": "0,3 (C03)",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "FETO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_154",
+        "referencia": "morro1 02.",
+        "tumba": "02.",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "infante",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_155",
+        "referencia": "morro1 05.",
+        "tumba": "05.",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_156",
+        "referencia": "morro1 CR06",
+        "tumba": "CR06",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "0-1m",
+          "grupo_edad": "sub adulto",
+          "conservacion": "SOLO CRÁNEO"
+        }
+      },
+      {
+        "id": "Morro1_157",
+        "referencia": "morro1 06.",
+        "tumba": "06.",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "16-18",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_158",
+        "referencia": "morro1 07A",
+        "tumba": "07A",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_159",
+        "referencia": "morro1 07B",
+        "tumba": "07B",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "16 - 18",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_160",
+        "referencia": "morro1 07C",
+        "tumba": "07C",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_161",
+        "referencia": "morro1 08.",
+        "tumba": "08.",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_162",
+        "referencia": "morro1 S/R 0,9",
+        "tumba": "S/R 0,9",
+        "individuo": {
+          "sexo": "PENDindeterminadoENTE",
+          "edad": "infante",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_163",
+        "referencia": "morro1 012.",
+        "tumba": "012.",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_164",
+        "referencia": "morro1 023.",
+        "tumba": "023.",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_165",
+        "referencia": "morro1 0.31A",
+        "tumba": "0.31A",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_166",
+        "referencia": "morro1 0.31B",
+        "tumba": "0.31B",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_167",
+        "referencia": "morro1 032A",
+        "tumba": "032A",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_168",
+        "referencia": "morro1 032B",
+        "tumba": "032B",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "ADULTO",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        }
+      },
+      {
+        "id": "Morro1_169",
+        "referencia": "morro1 033.",
+        "tumba": "033.",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_170",
+        "referencia": "morro1 035.",
+        "tumba": "035.",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_171",
+        "referencia": "morro1 037.",
+        "tumba": "037.",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS MOMIFICADOS"
+        }
+      },
+      {
+        "id": "Morro1_172",
+        "referencia": "morro1 038.",
+        "tumba": "038.",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "indeterminado",
+          "grupo_edad": "sub adulto",
+          "conservacion": "RESTOS MOMIFICADOS"
+        }
+      },
+      {
+        "id": "Morro1_173",
+        "referencia": "morro1 R1",
+        "tumba": "R1",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        }
+      },
+      {
+        "id": "Morro1_174",
+        "referencia": "morro1 R2",
+        "tumba": "R2",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_175",
+        "referencia": "morro1 R3",
+        "tumba": "R3",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "SOLO CRANEO"
+        }
+      },
+      {
+        "id": "Morro1_176",
+        "referencia": "morro1 S/R",
+        "tumba": "S/R",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "indeterminado",
+          "grupo_edad": "indeterminado",
+          "conservacion": "null"
+        }
+      },
+      {
+        "id": "Morro1_177",
+        "referencia": "morro1 S/R, asociado a T28C3 - T28C11, ZP-9",
+        "tumba": "S/R, asociado a T28C3 - T28C11, ZP-9",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "indeterminado",
+          "grupo_edad": "indeterminado",
+          "conservacion": "RESTOS OSEOS DISTURBADOS"
+        }
+      },
+      {
+        "id": "Morro1_178",
+        "referencia": "morro1",
+        "tumba": "null",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "indeterminado",
+          "grupo_edad": "indeterminado",
+          "conservacion": "RESTOS OSEOS, TRAIDO POR POLICIA"
+        }
+      },
+      {
+        "id": "Morro1_179",
+        "referencia": "morro1",
+        "tumba": "null",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "indeterminado",
+          "grupo_edad": "indeterminado",
+          "conservacion": "RESTOS OSEOS DISTURBADOS"
+        }
+      },
+      {
+        "id": "Morro1_180",
+        "referencia": "morro1",
+        "tumba": "null",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "indeterminado",
+          "grupo_edad": "indeterminado",
+          "conservacion": "null"
+        }
+      },
+      {
+        "id": "Morro1_181",
+        "referencia": "morro1",
+        "tumba": "null",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "indeterminado",
+          "grupo_edad": "indeterminado",
+          "conservacion": "RELLENO Y SUPERFICIE"
+        }
+      }
+    ]
+  }
+}
