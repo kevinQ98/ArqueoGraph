@@ -60,6 +60,7 @@ origin  https://github.com/kevinQ98/ArqueoGraph.git (push)
 ---
 ```text
 La instalacion y ejecucion del proyecto es como se ha hecho anteriormente
+README_FASE7_TUTORIAL.md
 ```
 ---
 
