@@ -14,9 +14,9 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
-from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data
+from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
-from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias
+from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 UPLOADS_DIR = BASE_DIR / "data" / "uploads"
@@ -607,6 +607,27 @@ def import_morro1_master():
     }
 
 
+@app.post("/admin/import/azapa")
+def import_azapa_master():
+    reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
+    dataciones_path = BASE_DIR / "data" / "azapa140_dataciones_radiocarbono_Cassman_1997.json"
+    analisis_as_cabello_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json"
+    analisis_as_b_li_costilla_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json"
+    result = import_azapa_master_data(
+        reference_path,
+        dataciones_path=dataciones_path,
+        analisis_as_cabello_path=analisis_as_cabello_path,
+        analisis_as_b_li_costilla_path=analisis_as_b_li_costilla_path,
+    )
+    return {
+        **result,
+        "reference_file": str(reference_path),
+        "dataciones_file": str(dataciones_path),
+        "analisis_as_cabello_file": str(analisis_as_cabello_path),
+        "analisis_as_b_li_costilla_file": str(analisis_as_b_li_costilla_path),
+    }
+
+
 @app.get("/individuos")
 def list_individuos(
     sexo: Optional[str] = None,
@@ -700,6 +721,7 @@ def list_mediciones(
     edad: Optional[str] = None,
     q: Optional[str] = None,
     patologia: Optional[str] = None,
+    fuente: Optional[str] = None,
 ):
     sql = '''
         SELECT
@@ -721,6 +743,9 @@ def list_mediciones(
     if elemento:
         sql += " AND m.elemento = ?"
         params.append(elemento)
+    if fuente:
+        sql += " AND COALESCE(m.fuente, i.fuente, 'morro1') = ?"
+        params.append(str(fuente).strip().lower())
     if sexo:
         sql += " AND i.sexo = ?"
         params.append(sexo)
@@ -855,24 +880,24 @@ def resumen_quimica():
 
 
 @app.get("/graph/elemento/{elemento}")
-def graph_by_elemento(elemento: str, edad: Optional[str] = None, caso: Optional[str] = None, sexo: Optional[str] = None, patologia: Optional[str] = None):
+def graph_by_elemento(elemento: str, edad: Optional[str] = None, caso: Optional[str] = None, sexo: Optional[str] = None, patologia: Optional[str] = None, fuente: Optional[str] = None):
         with get_connection() as conn:
             extra_images = []
             if caso:
                 extra_images = _catalogo_momias_images_for_case(caso)
-            return build_relational_graph(conn, elemento=elemento, edad=edad, caso=caso, extra_imagenes=extra_images, sexo=sexo, patologia=patologia)
+            return build_relational_graph(conn, elemento=elemento, edad=edad, caso=caso, extra_imagenes=extra_images, sexo=sexo, patologia=patologia, fuente=fuente)
 
 
 @app.get("/graph/patologia/{patologia}")
-def graph_by_patologia(patologia: str, edad: Optional[str] = None, sexo: Optional[str] = None):
+def graph_by_patologia(patologia: str, edad: Optional[str] = None, sexo: Optional[str] = None, fuente: Optional[str] = None):
         with get_connection() as conn:
-            return build_relational_graph_by_patologia(conn, patologia=patologia, edad=edad, sexo=sexo)
+            return build_relational_graph_by_patologia(conn, patologia=patologia, edad=edad, sexo=sexo, fuente=fuente)
 
 
 @app.get("/graph/patologias")
-def graph_all_patologias(edad: Optional[str] = None, sexo: Optional[str] = None):
+def graph_all_patologias(edad: Optional[str] = None, sexo: Optional[str] = None, fuente: Optional[str] = None):
         with get_connection() as conn:
-            return build_relational_graph_all_patologias(conn, edad=edad, sexo=sexo)
+            return build_relational_graph_all_patologias(conn, edad=edad, sexo=sexo, fuente=fuente)
 
 
 @app.get("/graph/relational")
@@ -882,12 +907,19 @@ def graph_relational(
     caso: Optional[str] = None,
     sexo: Optional[str] = None,
     patologia: Optional[str] = None,
+    fuente: Optional[str] = None,
 ):
     with get_connection() as conn:
         extra_images = []
         if caso:
             extra_images = _catalogo_momias_images_for_case(caso)
-        return build_relational_graph(conn, elemento=elemento, edad=edad, caso=caso, extra_imagenes=extra_images, sexo=sexo, patologia=patologia)
+        return build_relational_graph(conn, elemento=elemento, edad=edad, caso=caso, extra_imagenes=extra_images, sexo=sexo, patologia=patologia, fuente=fuente)
+
+
+@app.get("/graph/azapa/reference")
+def graph_azapa_reference():
+    reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
+    return build_azapa_reference_graph(reference_path=reference_path)
 
 
 # ============================================================
@@ -934,6 +966,7 @@ def graph_similarity(
     edad: Optional[str] = None,
     caso: Optional[str] = None,
     patologia: Optional[str] = None,
+    fuente: Optional[str] = None,
 ):
     selected_elements = _split_elements(elements)
 
@@ -964,6 +997,9 @@ def graph_similarity(
     if edad:
         sql += " AND i.edad = ?"
         params.append(edad)
+    if fuente:
+        sql += " AND COALESCE(m.fuente, i.fuente, 'morro1') = ?"
+        params.append(str(fuente).strip().lower())
     if caso:
         sql += " AND i.id_documento = ?"
         params.append(caso)

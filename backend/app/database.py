@@ -84,7 +84,49 @@ def init_db() -> None:
 
         CREATE INDEX IF NOT EXISTS idx_imagenes_individuo ON imagenes(id_individuo);
         ''')
+        _ensure_source_columns(conn)
         _migrate_imagenes_table(conn)
+
+
+def _ensure_source_columns(conn: sqlite3.Connection) -> None:
+    for table, column in [
+        ("individuos", "fuente"),
+        ("mediciones_quimicas", "fuente"),
+        ("imagenes", "fuente"),
+    ]:
+        cols = {row["name"] for row in conn.execute(f"PRAGMA table_info({table})").fetchall()}
+        if column not in cols:
+            conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} TEXT")
+
+    conn.execute("""
+        UPDATE individuos
+        SET fuente = COALESCE(
+            fuente,
+            CASE
+                WHEN lower(COALESCE(id_individuo, '')) LIKE 'azapa%' THEN 'azapa'
+                WHEN lower(COALESCE(id_documento, '')) LIKE 'azapa%' THEN 'azapa'
+                WHEN lower(COALESCE(numero_cuerpo, '')) LIKE 't%' AND lower(COALESCE(id_individuo, '')) LIKE 'azapa140_%' THEN 'azapa'
+                ELSE 'morro1'
+            END
+        )
+        WHERE fuente IS NULL OR fuente = ''
+    """)
+    conn.execute("""
+        UPDATE mediciones_quimicas
+        SET fuente = COALESCE(
+            fuente,
+            (SELECT COALESCE(i.fuente, 'morro1') FROM individuos i WHERE i.id_individuo = mediciones_quimicas.id_individuo)
+        )
+        WHERE fuente IS NULL OR fuente = ''
+    """)
+    conn.execute("""
+        UPDATE imagenes
+        SET fuente = COALESCE(
+            fuente,
+            (SELECT COALESCE(i.fuente, 'morro1') FROM individuos i WHERE i.id_individuo = imagenes.id_individuo)
+        )
+        WHERE fuente IS NULL OR fuente = ''
+    """)
 
 
 def _migrate_imagenes_table(conn: sqlite3.Connection) -> None:

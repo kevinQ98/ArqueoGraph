@@ -68,6 +68,18 @@ main {
   padding: 20px;
 }
 
+.azapaMain {
+  display: grid;
+  grid-template-columns: minmax(280px, 320px) minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+.azapaMain > aside,
+.azapaMain > .panel_grafo_azapa {
+  min-width: 0;
+}
+
 .guideMain {
   display: flex;
   flex-direction: column;

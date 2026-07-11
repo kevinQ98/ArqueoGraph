@@ -78,6 +78,86 @@ def _pathology_present(case: dict[str, Any], patologia_name: str) -> bool:
     return True
 
 
+def _load_azapa_reference_cases(reference_path: Optional[Path] = None) -> list[dict[str, Any]]:
+    path = reference_path or BASE_DIR / "data" / "azapa140_referencia.json"
+    if not path.exists():
+        return []
+    try:
+        with path.open("r", encoding="utf-8") as fh:
+            payload = json.load(fh)
+        if isinstance(payload, dict):
+            if isinstance(payload.get("azapa_140"), dict) and isinstance(payload["azapa_140"].get("casos"), list):
+                return [case for case in payload["azapa_140"]["casos"] if isinstance(case, dict)]
+            if isinstance(payload.get("casos"), list):
+                return [case for case in payload["casos"] if isinstance(case, dict)]
+    except Exception:
+        return []
+    return []
+
+
+def build_azapa_reference_graph(reference_path: Optional[Path] = None) -> dict[str, Any]:
+    """Construye un grafo simple a partir del JSON de referencia de Azapa.
+
+    Usa el campo `tumba` de cada caso como etiqueta del nodo para mostrar los 140 registros.
+    """
+    cases = _load_azapa_reference_cases(reference_path)
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    seen_nodes: set[str] = set()
+
+    def add_node(node: dict[str, Any]) -> None:
+        node_id = node["id"]
+        if node_id in seen_nodes:
+            return
+        seen_nodes.add(node_id)
+        nodes.append(node)
+
+    site_id = "azapa:site"
+    add_node({
+        "id": site_id,
+        "label": "AZAPA",
+        "type": "patologia",
+        "patologia": "AZAPA",
+    })
+
+    for index, case in enumerate(cases, start=1):
+        if not isinstance(case, dict):
+            continue
+        case_id = str(case.get("id") or "").strip() or f"azapa_case_{index}"
+        tumba = case.get("tumba") or case.get("referencia") or case_id
+        individuo_data = case.get("individuo") or {}
+        if not isinstance(individuo_data, dict):
+            individuo_data = {}
+        add_node({
+            "id": case_id,
+            "tumba": str(tumba),
+            "label": str(tumba),
+            "type": "individuo",
+            "sexo": individuo_data.get("sexo"),
+            "edad": individuo_data.get("grupo_edad") or individuo_data.get("edad"),
+            "cultura": case.get("cultura"),
+            "id_documento": case_id,
+            "numero_cuerpo": str(tumba),
+            "id_individuo": case_id,
+        })
+        edges.append({
+            "source": site_id,
+            "target": case_id,
+            "label": "presenta",
+            "tumba": str(tumba),
+        })
+
+    return {
+        "mode": "relational",
+        "nodes": nodes,
+        "edges": edges,
+        "summary": {
+            "individuos": len(cases),
+            "tumbas": len(cases),
+        },
+    }
+
+
 def filter_individuos_by_patologia(individuos: list[dict[str, Any]], patologia_name: Optional[str] = None) -> list[dict[str, Any]]:
     if not patologia_name:
         return individuos
@@ -117,6 +197,7 @@ def build_relational_graph_from_rows(
     caso: Optional[str] = None,
     sexo: Optional[str] = None,
     patologia: Optional[str] = None,
+    fuente: Optional[str] = None,
 ) -> dict[str, Any]:
     """Convierte tablas relacionales en un grafo de nodos y aristas."""
     # load reference map id -> tumba for labeling
@@ -130,6 +211,16 @@ def build_relational_graph_from_rows(
         allowed_ids = {i["id_individuo"] for i in individuos}
         mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
         imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
+
+    if fuente:
+        fuente_norm = str(fuente).strip().lower()
+        individuos = [i for i in individuos if str(i.get("fuente") or "").strip().lower() == fuente_norm]
+        allowed_ids = {i["id_individuo"] for i in individuos if i.get("id_individuo")}
+        mediciones = [m for m in mediciones if str(m.get("fuente") or "").strip().lower() == fuente_norm]
+        imagenes = [img for img in imagenes if str(img.get("fuente") or "").strip().lower() == fuente_norm]
+        if allowed_ids:
+            mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
+            imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
 
     # Filtrar por sexo (usa el campo `sexo` de la tabla `individuos`,
     # que al importar Morro1 proviene de `sexo_normalizado`).
@@ -277,9 +368,20 @@ def build_relational_graph_from_patologia(
     patologia: str,
     edad: Optional[str] = None,
     sexo: Optional[str] = None,
+    fuente: Optional[str] = None,
 ) -> dict[str, Any]:
     """Convierte tablas relacionales en un grafo con patología como nodo central."""
     reference_map = _load_reference_map()
+
+    if fuente:
+        fuente_norm = str(fuente).strip().lower()
+        individuos = [i for i in individuos if str(i.get("fuente") or "").strip().lower() == fuente_norm]
+        allowed_ids = {i["id_individuo"] for i in individuos if i.get("id_individuo")}
+        mediciones = [m for m in mediciones if str(m.get("fuente") or "").strip().lower() == fuente_norm]
+        imagenes = [img for img in imagenes if str(img.get("fuente") or "").strip().lower() == fuente_norm]
+        if allowed_ids:
+            mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
+            imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
     
     # Filtrar individuos por patología
     individuos = filter_individuos_by_patologia(individuos, patologia)
@@ -426,20 +528,21 @@ def build_relational_graph(
     extra_imagenes: Optional[list[dict[str, Any]]] = None,
     sexo: Optional[str] = None,
     patologia: Optional[str] = None,
+    fuente: Optional[str] = None,
 ) -> dict[str, Any]:
     individuos = rows_to_dicts(
         conn.execute(
-            "SELECT id_individuo, id_documento, numero_cuerpo, sexo, edad, estilo_momificacion, estado FROM individuos ORDER BY id_documento"
+            "SELECT id_individuo, id_documento, numero_cuerpo, sexo, edad, estilo_momificacion, estado, fuente FROM individuos ORDER BY id_documento"
         ).fetchall()
     )
     mediciones = rows_to_dicts(
         conn.execute(
-            "SELECT id_individuo, elemento, concentracion, unidad, estado FROM mediciones_quimicas ORDER BY elemento, id_individuo"
+            "SELECT id_individuo, elemento, concentracion, unidad, estado, fuente FROM mediciones_quimicas ORDER BY elemento, id_individuo"
         ).fetchall()
     )
     imagenes = rows_to_dicts(
         conn.execute(
-            "SELECT id_imagen, id_individuo, filename_original, titulo, relative_path FROM imagenes ORDER BY created_at DESC"
+            "SELECT id_imagen, id_individuo, filename_original, titulo, relative_path, fuente FROM imagenes ORDER BY created_at DESC"
         ).fetchall()
     )
     if extra_imagenes:
@@ -453,6 +556,7 @@ def build_relational_graph(
         caso=caso,
         sexo=sexo,
         patologia=patologia,
+        fuente=fuente,
     )
 
 
@@ -462,20 +566,21 @@ def build_relational_graph_by_patologia(
     edad: Optional[str] = None,
     sexo: Optional[str] = None,
     extra_imagenes: Optional[list[dict[str, Any]]] = None,
+    fuente: Optional[str] = None,
 ) -> dict[str, Any]:
     individuos = rows_to_dicts(
         conn.execute(
-            "SELECT id_individuo, id_documento, numero_cuerpo, sexo, edad, estilo_momificacion, estado FROM individuos ORDER BY id_documento"
+            "SELECT id_individuo, id_documento, numero_cuerpo, sexo, edad, estilo_momificacion, estado, fuente FROM individuos ORDER BY id_documento"
         ).fetchall()
     )
     mediciones = rows_to_dicts(
         conn.execute(
-            "SELECT id_individuo, elemento, concentracion, unidad, estado FROM mediciones_quimicas ORDER BY elemento, id_individuo"
+            "SELECT id_individuo, elemento, concentracion, unidad, estado, fuente FROM mediciones_quimicas ORDER BY elemento, id_individuo"
         ).fetchall()
     )
     imagenes = rows_to_dicts(
         conn.execute(
-            "SELECT id_imagen, id_individuo, filename_original, titulo, relative_path FROM imagenes ORDER BY created_at DESC"
+            "SELECT id_imagen, id_individuo, filename_original, titulo, relative_path, fuente FROM imagenes ORDER BY created_at DESC"
         ).fetchall()
     )
     if extra_imagenes:
@@ -487,6 +592,7 @@ def build_relational_graph_by_patologia(
         patologia=patologia,
         edad=edad,
         sexo=sexo,
+        fuente=fuente,
     )
 
 
@@ -494,23 +600,34 @@ def build_relational_graph_all_patologias(
     conn,
     edad: Optional[str] = None,
     sexo: Optional[str] = None,
+    fuente: Optional[str] = None,
 ) -> dict[str, Any]:
     """Construye un grafo con todas las patologías como nodos centrales."""
     individuos = rows_to_dicts(
         conn.execute(
-            "SELECT id_individuo, id_documento, numero_cuerpo, sexo, edad, estilo_momificacion, estado FROM individuos ORDER BY id_documento"
+            "SELECT id_individuo, id_documento, numero_cuerpo, sexo, edad, estilo_momificacion, estado, fuente FROM individuos ORDER BY id_documento"
         ).fetchall()
     )
     mediciones = rows_to_dicts(
         conn.execute(
-            "SELECT id_individuo, elemento, concentracion, unidad, estado FROM mediciones_quimicas ORDER BY elemento, id_individuo"
+            "SELECT id_individuo, elemento, concentracion, unidad, estado, fuente FROM mediciones_quimicas ORDER BY elemento, id_individuo"
         ).fetchall()
     )
     imagenes = rows_to_dicts(
         conn.execute(
-            "SELECT id_imagen, id_individuo, filename_original, titulo, relative_path FROM imagenes ORDER BY created_at DESC"
+            "SELECT id_imagen, id_individuo, filename_original, titulo, relative_path, fuente FROM imagenes ORDER BY created_at DESC"
         ).fetchall()
     )
+
+    if fuente:
+        fuente_norm = str(fuente).strip().lower()
+        individuos = [i for i in individuos if str(i.get("fuente") or "").strip().lower() == fuente_norm]
+        allowed_ids = {i["id_individuo"] for i in individuos if i.get("id_individuo")}
+        mediciones = [m for m in mediciones if str(m.get("fuente") or "").strip().lower() == fuente_norm]
+        imagenes = [img for img in imagenes if str(img.get("fuente") or "").strip().lower() == fuente_norm]
+        if allowed_ids:
+            mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
+            imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
 
     # Filtrar por sexo
     if sexo:

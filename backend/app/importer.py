@@ -254,6 +254,184 @@ def _load_json_cases(path: Path) -> tuple[list[dict], dict]:
     return [], {}
 
 
+def import_azapa_master_data(reference_path: Path, dataciones_path: Path | None = None, analisis_as_cabello_path: Path | None = None, analisis_as_b_li_costilla_path: Path | None = None) -> dict:
+    if not reference_path.exists():
+        return {"inserted": 0, "updated": 0, "skipped": 0, "rows_total": 0, "errors": ["No existe el archivo JSON de referencia de AZAPA"]}
+
+    reference_cases, reference_root = _load_json_cases(reference_path)
+    if not reference_cases:
+        return {"inserted": 0, "updated": 0, "skipped": 0, "rows_total": 0, "errors": ["El JSON de referencia de AZAPA no contiene casos"]}
+
+    inserted, updated, skipped, errors = 0, 0, 0, []
+    with get_connection() as conn:
+        for idx, raw in enumerate(reference_cases):
+            if not isinstance(raw, dict):
+                continue
+
+            case_id = _clean(raw.get("id"))
+            if not case_id:
+                errors.append(f"Fila {idx + 2}: falta el id del caso")
+                continue
+
+            case_individuo = raw.get("individuo") or {}
+            sexo = _clean(case_individuo.get("sexo"))
+            edad = _clean(case_individuo.get("grupo_edad") or case_individuo.get("edad"))
+            sitio = _clean(reference_root.get("sitio") or reference_root.get("area") or raw.get("tumba"))
+            cementerio = sitio
+            numero_cuerpo = _clean(raw.get("tumba"))
+            cultura = _clean(raw.get("cultura"))
+            referencia = _clean(raw.get("referencia") or raw.get("tumba") or case_id)
+            notas_parts = []
+            if cultura:
+                notas_parts.append(f"cultura={cultura}")
+            notas = "; ".join(notas_parts) if notas_parts else None
+
+            exists = conn.execute("SELECT 1 FROM individuos WHERE id_individuo = ?", (case_id,)).fetchone()
+            conn.execute('''
+                INSERT INTO individuos (
+                    id_individuo, id_documento, numero_cuerpo, sexo, edad, sitio,
+                    cementerio, cronologia, estilo_momificacion, referencia_bibliografica, notas, fuente
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(id_individuo) DO UPDATE SET
+                    id_documento = excluded.id_documento,
+                    numero_cuerpo = excluded.numero_cuerpo,
+                    sexo = excluded.sexo,
+                    edad = excluded.edad,
+                    sitio = excluded.sitio,
+                    cementerio = excluded.cementerio,
+                    cronologia = excluded.cronologia,
+                    estilo_momificacion = excluded.estilo_momificacion,
+                    referencia_bibliografica = excluded.referencia_bibliografica,
+                    notas = COALESCE(excluded.notas, notas),
+                    fuente = COALESCE(excluded.fuente, fuente),
+                    updated_at = CURRENT_TIMESTAMP
+            ''', (
+                case_id, referencia, numero_cuerpo, sexo, edad, sitio,
+                cementerio, None, None, referencia, notas, "azapa"
+            ))
+            updated += 1 if exists else 0
+            inserted += 0 if exists else 1
+
+            if dataciones_path and dataciones_path.exists():
+                dataciones_cases, _ = _load_json_cases(dataciones_path)
+                for dat_case in dataciones_cases:
+                    if not isinstance(dat_case, dict):
+                        continue
+                    if str(dat_case.get("id") or "").strip() != case_id:
+                        continue
+                    datacion = dat_case.get("datacion_radiocarbono") or {}
+                    if isinstance(datacion, dict) and datacion.get("referencia_datos"):
+                        conn.execute(
+                            "UPDATE individuos SET notas = COALESCE(notas, '') || ? WHERE id_individuo = ?",
+                            (f"Datación radiocarbónica: {datacion['referencia_datos']}; ", case_id),
+                        )
+                    break
+
+        def _append_measurements(path: Path | None, source_name: str) -> None:
+            nonlocal inserted, updated, skipped
+            if not path or not path.exists():
+                return
+            cases, _ = _load_json_cases(path)
+            existing_ids: set[str] = set()
+            for idx, raw in enumerate(cases):
+                if not isinstance(raw, dict):
+                    continue
+                case_id = _clean(raw.get("id"))
+                if not case_id:
+                    errors.append(f"Fila {idx + 2}: falta el id del caso en {source_name}")
+                    continue
+                analisis = raw.get("analisis_quimicos") or {}
+                tipo_muestra = _clean(analisis.get("matriz"))
+                elementos = analisis.get("elementos") or {}
+                if not isinstance(elementos, dict):
+                    continue
+                for elemento_name, elemento_data in elementos.items():
+                    if not elemento_name:
+                        continue
+                    if isinstance(elemento_data, dict):
+                        valor = elemento_data.get("valor")
+                        unidad = _clean(elemento_data.get("unidad"))
+                        metodo = _clean(elemento_data.get("metodo"))
+                        laboratorio = _clean(elemento_data.get("laboratorio"))
+                        fecha = _clean(elemento_data.get("fecha"))
+                        observaciones = _clean(elemento_data.get("observaciones"))
+                    else:
+                        valor = elemento_data
+                        unidad = None
+                        metodo = None
+                        laboratorio = None
+                        fecha = None
+                        observaciones = None
+
+                    if valor is None:
+                        concentracion = None
+                        unidad = unidad or "ppm"
+                    else:
+                        try:
+                            concentracion = float(valor)
+                        except Exception:
+                            errors.append(f"Fila {idx + 2}: valor no numérico para {elemento_name} en {source_name}")
+                            continue
+                        unidad = unidad or "ppm"
+
+                    base_id = f"{case_id}_{elemento_name}_{tipo_muestra or 'muestra'}"
+                    medida_id = base_id
+                    counter = 1
+                    while medida_id in existing_ids:
+                        counter += 1
+                        medida_id = f"{base_id}_{counter}"
+                    existing_ids.add(medida_id)
+
+                    row = {
+                        "id_medicion": medida_id,
+                        "id_individuo": case_id,
+                        "tipo_muestra": tipo_muestra,
+                        "elemento": elemento_name,
+                        "concentracion": concentracion,
+                        "unidad": unidad or "ppm",
+                        "metodo": metodo,
+                        "laboratorio": laboratorio,
+                        "fecha": fecha,
+                        "observaciones": observaciones,
+                    }
+                    exists = conn.execute("SELECT 1 FROM mediciones_quimicas WHERE id_medicion = ?", (row["id_medicion"],)).fetchone()
+                    conn.execute('''
+                        INSERT INTO mediciones_quimicas (
+                            id_medicion, id_individuo, tipo_muestra, elemento, concentracion, unidad,
+                            metodo, laboratorio, fecha, observaciones, fuente
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        ON CONFLICT(id_medicion) DO UPDATE SET
+                            id_individuo = excluded.id_individuo,
+                            tipo_muestra = excluded.tipo_muestra,
+                            elemento = excluded.elemento,
+                            concentracion = excluded.concentracion,
+                            unidad = excluded.unidad,
+                            metodo = excluded.metodo,
+                            laboratorio = excluded.laboratorio,
+                            fecha = excluded.fecha,
+                            observaciones = excluded.observaciones,
+                            fuente = COALESCE(excluded.fuente, fuente),
+                            updated_at = CURRENT_TIMESTAMP
+                    ''', (
+                        row["id_medicion"], row["id_individuo"], row.get("tipo_muestra"), row["elemento"],
+                        row["concentracion"], row.get("unidad") or "ppm", row.get("metodo"), row.get("laboratorio"),
+                        row.get("fecha"), row.get("observaciones"), "azapa"
+                    ))
+                    updated += 1 if exists else 0
+                    inserted += 0 if exists else 1
+
+        _append_measurements(analisis_as_cabello_path, "analisis_as_cabello")
+        _append_measurements(analisis_as_b_li_costilla_path, "analisis_as_b_li_costilla")
+
+    return {
+        "inserted": inserted,
+        "updated": updated,
+        "skipped": skipped,
+        "rows_total": len(reference_cases),
+        "errors": errors,
+    }
+
+
 def import_morro1_master_data(reference_path: Path, paleopatologia_path: Path | None = None, catalog_path: Path | None = None, analisis_path: Path | None = None, mediciones_path: Path | None = None) -> dict:
     if not reference_path.exists():
         return {"inserted": 0, "updated": 0, "skipped": 0, "rows_total": 0, "errors": ["No existe el archivo JSON de referencia"]}
@@ -324,8 +502,8 @@ def import_morro1_master_data(reference_path: Path, paleopatologia_path: Path | 
             conn.execute('''
                 INSERT INTO individuos (
                     id_individuo, id_documento, numero_cuerpo, sexo, edad, sitio,
-                    cementerio, cronologia, estilo_momificacion, referencia_bibliografica, notas
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    cementerio, cronologia, estilo_momificacion, referencia_bibliografica, notas, fuente
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(id_individuo) DO UPDATE SET
                     id_documento = excluded.id_documento,
                     numero_cuerpo = excluded.numero_cuerpo,
@@ -337,10 +515,11 @@ def import_morro1_master_data(reference_path: Path, paleopatologia_path: Path | 
                     estilo_momificacion = excluded.estilo_momificacion,
                     referencia_bibliografica = excluded.referencia_bibliografica,
                     notas = COALESCE(excluded.notas, notas),
+                    fuente = COALESCE(excluded.fuente, fuente),
                     updated_at = CURRENT_TIMESTAMP
             ''', (
                 id_individuo, id_documento, numero_cuerpo, sexo, edad, sitio,
-                cementerio, cronologia, estilo_momificacion, referencia, notas
+                cementerio, cronologia, estilo_momificacion, referencia, notas, "morro1"
             ))
             updated += 1 if exists else 0
             inserted += 0 if exists else 1

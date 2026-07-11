@@ -1,0 +1,3304 @@
+{
+  "azapa140_analisis_quimicos_As_cabello": {
+    "area": "AZAPA",
+    "casos": [
+      {
+        "id": "azapa140_001",
+        "tumba": "T1",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.8,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_002",
+        "tumba": "T2",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.37,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_003",
+        "tumba": "T2 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_004",
+        "tumba": "T3",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_005",
+        "tumba": "T4",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.13,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_006",
+        "tumba": "4LABa",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_007",
+        "tumba": "4LABb (4B)",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "AEI",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_008",
+        "tumba": "T6",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_009",
+        "tumba": "T5",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_010",
+        "tumba": "T7",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 5.96,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_011",
+        "tumba": "T8",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_012",
+        "tumba": "T9",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_013",
+        "tumba": "T10",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 3.18,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_014",
+        "tumba": "T11",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 3.27,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_015",
+        "tumba": "T12",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_016",
+        "tumba": "T13",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_017",
+        "tumba": "T13 A",
+        "cultura": "indeterminado",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_018",
+        "tumba": "T13 B",
+        "cultura": "indeterminado",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_019",
+        "tumba": "T14",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_020",
+        "tumba": "T15",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 2.96,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_021",
+        "tumba": "T16",
+        "cultura": "MAYTAS-CHIRIBAYA",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.93,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_022",
+        "tumba": "T18",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_023",
+        "tumba": "T19",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.57,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_024",
+        "tumba": "T20",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.46,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_025",
+        "tumba": "T21",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.3,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_026",
+        "tumba": "T22",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.94,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_027",
+        "tumba": "T23",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_028",
+        "tumba": "T24",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "AEI",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_029",
+        "tumba": "T24 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 108.15,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_030",
+        "tumba": "T24 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 4.64,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_031",
+        "tumba": "T26",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.69,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_032",
+        "tumba": "T27",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "50 - 55",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.3,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_033",
+        "tumba": "T28",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 2.66,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_034",
+        "tumba": "T29",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "16 - 18",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_035",
+        "tumba": "T30",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_036",
+        "tumba": "T31",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.59,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_037",
+        "tumba": "T32",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.43,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_038",
+        "tumba": "T33",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_039",
+        "tumba": "T34",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_040",
+        "tumba": "T35",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.26,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_041",
+        "tumba": "T35 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_042",
+        "tumba": "T35 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "SOLO CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_043",
+        "tumba": "T36",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.0,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_044",
+        "tumba": "T37",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25-30",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_045",
+        "tumba": "T38",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_046",
+        "tumba": "T39",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.83,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_047",
+        "tumba": "T40",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_048",
+        "tumba": "T41",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20-25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_049",
+        "tumba": "T42 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_050",
+        "tumba": "T42 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_051",
+        "tumba": "T43",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_052",
+        "tumba": "T44",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.16,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_053",
+        "tumba": "T45 A",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.41,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_054",
+        "tumba": "T45 B",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_055",
+        "tumba": "T46 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_056",
+        "tumba": "T46 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_057",
+        "tumba": "T47",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 3.06,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_058",
+        "tumba": "T48",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.92,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_059",
+        "tumba": "T49",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_060",
+        "tumba": "T50",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_061",
+        "tumba": "T51",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 25.53,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_062",
+        "tumba": "T52",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_063",
+        "tumba": "T53",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_064",
+        "tumba": "T54",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_065",
+        "tumba": "T55",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.4,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_066",
+        "tumba": "T56",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_067",
+        "tumba": "T57",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_068",
+        "tumba": "T58",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": ">40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.34,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_069",
+        "tumba": "T59",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.62,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_070",
+        "tumba": "T60",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.63,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_071",
+        "tumba": "T61",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_072",
+        "tumba": "T63",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35-40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.54,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_073",
+        "tumba": "T64 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.67,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_074",
+        "tumba": "T64 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_075",
+        "tumba": "T65 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.61,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_076",
+        "tumba": "T65 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_077",
+        "tumba": "T66",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_078",
+        "tumba": "T67",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18-20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 3.61,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_079",
+        "tumba": "T68",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_080",
+        "tumba": "T69",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_081",
+        "tumba": "T70",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_082",
+        "tumba": "T71",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_083",
+        "tumba": "T72",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.0,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_084",
+        "tumba": "T73",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.74,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_085",
+        "tumba": "T74",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "16-17",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.66,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_086",
+        "tumba": "T75",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_087",
+        "tumba": "T76",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "15 - 16",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_088",
+        "tumba": "T77",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_089",
+        "tumba": "T78",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.29,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_090",
+        "tumba": "T79",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_091",
+        "tumba": "T80",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_092",
+        "tumba": "T81",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.84,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_093",
+        "tumba": "T82",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_094",
+        "tumba": "T87",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_095",
+        "tumba": "T88",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.41,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_096",
+        "tumba": "T89",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_097",
+        "tumba": "T90",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 2.01,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_098",
+        "tumba": "T91",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_099",
+        "tumba": "T92",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_100",
+        "tumba": "T93",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.75,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_101",
+        "tumba": "T94",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.25,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_102",
+        "tumba": "T95",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_103",
+        "tumba": "T96",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_104",
+        "tumba": "T97",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.08,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_105",
+        "tumba": "T99",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_106",
+        "tumba": "T100",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40-45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 2.09,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_107",
+        "tumba": "T101",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_108",
+        "tumba": "T102",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_109",
+        "tumba": "T103",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.34,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_110",
+        "tumba": "T104",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.27,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_111",
+        "tumba": "T105",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40-45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 2.9,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_112",
+        "tumba": "T106",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_113",
+        "tumba": "T107",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25-30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_114",
+        "tumba": "T108 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_115",
+        "tumba": "T108 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_116",
+        "tumba": "T109",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_117",
+        "tumba": "T110",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.12,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_118",
+        "tumba": "T111",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25-30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_119",
+        "tumba": "T112 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40-45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_120",
+        "tumba": "T112 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_121",
+        "tumba": "T113",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18-20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_122",
+        "tumba": "T114",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_123",
+        "tumba": "T115",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.56,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_124",
+        "tumba": "T116",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 2.84,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_125",
+        "tumba": "T117",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_126",
+        "tumba": "T118",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.76,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_127",
+        "tumba": "T119",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_128",
+        "tumba": "T120",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 2.32,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_129",
+        "tumba": "T121",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_130",
+        "tumba": "T122",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_131",
+        "tumba": "T123",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_132",
+        "tumba": "T124",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.72,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_133",
+        "tumba": "T125",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_134",
+        "tumba": "T126",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": ">40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.35,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_135",
+        "tumba": "T127",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "15 - 16",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_136",
+        "tumba": "T127 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_137",
+        "tumba": "T128",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_138",
+        "tumba": "T128 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_139",
+        "tumba": "T129",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_140",
+        "tumba": "T130",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 16.77,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_141",
+        "tumba": "T131",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_142",
+        "tumba": "T131 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.35,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_143",
+        "tumba": "T131 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.41,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_144",
+        "tumba": "T140",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_145",
+        "tumba": "T140 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "FARDO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_146",
+        "tumba": "DESC 1/87 (DESC 1)",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "50 - 55",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_147",
+        "tumba": "DESC 2/87",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_148",
+        "tumba": "MMB",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 0.91,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_149",
+        "tumba": "SUP1",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_150",
+        "tumba": "SUP2",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_151",
+        "tumba": "XPB",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 4.71,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_152",
+        "tumba": "XPB2A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_153",
+        "tumba": "XPB2A'",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": ">40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_154",
+        "tumba": "XPB2B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_155",
+        "tumba": "XPB3",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "15 - 16",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_156",
+        "tumba": "XPB4",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": null,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_157",
+        "tumba": "XPB6",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Amarasiriwardena, D., Ahmed, M., & Arriaza, B. (2023). Environmental arsenic exposure by ancient Andeans: Measurement of As in mummy hair using LA-ICP-MS. Journal of Archaeological Science: Reports, 48, 103883. https://doi.org/10.1016/j.jasrep.2023.103883",
+          "matriz": "cabello",
+          "elementos": {
+            "As": {
+              "valor": 1.19,
+              "unidad": "µg/g"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

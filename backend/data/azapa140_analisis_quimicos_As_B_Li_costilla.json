@@ -1,0 +1,4560 @@
+{
+  "azapa140_analisis_quimicos_As_B_Li": {
+    "area": "AZAPA",
+    "casos": [
+      {
+        "id": "azapa140_001",
+        "tumba": "T1",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_002",
+        "tumba": "T2",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_003",
+        "tumba": "T2 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_004",
+        "tumba": "T3",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_005",
+        "tumba": "T4",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 4.09,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 149.3,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.77,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_006",
+        "tumba": "4LABa",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_007",
+        "tumba": "4LABb (4B)",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "AEI",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_008",
+        "tumba": "T6",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_009",
+        "tumba": "T5",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 3.17,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 237.4,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.76,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_010",
+        "tumba": "T7",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.83,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 58.6,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.82,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_011",
+        "tumba": "T8",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.91,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 221.6,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.09,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_012",
+        "tumba": "T9",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_013",
+        "tumba": "T10",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.52,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 46.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.43,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_014",
+        "tumba": "T11",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_015",
+        "tumba": "T12",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_016",
+        "tumba": "T13",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_017",
+        "tumba": "T13 A",
+        "cultura": "indeterminado",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_018",
+        "tumba": "T13 B",
+        "cultura": "indeterminado",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_019",
+        "tumba": "T14",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_020",
+        "tumba": "T15",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_021",
+        "tumba": "T16",
+        "cultura": "MAYTAS-CHIRIBAYA",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.04,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 44.5,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.16,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_022",
+        "tumba": "T18",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.28,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 55.2,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 6.51,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_023",
+        "tumba": "T19",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.88,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 75.4,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.69,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_024",
+        "tumba": "T20",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_025",
+        "tumba": "T21",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.39,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 77.5,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.26,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_026",
+        "tumba": "T22",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_027",
+        "tumba": "T23",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_028",
+        "tumba": "T24",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "AEI",
+          "grupo_edad": "adulto",
+          "conservacion": "RESTOS OSEOS"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_029",
+        "tumba": "T24 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_030",
+        "tumba": "T24 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_031",
+        "tumba": "T26",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_032",
+        "tumba": "T27",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "50 - 55",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.15,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 89.5,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.26,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_033",
+        "tumba": "T28",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.6,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 17.4,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.11,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_034",
+        "tumba": "T29",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "16 - 18",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.65,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 65.2,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.21,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_035",
+        "tumba": "T30",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_036",
+        "tumba": "T31",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_037",
+        "tumba": "T32",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.34,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 46.7,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.33,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_038",
+        "tumba": "T33",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_039",
+        "tumba": "T34",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_040",
+        "tumba": "T35",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.31,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 95.5,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.13,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_041",
+        "tumba": "T35 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_042",
+        "tumba": "T35 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "SOLO CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_043",
+        "tumba": "T36",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 0.92,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 24.6,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.11,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_044",
+        "tumba": "T37",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25-30",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_045",
+        "tumba": "T38",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_046",
+        "tumba": "T39",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 3.42,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 89,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.86,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_047",
+        "tumba": "T40",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_048",
+        "tumba": "T41",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20-25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.26,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 87.2,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.09,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_049",
+        "tumba": "T42 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.51,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 52.5,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.47,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_050",
+        "tumba": "T42 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_051",
+        "tumba": "T43",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_052",
+        "tumba": "T44",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.18,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 53.5,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.33,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_053",
+        "tumba": "T45 A",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_054",
+        "tumba": "T45 B",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 3,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 203.4,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.37,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_055",
+        "tumba": "T46 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_056",
+        "tumba": "T46 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_057",
+        "tumba": "T47",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_058",
+        "tumba": "T48",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_059",
+        "tumba": "T49",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 3.07,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 54.7,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.49,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_060",
+        "tumba": "T50",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.79,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 40.7,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.2,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_061",
+        "tumba": "T51",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.85,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 46.9,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 34.91,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_062",
+        "tumba": "T52",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.98,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 75,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.79,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_063",
+        "tumba": "T53",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_064",
+        "tumba": "T54",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_065",
+        "tumba": "T55",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.16,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 28.4,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.24,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_066",
+        "tumba": "T56",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 0.91,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 64.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.2,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_067",
+        "tumba": "T57",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_068",
+        "tumba": "T58",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": ">40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.18,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 72.1,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.52,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_069",
+        "tumba": "T59",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_070",
+        "tumba": "T60",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_071",
+        "tumba": "T61",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_072",
+        "tumba": "T63",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35-40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.23,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 27.1,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.18,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_073",
+        "tumba": "T64 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_074",
+        "tumba": "T64 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": null
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_075",
+        "tumba": "T65 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_076",
+        "tumba": "T65 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_077",
+        "tumba": "T66",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_078",
+        "tumba": "T67",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18-20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.64,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 66.9,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.29,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_079",
+        "tumba": "T68",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 0.87,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 69.7,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.77,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_080",
+        "tumba": "T69",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 0.71,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 36.3,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 38.64,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_081",
+        "tumba": "T70",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 4.9,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 90.7,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.91,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_082",
+        "tumba": "T71",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 3.26,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 28.6,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 76.5,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_083",
+        "tumba": "T72",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_084",
+        "tumba": "T73",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.84,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 43.1,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.09,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_085",
+        "tumba": "T74",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "16-17",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.81,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 29.3,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.53,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_086",
+        "tumba": "T75",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 4.22,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 66.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 30.21,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_087",
+        "tumba": "T76",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "15 - 16",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.96,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 81.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.74,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_088",
+        "tumba": "T77",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.11,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 50.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.5,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_089",
+        "tumba": "T78",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.08,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 25.7,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.46,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_090",
+        "tumba": "T79",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.81,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 30,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.24,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_091",
+        "tumba": "T80",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 3.93,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 85.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.41,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_092",
+        "tumba": "T81",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_093",
+        "tumba": "T82",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.87,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 56.6,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 2.8,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_094",
+        "tumba": "T87",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_095",
+        "tumba": "T88",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_096",
+        "tumba": "T89",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.23,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 34.4,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.14,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_097",
+        "tumba": "T90",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 3.22,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 91.7,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.45,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_098",
+        "tumba": "T91",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.56,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 55.2,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_099",
+        "tumba": "T92",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.06,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 46.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.42,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_100",
+        "tumba": "T93",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 8.68,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 194.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.18,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_101",
+        "tumba": "T94",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_102",
+        "tumba": "T95",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_103",
+        "tumba": "T96",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_104",
+        "tumba": "T97",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 5.6,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 65.5,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.58,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_105",
+        "tumba": "T99",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.36,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 52.2,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.29,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_106",
+        "tumba": "T100",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40-45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.22,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 88.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.2,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_107",
+        "tumba": "T101",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_108",
+        "tumba": "T102",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_109",
+        "tumba": "T103",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_110",
+        "tumba": "T104",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 4.78,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 81.6,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.12,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_111",
+        "tumba": "T105",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40-45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 0.93,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 48.2,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.13,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_112",
+        "tumba": "T106",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18 - 20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 7.3,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 74.4,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.88,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_113",
+        "tumba": "T107",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25-30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.49,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 109.3,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.22,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_114",
+        "tumba": "T108 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.3,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 61.2,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.02,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_115",
+        "tumba": "T108 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_116",
+        "tumba": "T109",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_117",
+        "tumba": "T110",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 6.46,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 231.9,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.86,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_118",
+        "tumba": "T111",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25-30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 4.63,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 77.1,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.55,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_119",
+        "tumba": "T112 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40-45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.17,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 82.7,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.16,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_120",
+        "tumba": "T112 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_121",
+        "tumba": "T113",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "18-20",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 4.75,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 217.4,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 2.17,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_122",
+        "tumba": "T114",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_123",
+        "tumba": "T115",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_124",
+        "tumba": "T116",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.19,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 51.6,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.08,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_125",
+        "tumba": "T117",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.07,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 52.6,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.3,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_126",
+        "tumba": "T118",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "25 - 30",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 0.92,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 117.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.28,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_127",
+        "tumba": "T119",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_128",
+        "tumba": "T120",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 3.17,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 243.9,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.1,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_129",
+        "tumba": "T121",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_130",
+        "tumba": "T122",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.07,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 70,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.97,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_131",
+        "tumba": "T123",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_132",
+        "tumba": "T124",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 5.41,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 184.7,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.41,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_133",
+        "tumba": "T125",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.44,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 93,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.2,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_134",
+        "tumba": "T126",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": ">40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.06,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 198.5,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.3,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_135",
+        "tumba": "T127",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "15 - 16",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 3.22,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 202.9,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.56,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_136",
+        "tumba": "T127 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_137",
+        "tumba": "T128",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 5.21,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 184.3,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 4.11,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_138",
+        "tumba": "T128 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_139",
+        "tumba": "T129",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "40 - 45",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.16,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 54.1,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.38,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_140",
+        "tumba": "T130",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_141",
+        "tumba": "T131",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_142",
+        "tumba": "T131 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_143",
+        "tumba": "T131 B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_144",
+        "tumba": "T140",
+        "cultura": "SAN MIGUEL",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.92,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 80.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.12,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_145",
+        "tumba": "T140 A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "LACTANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "FARDO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_146",
+        "tumba": "DESC 1/87 (DESC 1)",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "50 - 55",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 1.17,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 92.1,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.11,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_147",
+        "tumba": "DESC 2/87",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "INCOMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_148",
+        "tumba": "MMB",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "45 - 50",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.29,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 38,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.17,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_149",
+        "tumba": "SUP1",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "14 - 16",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 7.08,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 272.5,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.05,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_150",
+        "tumba": "SUP2",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "INFANTE",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_151",
+        "tumba": "XPB",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30-35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 3.49,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 63.1,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.94,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_152",
+        "tumba": "XPB2A",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "20 - 25",
+          "grupo_edad": "adulto",
+          "conservacion": "POST-CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.17,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 80.9,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.41,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_153",
+        "tumba": "XPB2A'",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": ">40",
+          "grupo_edad": "adulto",
+          "conservacion": "SOLO CRANEO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_154",
+        "tumba": "XPB2B",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "indeterminado",
+          "edad": "NEONATO",
+          "grupo_edad": "sub adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": null,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": null,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_155",
+        "tumba": "XPB3",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "15 - 16",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 5.28,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 42.8,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.31,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_156",
+        "tumba": "XPB4",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "femenino",
+          "edad": "30 - 35",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 4.43,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 104.1,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 1.29,
+              "unidad": "ppm"
+            }
+          }
+        }
+      },
+      {
+        "id": "azapa140_157",
+        "tumba": "XPB6",
+        "cultura": "MAYTAS",
+        "individuo": {
+          "sexo": "masculino",
+          "edad": "35 - 40",
+          "grupo_edad": "adulto",
+          "conservacion": "COMPLETO"
+        },
+        "analisis_quimicos": {
+          "referencia_datos": "Analisis laboratorio de suelos universidad de Tarapacá",
+          "matriz": "costillas",
+          "elementos": {
+            "Li": {
+              "valor": 2.49,
+              "unidad": "ppm"
+            },
+            "B": {
+              "valor": 59.5,
+              "unidad": "ppm"
+            },
+            "As": {
+              "valor": 0.8,
+              "unidad": "ppm"
+            }
+          }
+        }
+      }
+    ]
+  }
+}

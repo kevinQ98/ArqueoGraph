@@ -39,43 +39,53 @@ export async function getMediciones(params = {}) {
   return res.json();
 }
 
-export async function getGraphElemento(elemento, edad, sexo = "", patologia = "") {
+export async function getGraphElemento(elemento, edad, sexo = "", patologia = "", fuente = "") {
   const url = new URL(`${API_BASE}/graph/elemento/${elemento}`);
   if (edad) url.searchParams.set("edad", edad);
   if (sexo) url.searchParams.set("sexo", sexo);
   if (patologia) url.searchParams.set("patologia", patologia);
+  if (fuente) url.searchParams.set("fuente", fuente);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo");
   return res.json();
 }
 
-export async function getGraphPatologia(patologia, edad = "", sexo = "") {
+export async function getGraphPatologia(patologia, edad = "", sexo = "", fuente = "") {
   const url = new URL(`${API_BASE}/graph/patologia/${patologia}`);
   if (edad) url.searchParams.set("edad", edad);
   if (sexo) url.searchParams.set("sexo", sexo);
+  if (fuente) url.searchParams.set("fuente", fuente);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo por patología");
   return res.json();
 }
 
-export async function getGraphAllPatologias(edad = "", sexo = "") {
+export async function getGraphAllPatologias(edad = "", sexo = "", fuente = "") {
   const url = new URL(`${API_BASE}/graph/patologias`);
   if (edad) url.searchParams.set("edad", edad);
   if (sexo) url.searchParams.set("sexo", sexo);
+  if (fuente) url.searchParams.set("fuente", fuente);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de patologías");
   return res.json();
 }
 
-export async function getGraphSimilarity({ elements = "Mn,As,Ba", min_similarity = 0.55, sexo = "", edad = "", patologia = "" } = {}) {
+export async function getGraphSimilarity({ elements = "Mn,As,Ba", min_similarity = 0.55, sexo = "", edad = "", patologia = "", fuente = "" } = {}) {
   const url = new URL(`${API_BASE}/graph/similarity`);
   if (elements) url.searchParams.set("elements", elements);
   if (min_similarity) url.searchParams.set("min_similarity", String(min_similarity));
   if (sexo) url.searchParams.set("sexo", sexo);
   if (edad) url.searchParams.set("edad", edad);
   if (patologia) url.searchParams.set("patologia", patologia);
+  if (fuente) url.searchParams.set("fuente", fuente);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando similitud química");
+  return res.json();
+}
+
+export async function getGraphAzapaReference() {
+  const res = await fetch(`${API_BASE}/graph/azapa/reference`);
+  if (!res.ok) throw new Error("Error cargando grafo de Azapa");
   return res.json();
 }
 

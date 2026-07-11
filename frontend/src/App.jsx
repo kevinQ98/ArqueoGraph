@@ -8,6 +8,7 @@ import {
   getGraphPatologia,
   getGraphAllPatologias,
   getGraphSimilarity,
+  getGraphAzapaReference,
   getImagenesIndividuo,
   getMediciones,
   importDemo
@@ -53,6 +54,7 @@ function exportSvg() {
 export default function App() {
   const [view, setView] = useState("visualizacion");
   const [modoGrafo, setModoGrafo] = useState("distancia");
+  const [modoGrafoAzapa, setModoGrafoAzapa] = useState("distancia");
   const [sexo, setSexo] = useState("");
   const [edad, setEdad] = useState("");
   const [patologia, setPatologia] = useState("");
@@ -61,6 +63,7 @@ export default function App() {
   const [elementsSimilarity, setElementsSimilarity] = useState("Mn,As,Ba");
   const [minSimilarity, setMinSimilarity] = useState(0.55);
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
+  const [azapaGraph, setAzapaGraph] = useState({ nodes: [], edges: [] });
   const [mediciones, setMediciones] = useState([]);
   const [options, setOptions] = useState({ sexos: [], edades: [], elementos: [], patologias: [] });
   const [selected, setSelected] = useState(null);
@@ -68,6 +71,7 @@ export default function App() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [status, setStatus] = useState("");
+  const [azapaStatus, setAzapaStatus] = useState("");
   const GRAPH_ELEMENT = "Mn";
   const [showElementEdges, setShowElementEdges] = useState(true);
   const { patologiaNodes, patologiaColorMap, stats } = useGraphPathologyData(graph);
@@ -89,14 +93,15 @@ export default function App() {
     try {
       let g;
       let m = [];
+      const fuenteMorro1 = "morro1";
       if (selectedPatologia === "RED_COMPLETA") {
         // Red completa con todas las patologías
-        g = await getGraphAllPatologias(edad, sexo);
-        m = await getMediciones({ sexo, edad });
+        g = await getGraphAllPatologias(edad, sexo, fuenteMorro1);
+        m = await getMediciones({ sexo, edad, fuente: fuenteMorro1 });
       } else if (selectedPatologia) {
         // Patología individual como nodo central
-        g = await getGraphPatologia(selectedPatologia, edad, sexo);
-        m = await getMediciones({ sexo, edad, patologia: selectedPatologia });
+        g = await getGraphPatologia(selectedPatologia, edad, sexo, fuenteMorro1);
+        m = await getMediciones({ sexo, edad, patologia: selectedPatologia, fuente: fuenteMorro1 });
       } else if (modoGrafo === "similitud") {
         g = await getGraphSimilarity({
           elements: elementsSimilarity,
@@ -104,14 +109,15 @@ export default function App() {
           sexo,
           edad,
           patologia,
+          fuente: fuenteMorro1,
         });
-        m = await getMediciones({ sexo, edad, patologia });
+        m = await getMediciones({ sexo, edad, patologia, fuente: fuenteMorro1 });
       } else if (modoGrafo === "disperso") {
-        g = await getGraphAllPatologias(edad, sexo);
-        m = await getMediciones({ sexo, edad });
+        g = await getGraphAllPatologias(edad, sexo, fuenteMorro1);
+        m = await getMediciones({ sexo, edad, fuente: fuenteMorro1 });
       } else {
-        g = await getGraphElemento(selectedElement || "Mn", edad, sexo, patologia);
-        m = await getMediciones({ elemento: selectedElement || "Mn", sexo, edad, patologia });
+        g = await getGraphElemento(selectedElement || "Mn", edad, sexo, patologia, fuenteMorro1);
+        m = await getMediciones({ elemento: selectedElement || "Mn", sexo, edad, patologia, fuente: fuenteMorro1 });
       }
       setGraph(g);
       setMediciones(m);
@@ -119,6 +125,17 @@ export default function App() {
       await loadOptions();
     } catch (err) {
       setStatus("No hay datos cargados. Usa 'Cargar demo'.");
+    }
+  }
+
+  async function loadAzapaGraph() {
+    setAzapaStatus("Cargando grafo Azapa...");
+    try {
+      const graphData = await getGraphAzapaReference();
+      setAzapaGraph(graphData || { nodes: [], edges: [] });
+      setAzapaStatus("");
+    } catch {
+      setAzapaStatus("No hay datos de referencia de Azapa disponibles.");
     }
   }
 
@@ -219,11 +236,18 @@ export default function App() {
 
   useEffect(() => {
     loadOptions();
+    loadAzapaGraph();
   }, []);
 
   useEffect(() => {
     load();
   }, [edad, sexo, modoGrafo, minSimilarity, selectedElement, patologia, selectedPatologia]);
+
+  useEffect(() => {
+    if (view === "clusters") {
+      loadAzapaGraph();
+    }
+  }, [view]);
 
   const countByCat = {};
 
@@ -256,7 +280,7 @@ export default function App() {
             <Settings2 size={18} /> Administración
           </button>
           <button className={view === "clusters" ? "navButton active" : "navButton"} onClick={() => setView("clusters")}>
-            <Network size={18} /> Clusters
+            <Network size={18} /> AZAPA
           </button>
           <button onClick={handleImportDemo} className="primary">
             <Database size={18} /> Cargar demo
@@ -269,8 +293,40 @@ export default function App() {
           <AdminPanel />
         </main>
       ) : view === "clusters" ? (
-        <main className="adminMain">
-          <ClusterPanel options={options} />
+        <main className="adminMain_azapa">
+          <aside>
+            <section className="panel_azapa">
+              <h2><Filter size={18} /> Filtros azapa </h2>
+              <label>Modo de grafo azapa</label>
+              <select value={modoGrafoAzapa} onChange={(e) => setModoGrafoAzapa(e.target.value)}>
+                <option value="distancia">Distancia radial</option>
+           
+              </select>
+              <button onClick={loadAzapaGraph} className="secondary" style={{ marginTop: 10 }}>
+                <RefreshCw size={16} /> Actualizar
+              </button>
+              {azapaStatus && <p className="status">{azapaStatus}</p>}
+            </section>
+          </aside>
+          <section className="panel_grafo_azapa">
+            <div className="panel azapa_graphPanel">
+              <h2><Network size={18} /> Grafo azapa: {modoGrafoAzapa}</h2>
+              <p className="hint">
+                Se construye a partir de los 140 registros del JSON de referencia de Azapa usando el campo tumba como etiqueta de cada nodo.
+              </p>
+              <GraphSvg
+                graph={azapaGraph}
+                elemento=""
+                mode={modoGrafoAzapa}
+                onSelect={() => {}}
+                selectedNodeId=""
+                imageNodes={[]}
+                showImages={false}
+                hideElementCenter={false}
+                showElementEdges={true}
+              />
+            </div>
+          </section>
         </main>
       ) : (
         <main>
