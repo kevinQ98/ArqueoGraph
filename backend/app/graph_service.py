@@ -279,6 +279,78 @@ def get_azapa_available_elements(analysis_paths: Optional[list[Path]] = None) ->
     return available_elements
 
 
+def build_azapa_table_rows(
+    reference_path: Optional[Path] = None,
+    analysis_paths: Optional[list[Path]] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    elemento: Optional[str] = None,
+) -> list[dict[str, Any]]:
+    """Construye filas de tabla independientes para AZAPA basadas en los JSON de análisis y referencia."""
+    if not analysis_paths:
+        analysis_paths = [
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
+        ]
+
+    cases = _filter_azapa_cases_by_edad(
+        _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo),
+        edad,
+    )
+    case_lookup = {str(case.get("id") or "").strip(): case for case in cases if isinstance(case, dict) and str(case.get("id") or "").strip()}
+
+    rows: list[dict[str, Any]] = []
+    for path in analysis_paths:
+        for analysis_case in _filter_azapa_analysis_cases_by_matriz(_load_azapa_analysis_cases(path), matriz):
+            if not isinstance(analysis_case, dict):
+                continue
+            case_id = str(analysis_case.get("id") or "").strip()
+            if not case_id:
+                continue
+            reference_case = case_lookup.get(case_id)
+            if not isinstance(reference_case, dict):
+                continue
+            individuo_data = reference_case.get("individuo") or {}
+            if not isinstance(individuo_data, dict):
+                individuo_data = {}
+            analisis = analysis_case.get("analisis_quimicos") or {}
+            if not isinstance(analisis, dict):
+                continue
+            matriz_value = str(analisis.get("matriz") or "").strip()
+            elementos = analisis.get("elementos") or {}
+            if not isinstance(elementos, dict):
+                continue
+            for nombre_elemento, elemento_data in elementos.items():
+                if not nombre_elemento:
+                    continue
+                element_name = str(nombre_elemento)
+                if elemento and _normalize_azapa_element_filter(element_name) != _normalize_azapa_element_filter(elemento):
+                    continue
+                if isinstance(elemento_data, dict):
+                    value = elemento_data.get("valor")
+                    unit = elemento_data.get("unidad") or "ppm"
+                else:
+                    value = elemento_data
+                    unit = "ppm"
+                if not _azapa_measurement_has_value(elemento_data if isinstance(elemento_data, dict) else value):
+                    continue
+                rows.append({
+                    "id_caso": case_id,
+                    "caso": str(reference_case.get("tumba") or reference_case.get("referencia") or case_id),
+                    "sexo": str(individuo_data.get("sexo") or "").strip() or "",
+                    "edad": str(individuo_data.get("grupo_edad") or individuo_data.get("edad") or "").strip() or "",
+                    "elemento": element_name,
+                    "concentracion": value,
+                    "unidad": unit,
+                    "matriz": matriz_value,
+                    "cultura": str(reference_case.get("cultura") or "").strip() or "",
+                })
+    return rows
+
+
 def build_azapa_element_graph(
     elemento: Optional[str] = None,
     reference_path: Optional[Path] = None,

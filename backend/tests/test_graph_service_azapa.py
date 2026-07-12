@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from app.graph_service import build_azapa_element_graph, build_azapa_reference_graph, get_azapa_available_elements
+from app.graph_service import build_azapa_element_graph, build_azapa_reference_graph, build_azapa_table_rows, get_azapa_available_elements
 
 
 def test_build_azapa_reference_graph_uses_reference_tumbas():
@@ -48,3 +48,20 @@ def test_build_azapa_element_graph_excludes_measurements_without_real_values():
     assert graph["edges"]
     assert all(edge.get("concentracion") is not None for edge in graph["edges"])
     assert all(not str(edge.get("concentracion", "")).strip().lower() in {"nd", "n.d.", "n/d", "none", "null", "na", "nan"} for edge in graph["edges"])
+
+
+def test_build_azapa_table_rows_filters_by_element_and_matrix():
+    base_dir = Path(__file__).resolve().parents[1] / "data"
+    rows = build_azapa_table_rows(
+        reference_path=base_dir / "azapa140_referencia.json",
+        analysis_paths=[base_dir / "azapa140_analisis_quimicos_As_cabello.json"],
+        sexo="femenino",
+        edad="adulto",
+        matriz="cabello",
+        elemento="As",
+    )
+
+    assert rows
+    assert all(row["elemento"] == "As" for row in rows)
+    assert all(str(row["matriz"]).lower() == "cabello" for row in rows)
+    assert all(str(row["sexo"]).lower() == "femenino" for row in rows)

@@ -597,6 +597,13 @@ button {
   border: 1px solid #e2e8f0;
 }
 
+.tableWrapAzapa {
+  overflow: auto;
+  max-height: 520px;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

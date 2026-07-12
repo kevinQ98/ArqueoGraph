@@ -16,7 +16,7 @@ from fastapi.staticfiles import StaticFiles
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
 from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
-from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options
+from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 UPLOADS_DIR = BASE_DIR / "data" / "uploads"
@@ -981,6 +981,30 @@ def graph_azapa_matrix_options():
         BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
     ]
     return {"matrices": get_azapa_analysis_matriz_options(analysis_paths=analysis_paths)}
+
+
+@app.get("/graph/azapa/table")
+def graph_azapa_table(
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    elemento: Optional[str] = None,
+):
+    reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
+    analysis_paths = [
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
+    ]
+    return build_azapa_table_rows(
+        reference_path=reference_path,
+        analysis_paths=analysis_paths,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        elemento=elemento,
+    )
 
 
 # ============================================================

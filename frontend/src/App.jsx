@@ -13,6 +13,7 @@ import {
   getGraphAzapaElements,
   getAzapaSexOptions,
   getAzapaMatrixOptions,
+  getAzapaTableRows,
   getImagenesIndividuo,
   getMediciones,
   importDemo
@@ -76,6 +77,7 @@ export default function App() {
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
   const [azapaGraph, setAzapaGraph] = useState({ nodes: [], edges: [] });
   const [mediciones, setMediciones] = useState([]);
+  const [azapaTableRows, setAzapaTableRows] = useState([]);
   const [options, setOptions] = useState({ sexos: [], edades: [], elementos: [], patologias: [] });
   const [azapaElementOptions, setAzapaElementOptions] = useState(["Ninguna", "Red Completa"]);
   const [selected, setSelected] = useState(null);
@@ -208,9 +210,17 @@ export default function App() {
         graphData = await getGraphAzapaElemento(normalized, azapaSexo, azapaEdad, azapaMatriz);
       }
       setAzapaGraph(graphData || { nodes: [], edges: [] });
+      const rows = await getAzapaTableRows({
+        sexo: azapaSexo || undefined,
+        edad: azapaEdad || undefined,
+        matriz: azapaMatriz || undefined,
+        elemento: normalized === "Ninguna" || normalized === "Red Completa" ? undefined : normalized,
+      });
+      setAzapaTableRows(Array.isArray(rows) ? rows : []);
       setAzapaStatus("");
     } catch {
       setAzapaStatus("No hay datos de referencia de Azapa disponibles.");
+      setAzapaTableRows([]);
     }
   }
 
@@ -320,9 +330,8 @@ export default function App() {
   }, [edad, sexo, modoGrafo, minSimilarity, selectedElement, patologia, selectedPatologia]);
 
   useEffect(() => {
-    if (view === "clusters") {
-      loadAzapaGraph(selectedAzapaElement);
-    }
+    if (view !== "clusters") return;
+    loadAzapaGraph(selectedAzapaElement);
   }, [view, selectedAzapaElement, azapaSexo, azapaEdad, azapaMatriz]);
 
   const countByCat = {};
@@ -456,6 +465,38 @@ export default function App() {
                 hideElementCenter={false}
                 showElementEdges={true}
               />
+            </div>
+
+            <div className="panel_azapa">
+              <h2>Tabla filtrada AZAPA</h2>
+              <div className="tableWrapAzapa">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Caso</th>
+                      <th>Sexo</th>
+                      <th>Edad</th>
+                      <th>Elemento</th>
+                      <th>Valor</th>
+                      <th>Matriz</th>
+                      <th>Cultura</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {azapaTableRows.map((row, index) => (
+                      <tr key={`${row.id_caso || index}-${row.elemento || index}`}>
+                        <td>{row.caso}</td>
+                        <td>{row.sexo}</td>
+                        <td>{row.edad}</td>
+                        <td>{row.elemento}</td>
+                        <td>{row.concentracion}{row.unidad ? ` ${row.unidad}` : ""}</td>
+                        <td>{row.matriz}</td>
+                        <td>{row.cultura}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
         </main>

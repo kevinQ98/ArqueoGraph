@@ -126,6 +126,16 @@ export async function getAzapaSexOptions() {
   return res.json();
 }
 
+export async function getAzapaTableRows(params = {}) {
+  const url = new URL(`${API_BASE}/graph/azapa/table`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, value);
+  });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando tabla de Azapa");
+  return res.json();
+}
+
 export async function getFilterOptions(params = {}) {
   const url = new URL(`${API_BASE}/filters/options`);
   Object.entries(params).forEach(([key, value]) => {
