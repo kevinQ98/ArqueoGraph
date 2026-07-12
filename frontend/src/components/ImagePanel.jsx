@@ -5,12 +5,35 @@ import {
   getImagenesIndividuo,
 } from "../lib/api";
 
-export function ImagePanel({ individuo, onImagesChange }) {
+export function ImagePanel({
+  individuo,
+  onImagesChange,
+  images: imagesProp,
+  title = "Imágenes",
+  emptyMessage = "Este individuo todavía no tiene imágenes asociadas.",
+  emptyHint = "Selecciona un individuo en el grafo para visualizar sus imágenes asociadas.",
+  caseLabelPrefix = "Caso seleccionado:",
+}) {
   const [imagenes, setImagenes] = useState([]);
   const [selectedImageId, setSelectedImageId] = useState("");
   const [status, setStatus] = useState("");
 
   async function loadImages() {
+    if (Array.isArray(imagesProp)) {
+      const imgs = imagesProp.filter((img) => {
+        const u = (img.url || img.relative_path || "").toString();
+        return Boolean(u);
+      });
+      setImagenes(imgs);
+      onImagesChange?.(imgs);
+      if (imgs.length > 0) {
+        setSelectedImageId((prev) => prev || imgs[0].id_imagen);
+      } else {
+        setSelectedImageId("");
+      }
+      setStatus("");
+      return;
+    }
     if (!individuo?.id) return;
     setStatus("Cargando imágenes...");
     try {
@@ -36,13 +59,13 @@ export function ImagePanel({ individuo, onImagesChange }) {
   useEffect(() => {
     loadImages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [individuo?.id]);
+  }, [individuo?.id, imagesProp]);
 
-  if (!individuo) {
+  if (!individuo && !imagesProp?.length) {
     return (
       <section className="panel">
-        <h2><ImageIcon size={18} /> Imágenes</h2>
-        <p className="hint">Selecciona un individuo en el grafo para visualizar sus imágenes asociadas.</p>
+        <h2><ImageIcon size={18} /> {title}</h2>
+        <p className="hint">{emptyHint}</p>
       </section>
     );
   }
@@ -54,8 +77,8 @@ export function ImagePanel({ individuo, onImagesChange }) {
     <section className="panel">
       <div className="imagePanelHeader">
         <div>
-          <h2><ImageIcon size={18} /> Imágenes</h2>
-          <p className="hint">Caso seleccionado: <b>{individuo.label}</b></p>
+          <h2><ImageIcon size={18} /> {title}</h2>
+          <p className="hint">{individuo?.label ? <>{caseLabelPrefix} <b>{individuo.label}</b></> : emptyHint}</p>
         </div>
         <button className="secondary small" onClick={loadImages}><RefreshCw size={15} /> Actualizar</button>
       </div>
@@ -63,7 +86,7 @@ export function ImagePanel({ individuo, onImagesChange }) {
       {status && <p className="status">{status}</p>}
 
       {!imagenes.length ? (
-        <p className="hint">Este individuo todavía no tiene imágenes asociadas.</p>
+        <p className="hint">{emptyMessage}</p>
       ) : (
         <div className="imageViewer">
           <figure className="imageStage">

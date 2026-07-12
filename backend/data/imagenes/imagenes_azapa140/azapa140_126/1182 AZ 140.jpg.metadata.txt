@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_126
+Correlativo de diapo: 1182
+Archivo Excel origen: disco 15 (NUEVO) (1181 al 1396).xls
+Hoja: Hoja1
+Fila Excel: 3
+Celda con coincidencia: C4 (AZ 140): AZ-140 T-118 …
+fila_completa_resumida: C1: 1182 | C2: Kodachrome Film (37) MAY 89P12 | C3: _ | C4: AZ-140 T-118 … | C5: Física | C6: Huesos | C7: _ | C8: Huesos | C9: Huesos

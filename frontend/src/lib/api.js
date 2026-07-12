@@ -136,6 +136,12 @@ export async function getAzapaTableRows(params = {}) {
   return res.json();
 }
 
+export async function getAzapaCaseRelation(caseId) {
+  const res = await fetch(`${API_BASE}/graph/azapa/case/${encodeURIComponent(caseId)}/relation`);
+  if (!res.ok) throw new Error("Error cargando relación de Azapa");
+  return res.json();
+}
+
 export async function getFilterOptions(params = {}) {
   const url = new URL(`${API_BASE}/filters/options`);
   Object.entries(params).forEach(([key, value]) => {

@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_037
+Correlativo de diapo: 2620
+Archivo Excel origen: disco 23 - (2563-2730)2.xls
+Hoja: Hoja1
+Fila Excel: 59
+Celda con coincidencia: C3 (AZ 140): AZ-140 T-32 Female 45-50 Maitas Chiribaya Interosseous groove; C4 (AZ 140): AZ-140 T-32
+fila_completa_resumida: C1: 2620 | C2: Kodachrome Slide | C3: AZ-140 T-32 Female 45-50 Maitas Chiribaya Interosseous groove | C4: AZ-140 T-32 | C5: Antropología física | C6: Huesos | C7: ¿? | C8: Huesos | C9: Huesos

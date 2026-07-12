@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_015
+Correlativo de diapo: 2431
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 273
+Celda con coincidencia: C3 (AZ 140): AZ-140 T-126 Mujer/50+ Maitas Chiribaya Sharp post. Inf. Iliacspine; C4 (AZ 140): AZ-140 T-12
+fila_completa_resumida: C1: 2431 | C2: Kodachrome Slide | C3: AZ-140 T-126 Mujer/50+ Maitas Chiribaya Sharp post. Inf. Iliacspine | C4: AZ-140 T-12 | C5: Antropología física | C6: Huesos | C7: - | C8: Huesos | C9: Huesos

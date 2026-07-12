@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_096
+Correlativo de diapo: 2257
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 99
+Celda con coincidencia: C3 (AZ 140): AZ 140 T89
+fila_completa_resumida: C1: 2257 | C2: Kodachrome Film | C3: AZ 140 T89 | C4: - | C5: Antropología física | C6: Huesos | C7: ¿? | C8: Vértebras | C9: Radiografía vértebras

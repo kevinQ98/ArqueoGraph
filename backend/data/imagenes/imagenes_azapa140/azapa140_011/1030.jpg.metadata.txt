@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_011
+Correlativo de diapo: 1030
+Archivo Excel origen: disco 13 (NUEVO) (931 al 1049).xls
+Hoja: Hoja1
+Fila Excel: 101
+Celda con coincidencia: C3 (AZ 140): AZ140 T8 falange pie cup-shaped
+fila_completa_resumida: C1: 1030 | C2: Kodachrome Film (25) JUN 90P12 | C3: AZ140 T8 falange pie cup-shaped | C4: _ | C5: Física | C6: Huesos | C8: Huesos | C9: Falange pie cup-shaped

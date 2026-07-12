@@ -72,6 +72,13 @@ main {
   flex-wrap: wrap;
 }
 
+.azapaContentColumn {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+  max-width: 420px;
+}
+
 .azapaTopControls {
   display: flex;
   align-items: center;

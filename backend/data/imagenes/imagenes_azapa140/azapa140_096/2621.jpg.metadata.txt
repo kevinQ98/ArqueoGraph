@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_096
+Correlativo de diapo: 2621
+Archivo Excel origen: disco 23 - (2563-2730)2.xls
+Hoja: Hoja1
+Fila Excel: 60
+Celda con coincidencia: C4 (AZ 140): AZ-140 T-89 Female/40 years
+fila_completa_resumida: C1: 2621 | C2: Kodachrome Slide | C4: AZ-140 T-89 Female/40 years | C5: Antropología física | C6: - | C7: - | C8: - | C9: Radiografia pelvis

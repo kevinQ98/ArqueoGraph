@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_061
+Correlativo de diapo: 2129
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 217
+Celda con coincidencia: C3 (AZ 140): AZ-140 T-51 Mujer/20-21 M. Chiribaya Hemivertebras; C4 (AZ 140): 51 AZ140
+fila_completa_resumida: C1: 2129 | C2: Kodachrome Slide AUG 87H (07) | C3: AZ-140 T-51 Mujer/20-21 M. Chiribaya Hemivertebras | C4: 51 AZ140 | C5: Física

@@ -16,7 +16,7 @@ from fastapi.staticfiles import StaticFiles
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
 from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
-from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options
+from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options, resolve_azapa_case_relation
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 UPLOADS_DIR = BASE_DIR / "data" / "uploads"
@@ -1004,6 +1004,17 @@ def graph_azapa_table(
         edad=edad,
         matriz=matriz,
         elemento=elemento,
+    )
+
+
+@app.get("/graph/azapa/case/{case_id}/relation")
+def graph_azapa_case_relation(case_id: str):
+    reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
+    images_dir = BASE_DIR / "data" / "imagenes" / "imagenes_azapa140"
+    return resolve_azapa_case_relation(
+        case_id=case_id,
+        reference_path=reference_path,
+        images_dir=images_dir,
     )
 
 

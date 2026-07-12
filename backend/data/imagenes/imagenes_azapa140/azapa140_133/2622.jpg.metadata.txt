@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_133
+Correlativo de diapo: 2622
+Archivo Excel origen: disco 23 - (2563-2730)2.xls
+Hoja: Hoja1
+Fila Excel: 61
+Celda con coincidencia: C4 (AZ 140): AZ-140 T-125
+fila_completa_resumida: C1: 2622 | C2: Kodachrome Slide | C3: Female/39-44 Maitas Chiribaya sharp post. Infiliac spine | C4: AZ-140 T-125 | C5: Antropología física | C6: Huesos | C7: ¿? | C8: Huesos | C9: Huesos

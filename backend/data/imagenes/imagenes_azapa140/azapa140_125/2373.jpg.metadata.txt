@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_125
+Correlativo de diapo: 2373
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 215
+Celda con coincidencia: C3 (AZ 140): AZ-140 T-117 Mujer/39-44 Maitas chiribaya Faceto n iliac tuberosity
+fila_completa_resumida: C1: 2373 | C2: Kodachrome Slide | C3: AZ-140 T-117 Mujer/39-44 Maitas chiribaya Faceto n iliac tuberosity | C4: - | C5: Antropología física | C6: Huesos | C7: ¿? | C8: ¿? | C9: Hueso

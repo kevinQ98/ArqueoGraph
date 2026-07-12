@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_119
+Correlativo de diapo: 2432
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 274
+Celda con coincidencia: C3 (AZ 140): AZ140 T112A 99 Phallic symbol
+fila_completa_resumida: C1: 2432 | C2: Fuji | C3: AZ140 T112A 99 Phallic symbol | C4: - | C5: Antropología física | C6: ¿? | C7: - | C8: - | C9: ¿?

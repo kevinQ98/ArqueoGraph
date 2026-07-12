@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_049
+Correlativo de diapo: 2409
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 251
+Celda con coincidencia: C4 (AZ 140): AZ140 T42A
+fila_completa_resumida: C1: 2409 | C2: Kodachrome Film | C3: Fusion L4,L5 Y S1 en cuerpo y apofisiales | C4: AZ140 T42A | C5: Antropología física | C6: Huesos | C7: - | C8: Hueso sacro | C9: Hueso sacro

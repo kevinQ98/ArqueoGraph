@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_106
+Correlativo de diapo: 2118
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 206
+Celda con coincidencia: C3 (AZ 140): AZ-140 T-100, Mujer/38-40 Maitas Chiribaya Sharp post inf.iliac spine; C4 (AZ 140): AZ-140 T-100
+fila_completa_resumida: C1: 2118 | C2: Kodachrome Slide AUG 87H (32) | C3: AZ-140 T-100, Mujer/38-40 Maitas Chiribaya Sharp post inf.iliac spine | C4: AZ-140 T-100 | C5: Física | C6: Huesos | C9: Iliaco

@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_106
+Correlativo de diapo: 2455
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 297
+Celda con coincidencia: C3 (AZ 140): AZ-140 T-100 Mujer/38-40 Maitas Chiribaya Facet on sacral tuberosity; C4 (AZ 140): AZ-140 T-100
+fila_completa_resumida: C1: 2455 | C2: Kodachrome slide | C3: AZ-140 T-100 Mujer/38-40 Maitas Chiribaya Facet on sacral tuberosity | C4: AZ-140 T-100 | C5: Antropología física | C6: Huesos | C7: ¿? | C8: Huesos | C9: Huesos

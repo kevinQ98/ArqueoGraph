@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_049
+Correlativo de diapo: 272
+Archivo Excel origen: disco 2 (201 al 390).xls
+Hoja: Hoja1
+Fila Excel: 73
+Celda con coincidencia: C4 (AZ 140): AZ 140 T42A
+fila_completa_resumida: C1: 272 | C2: Kodachrome Film (28) JUN 90P12 | C3: Fusion L4 S1 en cuerpo y apofisiales | C4: AZ 140 T42A | C5: Física | C6: Hueso | C7: Fusión | C8: Columna L 4 S1 | C9: Cuerpo y espofisiales

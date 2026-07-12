@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_064
+Correlativo de diapo: 1340
+Archivo Excel origen: disco 15 (NUEVO) (1181 al 1396).xls
+Hoja: Hoja1
+Fila Excel: 161
+Celda con coincidencia: C4 (AZ 140): AZ-140 T-54
+fila_completa_resumida: C1: 1340 | C2: Kodachrome Slide (18) AUG 87H | C3: _ | C4: AZ-140 T-54 | C5: Física | C6: Momia | C8: Cuerpo momia | C9: Momia pequeña

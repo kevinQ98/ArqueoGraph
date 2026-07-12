@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_119
+Correlativo de diapo: 149
+Archivo Excel origen: disco 1 (1 al 200).xls
+Hoja: Hoja1
+Fila Excel: 150
+Celda con coincidencia: C4 (AZ 140): Az 140 T 112 A
+fila_completa_resumida: C1: 149 | C2: _ | C3: _ | C4: Az 140 T 112 A | C5: Física | C6: Momia | C7: Fractura | C8: Cráneo | C9: Cráneo

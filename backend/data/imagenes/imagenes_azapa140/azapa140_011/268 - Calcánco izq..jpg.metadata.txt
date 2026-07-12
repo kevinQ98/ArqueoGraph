@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_011
+Correlativo de diapo: 268
+Archivo Excel origen: disco 2 (201 al 390).xls
+Hoja: Hoja1
+Fila Excel: 69
+Celda con coincidencia: C3 (AZ 140): AZ 140 T8 calcánco izq.
+fila_completa_resumida: C1: 268 | C2: Kodachrome Film (30) JUN 90P12 | C3: AZ 140 T8 calcánco izq. | C4: _ | C5: Insumos investigación | C6: Radiografía | C8: Radiografía calcánco izquierdo | C9: Radiografía calcánco izquierdo

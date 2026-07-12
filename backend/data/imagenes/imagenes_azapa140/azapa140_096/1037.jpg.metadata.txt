@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_096
+Correlativo de diapo: 1037
+Archivo Excel origen: disco 13 (NUEVO) (931 al 1049).xls
+Hoja: Hoja1
+Fila Excel: 108
+Celda con coincidencia: C4 (AZ 140): AZ-140 T-89 Mujer/40 years
+fila_completa_resumida: C1: 1037 | C2: Kodachrome Slide (25) FEB 88D | C3: _ | C4: AZ-140 T-89 Mujer/40 years | C5: Insumos investigación | C6: Radiografía | C8: Radiografía columna | C9: Radiografía columna

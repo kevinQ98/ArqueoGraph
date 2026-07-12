@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_031
+Correlativo de diapo: 2195
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 37
+Celda con coincidencia: C4 (AZ 140): Preauricular scors AZ-140 T-26
+fila_completa_resumida: C1: 2195 | C2: Kodachrome Slide | C3: Mujer/50+ Maitas chiribaya | C4: Preauricular scors AZ-140 T-26 | C5: Antropología física | C6: Hueso | C7: ¿? | C8: Hueso | C9: Hueso

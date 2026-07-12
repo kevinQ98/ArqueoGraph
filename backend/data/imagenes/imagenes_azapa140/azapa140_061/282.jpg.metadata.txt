@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_061
+Correlativo de diapo: 282
+Archivo Excel origen: disco 2 (201 al 390).xls
+Hoja: Hoja1
+Fila Excel: 83
+Celda con coincidencia: C4 (AZ 140): AZ-140 T-51
+fila_completa_resumida: C1: 282 | C2: Kodachrome Slide (03) AUG 87 H | C3: _ | C4: AZ-140 T-51 | C5: Insumos investigación | C6: Radiografía | C8: Radiografía columna | C9: Radiografía columna

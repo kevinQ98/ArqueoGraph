@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_134
+Correlativo de diapo: 255
+Archivo Excel origen: disco 2 (201 al 390).xls
+Hoja: Hoja1
+Fila Excel: 56
+Celda con coincidencia: C4 (AZ 140): Az-140 T-126
+fila_completa_resumida: C1: 255 | C2: Kodachrome Slide (25) AUG 87 H | C3: Mujer/50 M. Chiribaya Arthrosis | C4: Az-140 T-126 | C5: Física | C6: Hueso | C7: Arthrosis | C8: Columna vertebral | C9: Artrosis en columna vertebral de Maitas Chiribaya

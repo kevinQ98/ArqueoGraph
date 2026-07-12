@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_096
+Correlativo de diapo: 1032
+Archivo Excel origen: disco 13 (NUEVO) (931 al 1049).xls
+Hoja: Hoja1
+Fila Excel: 103
+Celda con coincidencia: C3 (AZ 140): AZ140 T89 Fusion puntual S I der.
+fila_completa_resumida: C1: 1032 | C2: Kodachrome Film (12) JUN 90P12 | C3: AZ140 T89 Fusion puntual S I der. | C4: _ | C5: Física | C6: Huesos | C8: Huesos | C9: Huesos

@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_121
+Correlativo de diapo: 2471
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 313
+Celda con coincidencia: C4 (AZ 140): 113 AZ140
+fila_completa_resumida: C1: 2471 | C2: Fuji | C3: AZ-141 T-53 | C4: 113 AZ140 | C5: Antropología física | C6: Huesos | C7: - | C8: Huesos | C9: Huesos

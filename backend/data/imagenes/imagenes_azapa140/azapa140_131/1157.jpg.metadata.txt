@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_131
+Correlativo de diapo: 1157
+Archivo Excel origen: disco 14 (NUEVO) (1050 al 1180).xls
+Hoja: Hoja1
+Fila Excel: 109
+Celda con coincidencia: C4 (AZ 140): AZ 140 T123
+fila_completa_resumida: C1: 1157 | C2: MADE IN USA | C3: - | C4: AZ 140 T123 | C5: Física | C6: Cráneo | C7: Fractura | C8: Cabeza | C9: Cráneo

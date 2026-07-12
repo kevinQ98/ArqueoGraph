@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_119
+Correlativo de diapo: 244
+Archivo Excel origen: disco 2 (201 al 390).xls
+Hoja: Hoja1
+Fila Excel: 45
+Celda con coincidencia: C3 (AZ 140): AZ 140 T 112 A … Symb. 65
+fila_completa_resumida: C1: 244 | C2: Fuji | C3: AZ 140 T 112 A … Symb. 65 | C4: _ | C5: Cultural | C6: Artefacto | C7: _ | C8: _ | C9: estatuilla

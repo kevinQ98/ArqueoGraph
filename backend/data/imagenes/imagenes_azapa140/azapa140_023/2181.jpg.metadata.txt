@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_023
+Correlativo de diapo: 2181
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 23
+Celda con coincidencia: C3 (AZ 140): AZ-140 T-19 Mujer/40-45 Maitas chiribaya Pre auricular sulcus
+fila_completa_resumida: C1: 2181 | C2: Kodachrome Slide | C3: AZ-140 T-19 Mujer/40-45 Maitas chiribaya Pre auricular sulcus | C4: - | C5: Antropología física | C6: Huesos | C7: - | C8: ¿? | C9: Huesos

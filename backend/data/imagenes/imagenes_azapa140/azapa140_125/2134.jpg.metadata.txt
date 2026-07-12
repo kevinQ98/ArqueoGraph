@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_125
+Correlativo de diapo: 2134
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 222
+Celda con coincidencia: C4 (AZ 140): AZ-140 T-117
+fila_completa_resumida: C1: 2134 | C2: Kodachrome Slide AUG 87H (07) | C3: Mujer/39-44 Maitas Chiribaya Facet on iliac turberosity | C4: AZ-140 T-117 | C5: Física | C6: Huesos

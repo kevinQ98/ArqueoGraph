@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_092
+Correlativo de diapo: 2088
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 176
+Celda con coincidencia: C3 (AZ 140): AZ-140 T-81 Mujer /45-50 Maitas Chiribaya Ventral pubis depresión; C4 (AZ 140): AZ-140 T-81
+fila_completa_resumida: C1: 2088 | C2: Kodachrome Slide AUG 87H (30) | C3: AZ-140 T-81 Mujer /45-50 Maitas Chiribaya Ventral pubis depresión | C4: AZ-140 T-81 | C5: Física | C6: Huesos | C7: Ventral pubis depresión | C9: Pelvis

@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_096
+Correlativo de diapo: 1035
+Archivo Excel origen: disco 13 (NUEVO) (931 al 1049).xls
+Hoja: Hoja1
+Fila Excel: 106
+Celda con coincidencia: C3 (AZ 140): AZ 140 T89
+fila_completa_resumida: C1: 1035 | C2: Kodachrome Film (31) JUN 90P12 | C3: AZ 140 T89 | C4: _ | C5: Insumos investigación | C6: Radiografía | C8: Radiografía columna | C9: Radiografía columna

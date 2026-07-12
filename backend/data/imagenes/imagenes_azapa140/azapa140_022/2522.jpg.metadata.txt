@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_022
+Correlativo de diapo: 2522
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 364
+Celda con coincidencia: C3 (AZ 140): AZ140 T18 3 raíces en M3 der.mand. La tercera raiz es lingual
+fila_completa_resumida: C1: 2522 | C2: Kodachrome film | C3: AZ140 T18 3 raíces en M3 der.mand. La tercera raiz es lingual | C4: - | C5: Antropología Física | C6: Dentadura | C7: - | C8: Muela | C9: Muela

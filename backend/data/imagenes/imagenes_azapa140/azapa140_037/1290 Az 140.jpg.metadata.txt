@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_037
+Correlativo de diapo: 1290
+Archivo Excel origen: disco 15 (NUEVO) (1181 al 1396).xls
+Hoja: Hoja1
+Fila Excel: 111
+Celda con coincidencia: C4 (AZ 140): AZ-140 T-32
+fila_completa_resumida: C1: 1290 | C2: Ektachrome Slide SEP 84 | C3: _ | C4: AZ-140 T-32 | C5: Cultural | C6: Textiles | C9: Restos textiles

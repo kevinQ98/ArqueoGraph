@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_011
+Correlativo de diapo: 2009
+Archivo Excel origen: disco 21 (NUEVO) (1914 al 2159).xls
+Hoja: Hoja1
+Fila Excel: 97
+Celda con coincidencia: C3 (AZ 140): AZ-140 T-8 F 30-35
+fila_completa_resumida: C1: 2009 | C2: Kodachrome Slide AUG 87H (30) | C3: AZ-140 T-8 F 30-35 | C4: _ | C5: Física | C6: Huesos | C9: Huesos

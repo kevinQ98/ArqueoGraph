@@ -1,6 +1,12 @@
 from pathlib import Path
 
-from app.graph_service import build_azapa_element_graph, build_azapa_reference_graph, build_azapa_table_rows, get_azapa_available_elements
+from app.graph_service import (
+    build_azapa_element_graph,
+    build_azapa_reference_graph,
+    build_azapa_table_rows,
+    get_azapa_available_elements,
+    resolve_azapa_case_relation,
+)
 
 
 def test_build_azapa_reference_graph_uses_reference_tumbas():
@@ -65,3 +71,17 @@ def test_build_azapa_table_rows_filters_by_element_and_matrix():
     assert all(row["elemento"] == "As" for row in rows)
     assert all(str(row["matriz"]).lower() == "cabello" for row in rows)
     assert all(str(row["sexo"]).lower() == "femenino" for row in rows)
+
+
+def test_resolve_azapa_case_relation_returns_reference_and_images():
+    base_dir = Path(__file__).resolve().parents[1] / "data"
+    relation = resolve_azapa_case_relation(
+        "azapa140_011",
+        reference_path=base_dir / "azapa140_referencia.json",
+        images_dir=base_dir / "imagenes" / "imagenes_azapa140",
+    )
+
+    assert relation["reference"]["id"] == "azapa140_011"
+    assert relation["reference"]["tumba"] == "T8"
+    assert relation["images_count"] > 0
+    assert relation["images"][0]["relative_path"].startswith("imagenes_azapa140/azapa140_011/")

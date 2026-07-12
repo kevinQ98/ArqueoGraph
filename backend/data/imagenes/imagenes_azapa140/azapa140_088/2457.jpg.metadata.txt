@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_088
+Correlativo de diapo: 2457
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 299
+Celda con coincidencia: C4 (AZ 140): AZ-140 T-77
+fila_completa_resumida: C1: 2457 | C2: Kodachrome slide | C3: Mujer/45-50 Maitas chiribaya Calcification & osteositosis an acetabulum | C4: AZ-140 T-77 | C5: Antropología física | C6: Huesos | C7: - | C8: Media pelvis | C9: Mitad de la pelvis

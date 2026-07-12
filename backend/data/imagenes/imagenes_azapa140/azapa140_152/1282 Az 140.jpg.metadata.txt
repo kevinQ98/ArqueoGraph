@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_152
+Correlativo de diapo: 1282
+Archivo Excel origen: disco 15 (NUEVO) (1181 al 1396).xls
+Hoja: Hoja1
+Fila Excel: 103
+Celda con coincidencia: C3 (AZ 140): AZ140 TXPB2A
+fila_completa_resumida: C1: 1282 | C2: _ | C3: AZ140 TXPB2A | C4: _ | C5: Física | C6: Huesos | C8: Hueso | C9: Hueso

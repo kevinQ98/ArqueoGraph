@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_133
+Correlativo de diapo: 2187
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 29
+Celda con coincidencia: C4 (AZ 140): AZ-140 T-125
+fila_completa_resumida: C1: 2187 | C2: Kodachrome Slide | C3: Mujer/39-44 Maitas chiribaya Sharp post. Inf (ilegible) spine | C4: AZ-140 T-125 | C5: Antropología física | C6: Hueso | C7: ¿? | C8: Pelvis | C9: Mitad de la pelvis

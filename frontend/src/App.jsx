@@ -14,6 +14,7 @@ import {
   getAzapaSexOptions,
   getAzapaMatrixOptions,
   getAzapaTableRows,
+  getAzapaCaseRelation,
   getImagenesIndividuo,
   getMediciones,
   importDemo
@@ -56,6 +57,14 @@ function exportSvg() {
   downloadText("arqueograph_grafo.svg", clone.outerHTML, "image/svg+xml");
 }
 
+function exportAzapaSvg() {
+  const svg = document.getElementById("arqueograph-svg");
+  if (!svg) return;
+  const clone = svg.cloneNode(true);
+  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  downloadText("arqueograph_azapa_grafo.svg", clone.outerHTML, "image/svg+xml");
+}
+
 export default function App() {
   const [view, setView] = useState("visualizacion");
   const [modoGrafo, setModoGrafo] = useState("distancia");
@@ -84,6 +93,7 @@ export default function App() {
   const [showImages, setShowImages] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [selectedAzapaCase, setSelectedAzapaCase] = useState(null);
   const [status, setStatus] = useState("");
   const [azapaStatus, setAzapaStatus] = useState("");
   const GRAPH_ELEMENT = "Mn";
@@ -305,6 +315,20 @@ export default function App() {
     }
   }
 
+  async function handleSelectAzapaNode(node) {
+    if (!node?.id) {
+      setSelectedAzapaCase(null);
+      return;
+    }
+    setSelectedAzapaCase(null);
+    try {
+      const relation = await getAzapaCaseRelation(node.id);
+      setSelectedAzapaCase(relation);
+    } catch {
+      setSelectedAzapaCase(null);
+    }
+  }
+
   const selectedRelations = useMemo(() => {
     if (!selected || !graph?.edges?.length) return [];
     const nodeLookup = Object.fromEntries((graph.nodes || []).map((n) => [n.id, n]));
@@ -336,6 +360,12 @@ export default function App() {
 
   const countByCat = {};
 
+  const azapaStats = useMemo(() => ({
+    nodes: azapaGraph?.nodes?.length || 0,
+    edges: azapaGraph?.edges?.length || 0,
+    rows: azapaTableRows?.length || 0,
+  }), [azapaGraph, azapaTableRows]);
+
   const graphStats = useMemo(() => ({
     nodes: graph.nodes?.length || 0,
     edges: graph.edges?.length || 0,
@@ -345,8 +375,16 @@ export default function App() {
     downloadText("arqueograph_tabla_filtrada.csv", rowsToCsv(mediciones), "text/csv");
   }
 
+  function exportAzapaCsv() {
+    downloadText("arqueograph_azapa_tabla_filtrada.csv", rowsToCsv(azapaTableRows), "text/csv");
+  }
+
   function exportJson() {
     downloadText("arqueograph_grafo.json", JSON.stringify(graph, null, 2), "application/json");
+  }
+
+  function exportAzapaJson() {
+    downloadText("arqueograph_azapa_grafo.json", JSON.stringify(azapaGraph, null, 2), "application/json");
   }
 
 
@@ -394,7 +432,7 @@ export default function App() {
                 {(azapaSexoOptions || []).map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
 
-              <label>Edad AZAPA</label>
+              <label>Edad </label>
               <select value={azapaEdad} onChange={(e) => setAzapaEdad(e.target.value)}>
                 <option value="">Todas</option>
                 {(azapaEdadOptions || []).map((edadOpt) => <option key={edadOpt} value={edadOpt}>{edadOpt}</option>)}
@@ -406,6 +444,49 @@ export default function App() {
               </button>
               {azapaStatus && <p className="status">{azapaStatus}</p>}
             </section>
+
+              <section className="panel_azapa">
+              <h2>Resumen </h2>
+              <div className="summary">
+                <div><strong>{azapaStats.nodes}</strong><span>nodos</span></div>
+                <div><strong>{azapaStats.edges}</strong><span>aristas</span></div>
+                <div><strong>{azapaStats.rows}</strong><span>filas</span></div>
+              </div>
+            </section>
+
+             <section className="panel_azapa">
+              <h2><Download size={18} /> Exportar </h2>
+              <div className="exportGrid">
+                <button className="secondary small" onClick={exportAzapaCsv}>CSV tabla</button>
+                <button className="secondary small" onClick={exportAzapaJson}>JSON grafo</button>
+                <button className="secondary small" onClick={exportAzapaSvg}>SVG grafo</button>
+              </div>
+            </section>
+
+            <section className="panel_azapa">
+              <h2>Imágenes azapa</h2>
+              <button className={showImages ? "primary fullButton" : "secondary fullButton"} onClick={toggleImages}>
+                {showImages ? "Ocultar imágenes del grafo" : "Imágenes"}
+              </button>
+              <p className="hint">Selecciona un caso y presiona "Imágenes" para abrir nodos de imagen asociados.</p>
+              {showImages && selected && <p className="status">{selectedImages.length} imagen(es) asociadas al caso.</p>}
+            </section>
+            <div className="panel_azapa">
+                <h2>Detalle AZAPA</h2>
+                {!selectedAzapaCase?.reference ? (
+                  <p className="hint">Selecciona un nodo del grafo para ver la referencia y las imágenes del caso AZAPA.</p>
+                ) : (
+                  <>
+                    <p><strong>{selectedAzapaCase.reference.tumba || selectedAzapaCase.case_id}</strong></p>
+                    <p><b>Id:</b> {selectedAzapaCase.reference.id || selectedAzapaCase.case_id}</p>
+                    <p><b>Sexo:</b> {selectedAzapaCase.reference.sexo || "—"}</p>
+                    <p><b>Edad:</b> {selectedAzapaCase.reference.edad || "—"}</p>
+                    <p><b>Cultura:</b> {selectedAzapaCase.reference.cultura || "—"}</p>
+                    <p><b>Imágenes:</b> {selectedAzapaCase.images_count || 0}</p>
+                  </>
+                )}
+              </div>
+
           </aside>
           <section className="panel_grafo_azapa">
             <div className="panel azapa_graphPanel">
@@ -458,13 +539,29 @@ export default function App() {
                 graph={azapaGraph}
                 elemento=""
                 mode={modoGrafoAzapa}
-                onSelect={() => {}}
-                selectedNodeId=""
+                onSelect={handleSelectAzapaNode}
+                selectedNodeId={selectedAzapaCase?.case_id || ""}
                 imageNodes={[]}
                 showImages={false}
                 hideElementCenter={false}
                 showElementEdges={true}
               />
+            </div>
+
+            <div className="azapaContentColumn">
+              <div className="panel_azapa">
+                <ImagePanel
+                  individuo={{ id: selectedAzapaCase?.case_id, label: selectedAzapaCase?.reference?.tumba || selectedAzapaCase?.case_id || "" }}
+                  images={selectedAzapaCase?.images || []}
+                  title="Imágenes AZAPA"
+                  emptyMessage="Este caso AZAPA todavía no tiene imágenes asociadas."
+                  emptyHint="Selecciona un nodo del grafo AZAPA para ver la referencia y las imágenes del caso."
+                  caseLabelPrefix="Caso AZAPA:"
+                  onImagesChange={() => {}}
+                />
+              </div>
+
+              
             </div>
 
             <div className="panel_azapa">

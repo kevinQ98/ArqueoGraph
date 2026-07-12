@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_119
+Correlativo de diapo: 2358
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 200
+Celda con coincidencia: C4 (AZ 140): AZ-140 112 A
+fila_completa_resumida: C1: 2358 | C2: Kodachrome Slide | C3: - | C4: AZ-140 112 A | C5: Antropología física | C6: Restos material momificado | C7: - | C8: - | C9: Restos material momificado

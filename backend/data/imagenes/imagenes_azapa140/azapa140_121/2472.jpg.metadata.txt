@@ -1,0 +1,8 @@
+Sitio buscado: Azapa 140 / AZ 140
+FK: azapa140_121
+Correlativo de diapo: 2472
+Archivo Excel origen: disco 22 (NUEVO) (2160 al 2562).xls
+Hoja: Hoja1
+Fila Excel: 314
+Celda con coincidencia: C3 (AZ 140): AZ-140 Mujer/20-21 T113 Maitas Chiribaya Pott´s disease; C4 (AZ 140): 113 AZ140
+fila_completa_resumida: C1: 2472 | C2: Kodachrome slide | C3: AZ-140 Mujer/20-21 T113 Maitas Chiribaya Pott´s disease | C4: 113 AZ140 | C5: Antropología física | C6: Huesos | C7: - | C8: Pelvis, vértebras y sacro | C9: Mitad de la pelvis, vértebras y sacro
