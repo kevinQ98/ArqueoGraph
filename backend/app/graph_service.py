@@ -95,6 +95,177 @@ def _load_azapa_reference_cases(reference_path: Optional[Path] = None) -> list[d
     return []
 
 
+def _load_azapa_analysis_cases(analysis_path: Optional[Path] = None) -> list[dict[str, Any]]:
+    if not analysis_path or not analysis_path.exists():
+        return []
+    try:
+        with analysis_path.open("r", encoding="utf-8") as fh:
+            payload = json.load(fh)
+    except Exception:
+        return []
+    if isinstance(payload, dict):
+        for value in payload.values():
+            if isinstance(value, dict) and isinstance(value.get("casos"), list):
+                return [case for case in value["casos"] if isinstance(case, dict)]
+    return []
+
+
+def _normalize_azapa_element_filter(value: Optional[str]) -> str:
+    if value is None:
+        return ""
+    return str(value).strip().lower().replace(" ", "").replace("_", "").replace("-", "")
+
+
+def get_azapa_available_elements(analysis_paths: Optional[list[Path]] = None) -> list[str]:
+    if not analysis_paths:
+        analysis_paths = [
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
+        ]
+
+    available_elements: list[str] = []
+    for path in analysis_paths:
+        for case in _load_azapa_analysis_cases(path):
+            case_id = str(case.get("id") or "").strip()
+            if not case_id:
+                continue
+            analisis = case.get("analisis_quimicos") or {}
+            elementos = analisis.get("elementos") or {}
+            if not isinstance(elementos, dict):
+                continue
+            for elemento_name in elementos.keys():
+                if not elemento_name:
+                    continue
+                name = str(elemento_name)
+                if name not in available_elements:
+                    available_elements.append(name)
+    return available_elements
+
+
+def build_azapa_element_graph(
+    elemento: Optional[str] = None,
+    reference_path: Optional[Path] = None,
+    analysis_paths: Optional[list[Path]] = None,
+) -> dict[str, Any]:
+    """Construye un grafo de AZAPA filtrado por elemento químico.
+
+    - Ninguna / vacío: devuelve la vista de referencia de AZAPA sin nodo central.
+    - As / B / Li: muestra las tumbas vinculadas a ese elemento.
+    - Red completa: muestra todos los elementos disponibles y sus conexiones.
+    """
+    if not analysis_paths:
+        analysis_paths = [
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
+        ]
+
+    normalized_element = _normalize_azapa_element_filter(elemento)
+    if normalized_element in {"", "ninguna", "none", "null", "no"}:
+        return build_azapa_reference_graph(reference_path=reference_path)
+
+    cases = _load_azapa_reference_cases(reference_path)
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    seen_nodes: set[str] = set()
+
+    is_red_completa = normalized_element == "redcompleta"
+
+    def add_node(node: dict[str, Any]) -> None:
+        node_id = node["id"]
+        if node_id in seen_nodes:
+            return
+        seen_nodes.add(node_id)
+        nodes.append(node)
+
+    analysis_map: dict[str, dict[str, dict[str, Any]]] = {}
+    available_elements: list[str] = []
+    for path in analysis_paths:
+        for case in _load_azapa_analysis_cases(path):
+            case_id = str(case.get("id") or "").strip()
+            if not case_id:
+                continue
+            analisis = case.get("analisis_quimicos") or {}
+            elementos = analisis.get("elementos") or {}
+            if not isinstance(elementos, dict):
+                continue
+            case_measurements = analysis_map.setdefault(case_id, {})
+            for elemento_name, elemento_data in elementos.items():
+                if not elemento_name:
+                    continue
+                name = str(elemento_name)
+                if name not in available_elements:
+                    available_elements.append(name)
+                if isinstance(elemento_data, dict):
+                    value = elemento_data.get("valor")
+                    unit = elemento_data.get("unidad") or "ppm"
+                else:
+                    value = elemento_data
+                    unit = "ppm"
+                case_measurements[name] = {
+                    "valor": value,
+                    "unidad": unit,
+                }
+
+    if is_red_completa:
+        selected_elements = available_elements
+    else:
+        selected_elements = [str(elemento).strip()]
+
+    for idx, case in enumerate(cases, start=1):
+        if not isinstance(case, dict):
+            continue
+        case_id = str(case.get("id") or "").strip() or f"azapa_case_{idx}"
+        tumba = case.get("tumba") or case.get("referencia") or case_id
+        individuo_data = case.get("individuo") or {}
+        if not isinstance(individuo_data, dict):
+            individuo_data = {}
+        add_node({
+            "id": case_id,
+            "tumba": str(tumba),
+            "label": str(tumba),
+            "type": "individuo",
+            "sexo": individuo_data.get("sexo"),
+            "edad": individuo_data.get("grupo_edad") or individuo_data.get("edad"),
+            "cultura": case.get("cultura"),
+            "id_documento": case_id,
+            "numero_cuerpo": str(tumba),
+            "id_individuo": case_id,
+        })
+        for elemento_name in selected_elements:
+            measurements = analysis_map.get(case_id, {})
+            if elemento_name not in measurements:
+                continue
+            element_id = f"elemento:{elemento_name}"
+            add_node({
+                "id": element_id,
+                "label": elemento_name,
+                "type": "elemento",
+                "elemento": elemento_name,
+            })
+            measure = measurements[elemento_name]
+            edges.append({
+                "source": case_id,
+                "target": element_id,
+                "label": "mide",
+                "elemento": elemento_name,
+                "concentracion": measure.get("valor"),
+                "unidad": measure.get("unidad"),
+            })
+
+    return {
+        "mode": "relational",
+        "nodes": nodes,
+        "edges": edges,
+        "summary": {
+            "individuos": len(cases),
+            "tumbas": len(cases),
+            "elementos": len(selected_elements),
+        },
+    }
+
+
 def build_azapa_reference_graph(reference_path: Optional[Path] = None) -> dict[str, Any]:
     """Construye un grafo simple a partir del JSON de referencia de Azapa.
 

@@ -254,7 +254,14 @@ def _load_json_cases(path: Path) -> tuple[list[dict], dict]:
     return [], {}
 
 
-def import_azapa_master_data(reference_path: Path, dataciones_path: Path | None = None, analisis_as_cabello_path: Path | None = None, analisis_as_b_li_costilla_path: Path | None = None) -> dict:
+def import_azapa_master_data(
+    reference_path: Path,
+    dataciones_path: Path | None = None,
+    analisis_as_cabello_path: Path | None = None,
+    analisis_as_b_li_costilla_path: Path | None = None,
+    analisis_li_s_b_pb_as_cabello_ref_dulasiri_path: Path | None = None,
+    analisis_mn_costilla_path: Path | None = None,
+) -> dict:
     if not reference_path.exists():
         return {"inserted": 0, "updated": 0, "skipped": 0, "rows_total": 0, "errors": ["No existe el archivo JSON de referencia de AZAPA"]}
 
@@ -422,6 +429,8 @@ def import_azapa_master_data(reference_path: Path, dataciones_path: Path | None 
 
         _append_measurements(analisis_as_cabello_path, "analisis_as_cabello")
         _append_measurements(analisis_as_b_li_costilla_path, "analisis_as_b_li_costilla")
+        _append_measurements(analisis_li_s_b_pb_as_cabello_ref_dulasiri_path, "analisis_li_s_b_pb_as_cabello_ref_dulasiri")
+        _append_measurements(analisis_mn_costilla_path, "analisis_mn_costilla")
 
     return {
         "inserted": inserted,

@@ -9,6 +9,8 @@ import {
   getGraphAllPatologias,
   getGraphSimilarity,
   getGraphAzapaReference,
+  getGraphAzapaElemento,
+  getGraphAzapaElements,
   getImagenesIndividuo,
   getMediciones,
   importDemo
@@ -60,12 +62,14 @@ export default function App() {
   const [patologia, setPatologia] = useState("");
   const [selectedPatologia, setSelectedPatologia] = useState("");
   const [selectedElement, setSelectedElement] = useState("Mn");
+  const [selectedAzapaElement, setSelectedAzapaElement] = useState("Ninguna");
   const [elementsSimilarity, setElementsSimilarity] = useState("Mn,As,Ba");
   const [minSimilarity, setMinSimilarity] = useState(0.55);
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
   const [azapaGraph, setAzapaGraph] = useState({ nodes: [], edges: [] });
   const [mediciones, setMediciones] = useState([]);
   const [options, setOptions] = useState({ sexos: [], edades: [], elementos: [], patologias: [] });
+  const [azapaElementOptions, setAzapaElementOptions] = useState(["Ninguna", "Red Completa"]);
   const [selected, setSelected] = useState(null);
   const [showImages, setShowImages] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -78,13 +82,32 @@ export default function App() {
 
   async function loadOptions() {
     try {
-      const opts = await getFilterOptions();
-      setOptions(opts);
+      const opts = await getFilterOptions({ fuente: "morro1" });
+      setOptions({ ...opts, elementos: Array.isArray(opts.elementos) ? opts.elementos : ["Mn"] });
       if (!opts.elementos?.includes(selectedElement) && opts.elementos?.length) {
         setSelectedElement(opts.elementos[0]);
       }
+      if (!selectedElement || selectedElement !== "Mn") {
+        setSelectedElement("Mn");
+      }
     } catch {
       // Si aún no hay datos, se mantienen opciones por defecto.
+      setOptions((prev) => ({ ...prev, elementos: ["Mn"] }));
+      setSelectedElement("Mn");
+    }
+  }
+
+  async function loadAzapaFilterOptions() {
+    try {
+      const opts = await getFilterOptions({ fuente: "azapa" });
+      const elementos = Array.isArray(opts.elementos) ? opts.elementos : [];
+      const baseOptions = ["Ninguna", "Red Completa", ...elementos.filter(Boolean)];
+      setAzapaElementOptions(baseOptions);
+      if (!baseOptions.includes(selectedAzapaElement) && baseOptions.length) {
+        setSelectedAzapaElement(baseOptions[0]);
+      }
+    } catch {
+      setAzapaElementOptions(["Ninguna", "Red Completa"]);
     }
   }
 
@@ -128,10 +151,18 @@ export default function App() {
     }
   }
 
-  async function loadAzapaGraph() {
+  async function loadAzapaGraph(elementoFilter = selectedAzapaElement) {
     setAzapaStatus("Cargando grafo Azapa...");
     try {
-      const graphData = await getGraphAzapaReference();
+      const normalized = String(elementoFilter || "Ninguna").trim();
+      let graphData;
+      if (normalized === "Ninguna") {
+        graphData = await getGraphAzapaReference();
+      } else if (normalized === "Red Completa") {
+        graphData = await getGraphAzapaElements();
+      } else {
+        graphData = await getGraphAzapaElemento(normalized);
+      }
       setAzapaGraph(graphData || { nodes: [], edges: [] });
       setAzapaStatus("");
     } catch {
@@ -236,7 +267,8 @@ export default function App() {
 
   useEffect(() => {
     loadOptions();
-    loadAzapaGraph();
+    loadAzapaFilterOptions();
+    loadAzapaGraph(selectedAzapaElement);
   }, []);
 
   useEffect(() => {
@@ -245,9 +277,9 @@ export default function App() {
 
   useEffect(() => {
     if (view === "clusters") {
-      loadAzapaGraph();
+      loadAzapaGraph(selectedAzapaElement);
     }
-  }, [view]);
+  }, [view, selectedAzapaElement]);
 
   const countByCat = {};
 
@@ -300,9 +332,14 @@ export default function App() {
               <label>Modo de grafo azapa</label>
               <select value={modoGrafoAzapa} onChange={(e) => setModoGrafoAzapa(e.target.value)}>
                 <option value="distancia">Distancia radial</option>
-           
               </select>
-              <button onClick={loadAzapaGraph} className="secondary" style={{ marginTop: 10 }}>
+              <label style={{ marginTop: 10 }}>Elemento químico</label>
+              <select value={selectedAzapaElement} onChange={(e) => setSelectedAzapaElement(e.target.value)}>
+                {azapaElementOptions.map((option) => (
+                  <option key={option} value={option}>{option}</option>
+                ))}
+              </select>
+              <button onClick={() => loadAzapaGraph(selectedAzapaElement)} className="secondary" style={{ marginTop: 10 }}>
                 <RefreshCw size={16} /> Actualizar
               </button>
               {azapaStatus && <p className="status">{azapaStatus}</p>}
@@ -311,8 +348,11 @@ export default function App() {
           <section className="panel_grafo_azapa">
             <div className="panel azapa_graphPanel">
               <h2><Network size={18} /> Grafo azapa: {modoGrafoAzapa}</h2>
+              <div className="graphFilterRowAzapa">
+
+              </div>
               <p className="hint">
-                Se construye a partir de los 140 registros del JSON de referencia de Azapa usando el campo tumba como etiqueta de cada nodo.
+                Azul = masculino, rojo = femenino, gris = no determinado/probable.
               </p>
               <GraphSvg
                 graph={azapaGraph}

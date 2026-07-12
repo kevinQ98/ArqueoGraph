@@ -89,8 +89,27 @@ export async function getGraphAzapaReference() {
   return res.json();
 }
 
-export async function getFilterOptions() {
-  return request("/filters/options");
+export async function getGraphAzapaElemento(elemento) {
+  const value = encodeURIComponent(elemento || "ninguna");
+  const res = await fetch(`${API_BASE}/graph/azapa/elemento/${value}`);
+  if (!res.ok) throw new Error("Error cargando grafo de Azapa por elemento");
+  return res.json();
+}
+
+export async function getGraphAzapaElements() {
+  const res = await fetch(`${API_BASE}/graph/azapa/elements`);
+  if (!res.ok) throw new Error("Error cargando red completa de Azapa");
+  return res.json();
+}
+
+export async function getFilterOptions(params = {}) {
+  const url = new URL(`${API_BASE}/filters/options`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") url.searchParams.set(key, value);
+  });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando opciones de filtros");
+  return res.json();
 }
 
 export async function getAppOverview() {

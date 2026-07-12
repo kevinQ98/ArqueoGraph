@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from app.graph_service import build_azapa_reference_graph
+from app.graph_service import build_azapa_reference_graph, get_azapa_available_elements
 
 
 def test_build_azapa_reference_graph_uses_reference_tumbas():
@@ -13,3 +13,22 @@ def test_build_azapa_reference_graph_uses_reference_tumbas():
     assert len(individuo_nodes) == 140
     assert any(node.get("label") == "T1" for node in individuo_nodes)
     assert any(node.get("label") == "T2" for node in individuo_nodes)
+
+
+def test_get_azapa_available_elements_includes_new_analysis_files():
+    base_dir = Path(__file__).resolve().parents[1] / "data"
+    analysis_paths = [
+        base_dir / "azapa140_analisis_quimicos_As_cabello.json",
+        base_dir / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
+        base_dir / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
+        base_dir / "azapa140_analisis_quimicos_Mn_costilla.json",
+    ]
+
+    elements = get_azapa_available_elements(analysis_paths=analysis_paths)
+
+    assert "As" in elements
+    assert "B" in elements
+    assert "Li" in elements
+    assert "Mn" in elements
+    assert "Pb" in elements
+    assert "S" in elements

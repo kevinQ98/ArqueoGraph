@@ -16,7 +16,7 @@ from fastapi.staticfiles import StaticFiles
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
 from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
-from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph
+from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, get_azapa_available_elements
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 UPLOADS_DIR = BASE_DIR / "data" / "uploads"
@@ -613,11 +613,15 @@ def import_azapa_master():
     dataciones_path = BASE_DIR / "data" / "azapa140_dataciones_radiocarbono_Cassman_1997.json"
     analisis_as_cabello_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json"
     analisis_as_b_li_costilla_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json"
+    analisis_li_s_b_pb_as_cabello_ref_dulasiri_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json"
+    analisis_mn_costilla_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json"
     result = import_azapa_master_data(
         reference_path,
         dataciones_path=dataciones_path,
         analisis_as_cabello_path=analisis_as_cabello_path,
         analisis_as_b_li_costilla_path=analisis_as_b_li_costilla_path,
+        analisis_li_s_b_pb_as_cabello_ref_dulasiri_path=analisis_li_s_b_pb_as_cabello_ref_dulasiri_path,
+        analisis_mn_costilla_path=analisis_mn_costilla_path,
     )
     return {
         **result,
@@ -625,6 +629,8 @@ def import_azapa_master():
         "dataciones_file": str(dataciones_path),
         "analisis_as_cabello_file": str(analisis_as_cabello_path),
         "analisis_as_b_li_costilla_file": str(analisis_as_b_li_costilla_path),
+        "analisis_li_s_b_pb_as_cabello_ref_dulasiri_file": str(analisis_li_s_b_pb_as_cabello_ref_dulasiri_path),
+        "analisis_mn_costilla_file": str(analisis_mn_costilla_path),
     }
 
 
@@ -922,17 +928,60 @@ def graph_azapa_reference():
     return build_azapa_reference_graph(reference_path=reference_path)
 
 
+@app.get("/graph/azapa/elemento/{elemento}")
+def graph_azapa_elemento(elemento: str):
+    reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
+    analysis_paths = [
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
+    ]
+    return build_azapa_element_graph(
+        elemento=elemento,
+        reference_path=reference_path,
+        analysis_paths=analysis_paths,
+    )
+
+
+@app.get("/graph/azapa/elements")
+def graph_azapa_elements():
+    reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
+    analysis_paths = [
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
+    ]
+    return build_azapa_element_graph(
+        elemento="red_completa",
+        reference_path=reference_path,
+        analysis_paths=analysis_paths,
+    )
+
+
 # ============================================================
 # FASE 3: filtros y grafos analíticos
 # ============================================================
 
 @app.get("/filters/options")
-def filter_options():
+def filter_options(fuente: Optional[str] = None):
+    fuente_norm = (fuente or "").strip().lower()
     with get_connection() as conn:
         sexos = [r["sexo"] for r in conn.execute("SELECT DISTINCT sexo FROM individuos WHERE sexo IS NOT NULL ORDER BY sexo").fetchall()]
         sitios = [r["sitio"] for r in conn.execute("SELECT DISTINCT sitio FROM individuos WHERE sitio IS NOT NULL ORDER BY sitio").fetchall()]
         estilos = [r["estilo_momificacion"] for r in conn.execute("SELECT DISTINCT estilo_momificacion FROM individuos WHERE estilo_momificacion IS NOT NULL ORDER BY estilo_momificacion").fetchall()]
-        elementos = [r["elemento"] for r in conn.execute("SELECT DISTINCT elemento FROM mediciones_quimicas ORDER BY elemento").fetchall()]
+        if fuente_norm == "morro1":
+            elementos = ["Mn"]
+        elif fuente_norm == "azapa":
+            elementos = get_azapa_available_elements([
+                BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
+                BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
+                BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
+                BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
+            ])
+        else:
+            elementos = [r["elemento"] for r in conn.execute("SELECT DISTINCT elemento FROM mediciones_quimicas ORDER BY elemento").fetchall()]
         edades = [r["edad"] for r in conn.execute("SELECT DISTINCT edad FROM individuos WHERE edad IS NOT NULL ORDER BY edad").fetchall()]
         casos_documento = [r["id_documento"] for r in conn.execute("SELECT DISTINCT id_documento FROM individuos WHERE id_documento IS NOT NULL ORDER BY id_documento").fetchall()]
         casos_id = [r["id_individuo"] for r in conn.execute("SELECT DISTINCT id_individuo FROM individuos WHERE id_individuo IS NOT NULL ORDER BY id_individuo").fetchall()]
