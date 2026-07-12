@@ -83,31 +83,40 @@ export async function getGraphSimilarity({ elements = "Mn,As,Ba", min_similarity
   return res.json();
 }
 
-export async function getGraphAzapaReference(sexo = "", edad = "") {
+export async function getGraphAzapaReference(sexo = "", edad = "", matriz = "") {
   const url = new URL(`${API_BASE}/graph/azapa/reference`);
   if (sexo) url.searchParams.set("sexo", sexo);
   if (edad) url.searchParams.set("edad", edad);
+  if (matriz) url.searchParams.set("matriz", matriz);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de Azapa");
   return res.json();
 }
 
-export async function getGraphAzapaElemento(elemento, sexo = "", edad = "") {
+export async function getGraphAzapaElemento(elemento, sexo = "", edad = "", matriz = "") {
   const value = encodeURIComponent(elemento || "ninguna");
   const url = new URL(`${API_BASE}/graph/azapa/elemento/${value}`);
   if (sexo) url.searchParams.set("sexo", sexo);
   if (edad) url.searchParams.set("edad", edad);
+  if (matriz) url.searchParams.set("matriz", matriz);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de Azapa por elemento");
   return res.json();
 }
 
-export async function getGraphAzapaElements(sexo = "", edad = "") {
+export async function getGraphAzapaElements(sexo = "", edad = "", matriz = "") {
   const url = new URL(`${API_BASE}/graph/azapa/elements`);
   if (sexo) url.searchParams.set("sexo", sexo);
   if (edad) url.searchParams.set("edad", edad);
+  if (matriz) url.searchParams.set("matriz", matriz);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando red completa de Azapa");
+  return res.json();
+}
+
+export async function getAzapaMatrixOptions() {
+  const res = await fetch(`${API_BASE}/graph/azapa/matrix-options`);
+  if (!res.ok) throw new Error("Error cargando opciones de matriz de Azapa");
   return res.json();
 }
 

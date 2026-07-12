@@ -68,7 +68,7 @@ main {
   align-items: center;
   justify-content: flex-start;
   gap: 16px;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   flex-wrap: wrap;
 }
 
@@ -79,6 +79,24 @@ main {
   flex-wrap: wrap;
   margin-left: 0;
   margin-bottom: 10px;
+  width: fit-content;
+}
+
+.azapaFiltersRow {
+  align-items: flex-start;
+  gap: 18px;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.azapaFilterGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.azapaMatrixGroup {
+  flex: 1 1 320px;
 }
 
 .azapaTopControls label {
@@ -89,6 +107,37 @@ main {
 
 .azapaTopControls select {
   min-width: 180px;
+}
+
+.azapaMatrixTiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.azapaMatrixTile {
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-height: 38px;
+}
+
+.azapaMatrixTile:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.azapaMatrixTile.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.2);
 }
 
 .adminMain {

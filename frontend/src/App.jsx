@@ -12,6 +12,7 @@ import {
   getGraphAzapaElemento,
   getGraphAzapaElements,
   getAzapaSexOptions,
+  getAzapaMatrixOptions,
   getImagenesIndividuo,
   getMediciones,
   importDemo
@@ -68,6 +69,8 @@ export default function App() {
   const [azapaSexoOptions, setAzapaSexoOptions] = useState([]);
   const [azapaEdad, setAzapaEdad] = useState("");
   const [azapaEdadOptions, setAzapaEdadOptions] = useState([]);
+  const [azapaMatriz, setAzapaMatriz] = useState("");
+  const [azapaMatrizOptions, setAzapaMatrizOptions] = useState([]);
   const [elementsSimilarity, setElementsSimilarity] = useState("Mn,As,Ba");
   const [minSimilarity, setMinSimilarity] = useState(0.55);
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
@@ -140,6 +143,16 @@ export default function App() {
     } catch {
       setAzapaEdadOptions([]);
     }
+    try {
+      const matrixOpts = await getAzapaMatrixOptions();
+      const matrices = Array.isArray(matrixOpts?.matrices) ? matrixOpts.matrices.filter(Boolean) : [];
+      setAzapaMatrizOptions(matrices);
+      if (azapaMatriz && !matrices.includes(azapaMatriz)) {
+        setAzapaMatriz("");
+      }
+    } catch {
+      setAzapaMatrizOptions([]);
+    }
   }
 
   async function load() {
@@ -188,11 +201,11 @@ export default function App() {
       const normalized = String(elementoFilter || "Ninguna").trim();
       let graphData;
       if (normalized === "Ninguna") {
-        graphData = await getGraphAzapaReference(azapaSexo, azapaEdad);
+        graphData = await getGraphAzapaReference(azapaSexo, azapaEdad, azapaMatriz);
       } else if (normalized === "Red Completa") {
-        graphData = await getGraphAzapaElements(azapaSexo, azapaEdad);
+        graphData = await getGraphAzapaElements(azapaSexo, azapaEdad, azapaMatriz);
       } else {
-        graphData = await getGraphAzapaElemento(normalized, azapaSexo, azapaEdad);
+        graphData = await getGraphAzapaElemento(normalized, azapaSexo, azapaEdad, azapaMatriz);
       }
       setAzapaGraph(graphData || { nodes: [], edges: [] });
       setAzapaStatus("");
@@ -310,7 +323,7 @@ export default function App() {
     if (view === "clusters") {
       loadAzapaGraph(selectedAzapaElement);
     }
-  }, [view, selectedAzapaElement, azapaSexo, azapaEdad]);
+  }, [view, selectedAzapaElement, azapaSexo, azapaEdad, azapaMatriz]);
 
   const countByCat = {};
 
@@ -378,6 +391,7 @@ export default function App() {
                 {(azapaEdadOptions || []).map((edadOpt) => <option key={edadOpt} value={edadOpt}>{edadOpt}</option>)}
               </select>
 
+             
               <button onClick={() => loadAzapaGraph(selectedAzapaElement)} className="secondary" style={{ marginTop: 10 }}>
                 <RefreshCw size={16} /> Actualizar
               </button>
@@ -388,13 +402,44 @@ export default function App() {
             <div className="panel azapa_graphPanel">
               <div className="graphFilterRowAzapa">
                 <h2 style={{ marginBottom: 0 }}><Network size={18} /> Grafo azapa: {modoGrafoAzapa}</h2>
-                <div className="azapaTopControls">
+              </div>
+              <div className="azapaTopControls azapaFiltersRow">
+                <div className="azapaFilterGroup">
                   <label style={{ margin: 0 }}>Elemento químico</label>
-                  <select value={selectedAzapaElement} onChange={(e) => setSelectedAzapaElement(e.target.value)}>
+                  <div className="azapaMatrixTiles" role="group" aria-label="Filtro de elemento químico AZAPA">
                     {azapaElementOptions.map((option) => (
-                      <option key={option} value={option}>{option}</option>
+                      <button
+                        key={option}
+                        type="button"
+                        className={`azapaMatrixTile ${selectedAzapaElement === option ? "active" : ""}`}
+                        onClick={() => setSelectedAzapaElement(option)}
+                      >
+                        {option}
+                      </button>
                     ))}
-                  </select>
+                  </div>
+                </div>
+                <div className="azapaFilterGroup azapaMatrixGroup">
+                  <label>Matriz AZAPA</label>
+                  <div className="azapaMatrixTiles" role="group" aria-label="Filtro de matriz AZAPA">
+                    <button
+                      type="button"
+                      className={`azapaMatrixTile ${!azapaMatriz ? "active" : ""}`}
+                      onClick={() => setAzapaMatriz("")}
+                    >
+                      Todas
+                    </button>
+                    {(azapaMatrizOptions || []).map((matrizOpt) => (
+                      <button
+                        key={matrizOpt}
+                        type="button"
+                        className={`azapaMatrixTile ${azapaMatriz === matrizOpt ? "active" : ""}`}
+                        onClick={() => setAzapaMatriz(matrizOpt)}
+                      >
+                        {matrizOpt}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
               <p className="hint">

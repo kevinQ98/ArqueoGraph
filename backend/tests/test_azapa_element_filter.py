@@ -42,3 +42,15 @@ def test_build_azapa_reference_graph_filters_by_edad_from_reference_json():
     individual_nodes = [node for node in graph["nodes"] if node.get("type") == "individuo"]
     assert individual_nodes
     assert all((node.get("edad") or "").lower() == "adulto" for node in individual_nodes)
+
+
+def test_build_azapa_reference_graph_filters_by_matriz_from_analysis_json():
+    base_dir = Path(__file__).resolve().parents[1]
+    graph = build_azapa_reference_graph(
+        reference_path=base_dir / "data" / "azapa140_referencia.json",
+        matriz="cabello",
+    )
+
+    individual_nodes = [node for node in graph["nodes"] if node.get("type") == "individuo"]
+    assert individual_nodes
+    assert all(node.get("id") in {"azapa:site"} or node.get("id") for node in individual_nodes)

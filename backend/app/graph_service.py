@@ -157,6 +157,53 @@ def get_azapa_reference_sex_options(reference_path: Optional[Path] = None) -> li
     return sorted(sex_options, key=lambda item: str(item).lower())
 
 
+def _normalize_azapa_matriz_filter(value: Optional[str]) -> str:
+    if value is None:
+        return ""
+    return _normalize_filter_value(str(value))
+
+
+def _filter_azapa_analysis_cases_by_matriz(cases: list[dict[str, Any]], matriz: Optional[str] = None) -> list[dict[str, Any]]:
+    normalized_matriz = _normalize_azapa_matriz_filter(matriz)
+    if not normalized_matriz:
+        return cases
+    filtered: list[dict[str, Any]] = []
+    for case in cases:
+        if not isinstance(case, dict):
+            continue
+        analisis = case.get("analisis_quimicos") or {}
+        if not isinstance(analisis, dict):
+            continue
+        case_matriz = str(analisis.get("matriz") or "").strip()
+        if _normalize_azapa_matriz_filter(case_matriz) == normalized_matriz:
+            filtered.append(case)
+    return filtered
+
+
+def get_azapa_analysis_matriz_options(analysis_paths: Optional[list[Path]] = None) -> list[str]:
+    if not analysis_paths:
+        analysis_paths = [
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
+        ]
+    options: list[str] = []
+    seen: set[str] = set()
+    for path in analysis_paths:
+        for case in _load_azapa_analysis_cases(path):
+            analisis = case.get("analisis_quimicos") or {}
+            if not isinstance(analisis, dict):
+                continue
+            value = str(analisis.get("matriz") or "").strip()
+            normalized = _normalize_azapa_matriz_filter(value)
+            if not normalized or normalized in seen:
+                continue
+            seen.add(normalized)
+            options.append(value)
+    return sorted(options, key=lambda item: str(item).lower())
+
+
 def _load_azapa_analysis_cases(analysis_path: Optional[Path] = None) -> list[dict[str, Any]]:
     if not analysis_path or not analysis_path.exists():
         return []
@@ -238,6 +285,7 @@ def build_azapa_element_graph(
     analysis_paths: Optional[list[Path]] = None,
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
+    matriz: Optional[str] = None,
 ) -> dict[str, Any]:
     """Construye un grafo de AZAPA filtrado por elemento químico.
 
@@ -253,7 +301,7 @@ def build_azapa_element_graph(
 
     normalized_element = _normalize_azapa_element_filter(elemento)
     if normalized_element in {"", "ninguna", "none", "null", "no"}:
-        return build_azapa_reference_graph(reference_path=reference_path, sexo=sexo, edad=edad)
+        return build_azapa_reference_graph(reference_path=reference_path, sexo=sexo, edad=edad, matriz=matriz)
 
     cases = _filter_azapa_cases_by_edad(
         _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo),
@@ -275,7 +323,7 @@ def build_azapa_element_graph(
     analysis_map: dict[str, dict[str, dict[str, Any]]] = {}
     available_elements: list[str] = []
     for path in analysis_paths:
-        for case in _load_azapa_analysis_cases(path):
+        for case in _filter_azapa_analysis_cases_by_matriz(_load_azapa_analysis_cases(path), matriz):
             case_id = str(case.get("id") or "").strip()
             if not case_id:
                 continue
@@ -368,7 +416,7 @@ def build_azapa_element_graph(
     }
 
 
-def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Optional[str] = None, edad: Optional[str] = None) -> dict[str, Any]:
+def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None) -> dict[str, Any]:
     """Construye un grafo simple a partir del JSON de referencia de Azapa.
 
     Usa el campo `tumba` de cada caso como etiqueta del nodo para mostrar los 140 registros.
@@ -377,6 +425,29 @@ def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Opt
         _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo),
         edad,
     )
+    if matriz:
+        normalized_matriz = _normalize_azapa_matriz_filter(matriz)
+        allowed_case_ids: set[str] = set()
+        for path in [
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
+            BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
+        ]:
+            for analysis_case in _filter_azapa_analysis_cases_by_matriz(_load_azapa_analysis_cases(path), matriz):
+                case_id = str(analysis_case.get("id") or "").strip()
+                if case_id:
+                    allowed_case_ids.add(case_id)
+        filtered_cases: list[dict[str, Any]] = []
+        for case in cases:
+            if not isinstance(case, dict):
+                continue
+            case_id = str(case.get("id") or "").strip()
+            if not case_id:
+                continue
+            if normalized_matriz and case_id in allowed_case_ids:
+                filtered_cases.append(case)
+        cases = filtered_cases
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
     seen_nodes: set[str] = set()
