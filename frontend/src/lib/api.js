@@ -83,26 +83,29 @@ export async function getGraphSimilarity({ elements = "Mn,As,Ba", min_similarity
   return res.json();
 }
 
-export async function getGraphAzapaReference(sexo = "") {
+export async function getGraphAzapaReference(sexo = "", edad = "") {
   const url = new URL(`${API_BASE}/graph/azapa/reference`);
   if (sexo) url.searchParams.set("sexo", sexo);
+  if (edad) url.searchParams.set("edad", edad);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de Azapa");
   return res.json();
 }
 
-export async function getGraphAzapaElemento(elemento, sexo = "") {
+export async function getGraphAzapaElemento(elemento, sexo = "", edad = "") {
   const value = encodeURIComponent(elemento || "ninguna");
   const url = new URL(`${API_BASE}/graph/azapa/elemento/${value}`);
   if (sexo) url.searchParams.set("sexo", sexo);
+  if (edad) url.searchParams.set("edad", edad);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de Azapa por elemento");
   return res.json();
 }
 
-export async function getGraphAzapaElements(sexo = "") {
+export async function getGraphAzapaElements(sexo = "", edad = "") {
   const url = new URL(`${API_BASE}/graph/azapa/elements`);
   if (sexo) url.searchParams.set("sexo", sexo);
+  if (edad) url.searchParams.set("edad", edad);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando red completa de Azapa");
   return res.json();

@@ -66,6 +66,8 @@ export default function App() {
   const [selectedAzapaElement, setSelectedAzapaElement] = useState("Ninguna");
   const [azapaSexo, setAzapaSexo] = useState("");
   const [azapaSexoOptions, setAzapaSexoOptions] = useState([]);
+  const [azapaEdad, setAzapaEdad] = useState("");
+  const [azapaEdadOptions, setAzapaEdadOptions] = useState([]);
   const [elementsSimilarity, setElementsSimilarity] = useState("Mn,As,Ba");
   const [minSimilarity, setMinSimilarity] = useState(0.55);
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
@@ -122,6 +124,22 @@ export default function App() {
     } catch {
       setAzapaSexoOptions([]);
     }
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE || "http://127.0.0.1:8000"}/graph/azapa/reference`);
+      if (response.ok) {
+        const data = await response.json();
+        const edades = Array.from(new Set((data?.nodes || [])
+          .filter((node) => node?.type === "individuo" && node?.edad)
+          .map((node) => String(node.edad))
+          .filter(Boolean)));
+        setAzapaEdadOptions(edades.sort((a, b) => a.localeCompare(b)));
+        if (azapaEdad && !edades.includes(azapaEdad)) {
+          setAzapaEdad("");
+        }
+      }
+    } catch {
+      setAzapaEdadOptions([]);
+    }
   }
 
   async function load() {
@@ -170,11 +188,11 @@ export default function App() {
       const normalized = String(elementoFilter || "Ninguna").trim();
       let graphData;
       if (normalized === "Ninguna") {
-        graphData = await getGraphAzapaReference(azapaSexo);
+        graphData = await getGraphAzapaReference(azapaSexo, azapaEdad);
       } else if (normalized === "Red Completa") {
-        graphData = await getGraphAzapaElements(azapaSexo);
+        graphData = await getGraphAzapaElements(azapaSexo, azapaEdad);
       } else {
-        graphData = await getGraphAzapaElemento(normalized, azapaSexo);
+        graphData = await getGraphAzapaElemento(normalized, azapaSexo, azapaEdad);
       }
       setAzapaGraph(graphData || { nodes: [], edges: [] });
       setAzapaStatus("");
@@ -292,7 +310,7 @@ export default function App() {
     if (view === "clusters") {
       loadAzapaGraph(selectedAzapaElement);
     }
-  }, [view, selectedAzapaElement, azapaSexo]);
+  }, [view, selectedAzapaElement, azapaSexo, azapaEdad]);
 
   const countByCat = {};
 
@@ -352,6 +370,12 @@ export default function App() {
               <select value={azapaSexo} onChange={(e) => setAzapaSexo(e.target.value)}>
                 <option value="">Todos</option>
                 {(azapaSexoOptions || []).map((s) => <option key={s} value={s}>{s}</option>)}
+              </select>
+
+              <label>Edad AZAPA</label>
+              <select value={azapaEdad} onChange={(e) => setAzapaEdad(e.target.value)}>
+                <option value="">Todas</option>
+                {(azapaEdadOptions || []).map((edadOpt) => <option key={edadOpt} value={edadOpt}>{edadOpt}</option>)}
               </select>
 
               <button onClick={() => loadAzapaGraph(selectedAzapaElement)} className="secondary" style={{ marginTop: 10 }}>

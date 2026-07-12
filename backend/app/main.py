@@ -923,13 +923,13 @@ def graph_relational(
 
 
 @app.get("/graph/azapa/reference")
-def graph_azapa_reference(sexo: Optional[str] = None):
+def graph_azapa_reference(sexo: Optional[str] = None, edad: Optional[str] = None):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
-    return build_azapa_reference_graph(reference_path=reference_path, sexo=sexo)
+    return build_azapa_reference_graph(reference_path=reference_path, sexo=sexo, edad=edad)
 
 
 @app.get("/graph/azapa/elemento/{elemento}")
-def graph_azapa_elemento(elemento: str, sexo: Optional[str] = None):
+def graph_azapa_elemento(elemento: str, sexo: Optional[str] = None, edad: Optional[str] = None):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
     analysis_paths = [
         BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
@@ -942,11 +942,12 @@ def graph_azapa_elemento(elemento: str, sexo: Optional[str] = None):
         reference_path=reference_path,
         analysis_paths=analysis_paths,
         sexo=sexo,
+        edad=edad,
     )
 
 
 @app.get("/graph/azapa/elements")
-def graph_azapa_elements(sexo: Optional[str] = None):
+def graph_azapa_elements(sexo: Optional[str] = None, edad: Optional[str] = None):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
     analysis_paths = [
         BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
@@ -959,6 +960,7 @@ def graph_azapa_elements(sexo: Optional[str] = None):
         reference_path=reference_path,
         analysis_paths=analysis_paths,
         sexo=sexo,
+        edad=edad,
     )
 
 

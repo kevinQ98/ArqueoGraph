@@ -118,6 +118,29 @@ def _filter_azapa_cases_by_sexo(cases: list[dict[str, Any]], sexo: Optional[str]
     return filtered
 
 
+def _normalize_azapa_edad_filter(value: Optional[str]) -> str:
+    if value is None:
+        return ""
+    return _normalize_filter_value(str(value))
+
+
+def _filter_azapa_cases_by_edad(cases: list[dict[str, Any]], edad: Optional[str] = None) -> list[dict[str, Any]]:
+    normalized_edad = _normalize_azapa_edad_filter(edad)
+    if not normalized_edad:
+        return cases
+    filtered: list[dict[str, Any]] = []
+    for case in cases:
+        if not isinstance(case, dict):
+            continue
+        individuo_data = case.get("individuo") or {}
+        if not isinstance(individuo_data, dict):
+            continue
+        case_edad = str(individuo_data.get("grupo_edad") or individuo_data.get("edad") or "").strip()
+        if _normalize_azapa_edad_filter(case_edad) == normalized_edad:
+            filtered.append(case)
+    return filtered
+
+
 def get_azapa_reference_sex_options(reference_path: Optional[Path] = None) -> list[str]:
     sex_options: list[str] = []
     seen: set[str] = set()
@@ -214,6 +237,7 @@ def build_azapa_element_graph(
     reference_path: Optional[Path] = None,
     analysis_paths: Optional[list[Path]] = None,
     sexo: Optional[str] = None,
+    edad: Optional[str] = None,
 ) -> dict[str, Any]:
     """Construye un grafo de AZAPA filtrado por elemento químico.
 
@@ -229,9 +253,12 @@ def build_azapa_element_graph(
 
     normalized_element = _normalize_azapa_element_filter(elemento)
     if normalized_element in {"", "ninguna", "none", "null", "no"}:
-        return build_azapa_reference_graph(reference_path=reference_path, sexo=sexo)
+        return build_azapa_reference_graph(reference_path=reference_path, sexo=sexo, edad=edad)
 
-    cases = _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo)
+    cases = _filter_azapa_cases_by_edad(
+        _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo),
+        edad,
+    )
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
     seen_nodes: set[str] = set()
@@ -341,12 +368,15 @@ def build_azapa_element_graph(
     }
 
 
-def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Optional[str] = None) -> dict[str, Any]:
+def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Optional[str] = None, edad: Optional[str] = None) -> dict[str, Any]:
     """Construye un grafo simple a partir del JSON de referencia de Azapa.
 
     Usa el campo `tumba` de cada caso como etiqueta del nodo para mostrar los 140 registros.
     """
-    cases = _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo)
+    cases = _filter_azapa_cases_by_edad(
+        _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo),
+        edad,
+    )
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
     seen_nodes: set[str] = set()
