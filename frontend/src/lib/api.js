@@ -83,22 +83,34 @@ export async function getGraphSimilarity({ elements = "Mn,As,Ba", min_similarity
   return res.json();
 }
 
-export async function getGraphAzapaReference() {
-  const res = await fetch(`${API_BASE}/graph/azapa/reference`);
+export async function getGraphAzapaReference(sexo = "") {
+  const url = new URL(`${API_BASE}/graph/azapa/reference`);
+  if (sexo) url.searchParams.set("sexo", sexo);
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de Azapa");
   return res.json();
 }
 
-export async function getGraphAzapaElemento(elemento) {
+export async function getGraphAzapaElemento(elemento, sexo = "") {
   const value = encodeURIComponent(elemento || "ninguna");
-  const res = await fetch(`${API_BASE}/graph/azapa/elemento/${value}`);
+  const url = new URL(`${API_BASE}/graph/azapa/elemento/${value}`);
+  if (sexo) url.searchParams.set("sexo", sexo);
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de Azapa por elemento");
   return res.json();
 }
 
-export async function getGraphAzapaElements() {
-  const res = await fetch(`${API_BASE}/graph/azapa/elements`);
+export async function getGraphAzapaElements(sexo = "") {
+  const url = new URL(`${API_BASE}/graph/azapa/elements`);
+  if (sexo) url.searchParams.set("sexo", sexo);
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando red completa de Azapa");
+  return res.json();
+}
+
+export async function getAzapaSexOptions() {
+  const res = await fetch(`${API_BASE}/graph/azapa/sex-options`);
+  if (!res.ok) throw new Error("Error cargando opciones de sexo de Azapa");
   return res.json();
 }
 

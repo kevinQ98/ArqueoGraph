@@ -95,6 +95,45 @@ def _load_azapa_reference_cases(reference_path: Optional[Path] = None) -> list[d
     return []
 
 
+def _normalize_azapa_sexo_filter(value: Optional[str]) -> str:
+    if value is None:
+        return ""
+    return _normalize_filter_value(str(value))
+
+
+def _filter_azapa_cases_by_sexo(cases: list[dict[str, Any]], sexo: Optional[str] = None) -> list[dict[str, Any]]:
+    normalized_sexo = _normalize_azapa_sexo_filter(sexo)
+    if not normalized_sexo:
+        return cases
+    filtered: list[dict[str, Any]] = []
+    for case in cases:
+        if not isinstance(case, dict):
+            continue
+        individuo_data = case.get("individuo") or {}
+        if not isinstance(individuo_data, dict):
+            continue
+        case_sexo = str(individuo_data.get("sexo") or "").strip().lower()
+        if _normalize_azapa_sexo_filter(case_sexo) == normalized_sexo:
+            filtered.append(case)
+    return filtered
+
+
+def get_azapa_reference_sex_options(reference_path: Optional[Path] = None) -> list[str]:
+    sex_options: list[str] = []
+    seen: set[str] = set()
+    for case in _load_azapa_reference_cases(reference_path):
+        individuo_data = case.get("individuo") or {}
+        if not isinstance(individuo_data, dict):
+            continue
+        value = str(individuo_data.get("sexo") or "").strip()
+        normalized = _normalize_azapa_sexo_filter(value)
+        if not normalized or normalized in seen:
+            continue
+        seen.add(normalized)
+        sex_options.append(value)
+    return sorted(sex_options, key=lambda item: str(item).lower())
+
+
 def _load_azapa_analysis_cases(analysis_path: Optional[Path] = None) -> list[dict[str, Any]]:
     if not analysis_path or not analysis_path.exists():
         return []
@@ -114,6 +153,32 @@ def _normalize_azapa_element_filter(value: Optional[str]) -> str:
     if value is None:
         return ""
     return str(value).strip().lower().replace(" ", "").replace("_", "").replace("-", "")
+
+
+def _azapa_measurement_has_value(measurement: Any) -> bool:
+    if measurement is None:
+        return False
+    if isinstance(measurement, dict):
+        raw_value = measurement.get("valor")
+        if raw_value is None:
+            return False
+        return _azapa_value_is_present(raw_value)
+    return _azapa_value_is_present(measurement)
+
+
+def _azapa_value_is_present(value: Any) -> bool:
+    if value is None:
+        return False
+    if isinstance(value, (int, float)):
+        return not (isinstance(value, float) and value != value)
+    if isinstance(value, str):
+        normalized = value.strip().lower()
+        if not normalized:
+            return False
+        if normalized in {"nd", "n.d.", "n/d", "none", "null", "na", "nan", "no data", "sin dato", "sin datos"}:
+            return False
+        return True
+    return True
 
 
 def get_azapa_available_elements(analysis_paths: Optional[list[Path]] = None) -> list[str]:
@@ -148,6 +213,7 @@ def build_azapa_element_graph(
     elemento: Optional[str] = None,
     reference_path: Optional[Path] = None,
     analysis_paths: Optional[list[Path]] = None,
+    sexo: Optional[str] = None,
 ) -> dict[str, Any]:
     """Construye un grafo de AZAPA filtrado por elemento químico.
 
@@ -163,9 +229,9 @@ def build_azapa_element_graph(
 
     normalized_element = _normalize_azapa_element_filter(elemento)
     if normalized_element in {"", "ninguna", "none", "null", "no"}:
-        return build_azapa_reference_graph(reference_path=reference_path)
+        return build_azapa_reference_graph(reference_path=reference_path, sexo=sexo)
 
-    cases = _load_azapa_reference_cases(reference_path)
+    cases = _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo)
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
     seen_nodes: set[str] = set()
@@ -203,6 +269,8 @@ def build_azapa_element_graph(
                 else:
                     value = elemento_data
                     unit = "ppm"
+                if not _azapa_measurement_has_value(elemento_data if isinstance(elemento_data, dict) else value):
+                    continue
                 case_measurements[name] = {
                     "valor": value,
                     "unidad": unit,
@@ -221,6 +289,32 @@ def build_azapa_element_graph(
         individuo_data = case.get("individuo") or {}
         if not isinstance(individuo_data, dict):
             individuo_data = {}
+
+        measurements = analysis_map.get(case_id, {})
+        valid_edges_for_case: list[dict[str, Any]] = []
+        for elemento_name in selected_elements:
+            if elemento_name not in measurements:
+                continue
+            element_id = f"elemento:{elemento_name}"
+            add_node({
+                "id": element_id,
+                "label": elemento_name,
+                "type": "elemento",
+                "elemento": elemento_name,
+            })
+            measure = measurements[elemento_name]
+            valid_edges_for_case.append({
+                "source": case_id,
+                "target": element_id,
+                "label": "mide",
+                "elemento": elemento_name,
+                "concentracion": measure.get("valor"),
+                "unidad": measure.get("unidad"),
+            })
+
+        if not valid_edges_for_case:
+            continue
+
         add_node({
             "id": case_id,
             "tumba": str(tumba),
@@ -233,26 +327,7 @@ def build_azapa_element_graph(
             "numero_cuerpo": str(tumba),
             "id_individuo": case_id,
         })
-        for elemento_name in selected_elements:
-            measurements = analysis_map.get(case_id, {})
-            if elemento_name not in measurements:
-                continue
-            element_id = f"elemento:{elemento_name}"
-            add_node({
-                "id": element_id,
-                "label": elemento_name,
-                "type": "elemento",
-                "elemento": elemento_name,
-            })
-            measure = measurements[elemento_name]
-            edges.append({
-                "source": case_id,
-                "target": element_id,
-                "label": "mide",
-                "elemento": elemento_name,
-                "concentracion": measure.get("valor"),
-                "unidad": measure.get("unidad"),
-            })
+        edges.extend(valid_edges_for_case)
 
     return {
         "mode": "relational",
@@ -266,12 +341,12 @@ def build_azapa_element_graph(
     }
 
 
-def build_azapa_reference_graph(reference_path: Optional[Path] = None) -> dict[str, Any]:
+def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Optional[str] = None) -> dict[str, Any]:
     """Construye un grafo simple a partir del JSON de referencia de Azapa.
 
     Usa el campo `tumba` de cada caso como etiqueta del nodo para mostrar los 140 registros.
     """
-    cases = _load_azapa_reference_cases(reference_path)
+    cases = _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo)
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
     seen_nodes: set[str] = set()

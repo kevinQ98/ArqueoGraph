@@ -16,7 +16,7 @@ from fastapi.staticfiles import StaticFiles
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
 from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
-from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, get_azapa_available_elements
+from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, get_azapa_available_elements, get_azapa_reference_sex_options
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 UPLOADS_DIR = BASE_DIR / "data" / "uploads"
@@ -923,13 +923,13 @@ def graph_relational(
 
 
 @app.get("/graph/azapa/reference")
-def graph_azapa_reference():
+def graph_azapa_reference(sexo: Optional[str] = None):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
-    return build_azapa_reference_graph(reference_path=reference_path)
+    return build_azapa_reference_graph(reference_path=reference_path, sexo=sexo)
 
 
 @app.get("/graph/azapa/elemento/{elemento}")
-def graph_azapa_elemento(elemento: str):
+def graph_azapa_elemento(elemento: str, sexo: Optional[str] = None):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
     analysis_paths = [
         BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
@@ -941,11 +941,12 @@ def graph_azapa_elemento(elemento: str):
         elemento=elemento,
         reference_path=reference_path,
         analysis_paths=analysis_paths,
+        sexo=sexo,
     )
 
 
 @app.get("/graph/azapa/elements")
-def graph_azapa_elements():
+def graph_azapa_elements(sexo: Optional[str] = None):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
     analysis_paths = [
         BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
@@ -957,7 +958,14 @@ def graph_azapa_elements():
         elemento="red_completa",
         reference_path=reference_path,
         analysis_paths=analysis_paths,
+        sexo=sexo,
     )
+
+
+@app.get("/graph/azapa/sex-options")
+def graph_azapa_sex_options():
+    reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
+    return {"sexos": get_azapa_reference_sex_options(reference_path=reference_path)}
 
 
 # ============================================================
@@ -1589,16 +1597,55 @@ def _image_row_to_dict(row):
 def _sync_orphan_images(id_individuo: str) -> int:
     """
     Recupera imágenes que sí quedaron en disco pero no en DB (por errores previos de insert).
+    Las carpetas de MORRO1 pueden venir nombradas con la tumba (por ejemplo T1C1) y no con el id del individuo.
     """
-    # Busca la carpeta del individuo tanto en la raíz de IMAGES_DIR
-    # como dentro de una subcarpeta común `imagenes_morro1` (estructura usada en algunos dumps).
+    possible_dirs = []
     case_dir = IMAGES_DIR / id_individuo
-    if not case_dir.exists():
-        alt = IMAGES_DIR / "imagenes_morro1" / id_individuo
-        if alt.exists():
-            case_dir = alt
-        else:
-            return 0
+    if case_dir.exists():
+        possible_dirs.append(case_dir)
+
+    alt = IMAGES_DIR / "imagenes_morro1" / id_individuo
+    if alt.exists():
+        possible_dirs.append(alt)
+
+    # Compatibilidad con estructuras legacy: si el id no coincide con una carpeta, intentar por tumba.
+    # Primero buscar en la referencia de MORRO1 para traducir el id a tumba y luego buscar carpetas con ese nombre.
+    try:
+        reference_path = BASE_DIR / "data" / "morro1_referencia.json"
+        if reference_path.exists():
+            with reference_path.open("r", encoding="utf-8") as fh:
+                payload = json.load(fh)
+            cases = []
+            if isinstance(payload, dict):
+                if isinstance(payload.get("morro_1"), dict):
+                    cases = payload["morro_1"].get("casos", [])
+                elif isinstance(payload.get("casos"), list):
+                    cases = payload.get("casos", [])
+            for case in cases:
+                if not isinstance(case, dict):
+                    continue
+                case_id = str(case.get("id") or "").strip()
+                tumba = str(case.get("tumba") or case.get("referencia") or "").strip()
+                if not tumba:
+                    continue
+                if case_id == id_individuo or str(case.get("individuo") or "") == id_individuo:
+                    candidates = [IMAGES_DIR / "imagenes_morro1" / tumba, IMAGES_DIR / tumba, IMAGES_DIR / id_individuo / tumba]
+                    for candidate in candidates:
+                        if candidate.exists() and candidate not in possible_dirs:
+                            possible_dirs.append(candidate)
+    except Exception:
+        pass
+
+    target_dir = None
+    for candidate in possible_dirs:
+        if candidate.exists() and candidate.is_dir():
+            target_dir = candidate
+            break
+
+    if target_dir is None:
+        return 0
+
+    case_dir = target_dir
 
     inserted = 0
     with get_connection() as conn:

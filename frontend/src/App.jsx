@@ -11,6 +11,7 @@ import {
   getGraphAzapaReference,
   getGraphAzapaElemento,
   getGraphAzapaElements,
+  getAzapaSexOptions,
   getImagenesIndividuo,
   getMediciones,
   importDemo
@@ -63,6 +64,8 @@ export default function App() {
   const [selectedPatologia, setSelectedPatologia] = useState("");
   const [selectedElement, setSelectedElement] = useState("Mn");
   const [selectedAzapaElement, setSelectedAzapaElement] = useState("Ninguna");
+  const [azapaSexo, setAzapaSexo] = useState("");
+  const [azapaSexoOptions, setAzapaSexoOptions] = useState([]);
   const [elementsSimilarity, setElementsSimilarity] = useState("Mn,As,Ba");
   const [minSimilarity, setMinSimilarity] = useState(0.55);
   const [graph, setGraph] = useState({ nodes: [], edges: [] });
@@ -108,6 +111,16 @@ export default function App() {
       }
     } catch {
       setAzapaElementOptions(["Ninguna", "Red Completa"]);
+    }
+    try {
+      const sexOpts = await getAzapaSexOptions();
+      const sexos = Array.isArray(sexOpts?.sexos) ? sexOpts.sexos.filter(Boolean) : [];
+      setAzapaSexoOptions(sexos);
+      if (azapaSexo && !sexos.includes(azapaSexo)) {
+        setAzapaSexo("");
+      }
+    } catch {
+      setAzapaSexoOptions([]);
     }
   }
 
@@ -157,11 +170,11 @@ export default function App() {
       const normalized = String(elementoFilter || "Ninguna").trim();
       let graphData;
       if (normalized === "Ninguna") {
-        graphData = await getGraphAzapaReference();
+        graphData = await getGraphAzapaReference(azapaSexo);
       } else if (normalized === "Red Completa") {
-        graphData = await getGraphAzapaElements();
+        graphData = await getGraphAzapaElements(azapaSexo);
       } else {
-        graphData = await getGraphAzapaElemento(normalized);
+        graphData = await getGraphAzapaElemento(normalized, azapaSexo);
       }
       setAzapaGraph(graphData || { nodes: [], edges: [] });
       setAzapaStatus("");
@@ -239,7 +252,7 @@ export default function App() {
         const imgsRaw = await getImagenesIndividuo(selected.id);
         const imgs = imgsRaw.filter((img) => {
           const u = (img.url || img.relative_path || "").toString();
-          return u.includes("imagenes_momias");
+          return Boolean(u);
         });
         setSelectedImages(imgs);
       } catch {
@@ -279,7 +292,7 @@ export default function App() {
     if (view === "clusters") {
       loadAzapaGraph(selectedAzapaElement);
     }
-  }, [view, selectedAzapaElement]);
+  }, [view, selectedAzapaElement, azapaSexo]);
 
   const countByCat = {};
 
@@ -329,16 +342,18 @@ export default function App() {
           <aside>
             <section className="panel_azapa">
               <h2><Filter size={18} /> Filtros azapa </h2>
+
               <label>Modo de grafo azapa</label>
               <select value={modoGrafoAzapa} onChange={(e) => setModoGrafoAzapa(e.target.value)}>
                 <option value="distancia">Distancia radial</option>
               </select>
-              <label style={{ marginTop: 10 }}>Elemento químico</label>
-              <select value={selectedAzapaElement} onChange={(e) => setSelectedAzapaElement(e.target.value)}>
-                {azapaElementOptions.map((option) => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
+
+              <label>Sexo </label>
+              <select value={azapaSexo} onChange={(e) => setAzapaSexo(e.target.value)}>
+                <option value="">Todos</option>
+                {(azapaSexoOptions || []).map((s) => <option key={s} value={s}>{s}</option>)}
               </select>
+
               <button onClick={() => loadAzapaGraph(selectedAzapaElement)} className="secondary" style={{ marginTop: 10 }}>
                 <RefreshCw size={16} /> Actualizar
               </button>
@@ -347,9 +362,16 @@ export default function App() {
           </aside>
           <section className="panel_grafo_azapa">
             <div className="panel azapa_graphPanel">
-              <h2><Network size={18} /> Grafo azapa: {modoGrafoAzapa}</h2>
               <div className="graphFilterRowAzapa">
-
+                <h2 style={{ marginBottom: 0 }}><Network size={18} /> Grafo azapa: {modoGrafoAzapa}</h2>
+                <div className="azapaTopControls">
+                  <label style={{ margin: 0 }}>Elemento químico</label>
+                  <select value={selectedAzapaElement} onChange={(e) => setSelectedAzapaElement(e.target.value)}>
+                    {azapaElementOptions.map((option) => (
+                      <option key={option} value={option}>{option}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
               <p className="hint">
                 Azul = masculino, rojo = femenino, gris = no determinado/probable.

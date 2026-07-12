@@ -63,6 +63,34 @@ main {
   padding: 20px;
 }
 
+.graphFilterRowAzapa {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.azapaTopControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-left: 0;
+  margin-bottom: 10px;
+}
+
+.azapaTopControls label {
+  margin: 0;
+  font-size: 14px;
+  color: #475569;
+}
+
+.azapaTopControls select {
+  min-width: 180px;
+}
+
 .adminMain {
   display: block;
   padding: 20px;

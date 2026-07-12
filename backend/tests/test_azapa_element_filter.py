@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from app.graph_service import build_azapa_element_graph
+from app.graph_service import build_azapa_element_graph, build_azapa_reference_graph
 
 
 def test_build_azapa_element_graph_for_as_connects_cases_to_element_node():
@@ -18,3 +18,15 @@ def test_build_azapa_element_graph_for_as_connects_cases_to_element_node():
     assert "elemento:As" in node_ids
     assert any(edge["target"] == "elemento:As" for edge in graph["edges"])
     assert any(edge["label"] == "mide" for edge in graph["edges"])
+
+
+def test_build_azapa_reference_graph_filters_by_sexo_from_reference_json():
+    base_dir = Path(__file__).resolve().parents[1]
+    graph = build_azapa_reference_graph(
+        reference_path=base_dir / "data" / "azapa140_referencia.json",
+        sexo="femenino",
+    )
+
+    individual_nodes = [node for node in graph["nodes"] if node.get("type") == "individuo"]
+    assert individual_nodes
+    assert all((node.get("sexo") or "").lower() == "femenino" for node in individual_nodes)
