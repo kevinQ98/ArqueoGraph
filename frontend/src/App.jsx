@@ -17,7 +17,12 @@ import {
   getAzapaCaseRelation,
   getImagenesIndividuo,
   getMediciones,
-  importDemo
+  importDemo,
+  getGraphRelational,
+  getGraphMorroReference,
+  getMorroTableRows,
+  getGraphMorroElemento,
+  getGraphMorroElements
 } from "./lib/api";
 import { GraphSvg } from "./components/GraphSvg";
 import { AdminPanel } from "./components/AdminPanel";
@@ -26,6 +31,9 @@ import { ClusterPanel } from "./components/ClusterPanel";
 import "./style.css";
 import { GraphLegend } from "./components/GraphLegend";
 import { useGraphPathologyData } from "./hooks/useGraphPathologyData";
+import { InteractiveGraph } from "./components/Interactivegraph";
+import { AzapaTreeGraph, TreeGraph } from "./components/Treegraph";
+import { checkAndFix } from "./lib/utils";
 
 function downloadText(filename, text, mime = "text/plain") {
   const blob = new Blob([text], { type: mime });
@@ -73,7 +81,7 @@ export default function App() {
   const [edad, setEdad] = useState("");
   const [patologia, setPatologia] = useState("");
   const [selectedPatologia, setSelectedPatologia] = useState("");
-  const [selectedElement, setSelectedElement] = useState("Mn");
+  const [selectedElement, setSelectedElement] = useState("Ninguna");
   const [selectedAzapaElement, setSelectedAzapaElement] = useState("Ninguna");
   const [azapaSexo, setAzapaSexo] = useState("");
   const [azapaSexoOptions, setAzapaSexoOptions] = useState([]);
@@ -100,20 +108,43 @@ export default function App() {
   const [showElementEdges, setShowElementEdges] = useState(true);
   const { patologiaNodes, patologiaColorMap, stats } = useGraphPathologyData(graph);
 
+  const [azapaTreeGraph, setAzapaTreeGraph] = useState({ nodes: [], edges: [] });
+  const [morroTreeGraph, setMorroTreeGraph] = useState({ nodes: [], edges: [] });
+
+  async function loadMorroTreeGraph() {
+    try {
+      const data = await getGraphMorroElements(sexo, edad, ""); // Sin matriz
+      setMorroTreeGraph(data || { nodes: [], edges: [] });
+    } catch {
+      setMorroTreeGraph({ nodes: [], edges: [] });
+    }
+  }
+
+  async function loadAzapaTreeGraph() {
+    try {
+      const data = await getGraphAzapaElements(azapaSexo, azapaEdad, azapaMatriz);
+      setAzapaTreeGraph(data || { nodes: [], edges: [] });
+    } catch {
+      setAzapaTreeGraph({ nodes: [], edges: [] });
+    }
+  }
+
   async function loadOptions() {
     try {
       const opts = await getFilterOptions({ fuente: "morro1" });
-      setOptions({ ...opts, elementos: Array.isArray(opts.elementos) ? opts.elementos : ["Mn"] });
-      if (!opts.elementos?.includes(selectedElement) && opts.elementos?.length) {
-        setSelectedElement(opts.elementos[0]);
-      }
-      if (!selectedElement || selectedElement !== "Mn") {
-        setSelectedElement("Mn");
+      const elementosConNinguna = ["Ninguna", ...(opts.elementos || [])];
+      setOptions({ ...opts, elementos: elementosConNinguna });
+      // Solo actualizar si selectedElement no está en la lista
+      if (!elementosConNinguna.includes(selectedElement)) {
+        // Por defecto, elegir el primero (que será "Ninguna")
+        setSelectedElement(elementosConNinguna[0] || "Mn");
       }
     } catch {
-      // Si aún no hay datos, se mantienen opciones por defecto.
-      setOptions((prev) => ({ ...prev, elementos: ["Mn"] }));
-      setSelectedElement("Mn");
+      setOptions((prev) => ({ ...prev, elementos: ["Ninguna", "Mn"] }));
+      // Si falla, mantener "Ninguna" como predeterminado
+      if (!["Ninguna", "Mn"].includes(selectedElement)) {
+        setSelectedElement("Ninguna");
+      }
     }
   }
 
@@ -173,12 +204,11 @@ export default function App() {
       let g;
       let m = [];
       const fuenteMorro1 = "morro1";
+
       if (selectedPatologia === "RED_COMPLETA") {
-        // Red completa con todas las patologías
         g = await getGraphAllPatologias(edad, sexo, fuenteMorro1);
         m = await getMediciones({ sexo, edad, fuente: fuenteMorro1 });
       } else if (selectedPatologia) {
-        // Patología individual como nodo central
         g = await getGraphPatologia(selectedPatologia, edad, sexo, fuenteMorro1);
         m = await getMediciones({ sexo, edad, patologia: selectedPatologia, fuente: fuenteMorro1 });
       } else if (modoGrafo === "similitud") {
@@ -195,14 +225,20 @@ export default function App() {
         g = await getGraphAllPatologias(edad, sexo, fuenteMorro1);
         m = await getMediciones({ sexo, edad, fuente: fuenteMorro1 });
       } else {
-        g = await getGraphElemento(selectedElement || "Mn", edad, sexo, patologia, fuenteMorro1);
-        m = await getMediciones({ elemento: selectedElement || "Mn", sexo, edad, patologia, fuente: fuenteMorro1 });
+        if (selectedElement === "Ninguna") {
+          g = await getGraphMorroReference(sexo, edad, selectedPatologia);
+          m = await getMorroTableRows({ sexo, edad });
+        } else {
+          g = await getGraphMorroElemento(selectedElement, sexo, edad, "");
+          m = await getMorroTableRows({ elemento: selectedElement, sexo, edad });
+        }
       }
       setGraph(g);
       setMediciones(m);
       setStatus("");
       await loadOptions();
     } catch (err) {
+      console.log(err)
       setStatus("No hay datos cargados. Usa 'Cargar demo'.");
     }
   }
@@ -347,15 +383,18 @@ export default function App() {
     loadOptions();
     loadAzapaFilterOptions();
     loadAzapaGraph(selectedAzapaElement);
+    loadAzapaTreeGraph();
   }, []);
 
   useEffect(() => {
     load();
+    loadMorroTreeGraph();
   }, [edad, sexo, modoGrafo, minSimilarity, selectedElement, patologia, selectedPatologia]);
 
   useEffect(() => {
     if (view !== "clusters") return;
     loadAzapaGraph(selectedAzapaElement);
+    loadAzapaTreeGraph();
   }, [view, selectedAzapaElement, azapaSexo, azapaEdad, azapaMatriz]);
 
   const countByCat = {};
@@ -387,6 +426,7 @@ export default function App() {
     downloadText("arqueograph_azapa_grafo.json", JSON.stringify(azapaGraph, null, 2), "application/json");
   }
 
+  const hideElementNodes = selectedPatologia !== "" || modoGrafo === "disperso";
 
   return (
     <div className="app">
@@ -399,11 +439,11 @@ export default function App() {
           <button className={view === "visualizacion" ? "navButton active" : "navButton"} onClick={() => setView("visualizacion")}>
             <Network size={18} /> MORRO1
           </button>
-          <button className={view === "administracion" ? "navButton active" : "navButton"} onClick={() => setView("administracion")}>
-            <Settings2 size={18} /> Administración
-          </button>
           <button className={view === "clusters" ? "navButton active" : "navButton"} onClick={() => setView("clusters")}>
             <Network size={18} /> AZAPA
+          </button>
+          <button className={view === "administracion" ? "navButton active" : "navButton"} onClick={() => setView("administracion")}>
+            <Settings2 size={18} /> Administración
           </button>
           <button onClick={handleImportDemo} className="primary">
             <Database size={18} /> Cargar demo
@@ -438,14 +478,18 @@ export default function App() {
                 {(azapaEdadOptions || []).map((edadOpt) => <option key={edadOpt} value={edadOpt}>{edadOpt}</option>)}
               </select>
 
-             
+              <label className="hint" style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+                <input type="checkbox" style={{ width: "auto" }} checked={showElementEdges} onChange={(e) => setShowElementEdges(e.target.checked)} />
+                Mostrar líneas al elemento central
+              </label>
+
               <button onClick={() => loadAzapaGraph(selectedAzapaElement)} className="secondary" style={{ marginTop: 10 }}>
                 <RefreshCw size={16} /> Actualizar
               </button>
               {azapaStatus && <p className="status">{azapaStatus}</p>}
             </section>
 
-              <section className="panel_azapa">
+            <section className="panel_azapa">
               <h2>Resumen </h2>
               <div className="summary">
                 <div><strong>{azapaStats.nodes}</strong><span>nodos</span></div>
@@ -454,12 +498,12 @@ export default function App() {
               </div>
             </section>
 
-             <section className="panel_azapa">
+            <section className="panel_azapa">
               <h2><Download size={18} /> Exportar </h2>
               <div className="exportGrid">
                 <button className="secondary small" onClick={exportAzapaCsv}>CSV tabla</button>
                 <button className="secondary small" onClick={exportAzapaJson}>JSON grafo</button>
-                <button className="secondary small" onClick={exportAzapaSvg}>SVG grafo</button>
+                {/* <button className="secondary small" onClick={exportAzapaSvg}>SVG grafo</button> */}
               </div>
             </section>
 
@@ -471,21 +515,33 @@ export default function App() {
               <p className="hint">Selecciona un caso y presiona "Imágenes" para abrir nodos de imagen asociados.</p>
               {showImages && selected && <p className="status">{selectedImages.length} imagen(es) asociadas al caso.</p>}
             </section>
-            <div className="panel_azapa">
-                <h2>Detalle AZAPA</h2>
-                {!selectedAzapaCase?.reference ? (
-                  <p className="hint">Selecciona un nodo del grafo para ver la referencia y las imágenes del caso AZAPA.</p>
-                ) : (
-                  <>
-                    <p><strong>{selectedAzapaCase.reference.tumba || selectedAzapaCase.case_id}</strong></p>
-                    <p><b>Id:</b> {selectedAzapaCase.reference.id || selectedAzapaCase.case_id}</p>
-                    <p><b>Sexo:</b> {selectedAzapaCase.reference.sexo || "—"}</p>
-                    <p><b>Edad:</b> {selectedAzapaCase.reference.edad || "—"}</p>
-                    <p><b>Cultura:</b> {selectedAzapaCase.reference.cultura || "—"}</p>
-                    <p><b>Imágenes:</b> {selectedAzapaCase.images_count || 0}</p>
-                  </>
-                )}
-              </div>
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-2">
+              <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+                <span className="w-1 h-6 bg-emerald-500 rounded-full"></span>
+                Detalle AZAPA
+              </h2>
+              {!selectedAzapaCase?.reference ? (
+                <p className="text-sm text-gray-500 italic">Selecciona un nodo del grafo para ver la referencia y las imágenes del caso AZAPA.</p>
+              ) : (
+                <div className="space-y-1 text-sm">
+                  <p className="text-base font-medium text-gray-900 truncate">
+                    {selectedAzapaCase.reference.tumba || selectedAzapaCase.case_id}
+                  </p>
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
+                    <span className="text-gray-500">Id:</span>
+                    <span className="text-gray-800 font-medium truncate">{selectedAzapaCase.reference.id || selectedAzapaCase.case_id}</span>
+                    <span className="text-gray-500">Sexo:</span>
+                    <span className="text-gray-800 font-medium">{selectedAzapaCase.reference.sexo || "—"}</span>
+                    <span className="text-gray-500">Edad:</span>
+                    <span className="text-gray-800 font-medium">{selectedAzapaCase.reference.edad || "—"}</span>
+                    <span className="text-gray-500">Cultura:</span>
+                    <span className="text-gray-800 font-medium">{selectedAzapaCase.reference.cultura || "—"}</span>
+                    <span className="text-gray-500">Imágenes:</span>
+                    <span className="text-gray-800 font-medium">{selectedAzapaCase.images_count || 0}</span>
+                  </div>
+                </div>
+              )}
+            </div>
 
           </aside>
           <section className="panel_grafo_azapa">
@@ -496,12 +552,12 @@ export default function App() {
               <div className="azapaTopControls azapaFiltersRow">
                 <div className="azapaFilterGroup">
                   <label style={{ margin: 0 }}>Elemento químico</label>
-                  <div className="azapaMatrixTiles" role="group" aria-label="Filtro de elemento químico AZAPA">
+                  <div className="flex overflow-x-auto whitespace-nowrap gap-2 py-1 max-w-full">
                     {azapaElementOptions.map((option) => (
                       <button
                         key={option}
                         type="button"
-                        className={`azapaMatrixTile ${selectedAzapaElement === option ? "active" : ""}`}
+                        className={`px-3 py-1.5 rounded-full border ${selectedAzapaElement === option ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-300"} text-sm font-semibold transition-all hover:border-blue-500`}
                         onClick={() => setSelectedAzapaElement(option)}
                       >
                         {option}
@@ -511,10 +567,10 @@ export default function App() {
                 </div>
                 <div className="azapaFilterGroup azapaMatrixGroup">
                   <label>Matriz AZAPA</label>
-                  <div className="azapaMatrixTiles" role="group" aria-label="Filtro de matriz AZAPA">
+                  <div className="flex overflow-x-auto whitespace-nowrap gap-2 py-1 border border-gray-200 rounded-lg p-1 max-w-xl scrollbar-thin">
                     <button
                       type="button"
-                      className={`azapaMatrixTile ${!azapaMatriz ? "active" : ""}`}
+                      className={`px-3 py-1.5 rounded-full ${!azapaMatriz ? "bg-blue-600 text-white" : "bg-white text-gray-700"} text-sm font-semibold transition-all hover:bg-blue-100`}
                       onClick={() => setAzapaMatriz("")}
                     >
                       Todas
@@ -523,7 +579,7 @@ export default function App() {
                       <button
                         key={matrizOpt}
                         type="button"
-                        className={`azapaMatrixTile ${azapaMatriz === matrizOpt ? "active" : ""}`}
+                        className={`px-3 py-1.5 rounded-full ${azapaMatriz === matrizOpt ? "bg-blue-600 text-white" : "bg-white text-gray-700"} text-sm font-semibold transition-all hover:bg-blue-100`}
                         onClick={() => setAzapaMatriz(matrizOpt)}
                       >
                         {matrizOpt}
@@ -535,17 +591,37 @@ export default function App() {
               <p className="hint">
                 Azul = masculino, rojo = femenino, gris = no determinado/probable.
               </p>
-              <GraphSvg
-                graph={azapaGraph}
-                elemento=""
-                mode={modoGrafoAzapa}
-                onSelect={handleSelectAzapaNode}
-                selectedNodeId={selectedAzapaCase?.case_id || ""}
-                imageNodes={[]}
-                showImages={false}
-                hideElementCenter={false}
-                showElementEdges={true}
-              />
+
+              <div className="grid grid-cols-1 gap-4">
+                {/* <GraphSvg
+                  graph={azapaGraph}
+                  elemento=""
+                  mode={modoGrafoAzapa}
+                  onSelect={handleSelectAzapaNode}
+                  selectedNodeId={selectedAzapaCase?.case_id || ""}
+                  imageNodes={[]}
+                  showImages={false}
+                  hideElementCenter={false}
+                  showElementEdges={true}
+                /> */}
+                <InteractiveGraph
+                  graph={azapaGraph}
+                  elemento={selectedAzapaElement === "Ninguna" || selectedAzapaElement === "Red Completa" ? "" : selectedAzapaElement}
+                  mode="distancia"
+                  onSelect={handleSelectAzapaNode}
+                  selectedNodeId={selectedAzapaCase?.case_id || ""}
+                  showElementEdges={showElementEdges}
+                />
+
+                <div className="col-span-2">
+                  <AzapaTreeGraph
+                    graph={azapaTreeGraph}
+                    focusElement={selectedAzapaElement}
+                    onSelect={handleSelectAzapaNode}
+                    selectedNodeId={selectedAzapaCase?.case_id || ""}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="azapaContentColumn">
@@ -557,11 +633,11 @@ export default function App() {
                   emptyMessage="Este caso AZAPA todavía no tiene imágenes asociadas."
                   emptyHint="Selecciona un nodo del grafo AZAPA para ver la referencia y las imágenes del caso."
                   caseLabelPrefix="Caso AZAPA:"
-                  onImagesChange={() => {}}
+                  onImagesChange={() => { }}
                 />
               </div>
 
-              
+
             </div>
 
             <div className="panel_azapa">
@@ -581,7 +657,7 @@ export default function App() {
                   </thead>
                   <tbody>
                     {azapaTableRows.map((row, index) => (
-                      <tr key={`${row.id_caso || index}-${row.elemento || index}`}>
+                      <tr key={`${row.id_caso - index}-${index}`}>
                         <td>{row.caso}</td>
                         <td>{row.sexo}</td>
                         <td>{row.edad}</td>
@@ -604,10 +680,10 @@ export default function App() {
               <h2><Filter size={18} /> Filtros</h2>
 
               <label>Modo de grafo</label>
-              <select value={modoGrafo} onChange={(e) => setModoGrafo(e.target.value)}>
+              <select value={modoGrafo} onChange={(e) => setModoGrafo(e.target.value)} disabled>
                 <option value="distancia">Distancia radial</option>
-                <option value="similitud">Similitud química</option>
-                <option value="disperso">Casos positivos a patologías</option>
+                {/* <option value="similitud">Similitud química</option> */}
+                {/* <option value="disperso">Casos positivos a patologías</option> */}
               </select>
 
 
@@ -664,7 +740,7 @@ export default function App() {
               <div className="exportGrid">
                 <button className="secondary small" onClick={exportCsv}>CSV tabla</button>
                 <button className="secondary small" onClick={exportJson}>JSON grafo</button>
-                <button className="secondary small" onClick={exportSvg}>SVG grafo</button>
+                {/* <button className="secondary small" onClick={exportSvg}>SVG grafo</button> */}
               </div>
             </section>
 
@@ -678,45 +754,76 @@ export default function App() {
             </section>
 
             {selected && (
-              <section className="panel">
-                <h2>Detalle</h2>
-                <p><strong>{selected.label}</strong></p>
-                {selected.type === "imagen" ? (
-                  <p>Tipo: imagen asociada a un caso</p>
-                ) : (
-                  <>
-                    <p>Sexo: {selected.sexo}</p>
-                    <p>Edad: {selected.edad}</p>
-                    <p>Estilo: {selected.estilo_momificacion}</p>
-                    <p>Estado: {selected.estado}</p>
-                  </>
-                )}
-                {selected.mediciones ? (
-                  <div className="miniTable">
-                    {Object.entries(selected.mediciones).map(([e, m]) => (
-                      <div key={e}><b>{e}</b>: {m.valor} ppm</div>
-                    ))}
-                  </div>
-                ) : null}
-
-                {selectedRelations.length > 0 && (
-                  <div className="miniTable">
-                    <strong>Relaciones</strong>
-                    {selectedRelations.map((edge, idx) => (
-                      <div key={`${edge.source}-${edge.target}-${idx}`}>
-                        <b>{edge.label}</b> → {edge.otherNode?.label || edge.otherNode?.id || edge.target}
+              <section className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 space-y-3">
+                <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-1 h-6 bg-blue-500 rounded-full"></span>
+                  Detalle
+                </h2>
+                <div className="space-y-1">
+                  <p className="text-base font-medium text-gray-900 truncate">{selected.label}</p>
+                  {selected.type === "imagen" ? (
+                    <p className="text-sm text-gray-500">Tipo: imagen asociada a un caso</p>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-sm">
+                      <span className="text-gray-500">Sexo:</span>
+                      <span className="text-gray-800 font-medium">{selected.sexo || "—"}</span>
+                      <span className="text-gray-500">Edad:</span>
+                      <span className="text-gray-800 font-medium">{selected.edad || "—"}</span>
+                      <span className="text-gray-500">Estilo:</span>
+                      <span className="text-gray-800 font-medium">{selected.estilo_momificacion || "—"}</span>
+                      <span className="text-gray-500">Estado:</span>
+                      <span className="text-gray-800 font-medium">{selected.estado || "—"}</span>
+                      {selected.referencia_datos && (
+                        <>
+                          <span className="text-gray-500">Referencia datos:</span>
+                          <span className="text-gray-800 font-medium truncate">{selected.referencia_datos}</span>
+                        </>
+                      )}
+                      {selected.matriz && (
+                        <>
+                          <span className="text-gray-500">Matriz:</span>
+                          <span className="text-gray-800 font-medium">{selected.matriz}</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+                  {selected.mediciones && (
+                    <div className="mt-2 pt-2 border-t border-gray-100">
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Mediciones</p>
+                      <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-sm mt-1">
+                        {Object.entries(selected.mediciones).map(([e, m]) => (
+                          <div key={e} className="flex justify-between">
+                            <span className="text-gray-600 font-medium">{e}:</span>
+                            <span className="text-gray-800">{m.valor} ppm</span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                )}
+                    </div>
+                  )}
+                  {selectedRelations.length > 0 && (
+                    <div className="mt-2 pt-2 border-t border-gray-100">
+                      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Relaciones</p>
+                      <div className="space-y-0.5 text-sm mt-1">
+                        {selectedRelations.map((edge, idx) => (
+                          <div key={`${edge.source}-${edge.target}-${idx}`} className="flex justify-between">
+                            <span className="text-gray-600">{edge.label}</span>
+                            <span className="text-gray-800 truncate max-w-[120px]">
+                              {edge.otherNode?.label || edge.otherNode?.id || edge.target}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               </section>
             )}
           </aside>
 
-          <section className="content">
-            <div className="panel graphPanel">
+          <section className="space-y-4">
+            <div className="panel graphPanel flex-1">
               <h2><Network size={18} /> Grafo: {modoGrafo}</h2>
-              <div className="graphFilterRow">
+              {/* <div className="graphFilterRow">
                 <div className="graphFilterItem">
                   <label>Elemento</label>
                   <select value={selectedElement} onChange={(e) => setSelectedElement(e.target.value)}>
@@ -736,22 +843,100 @@ export default function App() {
                   </select>
                 </div>
                 <div className="graphSourceInfo"> </div>
+              </div> */}
+              <div className="morroTopControls" style={{ display: "flex", flexWrap: "wrap", gap: "1rem", marginBottom: "1rem" }}>
+                {/* Filtro de elemento químico */}
+                <div className="morroFilterGroup">
+                  <label style={{ margin: 0, fontWeight: 600, fontSize: "0.875rem" }}>Elemento químico</label>
+                  <div className="flex overflow-x-auto whitespace-nowrap gap-2 py-1 max-w-full">
+                    {(options.elementos || []).map((el) => (
+                      <button
+                        key={el}
+                        type="button"
+                        className={`px-3 py-1.5 rounded-full border ${selectedElement === el ? "bg-blue-600 text-white border-blue-600" : "bg-white text-gray-700 border-gray-300"} text-sm font-semibold transition-all hover:border-blue-500`}
+                        onClick={() => setSelectedElement(el)}
+                      >
+                        {el}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Filtro de patología */}
+                <div className="morroFilterGroup">
+                  <label style={{ margin: 0, fontWeight: 600, fontSize: "0.875rem" }}>Patología</label>
+                  <div className="flex overflow-x-auto whitespace-nowrap gap-2 py-1 max-w-xl border border-gray-200 rounded-lg p-1 scrollbar-thin">
+                    <button
+                      type="button"
+                      className={`px-3 py-1.5 rounded-full ${selectedPatologia === "" ? "bg-blue-600 text-white" : "bg-white text-gray-700"} text-sm font-semibold transition-all hover:bg-blue-100`}
+                      onClick={() => setSelectedPatologia("")}
+                    >
+                      Ninguna
+                    </button>
+                    <button
+                      type="button"
+                      className={`px-3 py-1.5 rounded-full ${selectedPatologia === "RED_COMPLETA" ? "bg-blue-600 text-white" : "bg-white text-gray-700"} text-sm font-semibold transition-all hover:bg-blue-100`}
+                      onClick={() => setSelectedPatologia("RED_COMPLETA")}
+                    >
+                      Red completa
+                    </button>
+                    {(options.patologias || []).map((p) => (
+                      <button
+                        key={p}
+                        type="button"
+                        className={`px-3 py-1.5 rounded-full ${selectedPatologia === p ? "bg-blue-600 text-white" : "bg-white text-gray-700"} text-sm font-semibold transition-all hover:bg-blue-100`}
+                        onClick={() => setSelectedPatologia(p)}
+                      >
+                        {p}
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
               <p className="hint">
                 Azul = masculino, rojo = femenino, gris = no determinado/probable.
                 {modoGrafo === "similitud" ? " Las líneas unen individuos químicamente parecidos." : " Tamaño = concentración."}
               </p>
-              <GraphSvg
-                graph={graph}
-                elemento={selectedElement || "Mn"}
-                mode={modoGrafo}
-                onSelect={handleSelectNode}
-                selectedNodeId={selected?.id || ""}
-                imageNodes={selectedImages}
-                showImages={showImages}
-                hideElementCenter={selectedPatologia !== ""}
-                showElementEdges={showElementEdges}
-              />
+              <div className="grid grid-cols-1 gap-4">
+                {/* <GraphSvg
+                  graph={graph}
+                  elemento={selectedElement || "Mn"}
+                  mode={modoGrafo}
+                  onSelect={handleSelectNode}
+                  selectedNodeId={selected?.id || ""}
+                  imageNodes={selectedImages}
+                  showImages={showImages}
+                  hideElementCenter={selectedPatologia !== ""}
+                  showElementEdges={showElementEdges}
+                /> */}
+                <InteractiveGraph
+                  graph={graph}
+                  elemento={selectedElement === "Ninguna" ? undefined : selectedElement}
+                  mode={modoGrafo === "disperso" ? "distancia" : modoGrafo}
+                  onSelect={handleSelectNode}
+                  selectedNodeId={selected?.id || ""}
+                  imageNodes={selectedImages}
+                  showImages={showImages}
+                  showElementEdges={showElementEdges}
+                  hideElementNodes={hideElementNodes}
+                />
+
+                <div className="">
+                  <TreeGraph
+                    graph={morroTreeGraph}
+                    rootLabel="MORRO1"
+                    focusElement={selectedElement}
+                    onSelect={handleSelectNode}
+                    selectedNodeId={selected?.id || ""}
+                  />
+                  {/* <AzapaTreeGraph
+                    graph={azapaTreeGraph}
+                    focusElement={selectedAzapaElement}
+                    onSelect={handleSelectAzapaNode}
+                    selectedNodeId={selectedAzapaCase?.case_id || ""}
+                  /> */}
+                </div>
+              </div>
             </div>
 
             <div className="graphSide">
@@ -785,14 +970,14 @@ export default function App() {
                     </tr>
                   </thead>
                   <tbody>
-                    {mediciones.map((m) => (
-                      <tr key={m.id_medicion}>
-                        <td>{m.id_documento}</td>
-                        <td>{m.numero_cuerpo}</td>
+                    {mediciones.map((m, idx) => (
+                      <tr key={idx}>
+                        <td>{m.id_documento || m.id_caso}</td>
+                        <td>{m.numero_cuerpo || m.caso}</td>
                         <td>{m.sexo}</td>
                         <td>{m.edad}</td>
                         <td>{m.elemento}</td>
-                        <td>{m.concentracion}</td>
+                        <td>{checkAndFix(m.concentracion)}</td>
                       </tr>
                     ))}
                   </tbody>

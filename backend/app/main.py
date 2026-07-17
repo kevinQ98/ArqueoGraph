@@ -12,17 +12,24 @@ from fastapi import FastAPI, UploadFile, File, HTTPException, Response, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-
+from .config import (
+    AZAPA_ANALYSIS_PATHS,
+    AZAPA_REFERENCE_PATH,
+    MORRO1_ANALYSIS_PATHS,
+    MORRO1_REFERENCE_PATH,
+    PALEOPATOLOGIA_PATH,
+    CATALOGO_MOMIAS_PATH,
+    AZAPA_DATACIONES_PATH,
+)
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
 from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
-from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options, resolve_azapa_case_relation
+from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options, build_morro1_reference_graph, build_morro1_element_graph, build_morro1_table_rows, get_morro1_available_elements, get_morro1_reference_sex_options, get_morro1_analysis_matriz_options
+# resolve_azapa_case_relation NO EXISTE FUNCION
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 UPLOADS_DIR = BASE_DIR / "data" / "uploads"
 SAMPLE_DIR = BASE_DIR / "sample_data"
-CATALOGO_MOMIAS_PATH = BASE_DIR / "data" / "catalogo_momias.json"
-PALEOPATOLOGIA_PATH = BASE_DIR / "data" / "morro1_paleopatologia.json"
 APP_VERSION = "0.7.0"
 
 VALID_ESTADOS = {"borrador", "revisar", "validado", "descartado"}
@@ -616,12 +623,12 @@ def import_azapa_master():
     analisis_li_s_b_pb_as_cabello_ref_dulasiri_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json"
     analisis_mn_costilla_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json"
     result = import_azapa_master_data(
-        reference_path,
-        dataciones_path=dataciones_path,
-        analisis_as_cabello_path=analisis_as_cabello_path,
-        analisis_as_b_li_costilla_path=analisis_as_b_li_costilla_path,
-        analisis_li_s_b_pb_as_cabello_ref_dulasiri_path=analisis_li_s_b_pb_as_cabello_ref_dulasiri_path,
-        analisis_mn_costilla_path=analisis_mn_costilla_path,
+        reference_path=AZAPA_REFERENCE_PATH,
+        dataciones_path=AZAPA_DATACIONES_PATH,
+        analisis_as_cabello_path=AZAPA_ANALYSIS_PATHS[0],
+        analisis_as_b_li_costilla_path=AZAPA_ANALYSIS_PATHS[1],
+        analisis_li_s_b_pb_as_cabello_ref_dulasiri_path=AZAPA_ANALYSIS_PATHS[2],
+        analisis_mn_costilla_path=AZAPA_ANALYSIS_PATHS[3],
     )
     return {
         **result,
@@ -931,12 +938,7 @@ def graph_azapa_reference(sexo: Optional[str] = None, edad: Optional[str] = None
 @app.get("/graph/azapa/elemento/{elemento}")
 def graph_azapa_elemento(elemento: str, sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
-    analysis_paths = [
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
-    ]
+    analysis_paths = AZAPA_ANALYSIS_PATHS
     return build_azapa_element_graph(
         elemento=elemento,
         reference_path=reference_path,
@@ -950,12 +952,7 @@ def graph_azapa_elemento(elemento: str, sexo: Optional[str] = None, edad: Option
 @app.get("/graph/azapa/elements")
 def graph_azapa_elements(sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
-    analysis_paths = [
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
-    ]
+    analysis_paths = AZAPA_ANALYSIS_PATHS
     return build_azapa_element_graph(
         elemento="red_completa",
         reference_path=reference_path,
@@ -974,12 +971,7 @@ def graph_azapa_sex_options():
 
 @app.get("/graph/azapa/matrix-options")
 def graph_azapa_matrix_options():
-    analysis_paths = [
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
-    ]
+    analysis_paths = AZAPA_ANALYSIS_PATHS
     return {"matrices": get_azapa_analysis_matriz_options(analysis_paths=analysis_paths)}
 
 
@@ -991,12 +983,7 @@ def graph_azapa_table(
     elemento: Optional[str] = None,
 ):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
-    analysis_paths = [
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
-        BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
-    ]
+    analysis_paths = AZAPA_ANALYSIS_PATHS
     return build_azapa_table_rows(
         reference_path=reference_path,
         analysis_paths=analysis_paths,
@@ -1030,14 +1017,9 @@ def filter_options(fuente: Optional[str] = None):
         sitios = [r["sitio"] for r in conn.execute("SELECT DISTINCT sitio FROM individuos WHERE sitio IS NOT NULL ORDER BY sitio").fetchall()]
         estilos = [r["estilo_momificacion"] for r in conn.execute("SELECT DISTINCT estilo_momificacion FROM individuos WHERE estilo_momificacion IS NOT NULL ORDER BY estilo_momificacion").fetchall()]
         if fuente_norm == "morro1":
-            elementos = ["Mn"]
+            elementos = get_morro1_available_elements(MORRO1_ANALYSIS_PATHS)
         elif fuente_norm == "azapa":
-            elementos = get_azapa_available_elements([
-                BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json",
-                BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json",
-                BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json",
-                BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json",
-            ])
+            elementos = get_azapa_available_elements(AZAPA_ANALYSIS_PATHS)
         else:
             elementos = [r["elemento"] for r in conn.execute("SELECT DISTINCT elemento FROM mediciones_quimicas ORDER BY elemento").fetchall()]
         edades = [r["edad"] for r in conn.execute("SELECT DISTINCT edad FROM individuos WHERE edad IS NOT NULL ORDER BY edad").fetchall()]
@@ -2097,3 +2079,43 @@ def list_all_imagenes(id_individuo: Optional[str] = None):
         rows = conn.execute(sql, params).fetchall()
 
     return [_image_row_to_dict(row) for row in rows]
+
+
+@app.get("/graph/morro1/reference")
+def graph_morro1_reference(
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    patologia: Optional[str] = None,
+):
+    return build_morro1_reference_graph(sexo=sexo, edad=edad, patologia=patologia)
+
+
+@app.get("/graph/morro1/elemento/{elemento}")
+def graph_morro1_elemento(elemento: str, sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
+    return build_morro1_element_graph(
+        elemento=elemento, analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz
+    )
+
+
+@app.get("/graph/morro1/elements")
+def graph_morro1_elements(sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
+    return build_morro1_element_graph(
+        elemento="red_completa", analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz
+    )
+
+
+@app.get("/graph/morro1/sex-options")
+def graph_morro1_sex_options():
+    return {"sexos": get_morro1_reference_sex_options()}
+
+
+@app.get("/graph/morro1/matrix-options")
+def graph_morro1_matrix_options():
+    return {"matrices": get_morro1_analysis_matriz_options(MORRO1_ANALYSIS_PATHS)}
+
+
+@app.get("/graph/morro1/table")
+def graph_morro1_table(sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None, elemento: Optional[str] = None):
+    return build_morro1_table_rows(
+        analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz, elemento=elemento
+    )

@@ -30,3 +30,12 @@ export function formatLabel(text, format = 'sentence') {
             return formatted;
     }
 }
+
+export function checkAndFix(value) {
+    // 1. Check if the value is a valid, finite number
+    if (typeof value === 'number' && Number.isFinite(value)) {
+        // 2. Fix to 2 digits (returns a string)
+        return value.toFixed(2);
+    }
+    return "NaN";
+}

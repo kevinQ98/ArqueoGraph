@@ -39,6 +39,32 @@ export async function getMediciones(params = {}) {
   return res.json();
 }
 
+export async function getGraphRelational({
+  edad = "",
+  sexo = "",
+  patologia = "",
+  fuente = "",
+} = {}) {
+  const url = new URL(`${API_BASE}/graph/relational`);
+  if (edad) url.searchParams.set("edad", edad);
+  if (sexo) url.searchParams.set("sexo", sexo);
+  if (patologia) url.searchParams.set("patologia", patologia);
+  if (fuente) url.searchParams.set("fuente", fuente);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando grafo relacional");
+  return res.json();
+}
+
+export async function getGraphMorroReference(sexo = "", edad = "", patologia = "") {
+  const url = new URL(`${API_BASE}/graph/morro1/reference`);
+  if (sexo) url.searchParams.set("sexo", sexo);
+  if (edad) url.searchParams.set("edad", edad);
+  if (patologia) url.searchParams.set("patologia", patologia);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando grafo de referencia de Morro1");
+  return res.json();
+}
+
 export async function getGraphElemento(elemento, edad, sexo = "", patologia = "", fuente = "") {
   const url = new URL(`${API_BASE}/graph/elemento/${elemento}`);
   if (edad) url.searchParams.set("edad", edad);
@@ -302,4 +328,48 @@ export async function uploadImagenesIndividuo(id_individuo, files, metadata = {}
 
 export async function deleteImagen(id_imagen) {
   return request(`/admin/imagenes/${id_imagen}`, { method: "DELETE" });
+}
+
+export async function getMorroSexOptions() {
+  const res = await fetch(`${API_BASE}/graph/morro1/sex-options`);
+  if (!res.ok) throw new Error("Error cargando opciones de sexo de Morro1");
+  return res.json();
+}
+
+export async function getMorroMatrixOptions() {
+  const res = await fetch(`${API_BASE}/graph/morro1/matrix-options`);
+  if (!res.ok) throw new Error("Error cargando opciones de matriz de Morro1");
+  return res.json();
+}
+
+export async function getMorroTableRows(params = {}) {
+  const url = new URL(`${API_BASE}/graph/morro1/table`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      url.searchParams.set(key, value);
+    }
+  });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando tabla de Morro1");
+  return res.json();
+}
+
+export async function getGraphMorroElemento(elemento, sexo = "", edad = "", matriz = "") {
+  const url = new URL(`${API_BASE}/graph/morro1/elemento/${encodeURIComponent(elemento)}`);
+  if (sexo) url.searchParams.set("sexo", sexo);
+  if (edad) url.searchParams.set("edad", edad);
+  if (matriz) url.searchParams.set("matriz", matriz);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando grafo de Morro1 por elemento");
+  return res.json();
+}
+
+export async function getGraphMorroElements(sexo = "", edad = "", matriz = "") {
+  const url = new URL(`${API_BASE}/graph/morro1/elements`);
+  if (sexo) url.searchParams.set("sexo", sexo);
+  if (edad) url.searchParams.set("edad", edad);
+  if (matriz) url.searchParams.set("matriz", matriz);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando red completa de Morro1");
+  return res.json();
 }

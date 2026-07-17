@@ -12,7 +12,7 @@ export function ImagePanel({
   title = "Imágenes",
   emptyMessage = "Este individuo todavía no tiene imágenes asociadas.",
   emptyHint = "Selecciona un individuo en el grafo para visualizar sus imágenes asociadas.",
-  caseLabelPrefix = "Caso seleccionado:",
+  caseLabelPrefix = "Cuerpo seleccionado:",
 }) {
   const [imagenes, setImagenes] = useState([]);
   const [selectedImageId, setSelectedImageId] = useState("");

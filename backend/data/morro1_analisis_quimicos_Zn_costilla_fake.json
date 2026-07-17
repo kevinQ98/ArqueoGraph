@@ -1,0 +1,71 @@
+{
+    "morro1_analisis_quimicos_Zn": {
+        "area": "ARICA",
+        "sitio": "morro1",
+        "casos": [
+            {
+                "id": "Morro1_004",
+                "referencia": "morro1 T1C4",
+                "tumba": "T1C4",
+                "individuo": {
+                    "sexo": "masculino",
+                    "edad": "30 - 35",
+                    "grupo_edad": "adulto",
+                    "conservacion": "COMPLETO"
+                },
+                "analisis_quimicos": {
+                    "referencia_datos": "laboratorio de suelos departamento de química, universidad de tarapaca",
+                    "matriz": "costilla",
+                    "elementos": {
+                        "Zn": {
+                            "valor": 45.2,
+                            "unidad": "ppm"
+                        }
+                    }
+                }
+            },
+            {
+                "id": "Morro1_010",
+                "referencia": "morro1 T2C4",
+                "tumba": "T2C4",
+                "individuo": {
+                    "sexo": "femenino",
+                    "edad": "14 - 16",
+                    "grupo_edad": "sub adulto",
+                    "conservacion": "COMPLETO"
+                },
+                "analisis_quimicos": {
+                    "referencia_datos": "laboratorio de suelos departamento de química, universidad de tarapaca",
+                    "matriz": "costilla",
+                    "elementos": {
+                        "Zn": {
+                            "valor": 38.7,
+                            "unidad": "ppm"
+                        }
+                    }
+                }
+            },
+            {
+                "id": "Morro1_017",
+                "referencia": "morro1 T6",
+                "tumba": "T6",
+                "individuo": {
+                    "sexo": "femenino",
+                    "edad": "30 - 40",
+                    "grupo_edad": "adulto",
+                    "conservacion": "INCOMPLETO"
+                },
+                "analisis_quimicos": {
+                    "referencia_datos": "laboratorio de suelos departamento de química, universidad de tarapaca",
+                    "matriz": "costilla",
+                    "elementos": {
+                        "Zn": {
+                            "valor": 52.1,
+                            "unidad": "ppm"
+                        }
+                    }
+                }
+            }
+        ]
+    }
+}
