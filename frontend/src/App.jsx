@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { Database, Download, Filter, Network, RefreshCw, Settings2 } from "lucide-react";
+import { Database, Download, Filter, LayoutDashboard, Network, RefreshCw, Settings2 } from "lucide-react";
 import {
   absoluteImageUrl,
   getFilterOptions,
@@ -22,7 +22,8 @@ import {
   getGraphMorroReference,
   getMorroTableRows,
   getGraphMorroElemento,
-  getGraphMorroElements
+  getGraphMorroElements,
+  getMorroPca
 } from "./lib/api";
 import { GraphSvg } from "./components/GraphSvg";
 import { AdminPanel } from "./components/AdminPanel";
@@ -34,6 +35,8 @@ import { useGraphPathologyData } from "./hooks/useGraphPathologyData";
 import { InteractiveGraph } from "./components/Interactivegraph";
 import { AzapaTreeGraph, TreeGraph } from "./components/Treegraph";
 import { checkAndFix } from "./lib/utils";
+import { PcaChart } from "./components/PcaChart";
+import { DashboardPanel } from "./components/DashboardPanel";
 
 function downloadText(filename, text, mime = "text/plain") {
   const blob = new Blob([text], { type: mime });
@@ -74,7 +77,7 @@ function exportAzapaSvg() {
 }
 
 export default function App() {
-  const [view, setView] = useState("visualizacion");
+  const [view, setView] = useState("dashboard");
   const [modoGrafo, setModoGrafo] = useState("distancia");
   const [modoGrafoAzapa, setModoGrafoAzapa] = useState("distancia");
   const [sexo, setSexo] = useState("");
@@ -110,6 +113,10 @@ export default function App() {
 
   const [azapaTreeGraph, setAzapaTreeGraph] = useState({ nodes: [], edges: [] });
   const [morroTreeGraph, setMorroTreeGraph] = useState({ nodes: [], edges: [] });
+  const [pcaElements, setPcaElements] = useState([]);
+  const [pcaData, setPcaData] = useState(null);
+  const [pcaStatus, setPcaStatus] = useState("");
+  const [pcaColorBy, setPcaColorBy] = useState("sexo");
 
   async function loadMorroTreeGraph() {
     try {
@@ -126,6 +133,33 @@ export default function App() {
       setAzapaTreeGraph(data || { nodes: [], edges: [] });
     } catch {
       setAzapaTreeGraph({ nodes: [], edges: [] });
+    }
+  }
+
+  function togglePcaElement(element) {
+    setPcaElements((current) => (
+      current.includes(element)
+        ? current.filter((item) => item !== element)
+        : [...current, element]
+    ));
+    setPcaData(null);
+    setPcaStatus("");
+  }
+
+  async function loadPca() {
+    if (pcaElements.length < 3) {
+      setPcaStatus("Selecciona al menos tres elementos.");
+      setPcaData(null);
+      return;
+    }
+    setPcaStatus("Calculando PCA...");
+    try {
+      const result = await getMorroPca({ elements: pcaElements, sexo, edad });
+      setPcaData(result);
+      setPcaStatus("");
+    } catch (error) {
+      setPcaData(null);
+      setPcaStatus(error.message || "No fue posible calcular el PCA.");
     }
   }
 
@@ -382,14 +416,18 @@ export default function App() {
   useEffect(() => {
     loadOptions();
     loadAzapaFilterOptions();
-    loadAzapaGraph(selectedAzapaElement);
-    loadAzapaTreeGraph();
   }, []);
 
   useEffect(() => {
+    if (view !== "visualizacion") return;
     load();
     loadMorroTreeGraph();
-  }, [edad, sexo, modoGrafo, minSimilarity, selectedElement, patologia, selectedPatologia]);
+  }, [view, edad, sexo, modoGrafo, minSimilarity, selectedElement, patologia, selectedPatologia]);
+
+  useEffect(() => {
+    setPcaData(null);
+    setPcaStatus("");
+  }, [edad, sexo]);
 
   useEffect(() => {
     if (view !== "clusters") return;
@@ -436,6 +474,9 @@ export default function App() {
           <p> </p>
         </div>
         <div className="topActions">
+          <button className={view === "dashboard" ? "navButton active" : "navButton"} onClick={() => setView("dashboard")}>
+            <LayoutDashboard size={18} /> Dashboard
+          </button>
           <button className={view === "visualizacion" ? "navButton active" : "navButton"} onClick={() => setView("visualizacion")}>
             <Network size={18} /> MORRO1
           </button>
@@ -451,7 +492,9 @@ export default function App() {
         </div>
       </header>
 
-      {view === "administracion" ? (
+      {view === "dashboard" ? (
+        <DashboardPanel onNavigate={setView} />
+      ) : view === "administracion" ? (
         <main className="adminMain">
           <AdminPanel />
         </main>
@@ -893,6 +936,70 @@ export default function App() {
                   </div>
                 </div>
               </div>
+              <div className="pcaControls">
+                <div>
+                  <label className="pcaTitle">PCA multielemento</label>
+                  <p className="hint">Selecciona tres o más elementos. El cálculo usa casos con todas las mediciones y estandarización z-score.</p>
+                </div>
+                <div className="pcaElementButtons">
+                  {(options.elementos || []).filter((element) => element !== "Ninguna").map((element) => (
+                    <button
+                      key={`pca-${element}`}
+                      type="button"
+                      className={`graphFilterButton ${pcaElements.includes(element) ? "active" : ""}`}
+                      onClick={() => togglePcaElement(element)}
+                      aria-pressed={pcaElements.includes(element)}
+                    >
+                      {element}
+                    </button>
+                  ))}
+                  <button type="button" className="primary pcaRunButton" onClick={loadPca} disabled={pcaElements.length < 3}>
+                    Calcular PCA ({pcaElements.length})
+                  </button>
+                </div>
+                {pcaStatus && <p className="status">{pcaStatus}</p>}
+              </div>
+              {pcaData && (
+                <div className="pcaPanel">
+                  <div className="pcaHeader">
+                    <div>
+                      <h2>PCA: {pcaData.elements.join(" + ")}</h2>
+                      <p className="hint">{pcaData.summary.complete_cases} casos completos · Haz clic en un punto para ver su detalle.</p>
+                    </div>
+                    <div className="pcaVariance">
+                      <span>PC1 <strong>{(pcaData.explained_variance.pc1 * 100).toFixed(1)}%</strong></span>
+                      <span>PC2 <strong>{(pcaData.explained_variance.pc2 * 100).toFixed(1)}%</strong></span>
+                    </div>
+                  </div>
+                  <div className="pcaDashboardControls" role="group" aria-label="Colorear PCA por">
+                    <span>Colorear puntos por</span>
+                    <button
+                      type="button"
+                      className={pcaColorBy === "sexo" ? "active" : ""}
+                      onClick={() => setPcaColorBy("sexo")}
+                      aria-pressed={pcaColorBy === "sexo"}
+                    >
+                      Sexo
+                    </button>
+                    <button
+                      type="button"
+                      className={pcaColorBy === "edad" ? "active" : ""}
+                      onClick={() => setPcaColorBy("edad")}
+                      aria-pressed={pcaColorBy === "edad"}
+                    >
+                      Edad
+                    </button>
+                  </div>
+                  {(pcaData.warnings || []).map((warning) => <p key={warning} className="pcaWarning">{warning}</p>)}
+                  <PcaChart data={pcaData} onSelect={handleSelectNode} colorBy={pcaColorBy} />
+                  <div className="pcaLoadings">
+                    <strong>Cargas:</strong>
+                    {pcaData.loadings.map((loading) => (
+                      <span key={loading.elemento}>{loading.elemento}: PC1 {loading.pc1.toFixed(2)}, PC2 {loading.pc2.toFixed(2)}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
               <p className="hint">
                 Azul = masculino, rojo = femenino, gris = no determinado/probable.
                 {modoGrafo === "similitud" ? " Las líneas unen individuos químicamente parecidos." : " Tamaño = concentración."}

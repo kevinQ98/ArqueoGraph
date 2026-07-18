@@ -4,6 +4,18 @@ export function apiUrl(path = "") {
   return `${API_BASE}${path}`;
 }
 
+export async function getDashboardOverview(params = {}) {
+  const url = new URL(`${API_BASE}/dashboard/overview`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      url.searchParams.set(key, value);
+    }
+  });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando el dashboard arqueológico");
+  return res.json();
+}
+
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: {
@@ -371,5 +383,18 @@ export async function getGraphMorroElements(sexo = "", edad = "", matriz = "") {
   if (matriz) url.searchParams.set("matriz", matriz);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando red completa de Morro1");
+  return res.json();
+}
+
+export async function getMorroPca({ elements = [], sexo = "", edad = "" } = {}) {
+  const url = new URL(`${API_BASE}/analysis/morro1/pca`);
+  url.searchParams.set("elements", elements.join(","));
+  if (sexo) url.searchParams.set("sexo", sexo);
+  if (edad) url.searchParams.set("edad", edad);
+  const res = await fetch(url);
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error calculando PCA de Morro1");
+  }
   return res.json();
 }

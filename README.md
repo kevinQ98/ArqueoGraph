@@ -122,51 +122,55 @@ Una vez finalizado el proceso, los cambios estarán disponibles en GitHub para q
 > 💡 **Recomendación:** Antes de comenzar a trabajar, ejecuta siempre `git pull origin main` para evitar conflictos y asegurarte de trabajar sobre la versión más reciente del proyecto.
 
 
-# ArqueoGraph Local --- INSTALACION ---
-# ArqueoGraph Local — Fase 7: versión intuitiva (readme respaldo)
+# ArqueoGraph Local — versión 0.8.0
 
-Esta versión conserva el frontend visual que ya funcionaba bien, pero agrega una entrada más clara: **Inicio guiado**.
+Esta versión incorpora un dashboard analítico tipo Power BI, PCA multielemento y filtros normalizados para Morro 1 y Azapa 140.
 
 ## Qué cambia
 
-- Nueva pantalla inicial para cargar demo, sincronizar imágenes, revisar calidad y navegar sin depender de Swagger.
-- Backend versionado como `0.7.0`.
-- Nuevos endpoints de experiencia:
-  - `GET /app/overview`
-  - `POST /app/actions/load-demo`
-  - `GET /app/casos`
-  - `GET /app/casos/{id_individuo}`
-- Sigue existiendo todo lo anterior: administración, grafos, clusters, imágenes, GraphML, CSV y JSON.
-- El backend ahora expone una visión más cercana al trabajo real: casos, calidad, próximos pasos y acciones rápidas.
+- Nueva vista inicial **Dashboard** con filtros cruzados.
+- Tarjetas KPI para química, paleopatologías, imágenes y dataciones.
+- Comparación visual de Morro 1 y Azapa 140.
+- PCA con selección de tres o más elementos y color por sexo o edad.
+- Backend versionado como `0.8.0`.
+- Nuevo endpoint agregado: `GET /dashboard/overview`.
+- Endpoint PCA: `GET /analysis/morro1/pca`.
+- Se mantienen las vistas Morro 1, Azapa y Administración.
 
 ## Ejecutar
 
-Desde la raíz del proyecto:
+Backend, desde una terminal:
 
 ```bash
-./run.sh 7
+cd backend
+source .venv/bin/activate
+uvicorn app.main:app --reload
+```
+
+Frontend, desde otra terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
 ```
 
 URLs:
 
 - Frontend: `http://localhost:5173`
 - Backend / Swagger: `http://127.0.0.1:8000/docs`
-- Estado guiado: `http://127.0.0.1:8000/app/overview`
+- Dashboard API: `http://127.0.0.1:8000/dashboard/overview`
 
 ## Flujo recomendado
 
-1. Abrir el frontend.
-2. Entrar a **Inicio guiado**.
-3. Presionar **Preparar demo completa**.
-4. Revisar las tarjetas de calidad y próximos pasos.
-5. Ir a **Curaduría** para revisar advertencias.
-6. Ir a **Visualización** o **Clusters** para explorar.
-7. Descargar respaldo desde **Inicio guiado**.
+1. Abrir el frontend; el Dashboard es la pantalla inicial.
+2. Usar los segmentadores de sitio, sexo, edad, elemento y paleopatología.
+3. Pulsar barras para aplicar filtros cruzados.
+4. Abrir Morro 1 para grafos y PCA multielemento.
+5. Abrir Azapa para sus grafos, matrices e imágenes.
+6. Usar Administración para curaduría e importación.
 
-## Tutorial
+## Documentación técnica
 
-Lee:
-
-```text
-README_FASE7_TUTORIAL.md
-```
+- Cambios PCA: `documentacion_cambios_pca/README.md`
+- Dashboard 0.8: `documentacion_dashboard_0_8/README.md`

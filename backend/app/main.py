@@ -24,13 +24,14 @@ from .config import (
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
 from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
-from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options, build_morro1_reference_graph, build_morro1_element_graph, build_morro1_table_rows, get_morro1_available_elements, get_morro1_reference_sex_options, get_morro1_analysis_matriz_options
+from .dashboard_service import build_dashboard_data
+from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options, build_morro1_reference_graph, build_morro1_element_graph, build_morro1_table_rows, build_morro1_pca, get_morro1_available_elements, get_morro1_reference_sex_options, get_morro1_reference_age_options, get_morro1_analysis_matriz_options
 # resolve_azapa_case_relation NO EXISTE FUNCION
 
 BASE_DIR = Path(__file__).resolve().parents[1]
 UPLOADS_DIR = BASE_DIR / "data" / "uploads"
 SAMPLE_DIR = BASE_DIR / "sample_data"
-APP_VERSION = "0.7.0"
+APP_VERSION = "0.8.0"
 
 VALID_ESTADOS = {"borrador", "revisar", "validado", "descartado"}
 TEMPLATE_FILES = {
@@ -1025,6 +1026,11 @@ def filter_options(fuente: Optional[str] = None):
         edades = [r["edad"] for r in conn.execute("SELECT DISTINCT edad FROM individuos WHERE edad IS NOT NULL ORDER BY edad").fetchall()]
         casos_documento = [r["id_documento"] for r in conn.execute("SELECT DISTINCT id_documento FROM individuos WHERE id_documento IS NOT NULL ORDER BY id_documento").fetchall()]
         casos_id = [r["id_individuo"] for r in conn.execute("SELECT DISTINCT id_individuo FROM individuos WHERE id_individuo IS NOT NULL ORDER BY id_individuo").fetchall()]
+    if fuente_norm == "morro1":
+        # El grafo de Morro1 usa los JSON de referencia aunque SQLite este vacio;
+        # sus filtros deben provenir de esa misma fuente.
+        sexos = get_morro1_reference_sex_options()
+        edades = get_morro1_reference_age_options()
     casos_catalogo = [r.get("id_documento") for r in _load_catalogo_momias() if r.get("id_documento")]
     casos = sorted(set(casos_documento + casos_id + casos_catalogo), key=lambda x: str(x).lower())
     patologias = _extract_patologias()
@@ -1038,6 +1044,23 @@ def filter_options(fuente: Optional[str] = None):
         "patologias": patologias,
         "estados": sorted(list(VALID_ESTADOS)),
     }
+
+
+@app.get("/dashboard/overview")
+def dashboard_overview(
+    sitio: Optional[str] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
+):
+    return build_dashboard_data(
+        sitio=sitio,
+        sexo=sexo,
+        edad=edad,
+        elemento=elemento,
+        patologia=patologia,
+    )
 
 
 def _split_elements(elements: Optional[str]) -> list[str]:
@@ -2119,3 +2142,16 @@ def graph_morro1_table(sexo: Optional[str] = None, edad: Optional[str] = None, m
     return build_morro1_table_rows(
         analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz, elemento=elemento
     )
+
+
+@app.get("/analysis/morro1/pca")
+def analysis_morro1_pca(
+    elements: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+):
+    selected = [element.strip() for element in elements.split(",") if element.strip()]
+    try:
+        return build_morro1_pca(selected, sexo=sexo, edad=edad)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc

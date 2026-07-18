@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 from typing import Any, Optional
 
+import numpy as np
+
 from .database import rows_to_dicts
 
 from .config import (
@@ -1509,18 +1511,12 @@ def build_morro1_reference_graph(
     # Cargar metadatos de análisis de Morro1 (referencia_datos, matriz)
     morro1_metadata = _load_morro1_analysis_metadata()
 
-    # Filtro por sexo
-    if sexo:
-        sexo_norm = sexo.strip().lower()
-        cases = [c for c in cases if (c.get("individuo") or {}).get("sexo", "").strip().lower() == sexo_norm]
-
-    # Filtro por edad
-    if edad:
-        cases = [
-            c for c in cases
-            if (c.get("individuo") or {}).get("edad") == edad
-            or (c.get("individuo") or {}).get("grupo_edad") == edad
-        ]
+    # Los filtros deben usar la misma normalizacion que los grafos por elemento.
+    # En los JSON existen variantes como "sub adulto"/"subadulto" y un valor
+    # de sexo malformado que contiene "indeterminado".
+    cases = _filter_morro1_cases_by_edad(
+        _filter_morro1_cases_by_sexo(cases, sexo), edad
+    )
 
     # Filtro por patología (usando paleopatologia)
     if patologia:
@@ -1563,8 +1559,10 @@ def build_morro1_reference_graph(
             "id": case_id,
             "label": str(tumba),
             "type": "individuo",
-            "sexo": individuo.get("sexo"),
-            "edad": individuo.get("edad") or individuo.get("grupo_edad"),
+            "sexo": _canonical_morro1_sexo(individuo.get("sexo")),
+            "edad": _canonical_morro1_edad(
+                individuo.get("grupo_edad") or individuo.get("edad")
+            ),
             "tumba": str(tumba),
             "id_documento": case_id,
             "numero_cuerpo": str(tumba),
@@ -1607,27 +1605,49 @@ def _load_morro1_analysis_cases(analysis_path: Optional[Path] = None) -> list[di
     return []
 
 
+def _canonical_morro1_sexo(value: Optional[str]) -> str:
+    normalized = _normalize_filter_value(value)
+    if "femenin" in normalized:
+        return "femenino"
+    if "masculin" in normalized:
+        return "masculino"
+    if "indeterminado" in normalized or normalized in {"desconocido", "pendiente"}:
+        return "indeterminado"
+    return str(value or "").strip().lower()
+
+
+def _canonical_morro1_edad(value: Optional[str]) -> str:
+    normalized = _normalize_filter_value(value)
+    if normalized == "subadulto":
+        return "subadulto"
+    if normalized == "adulto":
+        return "adulto"
+    if normalized == "indeterminado":
+        return "indeterminado"
+    return str(value or "").strip().lower()
+
+
 def _filter_morro1_cases_by_sexo(cases: list[dict[str, Any]], sexo: Optional[str] = None) -> list[dict[str, Any]]:
-    normalized = _normalize_filter_value(sexo)
+    normalized = _canonical_morro1_sexo(sexo)
     if not normalized:
         return cases
     out = []
     for case in cases:
         individuo = case.get("individuo") or {}
-        if _normalize_filter_value(individuo.get("sexo")) == normalized:
+        if _canonical_morro1_sexo(individuo.get("sexo")) == normalized:
             out.append(case)
     return out
 
 
 def _filter_morro1_cases_by_edad(cases: list[dict[str, Any]], edad: Optional[str] = None) -> list[dict[str, Any]]:
-    normalized = _normalize_filter_value(edad)
+    normalized = _canonical_morro1_edad(edad)
     if not normalized:
         return cases
     out = []
     for case in cases:
         individuo = case.get("individuo") or {}
         case_edad = str(individuo.get("grupo_edad") or individuo.get("edad") or "").strip()
-        if _normalize_filter_value(case_edad) == normalized:
+        if _canonical_morro1_edad(case_edad) == normalized:
             out.append(case)
     return out
 
@@ -1648,13 +1668,26 @@ def get_morro1_reference_sex_options() -> list[str]:
     options, seen = [], set()
     for case in _load_morro1_reference_cases():
         individuo = case.get("individuo") or {}
-        value = str(individuo.get("sexo") or "").strip()
+        value = _canonical_morro1_sexo(individuo.get("sexo"))
         normalized = _normalize_filter_value(value)
         if not normalized or normalized in seen:
             continue
         seen.add(normalized)
         options.append(value)
     return sorted(options, key=lambda x: str(x).lower())
+
+
+def get_morro1_reference_age_options() -> list[str]:
+    options: set[str] = set()
+    for case in _load_morro1_reference_cases():
+        individuo = case.get("individuo") or {}
+        value = _canonical_morro1_edad(
+            individuo.get("grupo_edad") or individuo.get("edad")
+        )
+        if value:
+            options.add(value)
+    preferred_order = {"adulto": 0, "subadulto": 1, "indeterminado": 2}
+    return sorted(options, key=lambda value: (preferred_order.get(value, 99), value))
 
 
 def get_morro1_analysis_matriz_options(analysis_paths: Optional[list[Path]] = None) -> list[str]:
@@ -1732,14 +1765,153 @@ def build_morro1_table_rows(
                 rows.append({
                     "id_caso": case_id,
                     "caso": str(reference_case.get("tumba") or reference_case.get("referencia") or case_id),
-                    "sexo": str(individuo.get("sexo") or "").strip(),
-                    "edad": str(individuo.get("grupo_edad") or individuo.get("edad") or "").strip(),
+                    "sexo": _canonical_morro1_sexo(individuo.get("sexo")),
+                    "edad": _canonical_morro1_edad(
+                        individuo.get("grupo_edad") or individuo.get("edad")
+                    ),
                     "elemento": element_name,
                     "concentracion": value,
                     "unidad": unit,
                     "matriz": matriz_value,
                 })
     return rows
+
+
+def build_morro1_pca(
+    elements: list[str],
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+) -> dict[str, Any]:
+    """Calcula PC1/PC2 para casos de Morro1 con todos los elementos pedidos.
+
+    Las concentraciones se estandarizan con z-score para que elementos con
+    escalas distintas aporten de forma comparable. Si hay mediciones repetidas
+    para un caso/elemento se usa su promedio.
+    """
+    selected: list[str] = []
+    available_lookup = {
+        _normalize_filter_value(name): name
+        for name in get_morro1_available_elements(MORRO1_ANALYSIS_PATHS)
+    }
+    for raw_element in elements:
+        normalized = _normalize_filter_value(raw_element)
+        if normalized and normalized not in {
+            _normalize_filter_value(item) for item in selected
+        }:
+            if normalized not in available_lookup:
+                raise ValueError(f"Elemento no disponible: {raw_element}")
+            selected.append(available_lookup[normalized])
+
+    if len(selected) < 3:
+        raise ValueError("Selecciona al menos tres elementos para calcular el PCA")
+
+    rows = build_morro1_table_rows(sexo=sexo, edad=edad)
+    values_by_case: dict[str, dict[str, list[float]]] = {}
+    case_metadata: dict[str, dict[str, str]] = {}
+    selected_set = set(selected)
+    for row in rows:
+        element = row.get("elemento")
+        if element not in selected_set:
+            continue
+        try:
+            value = float(row.get("concentracion"))
+        except (TypeError, ValueError):
+            continue
+        if not np.isfinite(value):
+            continue
+        case_id = str(row.get("id_caso") or "").strip()
+        if not case_id:
+            continue
+        values_by_case.setdefault(case_id, {}).setdefault(element, []).append(value)
+        case_metadata[case_id] = {
+            "caso": str(row.get("caso") or case_id),
+            "sexo": str(row.get("sexo") or ""),
+            "edad": str(row.get("edad") or ""),
+        }
+
+    complete_cases = [
+        case_id
+        for case_id, measurements in values_by_case.items()
+        if all(measurements.get(element) for element in selected)
+    ]
+    complete_cases.sort(key=lambda case_id: case_metadata[case_id]["caso"].lower())
+    if len(complete_cases) < 3:
+        raise ValueError(
+            "Se necesitan al menos tres casos con mediciones completas para los elementos seleccionados"
+        )
+
+    matrix = np.asarray([
+        [float(np.mean(values_by_case[case_id][element])) for element in selected]
+        for case_id in complete_cases
+    ], dtype=float)
+    means = matrix.mean(axis=0)
+    standard_deviations = matrix.std(axis=0)
+    constant_elements = [
+        selected[index]
+        for index, value in enumerate(standard_deviations)
+        if np.isclose(value, 0.0)
+    ]
+    if constant_elements:
+        raise ValueError(
+            "No se puede calcular el PCA: no hay variacion en " + ", ".join(constant_elements)
+        )
+
+    standardized = (matrix - means) / standard_deviations
+    left, singular_values, components = np.linalg.svd(standardized, full_matrices=False)
+    scores = left * singular_values
+    variances = (singular_values ** 2) / max(len(complete_cases) - 1, 1)
+    total_variance = float(variances.sum())
+    explained = variances / total_variance if total_variance else np.zeros_like(variances)
+
+    points = []
+    for index, case_id in enumerate(complete_cases):
+        meta = case_metadata[case_id]
+        points.append({
+            "id": case_id,
+            "id_individuo": case_id,
+            "label": meta["caso"],
+            "caso": meta["caso"],
+            "type": "individuo",
+            "sexo": meta["sexo"],
+            "edad": meta["edad"],
+            "pc1": float(scores[index, 0]),
+            "pc2": float(scores[index, 1]),
+            "mediciones": {
+                element: {"valor": float(matrix[index, element_index])}
+                for element_index, element in enumerate(selected)
+            },
+        })
+
+    loadings = [
+        {
+            "elemento": element,
+            "pc1": float(components[0, index]),
+            "pc2": float(components[1, index]),
+        }
+        for index, element in enumerate(selected)
+    ]
+    warnings = []
+    if len(complete_cases) < 10:
+        warnings.append(
+            "La muestra tiene menos de 10 casos completos; interpreta el patrón con cautela."
+        )
+
+    return {
+        "elements": selected,
+        "points": points,
+        "loadings": loadings,
+        "explained_variance": {
+            "pc1": float(explained[0]),
+            "pc2": float(explained[1]),
+        },
+        "summary": {
+            "complete_cases": len(complete_cases),
+            "incomplete_cases": len(values_by_case) - len(complete_cases),
+            "standardization": "z-score",
+            "duplicate_measurements": "mean",
+        },
+        "warnings": warnings,
+    }
 
 
 def build_morro1_element_graph(
@@ -1848,7 +2020,8 @@ def build_morro1_element_graph(
 
         add_node({
             "id": case_id, "tumba": str(tumba), "label": str(tumba), "type": "individuo",
-            "sexo": individuo.get("sexo"), "edad": individuo.get("grupo_edad") or individuo.get("edad"),
+            "sexo": _canonical_morro1_sexo(individuo.get("sexo")),
+            "edad": _canonical_morro1_edad(individuo.get("grupo_edad") or individuo.get("edad")),
             "id_documento": case_id, "numero_cuerpo": str(tumba), "id_individuo": case_id,
             "referencia_datos": meta.get("referencia_datos"), "matriz": meta.get("matriz"),
         })
