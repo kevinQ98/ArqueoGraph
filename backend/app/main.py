@@ -20,12 +20,13 @@ from .config import (
     PALEOPATOLOGIA_PATH,
     CATALOGO_MOMIAS_PATH,
     AZAPA_DATACIONES_PATH,
+    MORRO1_PALEOPATOLOGIA_PATHS,
 )
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
 from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
 from .dashboard_service import build_dashboard_data
-from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options, build_morro1_reference_graph, build_morro1_element_graph, build_morro1_table_rows, build_morro1_pca, get_morro1_available_elements, get_morro1_reference_sex_options, get_morro1_reference_age_options, get_morro1_analysis_matriz_options
+from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options, build_azapa_pca, build_morro1_reference_graph, build_morro1_element_graph, build_morro1_table_rows, build_morro1_pca, get_morro1_available_elements, get_morro1_reference_sex_options, get_morro1_reference_age_options, get_morro1_analysis_matriz_options, _load_azapa_reference_cases
 # resolve_azapa_case_relation NO EXISTE FUNCION
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -152,20 +153,20 @@ def _load_catalogo_momias() -> list[dict]:
 
 
 def _load_paleopatologias() -> list[dict]:
-    """Carga casos de patología del archivo JSON."""
-    if not PALEOPATOLOGIA_PATH.exists():
-        return []
-    try:
-        with PALEOPATOLOGIA_PATH.open("r", encoding="utf-8") as fh:
-            data = json.load(fh)
-            # Extraer los casos del objeto morro1_paleopatologia
-            if isinstance(data, dict) and "morro1_paleopatologia" in data:
-                casos = data["morro1_paleopatologia"].get("casos", [])
-                if isinstance(casos, list):
-                    return casos
-    except Exception:
-        return []
-    return []
+    """Carga casos de patología de todos los archivos JSON definidos en MORRO1_PALEOPATOLOGIA_PATHS."""
+    all_cases = []
+    for path in MORRO1_PALEOPATOLOGIA_PATHS:
+        if not path.exists():
+            continue
+        try:
+            with path.open("r", encoding="utf-8") as fh:
+                data = json.load(fh)
+                if isinstance(data, dict) and "morro1_paleopatologia" in data:
+                    casos = data["morro1_paleopatologia"].get("casos", [])
+                    all_cases.extend([caso for caso in casos if isinstance(caso, dict)])
+        except Exception:
+            continue
+    return all_cases
 
 
 def _extract_patologias() -> list[str]:
@@ -228,6 +229,88 @@ def _catalogo_momias_images_for_case(case_value: str, id_individuo: Optional[str
             })
     return images
 
+def resolve_azapa_case_relation(case_id: str, reference_path: Path, images_dir: Path) -> dict:
+    """Devuelve la ficha de referencia de un caso AZAPA + sus imágenes locales,
+    leyendo directamente la carpeta data/imagenes/imagenes_azapa140/{case_id}/.
+    """
+    cases = _load_azapa_reference_cases(reference_path)
+    case = next((c for c in cases if str(c.get("id") or "").strip() == case_id), None)
+
+    reference = None
+    if case:
+        individuo = case.get("individuo") or {}
+        reference = {
+            "id": case.get("id"),
+            "tumba": case.get("tumba") or case.get("referencia"),
+            "sexo": individuo.get("sexo"),
+            "edad": individuo.get("grupo_edad") or individuo.get("edad"),
+            "cultura": case.get("cultura"),
+        }
+
+    case_dir = images_dir / case_id
+    images = []
+    if case_dir.exists() and case_dir.is_dir():
+        for path in sorted(case_dir.iterdir()):
+            if _is_allowed_local_image_file(path):
+                rel = str(path.relative_to(IMAGES_DIR)).replace("\\", "/")
+                images.append({
+                    "id_imagen": f"{case_id}_{path.name}",
+                    "id_individuo": case_id,
+                    "filename_original": path.name,
+                    "relative_path": rel,
+                    "url": f"/files/imagenes/{rel}",
+                    "titulo": path.name,
+                    "mime_type": mimetypes.guess_type(path.name)[0] or "image/jpeg",
+                })
+
+    return {
+        "case_id": case_id,
+        "reference": reference,
+        "images": images,
+        "images_count": len(images),
+    }
+
+def resolve_morro1_case_relation(case_id: str, images_dir: Path) -> dict:
+    """Devuelve la ficha de referencia de un caso MORRO1 + sus imágenes locales,
+    leyendo directamente la carpeta data/imagenes/imagenes_morro1/{case_id}/.
+    """
+    from .graph_service import _load_morro1_reference_cases
+    cases = _load_morro1_reference_cases()
+    case = next((c for c in cases if str(c.get("id") or "").strip() == case_id), None)
+
+    reference = None
+    if case:
+        individuo = case.get("individuo") or {}
+        reference = {
+            "id": case.get("id"),
+            "tumba": case.get("tumba") or case.get("referencia"),
+            "sexo": individuo.get("sexo"),
+            "edad": individuo.get("grupo_edad") or individuo.get("edad"),
+            # Podemos agregar más campos si queremos
+        }
+
+    case_dir = images_dir / case_id
+    images = []
+    if case_dir.exists() and case_dir.is_dir():
+        for path in sorted(case_dir.iterdir()):
+            if _is_allowed_local_image_file(path):
+                rel = str(path.relative_to(IMAGES_DIR)).replace("\\", "/")
+                images.append({
+                    "id_imagen": f"{case_id}_{path.name}",
+                    "id_individuo": case_id,
+                    "filename_original": path.name,
+                    "relative_path": rel,
+                    "url": f"/files/imagenes/{rel}",
+                    "titulo": path.name,
+                    "mime_type": mimetypes.guess_type(path.name)[0] or "image/jpeg",
+                })
+
+    return {
+        "case_id": case_id,
+        "reference": reference,
+        "images": images,
+        "images_count": len(images),
+    }
 
 def _catalogo_momias_images_for_individuo(id_individuo: str) -> list[dict]:
     with get_connection() as conn:
@@ -993,6 +1076,20 @@ def graph_azapa_table(
         matriz=matriz,
         elemento=elemento,
     )
+
+
+@app.get("/analysis/azapa/pca")
+def analysis_azapa_pca(
+    elements: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+):
+    selected = [element.strip() for element in elements.split(",") if element.strip()]
+    try:
+        return build_azapa_pca(selected, sexo=sexo, edad=edad, matriz=matriz)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @app.get("/graph/azapa/case/{case_id}/relation")
@@ -2155,3 +2252,11 @@ def analysis_morro1_pca(
         return build_morro1_pca(selected, sexo=sexo, edad=edad)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+@app.get("/graph/morro1/case/{case_id}/relation")
+def graph_morro1_case_relation(case_id: str):
+    images_dir = BASE_DIR / "data" / "imagenes" / "imagenes_morro1"
+    return resolve_morro1_case_relation(
+        case_id=case_id,
+        images_dir=images_dir,
+    )

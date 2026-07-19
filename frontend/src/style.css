@@ -665,7 +665,7 @@ input {
   font-size: 14px;
 }
 
-button {
+/* button {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -674,7 +674,7 @@ button {
   padding: 10px 14px;
   font-weight: 700;
   cursor: pointer;
-}
+} */
 
 .primary {
   background: #0f172a;

@@ -398,3 +398,23 @@ export async function getMorroPca({ elements = [], sexo = "", edad = "" } = {}) 
   }
   return res.json();
 }
+
+export async function getAzapaPca({ elements = [], sexo = "", edad = "", matriz = "" } = {}) {
+  const url = new URL(`${API_BASE}/analysis/azapa/pca`);
+  url.searchParams.set("elements", elements.join(","));
+  if (sexo) url.searchParams.set("sexo", sexo);
+  if (edad) url.searchParams.set("edad", edad);
+  if (matriz) url.searchParams.set("matriz", matriz);
+  const res = await fetch(url);
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error calculando PCA de Azapa");
+  }
+  return res.json();
+}
+
+export async function getMorroCaseRelation(caseId) {
+  const res = await fetch(`${API_BASE}/graph/morro1/case/${encodeURIComponent(caseId)}/relation`);
+  if (!res.ok) throw new Error("Error cargando relación de Morro1");
+  return res.json();
+}

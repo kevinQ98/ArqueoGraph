@@ -6,17 +6,27 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.2",
-    "@vitejs/plugin-react": "latest",
+    "@vitejs/plugin-react": "^6.0.2",
     "d3": "^7.9.0",
     "d3-force": "^3.0.0",
     "d3-scale": "^4.0.2",
     "d3-selection": "^3.0.0",
     "d3-zoom": "^3.0.0",
     "leaflet": "^1.9.4",
-    "lucide-react": "latest",
-    "react": "latest",
-    "react-dom": "latest",
+    "lucide-react": "^1.16.0",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
     "tailwindcss": "^4.3.2",
-    "vite": "latest"
+    "vite": "^8.0.13"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "@eslint/js": "^9.39.5",
+    "eslint": "^9.39.5",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.3",
+    "globals": "^17.7.0"
   }
 }

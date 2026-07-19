@@ -18,18 +18,19 @@ AZAPA_ANALYSIS_PATHS = [
     DATA_DIR / "azapa140_analisis_quimicos_Mn_costilla.json",
 ]
 
+# --- Archivos de paleopatología (patologías) ---
+MORRO1_PALEOPATOLOGIA_PATHS = [
+    DATA_DIR / "morro1_paleopatologia.json",
+    # Aquí puedes añadir más archivos, por ejemplo:
+    DATA_DIR / "morro1_paleopatologia_extra_fake.json",
+]
+
 # --- Archivos de análisis químico para MORRO1 ---
 MORRO1_ANALYSIS_PATHS = [
     DATA_DIR / "morro1_analisis_quimicos_Mn_costilla.json",
     DATA_DIR / "morro1_analisis_quimicos_B_As_Li_costilla.json",
     DATA_DIR / "morro1_analisis_quimicos_Zn_costilla_fake.json",
 ]
-
-
-
-
-
-
 
 # --- Otros archivos auxiliares (dataciones) ---
 AZAPA_DATACIONES_PATH = DATA_DIR / "azapa140_dataciones_radiocarbono_Cassman_1997.json"

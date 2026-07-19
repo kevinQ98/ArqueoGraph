@@ -93,7 +93,6 @@ export function TreeGraph({
             members: edges
                 .filter((e) => e.label === "mide" && e.elemento === el.label)
                 .map((e) => {
-                    console.log('QUE MIDEEES', e)
                     const indiv = individuoById.get(e.source);
                     if (!indiv) return null;
                     // Añadir la lista de elementos al individuo
@@ -157,12 +156,10 @@ export function TreeGraph({
             if (target) openBranchIdsRef.current.add(target.id);
         }
         buildAndRender(true);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [branches, focusGroup]);
 
     useEffect(() => {
         buildAndRender(false);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedNodeId]);
 
     function toggleBranch(branchId) {
@@ -191,6 +188,13 @@ export function TreeGraph({
                 .map((b) => new Set(b.members.map((m) => m.id)))
                 .reduce((acc, set) => new Set([...acc].filter((id) => set.has(id))));
         }
+
+        // ---- elementos actualmente abiertos (para filtrar mediciones en el tooltip) ----
+        const openElementLabels = new Set(
+            branches
+                .filter((b) => b.type === "grupo_elemento" && openSet.has(b.id))
+                .map((b) => b.label)
+        );
 
         const branchNodes = branches.map((b) => {
             const node = {
@@ -380,16 +384,17 @@ export function TreeGraph({
             }
 
             if (isIndividuo) {
-                // const ref = d.data.referencia_datos || "s/d";
                 const mat = d.data.matriz || "s/d";
                 const mediciones = d.data.mediciones || {};
-                const listaMediciones = Object.entries(mediciones)
+                // Solo mostrar las mediciones de los elementos actualmente
+                // abiertos (ramas expandidas). Si no hay ninguna rama de
+                // elemento abierta, no se muestra ninguna medición.
+                const medicionesFiltradas = Object.fromEntries(
+                    Object.entries(mediciones).filter(([el]) => openElementLabels.has(el))
+                );
+                const listaMediciones = Object.entries(medicionesFiltradas)
                     .map(([el, val]) => `${el}: ${checkAndFix(val.concentracion) ?? "—"} ${val.unidad || "ppm"}`)
                     .join("<br/>");
-                const elementosStr = d.data.elementos?.length
-                    ? d.data.elementos.join(", ")
-                    : "ninguno";
-                extraInfo += `<strong>Elementos:</strong> ${elementosStr}<br/>`;
                 extraInfo += `<strong>Mediciones:</strong><br/>${listaMediciones || "—"}<br/>`;
                 extraInfo += `<strong>Matriz:</strong> ${mat}<br/>`;
             }
@@ -397,7 +402,6 @@ export function TreeGraph({
             tt.innerHTML = `
         <strong>${d.data.label || d.data.id}</strong><br/>
         ${isIndividuo ? `Sexo: ${d.data.sexo || "s/d"} · Edad: ${d.data.edad || "s/d"}<br/>` : ""}
-        ${isIndividuo && d.data.concentracion != null ? `${checkAndFix(d.data.concentracion)} ${d.data.unidad || "ppm"}<br/>` : ""}
         ${extraInfo}
     `;
             tt.style.opacity = "1";
@@ -448,16 +452,16 @@ export function TreeGraph({
             <div className="graphToolbar">
                 <button
                     type="button"
-                    className="secondary small"
+                    className="bg-slate-500/50 px-3 py-1 text-xs rounded-md text-white shrink-0"
                     onClick={() => {
                         const g = d3.select(gRef.current);
                         const nodesArr = g.selectAll("g.tnode").data();
                         fitToView(nodesArr, containerRef.current?.clientWidth || 980);
                     }}
                 >
-                    Encuadrar vista
+                    Reset vista
                 </button>
-                <span className="hint" style={{ margin: 0 }}>
+                <span className="text-xs text-gray-600" style={{ margin: 0 }}>
                     Clic en una rama para expandir/colapsar · con 1 rama abierta ves todos sus casos · con 2+ ramas
                     abiertas solo se muestran los casos EN COMÚN entre ellas · rueda para zoom
                 </span>

@@ -156,8 +156,8 @@ function SitePortal({ site, onOpen, onFilter }) {
       </div>
       <p>{site.culturas?.length ? `Contextos: ${site.culturas.join(", ")}` : "Contexto cultural pendiente de normalización."}</p>
       <div className="sitePortalActions">
-        <button type="button" className="secondary" onClick={() => onFilter(site.sitio)}>Filtrar panel</button>
-        <button type="button" className="primary" onClick={() => onOpen(site.view)}>Abrir visualización</button>
+        <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md" onClick={() => onFilter(site.sitio)}>Filtrar panel</button>
+        <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md bg-black text-white" onClick={() => onOpen(site.view)}>Abrir visualización</button>
       </div>
     </article>
   );
@@ -191,7 +191,6 @@ export function DashboardPanel({ onNavigate }) {
 
   useEffect(() => {
     refresh(filters);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters.sitio, filters.sexo, filters.edad, filters.elemento, filters.patologia]);
 
   const visibleCases = useMemo(() => {
@@ -216,8 +215,8 @@ export function DashboardPanel({ onNavigate }) {
           <p>Consulta el estado general de la colección y accede a las interfaces especializadas de cada sitio.</p>
         </div>
         <div className="dashboardHeroActions">
-          <button type="button" className="secondary" onClick={() => refresh()}><RefreshCw size={16} /> Actualizar</button>
-          <button type="button" className="secondary" onClick={clearFilters} disabled={!activeFilterCount}><RotateCcw size={16} /> Limpiar filtros ({activeFilterCount})</button>
+          <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md" onClick={() => refresh()}><RefreshCw size={16} /> Actualizar</button>
+          <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md" onClick={clearFilters} disabled={!activeFilterCount}><RotateCcw size={16} /> Limpiar filtros ({activeFilterCount})</button>
         </div>
       </section>
 
