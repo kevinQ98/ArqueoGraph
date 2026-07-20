@@ -249,6 +249,35 @@ export async function importDemo() {
   return loadDemoGuided();
 }
 
+export async function uploadMorro1Json(tipo, file) {
+  const formData = new FormData();
+  formData.append("tipo", tipo);
+  formData.append("file", file);
+  const res = await fetch(`${API_BASE}/admin/import/morro1/json`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error subiendo el archivo JSON");
+  }
+  return res.json();
+}
+
+export async function uploadAzapaJson(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await fetch(`${API_BASE}/admin/import/azapa/json`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error subiendo el archivo JSON");
+  }
+  return res.json();
+}
+
 export async function resetDb() {
   return request("/admin/reset-db", { method: "POST" });
 }

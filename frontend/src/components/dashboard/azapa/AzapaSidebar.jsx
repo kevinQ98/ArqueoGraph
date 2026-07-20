@@ -1,4 +1,6 @@
-import { Filter, Download, RefreshCw, Eye, EyeOff } from 'lucide-react';
+import { useState } from 'react';
+import { Filter, Download, RefreshCw, Eye, EyeOff, UploadCloud } from 'lucide-react';
+import { uploadAzapaJson } from '../../../lib/api';
 
 export default function AzapaSidebar({
     azapaSexo, setAzapaSexo, azapaSexoOptions,
@@ -6,6 +8,7 @@ export default function AzapaSidebar({
     azapaMatriz, setAzapaMatriz, azapaMatrizOptions,
     showElementEdges, setShowElementEdges,
     loadAzapaGraph,
+    loadAzapaFilterOptions,
     azapaStatus,
     azapaStats,
     exportAzapaCsv, exportAzapaJson,
@@ -13,6 +16,30 @@ export default function AzapaSidebar({
     selectedAzapaCase,
     showTree, setShowTree,   // <--- nuevo
 }) {
+    const [uploadFile, setUploadFile] = useState(null);
+    const [uploadStatus, setUploadStatus] = useState('');
+    const [uploading, setUploading] = useState(false);
+
+    async function handleUpload() {
+        if (!uploadFile) {
+            setUploadStatus('Selecciona primero un archivo .json');
+            return;
+        }
+        setUploading(true);
+        setUploadStatus('Subiendo...');
+        try {
+            const result = await uploadAzapaJson(uploadFile);
+            setUploadStatus(`Listo: ${result.casos_detectados} caso(s) importados desde ${result.archivo_guardado}.`);
+            setUploadFile(null);
+            await loadAzapaFilterOptions?.();
+            await loadAzapaGraph();
+        } catch (error) {
+            setUploadStatus(error.message || 'No se pudo subir el archivo.');
+        } finally {
+            setUploading(false);
+        }
+    }
+
     return (
         <aside className="w-full md:w-72 lg:w-80 space-y-4">
             {/* Filtros AZAPA */}
@@ -119,6 +146,39 @@ export default function AzapaSidebar({
                     >
                         JSON grafo
                     </button>
+                </div>
+            </section>
+
+            {/* Importar JSON */}
+            <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+                <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wider flex items-center gap-2 mb-4">
+                    <UploadCloud size={16} className="text-emerald-500" />
+                    Importar JSON
+                </h2>
+                <div className="space-y-3">
+                    <div className="flex items-center justify-between bg-slate-100 rounded-lg px-3 py-2">
+                        <span className="text-xs font-medium text-slate-500">Tipo de archivo</span>
+                        <span className="text-sm font-semibold text-slate-700">Análisis químico</span>
+                    </div>
+
+                    <div>
+                        <label className="block text-xs font-medium text-slate-500 mb-1">Archivo .json</label>
+                        <input
+                            type="file"
+                            accept="application/json,.json"
+                            onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
+                            className="w-full text-sm text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-slate-100 file:text-slate-700 file:text-xs file:font-medium hover:file:bg-slate-200 cursor-pointer"
+                        />
+                    </div>
+
+                    <button
+                        onClick={handleUpload}
+                        disabled={uploading || !uploadFile}
+                        className="w-full flex items-center justify-center gap-2 bg-emerald-500 hover:bg-emerald-600 disabled:opacity-50 disabled:cursor-not-allowed text-white font-medium py-2 px-4 rounded-lg transition-all shadow-sm"
+                    >
+                        <UploadCloud size={16} /> {uploading ? 'Subiendo...' : 'Subir e importar'}
+                    </button>
+                    {uploadStatus && <p className="text-xs text-slate-500 mt-1">{uploadStatus}</p>}
                 </div>
             </section>
         </aside>

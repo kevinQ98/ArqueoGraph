@@ -420,6 +420,7 @@ export default function App() {
             modoGrafoAzapa={modoGrafoAzapa} setModoGrafoAzapa={setModoGrafoAzapa}
             showElementEdges={showElementEdges} setShowElementEdges={setShowElementEdges}
             loadAzapaGraph={loadAzapaGraph}
+            loadAzapaFilterOptions={loadAzapaFilterOptions}
             azapaStatus={azapaStatus}
             azapaStats={{ nodes: azapaGraph?.nodes?.length || 0, edges: azapaGraph?.edges?.length || 0, rows: azapaTableRows?.length || 0 }}
             exportAzapaCsv={() => downloadText("arqueograph_azapa_tabla_filtrada.csv", rowsToCsv(azapaTableRows), "text/csv")}

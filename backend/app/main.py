@@ -21,6 +21,7 @@ from .config import (
     CATALOGO_MOMIAS_PATH,
     AZAPA_DATACIONES_PATH,
     MORRO1_PALEOPATOLOGIA_PATHS,
+    register_uploaded_file,
 )
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
 from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
@@ -161,11 +162,13 @@ def _load_paleopatologias() -> list[dict]:
         try:
             with path.open("r", encoding="utf-8") as fh:
                 data = json.load(fh)
-                if isinstance(data, dict) and "morro1_paleopatologia" in data:
-                    casos = data["morro1_paleopatologia"].get("casos", [])
-                    all_cases.extend([caso for caso in casos if isinstance(caso, dict)])
         except Exception:
             continue
+        # Usa la misma búsqueda genérica de 'casos' que el resto del sistema
+        # (directo, bajo "casos", o anidado un nivel más adentro bajo
+        # cualquier clave envolvente) en vez de exigir literalmente la
+        # clave "morro1_paleopatologia" en el nivel superior.
+        all_cases.extend(_extract_casos(data))
     return all_cases
 
 
@@ -322,6 +325,25 @@ def _catalogo_momias_images_for_individuo(id_individuo: str) -> list[dict]:
             return []
         id_documento = row["id_documento"]
     return _catalogo_momias_images_for_case(id_documento, id_individuo=id_individuo)
+
+
+def _extract_casos(payload) -> list:
+    """Encuentra la lista de 'casos' dentro de un JSON ya parseado, sin
+    importar si viene directo, bajo la clave 'casos', o anidado un nivel
+    más adentro (ej. {"morro1_analisis_quimicos_Cu": {"casos": [...]}}).
+    Misma lógica que dashboard_service._load_cases, pero sobre un objeto
+    ya en memoria en vez de un Path.
+    """
+    if isinstance(payload, list):
+        return [item for item in payload if isinstance(item, dict)]
+    if not isinstance(payload, dict):
+        return []
+    if isinstance(payload.get("casos"), list):
+        return [item for item in payload["casos"] if isinstance(item, dict)]
+    for value in payload.values():
+        if isinstance(value, dict) and isinstance(value.get("casos"), list):
+            return [item for item in value["casos"] if isinstance(item, dict)]
+    return []
 
 
 def _safe_upload_filename(filename: Optional[str], expected_extension: str = ".csv") -> str:
@@ -675,8 +697,95 @@ def import_mediciones_file(file: UploadFile = File(...)):
     return result
 
 
-@app.post("/admin/import/morro1")
-def import_morro1_master():
+@app.post("/admin/import/morro1/json")
+async def import_morro1_json(
+    tipo: str = Form(...),
+    file: UploadFile = File(...),
+):
+    """
+    Permite subir un archivo JSON nuevo para MORRO1 desde el frontend,
+    sin tener que tocar config.py a mano.
+
+    tipo:
+      - "morro1_analisis_quimico" -> se agrega a MORRO1_ANALYSIS_PATHS
+      - "morro1_paleopatologia"   -> se agrega a MORRO1_PALEOPATOLOGIA_PATHS
+    """
+    if tipo not in {"morro1_analisis_quimico", "morro1_paleopatologia"}:
+        raise HTTPException(
+            status_code=400,
+            detail="tipo inválido. Usa 'morro1_analisis_quimico' o 'morro1_paleopatologia'.",
+        )
+
+    raw = await file.read()
+    try:
+        payload = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise HTTPException(status_code=400, detail=f"El archivo no es un JSON válido: {exc}") from exc
+
+    casos = _extract_casos(payload)
+    if not casos:
+        raise HTTPException(
+            status_code=400,
+            detail="El JSON debe ser una lista de casos, un objeto con la clave 'casos', "
+                   "o un objeto que contenga esa clave anidada un nivel más adentro (lista no vacía).",
+        )
+
+    stored_name = _safe_upload_filename(file.filename, expected_extension=".json")
+    dest_path = BASE_DIR / "data" / stored_name
+    dest_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    register_uploaded_file(tipo, stored_name)
+
+    return {
+        "ok": True,
+        "tipo": tipo,
+        "archivo_guardado": stored_name,
+        "casos_detectados": len(casos),
+    }
+
+
+@app.post("/admin/import/azapa/json")
+async def import_azapa_json(
+    file: UploadFile = File(...),
+):
+    """
+    Permite subir un archivo JSON nuevo de análisis químico para AZAPA
+    desde el frontend, sin tener que tocar config.py a mano.
+    Se agrega a AZAPA_ANALYSIS_PATHS (por ahora AZAPA solo maneja
+    análisis químico, a diferencia de MORRO1 que también tiene
+    paleopatología).
+    """
+    tipo = "azapa_analisis_quimico"
+
+    raw = await file.read()
+    try:
+        payload = json.loads(raw.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise HTTPException(status_code=400, detail=f"El archivo no es un JSON válido: {exc}") from exc
+
+    casos = _extract_casos(payload)
+    if not casos:
+        raise HTTPException(
+            status_code=400,
+            detail="El JSON debe ser una lista de casos, un objeto con la clave 'casos', "
+                   "o un objeto que contenga esa clave anidada un nivel más adentro (lista no vacía).",
+        )
+
+    stored_name = _safe_upload_filename(file.filename, expected_extension=".json")
+    dest_path = BASE_DIR / "data" / stored_name
+    dest_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    register_uploaded_file(tipo, stored_name)
+
+    return {
+        "ok": True,
+        "tipo": tipo,
+        "archivo_guardado": stored_name,
+        "casos_detectados": len(casos),
+    }
+
+
+
     reference_path = BASE_DIR / "data" / "morro1_referencia.json"
     paleopatologia_path = BASE_DIR / "data" / "morro1_paleopatologia.json"
     analisis_path = BASE_DIR / "data" / "morro1_analisis_quimicos_Mn_costilla.json"

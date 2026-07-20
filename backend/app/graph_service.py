@@ -111,11 +111,25 @@ def _load_paleopatologia_cases() -> list[dict[str, Any]]:
         try:
             with path.open("r", encoding="utf-8") as fh:
                 payload = json.load(fh)
-                if isinstance(payload, dict) and isinstance(payload.get("morro1_paleopatologia"), dict):
-                    casos = payload["morro1_paleopatologia"].get("casos", [])
-                    all_cases.extend([caso for caso in casos if isinstance(caso, dict)])
         except Exception:
             continue
+        # Búsqueda genérica de 'casos': directo, bajo "casos", o anidado un
+        # nivel más adentro bajo CUALQUIER clave envolvente (no solo
+        # "morro1_paleopatologia" literal). Así funciona igual que el
+        # loader de análisis químicos, sin importar cómo se llame la
+        # clave de nivel superior de un JSON subido desde el frontend.
+        if isinstance(payload, list):
+            all_cases.extend([caso for caso in payload if isinstance(caso, dict)])
+            continue
+        if not isinstance(payload, dict):
+            continue
+        if isinstance(payload.get("casos"), list):
+            all_cases.extend([caso for caso in payload["casos"] if isinstance(caso, dict)])
+            continue
+        for value in payload.values():
+            if isinstance(value, dict) and isinstance(value.get("casos"), list):
+                all_cases.extend([caso for caso in value["casos"] if isinstance(caso, dict)])
+                break
     return all_cases
 
 
