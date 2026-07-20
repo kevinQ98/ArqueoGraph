@@ -249,6 +249,15 @@ export async function importDemo() {
   return loadDemoGuided();
 }
 
+export async function createBackup() {
+  const res = await fetch(`${API_BASE}/admin/backup`, { method: "POST" });
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error generando el respaldo");
+  }
+  return res.json();
+}
+
 export async function uploadMorro1Json(tipo, file) {
   const formData = new FormData();
   formData.append("tipo", tipo);

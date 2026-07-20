@@ -27,6 +27,7 @@ from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_D
 from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
 from .dashboard_service import build_dashboard_data
+from .backup import create_backup
 from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options, build_azapa_pca, build_morro1_reference_graph, build_morro1_element_graph, build_morro1_table_rows, build_morro1_pca, get_morro1_available_elements, get_morro1_reference_sex_options, get_morro1_reference_age_options, get_morro1_analysis_matriz_options, _load_azapa_reference_cases
 # resolve_azapa_case_relation NO EXISTE FUNCION
 
@@ -644,6 +645,24 @@ def export_dataset_csv(dataset: str):
     with get_connection() as conn:
         rows = rows_to_dicts(conn.execute(queries[dataset]).fetchall())
     return _write_csv_response(f"arqueograph_{dataset}.csv", rows)
+
+
+@app.post("/admin/backup")
+def create_backup_endpoint():
+    """Genera un respaldo .sqlite con todos los datos actuales (JSON de
+    referencia, análisis químicos y paleopatología de MORRO1 y AZAPA,
+    incluyendo los archivos subidos desde el frontend) y lo guarda en
+    la carpeta data/.
+    """
+    try:
+        backup_path = create_backup()
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"No se pudo generar el respaldo: {exc}") from exc
+    return {
+        "ok": True,
+        "archivo": backup_path.name,
+        "ruta": str(backup_path),
+    }
 
 
 @app.post("/admin/reset-db")

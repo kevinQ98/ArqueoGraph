@@ -20,7 +20,8 @@ import {
   getGraphMorroElements,
   getMorroPca,
   getMorroCaseRelation,
-  getAzapaPca
+  getAzapaPca,
+  createBackup
 } from "./lib/api";
 import { AdminPanel } from "./components/AdminPanel";
 import "./style.css";
@@ -83,6 +84,7 @@ export default function App() {
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedAzapaCase, setSelectedAzapaCase] = useState(null);
   const [status, setStatus] = useState("");
+  const [backupStatus, setBackupStatus] = useState("");
   const [azapaStatus, setAzapaStatus] = useState("");
   const [showElementEdges, setShowElementEdges] = useState(true);
   const { patologiaNodes, patologiaColorMap, stats } = useGraphPathologyData(graph);
@@ -310,6 +312,16 @@ export default function App() {
     setStatus("Demo cargada.");
   }
 
+  async function handleBackup() {
+    setBackupStatus("Generando respaldo...");
+    try {
+      const result = await createBackup();
+      setBackupStatus(`Respaldo creado: ${result.archivo}`);
+    } catch (error) {
+      setBackupStatus(error.message || "No se pudo generar el respaldo.");
+    }
+  }
+
   const handleSelectNode = useCallback(async (node) => {
     setSelected(node);
     setSelectedImages([]);
@@ -403,7 +415,7 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header view={view} setView={setView} handleImportDemo={handleImportDemo} />
+      <Header view={view} setView={setView} handleImportDemo={handleImportDemo} handleBackup={handleBackup} backupStatus={backupStatus} />
 
       {view === "dashboard" ? (
         <DashboardPanel onNavigate={setView} />

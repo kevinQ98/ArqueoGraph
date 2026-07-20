@@ -1,6 +1,6 @@
-import { LayoutDashboard, Network, Settings2, Database } from 'lucide-react';
+import { LayoutDashboard, Network, Settings2, Database, Save } from 'lucide-react';
 
-export default function Header({ view, setView, handleImportDemo }) {
+export default function Header({ view, setView, handleImportDemo, handleBackup, backupStatus }) {
     return (
         <header className="bg-white shadow-sm border-b border-gray-200 px-4 py-3 sm:px-6 lg:px-8">
             <div className="w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -56,6 +56,18 @@ export default function Header({ view, setView, handleImportDemo }) {
                         <Settings2 size={18} />
                         <span className="">Administración</span>
                     </button> */}
+
+                    {/* Botón Respaldar datos */}
+                    <button
+                        onClick={handleBackup}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-white bg-slate-700 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-colors duration-200"
+                    >
+                        <Save size={18} />
+                        <span className="">Respaldar datos</span>
+                    </button>
+                    {backupStatus && (
+                        <span className="text-xs text-slate-500 whitespace-nowrap">{backupStatus}</span>
+                    )}
 
                     {/* Botón Cargar demo (estilo primario) */}
                     {/* <button
