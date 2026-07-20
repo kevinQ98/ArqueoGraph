@@ -46,7 +46,7 @@ export function InteractiveGraph({
     showElementEdges = true,
     sizeBy = "fixed",
     height = 620,
-    hideElementNodes = false, // <-- nuevo prop
+    hideElementNodes = false,
 }) {
     const containerRef = useRef(null);
     const svgRef = useRef(null);
@@ -107,22 +107,13 @@ export function InteractiveGraph({
         const maxConc = values.length ? Math.max(...values) : 1;
 
         // Escala LOG: evita que un outlier absorba todo el rango.
-        // +1 para admitir valores pequeños/0 sin romper el log.
         const minV = values.length ? Math.min(...values) : 1;
         const maxV = values.length ? Math.max(...values) : 10;
         const radiusScale = d3
             .scaleLog()
             .domain([Math.max(minV, 0.01), Math.max(maxV, minV + 1)])
-            // .range([20, 420])
             .range([0, 320])
-            // .range([90, 320])
             .clamp(true);
-
-        // filtrar aristas que apuntaban a nodos patologia (ya eliminados)
-        // const validIds = new Set(nodes.map((n) => n.id));
-        // const edges = rawEdges.filter(
-        //     (e) => e.label !== "presenta" && validIds.has(e.source) && validIds.has(e.target)
-        // );
 
         const validIds = new Set(filteredNodes.map(n => n.id));
         const filteredEdges = rawEdges.filter(
@@ -136,8 +127,6 @@ export function InteractiveGraph({
             maxConc,
             radiusScale,
         };
-
-        // return { nodesData: nodes, edgesData: edges, concentrationById, maxConc, radiusScale };
     }, [graph, elemento, hideElementNodes]);
 
     const sexoColor = (sexo) => {
@@ -149,6 +138,7 @@ export function InteractiveGraph({
 
     const nodeFill = (d) => {
         if (d.type === "elemento") return "#7c3aed";
+        if (d.isCentral) return "#7c3aed"; // central se ve como elemento
         if (d.type === "imagen") return "#ec4899";
         if (d.type === "sitio") return "#2d3748";
         return sexoColor(d.sexo);
@@ -156,12 +146,13 @@ export function InteractiveGraph({
 
     const nodeRadius = (d) => {
         if (d.type === "elemento") return 26;
+        if (d.isCentral) return 42; // central también grande
         if (d.type === "imagen") return 20;
         if (sizeBy === "mediciones" && typeof d.mediciones === "object") {
             const n = Object.keys(d.mediciones || {}).length;
             return 10 + Math.min(10, n * 2);
         }
-        return 12; // tamaño fijo: la concentración ya se ve en la posición
+        return 12;
     };
 
     // ---------------------------------------------------------------
@@ -174,8 +165,14 @@ export function InteractiveGraph({
         const zoom = d3
             .zoom()
             .scaleExtent([0.15, 5])
+            .on("start", () => {
+                svg.style("cursor", "grabbing");
+            })
             .on("zoom", (event) => {
                 g.attr("transform", event.transform);
+            })
+            .on("end", () => {
+                svg.style("cursor", "grab");
             });
 
         svg.call(zoom);
@@ -230,9 +227,20 @@ export function InteractiveGraph({
             return force;
         }
 
+        // Detectar si hay nodo elemento visible
         const hasElementNode = nodes.some(n => n.type === "elemento");
-        // const isRadialMode = mode === "distancia";
-        const isRadialMode = mode === "distancia" && hasElementNode; // solo si hay elemento visible
+        // Buscar un nodo central (sitio) cuando no hay elemento
+        let centralNode = null;
+        if (!hasElementNode) {
+            // Buscar el nodo que representa el sitio (label MORRO1 o AZAPA)
+            centralNode = nodes.find(n =>
+                n.type === "patologia" &&
+                (n.label === "MORRO1" || n.label === "AZAPA140" || n.label?.includes("MORRO1") || n.label?.includes("AZAPA140"))
+            );
+            if (centralNode) {
+                centralNode.isCentral = true;
+            }
+        }
 
         // Si hay elemento visible, fijarlo en el centro
         if (hasElementNode) {
@@ -241,7 +249,13 @@ export function InteractiveGraph({
                 elementNode.fx = center.x;
                 elementNode.fy = center.y;
             }
+        } else if (centralNode) {
+            // Si no hay elemento, fijar el nodo central (sitio) en el centro
+            centralNode.fx = center.x;
+            centralNode.fy = center.y;
         }
+
+        const isRadialMode = mode === "distancia" && (hasElementNode || centralNode);
 
         const sim = d3
             .forceSimulation(nodes)
@@ -259,12 +273,6 @@ export function InteractiveGraph({
 
         if (isRadialMode) {
             sim.force("radial", forceRadialConcentration());
-            // fijar el elemento central en el medio (si existe y no está oculto)
-            const elementNode = nodes.find((n) => n.type === "elemento");
-            if (elementNode) {
-                elementNode.fx = center.x;
-                elementNode.fy = center.y;
-            }
         } else {
             sim.force(
                 "x",
@@ -338,42 +346,22 @@ export function InteractiveGraph({
                     .attr("stroke", "white")
                     .attr("stroke-width", 2);
 
-                // grp
-                //     .append("text")
-                //     .attr("class", "node-label")
-                //     .attr("y", (d) => nodeRadius(d) + 14)
-                //     .attr("text-anchor", "middle")
-                //     .attr("font-size", 10)
-                //     .attr("font-weight", 700)
-                //     .attr("fill", "#334155")
-                //     .text((d) => d.numero_cuerpo || d.label || d.id);
+                // Texto del nodo: si es elemento o central, dentro del círculo
                 grp
                     .append("text")
                     .attr("class", "node-label")
-                    .attr("y", (d) => d.type === "elemento" ? 4 : nodeRadius(d) + 14)
+                    .attr("y", (d) => (d.type === "elemento" || d.isCentral) ? 4 : nodeRadius(d) + 14)
                     .attr("text-anchor", "middle")
-                    .attr("font-size", (d) => d.type === "elemento" ? 12 : 10)
+                    .attr("font-size", (d) => (d.type === "elemento" || d.isCentral) ? 14 : 10)
                     .attr("font-weight", 700)
-                    .attr("fill", (d) => d.type === "elemento" ? "white" : "#334155")
+                    .attr("fill", (d) => (d.type === "elemento" || d.isCentral) ? "white" : "#334155")
                     .text((d) => d.numero_cuerpo || d.label || d.id);
-
-                // grp
-                //     .append("text")
-                //     .attr("class", "node-sub")
-                //     .attr("y", (d) => nodeRadius(d) + 26)
-                //     .attr("text-anchor", "middle")
-                //     .attr("font-size", 9)
-                //     .attr("fill", "#64748b")
-                //     .text((d) => {
-                //         if (d.type !== "individuo") return "";
-                //         const v = concentrationById[d.id];
-                //         return v ? `${v} ppm` : "s/d";
-                //     });
 
                 return grp;
             });
 
         nodeSel
+            .style("cursor", "pointer")
             .on("click", (event, d) => {
                 event.stopPropagation();
                 onSelect?.(d);
@@ -392,6 +380,7 @@ export function InteractiveGraph({
                         if (!event.active) sim.alphaTarget(0.25).restart();
                         d.fx = d.x;
                         d.fy = d.y;
+                        d3.select(svgRef.current).style("cursor", "grabbing");
                     })
                     .on("drag", (event, d) => {
                         d.fx = event.x;
@@ -399,11 +388,11 @@ export function InteractiveGraph({
                     })
                     .on("end", (event, d) => {
                         if (!event.active) sim.alphaTarget(0);
-                        // el elemento central se queda fijo; el resto se libera
-                        if (d.type !== "elemento") {
+                        if (d.type !== "elemento" && !d.isCentral) {
                             d.fx = null;
                             d.fy = null;
                         }
+                        d3.select(svgRef.current).style("cursor", "grab");
                     })
             );
 
@@ -412,16 +401,26 @@ export function InteractiveGraph({
             if (!tt) return;
             const conc = concentrationById[d.id];
             const patos = (d.patologias || []).map((p) => p.id.replace("patologia:", "")).join(", ");
-            tt.innerHTML = `
-        <strong>${d.numero_cuerpo || d.label || d.id}</strong><br/>
-        ${d.type === "individuo" ? `Sexo: ${d.sexo || "s/d"} · Edad: ${d.edad || "s/d"}<br/>
-        ${conc ? `Concentración: ${checkAndFix(conc)} ppm<br/>` : ""}
-        Matriz: ${d.matriz || "s/d"}<br/>Referencia: ${d.referencia_datos || "s/d"}<br/>` : ""}
-        ${patos ? `Patologías: ${patos}` : ""}
-      `;
+
+            // Determinar si hay un elemento activo
+            const hasElement = elemento && elemento.trim() !== "";   // <-- nuevo
+
+            let html = `<strong>${d.numero_cuerpo || d.label || d.id}</strong><br/>`;
+            if (d.type === "individuo") {
+                html += `Sexo: ${d.sexo || "s/d"} · Edad: ${d.edad || "s/d"}<br/>`;
+                if (conc) html += `Concentración: ${checkAndFix(conc)} ppm<br/>`;
+                // Solo mostrar matriz y referencia si hay elemento activo
+                if (hasElement) {
+                    html += `Matriz: ${d.matriz || "s/d"}<br/>Referencia: ${d.referencia_datos || "s/d"}<br/>`;
+                }
+            }
+            if (patos) html += `Patologías: ${patos}`;
+
+            tt.innerHTML = html;
             tt.style.opacity = "1";
             moveTooltip(event);
         }
+
         function moveTooltip(event) {
             const tt = tooltipRef.current;
             if (!tt) return;
@@ -429,6 +428,7 @@ export function InteractiveGraph({
             tt.style.left = `${event.clientX - bounds.left + 14}px`;
             tt.style.top = `${event.clientY - bounds.top + 14}px`;
         }
+
         function hideTooltip() {
             if (tooltipRef.current) tooltipRef.current.style.opacity = "0";
         }
@@ -449,8 +449,7 @@ export function InteractiveGraph({
         return () => {
             sim.stop();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [nodesData, edgesData, mode, showElementEdges, sizeBy, height]);
+    }, [nodesData, edgesData, mode, showElementEdges, sizeBy, height, concentrationById, radiusScale]);
 
     // resaltar selección sin reiniciar la simulación
     useEffect(() => {
@@ -469,16 +468,16 @@ export function InteractiveGraph({
     }, [selectedNodeId, nodesData]);
 
     return (
-        <div ref={containerRef} className="" style={{ position: "relative", width: "100%" }}>
+        <div ref={containerRef} className="" style={{ position: "relative", width: "100%", cursor: "default" }}>
             <div className="graphToolbar">
                 <button
                     type="button"
-                    className="secondary small"
+                    className="bg-slate-500/50 px-3 py-1 text-xs rounded-md text-white"
                     onClick={() => containerRef.current?.__resetView?.()}
                 >
                     Reset vista
                 </button>
-                <span className="hint" style={{ margin: 0 }}>
+                <span className="text-xs text-gray-600" style={{ margin: 0 }}>
                     Arrastra para mover · rueda para zoom · click en nodo para ver detalle
                 </span>
             </div>
@@ -486,14 +485,10 @@ export function InteractiveGraph({
                 ref={svgRef}
                 viewBox={`0 0 ${containerRef.current?.clientWidth || 980} ${height}`}
                 className="graph"
-                style={{ cursor: "grab" }}
+                style={{ cursor: "grab", touchAction: "none" }}
             >
                 <g ref={gRef} />
             </svg>
-
-            {showImages && selectedSimNode && imageNodes?.length > 0 && (
-                <ImageOverlay node={selectedSimNode} images={imageNodes} />
-            )}
 
             <div ref={tooltipRef} className="graphTooltip" />
         </div>

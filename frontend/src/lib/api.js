@@ -4,6 +4,18 @@ export function apiUrl(path = "") {
   return `${API_BASE}${path}`;
 }
 
+export async function getDashboardOverview(params = {}) {
+  const url = new URL(`${API_BASE}/dashboard/overview`);
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      url.searchParams.set(key, value);
+    }
+  });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando el dashboard arqueológico");
+  return res.json();
+}
+
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: {
@@ -237,6 +249,44 @@ export async function importDemo() {
   return loadDemoGuided();
 }
 
+export async function createBackup() {
+  const res = await fetch(`${API_BASE}/admin/backup`, { method: "POST" });
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error generando el respaldo");
+  }
+  return res.json();
+}
+
+export async function uploadMorro1Json(tipo, file) {
+  const formData = new FormData();
+  formData.append("tipo", tipo);
+  formData.append("file", file);
+  const res = await fetch(`${API_BASE}/admin/import/morro1/json`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error subiendo el archivo JSON");
+  }
+  return res.json();
+}
+
+export async function uploadAzapaJson(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await fetch(`${API_BASE}/admin/import/azapa/json`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error subiendo el archivo JSON");
+  }
+  return res.json();
+}
+
 export async function resetDb() {
   return request("/admin/reset-db", { method: "POST" });
 }
@@ -371,5 +421,38 @@ export async function getGraphMorroElements(sexo = "", edad = "", matriz = "") {
   if (matriz) url.searchParams.set("matriz", matriz);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando red completa de Morro1");
+  return res.json();
+}
+
+export async function getMorroPca({ elements = [], sexo = "", edad = "" } = {}) {
+  const url = new URL(`${API_BASE}/analysis/morro1/pca`);
+  url.searchParams.set("elements", elements.join(","));
+  if (sexo) url.searchParams.set("sexo", sexo);
+  if (edad) url.searchParams.set("edad", edad);
+  const res = await fetch(url);
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error calculando PCA de Morro1");
+  }
+  return res.json();
+}
+
+export async function getAzapaPca({ elements = [], sexo = "", edad = "", matriz = "" } = {}) {
+  const url = new URL(`${API_BASE}/analysis/azapa/pca`);
+  url.searchParams.set("elements", elements.join(","));
+  if (sexo) url.searchParams.set("sexo", sexo);
+  if (edad) url.searchParams.set("edad", edad);
+  if (matriz) url.searchParams.set("matriz", matriz);
+  const res = await fetch(url);
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error calculando PCA de Azapa");
+  }
+  return res.json();
+}
+
+export async function getMorroCaseRelation(caseId) {
+  const res = await fetch(`${API_BASE}/graph/morro1/case/${encodeURIComponent(caseId)}/relation`);
+  if (!res.ok) throw new Error("Error cargando relación de Morro1");
   return res.json();
 }

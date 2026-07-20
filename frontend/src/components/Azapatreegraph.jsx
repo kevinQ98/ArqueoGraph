@@ -152,7 +152,6 @@ export function AzapaTreeGraph({
 
         rootRef.current = root;
         render();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [hierarchyData, focusElement]);
 
     // ---- render imperativo (d3 general update pattern con transición) ---
@@ -319,7 +318,6 @@ export function AzapaTreeGraph({
     // re-pintar solo el resaltado cuando cambia la selección externa
     useEffect(() => {
         render();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedNodeId]);
 
     return (
