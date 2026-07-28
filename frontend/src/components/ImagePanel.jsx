@@ -1,118 +1,199 @@
-import React, { useEffect, useState } from "react";
-import { Image as ImageIcon, RefreshCw } from "lucide-react";
-import {
-  absoluteImageUrl,
-  getImagenesIndividuo,
-} from "../lib/api";
+// src/components/ImagePanel.jsx
+import { useEffect, useState } from "react";
+import { Image as ImageIcon, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { absoluteImageUrl } from "../lib/api";
 
 export function ImagePanel({
   individuo,
-  onImagesChange,
   images: imagesProp,
   title = "Imágenes",
   emptyMessage = "Este individuo todavía no tiene imágenes asociadas.",
   emptyHint = "Selecciona un individuo en el grafo para visualizar sus imágenes asociadas.",
-  caseLabelPrefix = "Cuerpo seleccionado:",
+  caseLabelPrefix = "Caso:",
 }) {
   const [imagenes, setImagenes] = useState([]);
-  const [selectedImageId, setSelectedImageId] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [status, setStatus] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  async function loadImages() {
-    if (Array.isArray(imagesProp)) {
-      const imgs = imagesProp.filter((img) => {
-        const u = (img.url || img.relative_path || "").toString();
-        return Boolean(u);
-      });
-      setImagenes(imgs);
-      onImagesChange?.(imgs);
-      if (imgs.length > 0) {
-        setSelectedImageId((prev) => prev || imgs[0].id_imagen);
-      } else {
-        setSelectedImageId("");
-      }
-      setStatus("");
-      return;
-    }
-    if (!individuo?.id) return;
-    setStatus("Cargando imágenes...");
-    try {
-      const imgsRaw = await getImagenesIndividuo(individuo.id);
-      // Aceptar cualquier imagen registrada por la API (rutas relativas o url completas)
-      const imgs = imgsRaw.filter((img) => {
-        const u = (img.url || img.relative_path || "").toString();
-        return Boolean(u);
-      });
-      setImagenes(imgs);
-      onImagesChange?.(imgs);
-      if (imgs.length > 0) {
-        setSelectedImageId((prev) => prev || imgs[0].id_imagen);
-      } else {
-        setSelectedImageId("");
-      }
-      setStatus("");
-    } catch (err) {
-      setStatus(`Error: ${err.message}`);
-    }
-  }
-
+  // Cargar imágenes
   useEffect(() => {
-    loadImages();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [individuo?.id, imagesProp]);
+    let imgs = [];
+    if (Array.isArray(imagesProp)) {
+      imgs = imagesProp.filter((img) => {
+        const u = (img.url || img.relative_path || "").toString();
+        return Boolean(u);
+      });
+    }
+    setImagenes(imgs);
+    setSelectedIndex(0);
+    setStatus("");
+  }, [imagesProp]);
 
-  if (!individuo && !imagesProp?.length) {
+  // Si no hay imágenes y no hay individuo, mostrar mensaje
+  if (!imagenes.length && !individuo?.id) {
     return (
-      <section className="panel">
-        <h2><ImageIcon size={18} /> {title}</h2>
-        <p className="hint">{emptyHint}</p>
-      </section>
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+        <div className="flex flex-col items-center justify-center py-8 text-center">
+          <ImageIcon size={32} className="text-slate-300 mb-2" />
+          <p className="text-sm text-slate-500">{emptyHint}</p>
+        </div>
+      </div>
     );
   }
 
-  const selectedImage =
-    imagenes.find((img) => img.id_imagen === selectedImageId) || imagenes[0] || null;
+  // Si no hay imágenes pero hay individuo
+  if (!imagenes.length) {
+    return (
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-5">
+        <div className="flex items-center gap-2 mb-3">
+          <ImageIcon size={16} className="text-amber-500" />
+          <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">{title}</h3>
+        </div>
+        <p className="text-sm text-slate-500">
+          No hay imagenes para el nodo seleccionado
+        </p>
+      </div>
+    );
+  }
+
+  const selectedImage = imagenes[selectedIndex];
+
+  const handlePrev = () => {
+    setSelectedIndex((prev) => (prev === 0 ? imagenes.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setSelectedIndex((prev) => (prev === imagenes.length - 1 ? 0 : prev + 1));
+  };
 
   return (
-    <section className="panel">
-      <div className="imagePanelHeader">
-        <div>
-          <h2><ImageIcon size={18} /> {title}</h2>
-          <p className="hint">{individuo?.label ? <>{caseLabelPrefix} <b>{individuo.label}</b></> : emptyHint}</p>
+    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-3">
+      {/* Cabecera */}
+      <div className=" mb-3">
+        <div className="flex items-center gap-2">
+          <ImageIcon size={16} className="text-amber-500" />
+          <h3 className="text-sm font-semibold text-slate-700 tracking-wider">
+            {title}
+          </h3>
+          {individuo?.label && (
+            <span className="text-xs text-slate-500 truncate max-w-[120px]">
+              ({individuo.label})
+            </span>
+          )}
+          <span className="text-xs text-slate-400 font-normal">
+            ({imagenes.length} {imagenes.length === 1 ? "imagen" : "imágenes"})
+          </span>
         </div>
-        <button className="secondary small" onClick={loadImages}><RefreshCw size={15} /> Actualizar</button>
       </div>
 
-      {status && <p className="status">{status}</p>}
+      {/* Vista previa principal */}
+      <div
+        className="relative rounded-lg overflow-hidden bg-slate-100 cursor-pointer aspect-video"
+        onClick={() => setIsModalOpen(true)}
+      >
+        <img
+          src={absoluteImageUrl(selectedImage.url)}
+          alt={selectedImage.titulo || selectedImage.filename_original}
+          className="w-full h-full object-contain"
+          loading="lazy"
+        />
+        <div className="absolute inset-0 flex items-center justify-between px-2 opacity-0 hover:opacity-100 transition-opacity">
+          <button
+            onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+            className="bg-black/50 hover:bg-black/70 text-white p-1 rounded-full transition"
+          >
+            <ChevronLeft size={12} />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); handleNext(); }}
+            className="bg-black/50 hover:bg-black/70 text-white p-1 rounded-full transition"
+          >
+            <ChevronRight size={12} />
+          </button>
+        </div>
+        <div className="absolute bottom-1 right-1 bg-black/60 text-white text-xs px-2 py-0.5 rounded">
+          {selectedIndex + 1} / {imagenes.length}
+        </div>
+      </div>
 
-      {!imagenes.length ? (
-        <p className="hint">{emptyMessage}</p>
-      ) : (
-        <div className="imageViewer">
-          <figure className="imageStage">
-            <img src={absoluteImageUrl(selectedImage.url)} alt={selectedImage.titulo || selectedImage.filename_original} />
-          </figure>
+      {/* Miniaturas (scroll horizontal) */}
+      {imagenes.length > 1 && (
+        <div className="mt-3 overflow-x-auto scrollbar-thin flex gap-2 pb-1">
+          {imagenes.map((img, idx) => (
+            <button
+              key={img.id_imagen || idx}
+              onClick={() => setSelectedIndex(idx)}
+              className={`flex-shrink-0 w-16 h-16 rounded border-2 overflow-hidden transition-all ${idx === selectedIndex
+                ? "border-amber-500 ring-2 ring-amber-200"
+                : "border-slate-200 hover:border-amber-300"
+                }`}
+            >
+              <img
+                src={absoluteImageUrl(img.url)}
+                alt={img.titulo || img.filename_original}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
+      )}
 
-          <div className="imageMeta">
-            <strong>{selectedImage.titulo || selectedImage.filename_original}</strong>
-            <span>{selectedImage.tipo_imagen || "imagen"}</span>
-            {selectedImage.descripcion && <p>{selectedImage.descripcion}</p>}
-          </div>
+      {/* Metadatos (opcional) */}
+      {selectedImage.titulo || selectedImage.descripcion ? (
+        <div className="mt-2 text-xs text-slate-500">
+          {selectedImage.titulo && <span className="font-medium text-slate-700">{selectedImage.titulo}</span>}
+          {selectedImage.descripcion && <span className="ml-1">{selectedImage.descripcion}</span>}
+        </div>
+      ) : null}
 
-          <div className="imageThumbs">
-            {imagenes.map((img) => (
-              <button
-                key={img.id_imagen}
-                className={img.id_imagen === selectedImage.id_imagen ? "thumbButton active" : "thumbButton"}
-                onClick={() => setSelectedImageId(img.id_imagen)}
-                title={img.titulo || img.filename_original}
-              >
-                <img src={absoluteImageUrl(img.url)} alt={img.titulo || img.filename_original} />
-              </button>
-            ))}
+      {/* Modal para imagen ampliada */}
+      {isModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+          onClick={() => setIsModalOpen(false)}
+        >
+          <div
+            className="relative max-w-4xl max-h-[90vh] bg-white rounded-xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-2 right-2 z-10 bg-black/50 hover:bg-black/70 text-white p-1 rounded-full transition"
+            >
+              <X size={24} />
+            </button>
+            <div className="relative">
+              <img
+                src={absoluteImageUrl(selectedImage.url)}
+                alt={selectedImage.titulo || selectedImage.filename_original}
+                className="max-w-full max-h-[85vh] object-contain"
+              />
+              <div className="absolute inset-0 flex items-center justify-between px-2">
+                <button
+                  onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+                  className="bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
+                >
+                  <ChevronLeft size={24} />
+                </button>
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleNext(); }}
+                  className="bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition"
+                >
+                  <ChevronRight size={24} />
+                </button>
+              </div>
+            </div>
+            {/* {selectedImage.titulo && (
+              <div className="p-3 bg-white border-t border-slate-200 text-sm text-slate-700">
+                {selectedImage.titulo}
+                {selectedImage.descripcion && <span className="text-slate-500 ml-2">{selectedImage.descripcion}</span>}
+              </div>
+            )} */}
           </div>
         </div>
       )}
-    </section>
+    </div>
   );
 }

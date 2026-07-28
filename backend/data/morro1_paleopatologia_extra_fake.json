@@ -1,0 +1,61 @@
+{
+    "morro1_paleopatologia": {
+        "area": "ARICA",
+        "sitio": "morro1",
+        "casos": [
+            {
+                "id": "Morro1_104",
+                "referencia": "morro1 T28C1",
+                "referencia_normalizada": "M1T28C1",
+                "tumba": "T28C1",
+                "individuo": {
+                    "sexo": "femenino",
+                    "edad": "20 - 25",
+                    "grupo_edad": "adulto",
+                    "conservacion": "INCOMPLETO"
+                },
+                "contexto_funerario": {
+                    "tipo_inhumacion": "Individual",
+                    "tipo_momificacion": "Natural",
+                    "posicion": "Extendido decúbito dorsal"
+                },
+                "paleopatologia": {
+                    "osteoporosis": "positivo",
+                    "artritis": "positivo"
+                }
+            },
+            {
+                "id": "Morro1_105",
+                "referencia": "morro1 T28C2",
+                "referencia_normalizada": "M1T28C2",
+                "tumba": "T28C2",
+                "individuo": {
+                    "sexo": "masculino",
+                    "edad": "40 - 45",
+                    "grupo_edad": "adulto",
+                    "conservacion": "SOLO CRANEO"
+                },
+                "paleopatologia": {
+                    "artritis": "positivo",
+                    "trauma_fractura": "positivo"
+                }
+            },
+            {
+                "id": "Morro1_107",
+                "referencia": "morro1 T28C4",
+                "referencia_normalizada": "M1T28C4",
+                "tumba": "T28C4",
+                "individuo": {
+                    "sexo": "indeterminado",
+                    "edad": "25 - 35",
+                    "grupo_edad": "adulto",
+                    "conservacion": "RESTOS OSEOS"
+                },
+                "paleopatologia": {
+                    "patologia_dental": "positivo",
+                    "espina_bifida": "negativo"
+                }
+            }
+        ]
+    }
+}
