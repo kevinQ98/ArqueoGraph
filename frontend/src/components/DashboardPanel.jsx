@@ -157,7 +157,7 @@ function SitePortal({ site, onOpen, onFilter }) {
       <p>{site.culturas?.length ? `Contextos: ${site.culturas.join(", ")}` : "Contexto cultural pendiente de normalización."}</p>
       <div className="sitePortalActions">
         <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md" onClick={() => onFilter(site.sitio)}>Filtrar panel</button>
-        <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md bg-black text-white" onClick={() => onOpen(site.view)}>Abrir visualización</button>
+        <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md bg-black text-white" onClick={() => onOpen(site)}>Abrir visualización</button>
       </div>
     </article>
   );

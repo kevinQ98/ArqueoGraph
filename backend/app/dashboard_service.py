@@ -7,15 +7,8 @@ from pathlib import Path
 from statistics import mean, median
 from typing import Any, Optional
 
-from .config import (
-    AZAPA_ANALYSIS_PATHS,
-    AZAPA_DATACIONES_PATH,
-    AZAPA_REFERENCE_PATH,
-    MORRO1_ANALYSIS_PATHS,
-    MORRO1_REFERENCE_PATH,
-    PALEOPATOLOGIA_PATH,
-)
-from .database import IMAGES_DIR
+from .database import get_connection, rows_to_dicts
+from .sqlite_migration import ensure_sqlite_sources
 
 
 IMAGE_EXTENSIONS = {".gif", ".jpeg", ".jpg", ".png", ".tif", ".tiff", ".webp"}
@@ -24,13 +17,10 @@ NEGATIVE_VALUES = {
     "no", "none", "null",
 }
 MISSING_MEASUREMENTS = {"", "-", "na", "nan", "n/d", "n.d.", "nd", "none", "null"}
-SITE_COORDINATES = {
-    "Morro 1": {"lat": -18.508333, "lng": -70.266667},
-    "Azapa 140": {"lat": -18.528267, "lng": -70.179785},
-}
 
 
 def _load_cases(path: Path) -> list[dict[str, Any]]:
+    """Compatibilidad para utilidades legacy que aún respaldan desde JSON."""
     if not path.exists():
         return []
     try:
@@ -94,106 +84,89 @@ def _numeric_measurement(value: Any) -> Optional[float]:
     return number if math.isfinite(number) else None
 
 
-def _chemistry_by_case(paths: list[Path]) -> dict[str, dict[str, list[float]]]:
-    chemistry: dict[str, dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
-    for path in paths:
-        for case in _load_cases(path):
-            case_id = str(case.get("id") or "").strip().lower()
-            if not case_id:
-                continue
-            elements = (case.get("analisis_quimicos") or {}).get("elementos") or {}
-            if not isinstance(elements, dict):
-                continue
-            for element, raw_value in elements.items():
-                number = _numeric_measurement(raw_value)
-                if element and number is not None:
-                    chemistry[case_id][str(element)].append(number)
-    return chemistry
-
-
-def _pathologies_by_case() -> dict[str, list[str]]:
-    output: dict[str, list[str]] = {}
-    for case in _load_cases(PALEOPATOLOGIA_PATH):
-        case_id = str(case.get("id") or "").strip().lower()
-        positives = []
-        for pathology, value in ((case.get("paleopatologia") or {}).items()):
-            if value is None:
-                continue
-            if isinstance(value, str) and value.strip().lower() in NEGATIVE_VALUES:
-                continue
-            positives.append(str(pathology))
-        if case_id:
-            output[case_id] = sorted(positives)
-    return output
-
-
-def _dated_azapa_cases() -> set[str]:
-    dated = set()
-    for case in _load_cases(AZAPA_DATACIONES_PATH):
-        case_id = str(case.get("id") or "").strip().lower()
-        dating = case.get("datacion_radiocarbono") or {}
-        calibrated = dating.get("rango_calibrado_AD") or {}
-        has_value = any([
-            dating.get("muestra"),
-            dating.get("fechado_1sigma_AD"),
-            dating.get("interceptos_AD"),
-            calibrated.get("min") if isinstance(calibrated, dict) else None,
-            calibrated.get("max") if isinstance(calibrated, dict) else None,
-        ])
-        if case_id and has_value:
-            dated.add(case_id)
-    return dated
-
-
-def _image_counts(case_ids: set[str]) -> Counter:
-    counts: Counter = Counter()
-    lookup = {case_id.lower(): case_id.lower() for case_id in case_ids}
-    if not IMAGES_DIR.exists():
-        return counts
-    for file_path in IMAGES_DIR.rglob("*"):
-        if not file_path.is_file() or file_path.suffix.lower() not in IMAGE_EXTENSIONS:
-            continue
-        for parent in reversed(file_path.parts[:-1]):
-            normalized = parent.lower()
-            if normalized in lookup:
-                counts[lookup[normalized]] += 1
-                break
-    return counts
-
-
 def _build_records() -> list[dict[str, Any]]:
-    morro_chemistry = _chemistry_by_case(list(MORRO1_ANALYSIS_PATHS))
-    azapa_chemistry = _chemistry_by_case(list(AZAPA_ANALYSIS_PATHS))
-    pathologies = _pathologies_by_case()
-    dated_azapa = _dated_azapa_cases()
+    ensure_sqlite_sources()
+    with get_connection() as conn:
+        individuals = rows_to_dicts(conn.execute(
+            """
+            SELECT i.id_individuo, i.id_documento, i.numero_cuerpo, i.sexo, i.edad,
+                   i.sitio, i.referencia_bibliografica, i.notas, i.fuente,
+                   s.nombre AS sitio_nombre, s.area, s.lat, s.lng, s.view
+            FROM individuos i
+            LEFT JOIN sitios s ON s.id_sitio = i.fuente OR s.nombre = i.sitio
+            ORDER BY i.sitio, i.id_documento
+            """
+        ).fetchall())
+        measurements = rows_to_dicts(conn.execute(
+            """
+            SELECT id_individuo, elemento, concentracion
+            FROM mediciones_quimicas
+            WHERE concentracion IS NOT NULL
+            """
+        ).fetchall())
+        pathologies = rows_to_dicts(conn.execute(
+            """
+            SELECT id_individuo, patologia
+            FROM paleopatologias
+            WHERE presente = 1
+            """
+        ).fetchall())
+        image_counts = {
+            row["id_individuo"]: row["n"]
+            for row in conn.execute(
+                "SELECT id_individuo, COUNT(*) AS n FROM imagenes GROUP BY id_individuo"
+            ).fetchall()
+        }
+        dated = {
+            row["id_individuo"]
+            for row in conn.execute("SELECT DISTINCT id_individuo FROM dataciones").fetchall()
+        }
+
+    chemistry_by_case: dict[str, dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
+    for row in measurements:
+        number = _numeric_measurement(row.get("concentracion"))
+        if row.get("id_individuo") and row.get("elemento") and number is not None:
+            chemistry_by_case[row["id_individuo"]][str(row["elemento"])].append(number)
+
+    pathologies_by_case: dict[str, list[str]] = defaultdict(list)
+    for row in pathologies:
+        if row.get("id_individuo") and row.get("patologia"):
+            pathologies_by_case[row["id_individuo"]].append(str(row["patologia"]))
+
     raw_records: list[dict[str, Any]] = []
-
-    for site, reference_path, chemistry in [
-        ("Morro 1", MORRO1_REFERENCE_PATH, morro_chemistry),
-        ("Azapa 140", AZAPA_REFERENCE_PATH, azapa_chemistry),
-    ]:
-        for case in _load_cases(reference_path):
-            case_id = str(case.get("id") or "").strip()
-            if not case_id:
-                continue
-            key = case_id.lower()
-            individual = case.get("individuo") or {}
-            raw_records.append({
-                "id": case_id,
-                "label": _display_value(case.get("tumba") or case.get("referencia"), case_id),
-                "sitio": site,
-                "sexo": _canonical_sex(individual.get("sexo")),
-                "edad": _canonical_age(individual.get("grupo_edad") or individual.get("edad")),
-                "cultura": _display_value(case.get("cultura")),
-                "conservacion": _display_value(individual.get("conservacion")),
-                "chemistry": chemistry.get(key, {}),
-                "pathologies": pathologies.get(key, []),
-                "has_dating": key in dated_azapa,
-            })
-
-    counts = _image_counts({record["id"] for record in raw_records})
-    for record in raw_records:
-        record["image_count"] = counts[record["id"].lower()]
+    for row in individuals:
+        case_id = str(row.get("id_individuo") or "").strip()
+        if not case_id:
+            continue
+        raw_payload: dict[str, Any] = {}
+        if row.get("notas"):
+            try:
+                parsed = json.loads(row["notas"])
+                if isinstance(parsed, dict):
+                    raw_payload = parsed
+            except (TypeError, ValueError):
+                raw_payload = {}
+        individual = raw_payload.get("individuo") if isinstance(raw_payload.get("individuo"), dict) else {}
+        site_name = _display_value(row.get("sitio_nombre") or row.get("sitio"))
+        raw_records.append({
+            "id": case_id,
+            "label": _display_value(row.get("numero_cuerpo") or row.get("id_documento"), case_id),
+            "sitio": site_name,
+            "sexo": _canonical_sex(row.get("sexo")),
+            "edad": _canonical_age(row.get("edad")),
+            "cultura": _display_value(raw_payload.get("cultura") or row.get("referencia_bibliografica")),
+            "conservacion": _display_value(individual.get("conservacion")),
+            "chemistry": chemistry_by_case.get(case_id, {}),
+            "pathologies": sorted(set(pathologies_by_case.get(case_id, []))),
+            "has_dating": case_id in dated,
+            "image_count": image_counts.get(case_id, 0),
+            "site_view": row.get("view") or "",
+            "site_coordinates": (
+                {"lat": row["lat"], "lng": row["lng"]}
+                if row.get("lat") is not None and row.get("lng") is not None
+                else None
+            ),
+        })
     return raw_records
 
 
@@ -284,8 +257,9 @@ def build_dashboard_data(
     sites_in_selection = len({record["sitio"] for record in records})
 
     site_portals = []
-    for site_name in ["Morro 1", "Azapa 140"]:
+    for site_name in sorted({record["sitio"] for record in all_records}):
         site_records = [record for record in all_records if record["sitio"] == site_name]
+        representative = next((record for record in site_records if record.get("site_coordinates")), None)
         cultures = Counter(record["cultura"] for record in site_records if record["cultura"] != "Sin dato")
         site_portals.append({
             "sitio": site_name,
@@ -295,8 +269,8 @@ def build_dashboard_data(
             "con_imagenes": sum(record["image_count"] > 0 for record in site_records),
             "con_datacion": sum(record["has_dating"] for record in site_records),
             "culturas": [label for label, _ in cultures.most_common(3)],
-            "view": "visualizacion" if site_name == "Morro 1" else "clusters",
-            "coordinates": SITE_COORDINATES[site_name],
+            "view": representative.get("site_view") if representative else "",
+            "coordinates": representative.get("site_coordinates") if representative else None,
         })
 
     case_rows = []
@@ -325,9 +299,9 @@ def build_dashboard_data(
             "patologia": pathology_filter,
         },
         "filter_options": {
-            "sitios": ["Morro 1", "Azapa 140"],
-            "sexos": ["femenino", "masculino", "indeterminado"],
-            "edades": ["adulto", "subadulto", "indeterminado"],
+            "sitios": sorted({record["sitio"] for record in all_records}),
+            "sexos": sorted({record["sexo"] for record in all_records if record["sexo"]}),
+            "edades": sorted({record["edad"] for record in all_records if record["edad"]}),
             "elementos": all_elements,
             "patologias": all_pathologies,
         },

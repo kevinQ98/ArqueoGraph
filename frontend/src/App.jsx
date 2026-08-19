@@ -21,7 +21,8 @@ import {
   getMorroPca,
   getMorroCaseRelation,
   getAzapaPca,
-  createBackup
+  createBackup,
+  getDashboardOverview
 } from "./lib/api";
 import { AdminPanel } from "./components/AdminPanel";
 import "./style.css";
@@ -55,8 +56,108 @@ function rowsToCsv(rows) {
   return [headers.join(","), ...rows.map(r => headers.map(h => escape(r[h])).join(","))].join("\n");
 }
 
+function GenericSitePanel({ siteName, onBack }) {
+  const [data, setData] = useState(null);
+  const [status, setStatus] = useState("Cargando sitio...");
+
+  useEffect(() => {
+    let ignore = false;
+    setStatus("Cargando sitio...");
+    getDashboardOverview({ sitio: siteName })
+      .then((payload) => {
+        if (ignore) return;
+        setData(payload);
+        setStatus("");
+      })
+      .catch((error) => {
+        if (ignore) return;
+        setData(null);
+        setStatus(error.message || "No fue posible cargar el sitio.");
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [siteName]);
+
+  const kpis = data?.kpis || {};
+  const cases = data?.cases || [];
+
+  return (
+    <main className="dashboardMain">
+      <section className="dashboardHero">
+        <div>
+          <p className="dashboardEyebrow">ArqueoGraph · Sitio</p>
+          <h2>{siteName}</h2>
+          <p>Vista general para sitios cargados desde SQLite/CSV.</p>
+        </div>
+        <div className="dashboardHeroActions">
+          <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md" onClick={onBack}>Volver al dashboard</button>
+        </div>
+      </section>
+
+      {status && <p className="dashboardStatus">{status}</p>}
+
+      <section className="dashboardKpis">
+        <article className="dashboardKpi blue"><div><span>Individuos</span><strong>{kpis.individuos || 0}</strong><small>sitio filtrado</small></div></article>
+        <article className="dashboardKpi violet"><div><span>Analizados</span><strong>{kpis.con_quimica || 0}</strong><small>{kpis.cobertura_quimica_pct || 0}% cobertura</small></div></article>
+        <article className="dashboardKpi amber"><div><span>Patologías</span><strong>{kpis.con_patologia || 0}</strong><small>positivas</small></div></article>
+        <article className="dashboardKpi green"><div><span>Imágenes</span><strong>{kpis.con_imagenes || 0}</strong><small>registradas</small></div></article>
+        <article className="dashboardKpi blue"><div><span>Dataciones</span><strong>{kpis.con_datacion || 0}</strong><small>disponibles</small></div></article>
+      </section>
+
+      <section className="dashboardGrid dashboardGridTwo">
+        <section className="dashboardVisual">
+          <div className="dashboardVisualHeader"><div><h3>Elementos químicos</h3><p>Cobertura por individuo en este sitio.</p></div></div>
+          <div className="dashboardTags">
+            {(data?.chemical_coverage || []).map((row) => <span key={row.label}>{row.label}: {row.value}</span>)}
+            {!data?.chemical_coverage?.length && <p className="dashboardEmpty">Sin mediciones químicas.</p>}
+          </div>
+        </section>
+        <section className="dashboardVisual">
+          <div className="dashboardVisualHeader"><div><h3>Paleopatologías</h3><p>Frecuencias positivas.</p></div></div>
+          <div className="dashboardTags">
+            {(data?.pathology_distribution || []).map((row) => <span key={row.label}>{row.label}: {row.value}</span>)}
+            {!data?.pathology_distribution?.length && <p className="dashboardEmpty">Sin paleopatologías positivas.</p>}
+          </div>
+        </section>
+      </section>
+
+      <section className="dashboardVisual dashboardCases">
+        <div className="dashboardTableHeader">
+          <div>
+            <h3>Casos del sitio</h3>
+            <p>Primeros {cases.length} casos devueltos por el dashboard.</p>
+          </div>
+        </div>
+        <div className="tableWrap">
+          <table>
+            <thead><tr><th>Caso</th><th>Sexo</th><th>Edad</th><th>Elementos</th><th>Patologías</th><th>Imágenes</th></tr></thead>
+            <tbody>
+              {cases.map((row) => (
+                <tr key={row.id}>
+                  <td><strong>{row.label}</strong><small className="dashboardCaseId">{row.id}</small></td>
+                  <td>{row.sexo}</td>
+                  <td>{row.edad}</td>
+                  <td><div className="dashboardTags">{row.elementos.map((item) => <span key={item}>{item}</span>)}</div></td>
+                  <td>{row.patologias.length ? row.patologias.length : "—"}</td>
+                  <td>{row.imagenes || "—"}</td>
+                </tr>
+              ))}
+              {!cases.length && <tr><td colSpan="6" className="dashboardEmpty">No hay casos para este sitio.</td></tr>}
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  );
+}
+
 export default function App() {
   const [view, setView] = useState("dashboard");
+  const [sitePortals, setSitePortals] = useState([]);
+  const [activeGenericSite, setActiveGenericSite] = useState("");
+  const [morroSource, setMorroSource] = useState("morro1");
+  const [morroSiteName, setMorroSiteName] = useState("Morro 1");
   const [modoGrafo, setModoGrafo] = useState("distancia");
   const [modoGrafoAzapa, setModoGrafoAzapa] = useState("distancia");
   const [sexo, setSexo] = useState("");
@@ -103,9 +204,36 @@ export default function App() {
   const [showTreeMorro, setShowTreeMorro] = useState(false);
   const [showTreeAzapa, setShowTreeAzapa] = useState(false);
 
+  const openSite = useCallback((site) => {
+    const siteName = typeof site === "string" ? site : site?.sitio;
+    if (siteName === "dashboard" || siteName === "visualizacion" || siteName === "clusters" || siteName === "administracion") {
+      setActiveGenericSite("");
+      setView(siteName);
+      return;
+    }
+    if (siteName === "Morro 1") {
+      setActiveGenericSite("");
+      setMorroSource("morro1");
+      setMorroSiteName("Morro 1");
+      setView("visualizacion");
+      return;
+    }
+    if (siteName === "Azapa 140") {
+      setActiveGenericSite("");
+      setView("clusters");
+      return;
+    }
+    if (siteName) {
+      setActiveGenericSite("");
+      setMorroSource(String(siteName).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, ""));
+      setMorroSiteName(siteName);
+      setView("visualizacion");
+    }
+  }, []);
+
   async function loadMorroTreeGraph() {
     try {
-      const data = await getGraphMorroElements(sexo, edad, ""); // Sin matriz
+      const data = await getGraphMorroElements(sexo, edad, "", morroSource); // Sin matriz
       setMorroTreeGraph(data || { nodes: [], edges: [] });
     } catch {
       setMorroTreeGraph({ nodes: [], edges: [] });
@@ -139,7 +267,7 @@ export default function App() {
     }
     setPcaStatus("Calculando PCA...");
     try {
-      const result = await getMorroPca({ elements: pcaElements, sexo, edad });
+      const result = await getMorroPca({ elements: pcaElements, sexo, edad, fuente: morroSource });
       setPcaData(result);
       setPcaStatus("");
     } catch (error) {
@@ -177,7 +305,7 @@ export default function App() {
 
   async function loadOptions() {
     try {
-      const opts = await getFilterOptions({ fuente: "morro1" });
+      const opts = await getFilterOptions({ fuente: morroSource });
       const elementosConNinguna = ["Ninguna", ...(opts.elementos || [])];
       setOptions({ ...opts, elementos: elementosConNinguna });
       // Solo actualizar si selectedElement no está en la lista
@@ -249,7 +377,7 @@ export default function App() {
     try {
       let g;
       let m = [];
-      const fuenteMorro1 = "morro1";
+      const fuenteMorro1 = morroSource;
 
       if (selectedPatologia === "RED_COMPLETA") {
         g = await getGraphAllPatologias(edad, sexo, fuenteMorro1);
@@ -260,11 +388,11 @@ export default function App() {
       } else {
         // Siempre distancia radial
         if (selectedElement === "Ninguna") {
-          g = await getGraphMorroReference(sexo, edad, selectedPatologia);
-          m = await getMorroTableRows({ sexo, edad });
+          g = await getGraphMorroReference(sexo, edad, selectedPatologia, fuenteMorro1);
+          m = await getMorroTableRows({ sexo, edad, fuente: fuenteMorro1 });
         } else {
-          g = await getGraphMorroElemento(selectedElement, sexo, edad, "");
-          m = await getMorroTableRows({ elemento: selectedElement, sexo, edad });
+          g = await getGraphMorroElemento(selectedElement, sexo, edad, "", fuenteMorro1);
+          m = await getMorroTableRows({ elemento: selectedElement, sexo, edad, fuente: fuenteMorro1 });
         }
       }
       setGraph(g);
@@ -330,7 +458,7 @@ export default function App() {
       setShowImages(true);
       if (node.id_individuo) {
         try {
-          const data = await getMorroCaseRelation(node.id);
+          const data = await getMorroCaseRelation(node.id_individuo, morroSource);
           const imgs = data.images || [];
           setSelectedImages(imgs);
         } catch (error) {
@@ -342,10 +470,12 @@ export default function App() {
     }
     if (node?.type === "individuo" && node?.id) {
       setShowImages(true);
-      const idToFetch = node.id.startsWith("Morro1_") ? node.id : node.numero_cuerpo;
+      const idToFetch = morroSource === "morro1"
+        ? (node.id.startsWith("Morro1_") ? node.id : node.numero_cuerpo)
+        : node.id;
       if (idToFetch) {
         try {
-          const data = await getMorroCaseRelation(idToFetch);
+          const data = await getMorroCaseRelation(idToFetch, morroSource);
           const imgs = data.images || [];
           setSelectedImages(imgs);
         } catch (error) {
@@ -354,7 +484,7 @@ export default function App() {
         }
       }
     }
-  }, []);
+  }, [morroSource]);
 
   const toggleImages = useCallback(() => {
     setShowImages(prev => !prev);
@@ -377,13 +507,16 @@ export default function App() {
   useEffect(() => {
     loadOptions();
     loadAzapaFilterOptions();
+    getDashboardOverview()
+      .then((payload) => setSitePortals(payload?.site_portals || []))
+      .catch(() => setSitePortals([]));
   }, []);
 
   useEffect(() => {
     if (view !== "visualizacion") return;
     load();
     loadMorroTreeGraph();
-  }, [view, edad, sexo, selectedElement, patologia, selectedPatologia]);
+  }, [view, edad, sexo, selectedElement, patologia, selectedPatologia, morroSource]);
 
   useEffect(() => {
     setPcaData(null);
@@ -415,10 +548,26 @@ export default function App() {
 
   return (
     <div className="app">
-      <Header view={view} setView={setView} handleImportDemo={handleImportDemo} handleBackup={handleBackup} backupStatus={backupStatus} />
+      <Header
+        view={view}
+        setView={(nextView) => {
+          setActiveGenericSite("");
+          setView(nextView);
+        }}
+        handleBackup={handleBackup}
+        backupStatus={backupStatus}
+        sites={sitePortals}
+        activeSite={view === "visualizacion" ? morroSiteName : activeGenericSite}
+        onOpenSite={openSite}
+      />
 
       {view === "dashboard" ? (
-        <DashboardPanel onNavigate={setView} />
+        <DashboardPanel onNavigate={openSite} />
+      ) : view === "site" ? (
+        <GenericSitePanel siteName={activeGenericSite} onBack={() => {
+          setActiveGenericSite("");
+          setView("dashboard");
+        }} />
       ) : view === "administracion" ? (
         <main className="adminMain">
           <AdminPanel />
@@ -496,6 +645,7 @@ export default function App() {
             stats={stats}
             showTree={showTreeMorro}
             setPcaData={setPcaData}
+            siteName={morroSiteName}
           />
         </main>
       )}

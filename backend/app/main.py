@@ -8,6 +8,7 @@ import uuid
 import mimetypes
 from io import StringIO
 from typing import Optional
+import numpy as np
 from fastapi import FastAPI, UploadFile, File, HTTPException, Response, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -24,7 +25,18 @@ from .config import (
     register_uploaded_file,
 )
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
-from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
+from .importer import (
+    import_azapa_master_data,
+    import_dataciones_csv,
+    import_imagenes_csv,
+    import_individuos_csv,
+    import_mediciones_csv,
+    import_morro1_master_data,
+    import_paleopatologias_csv,
+    import_sitios_csv,
+)
+from .sqlite_migration import ensure_sqlite_sources, migrate_json_sources_to_sqlite
+from scripts.generate_prueba_test_from_morro import main as generate_prueba_test_csvs
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
 from .dashboard_service import build_dashboard_data
 from .backup import create_backup
@@ -38,8 +50,12 @@ APP_VERSION = "0.8.0"
 
 VALID_ESTADOS = {"borrador", "revisar", "validado", "descartado"}
 TEMPLATE_FILES = {
+    "sitios.csv": BASE_DIR / "templates" / "sitios.csv",
     "individuos.csv": BASE_DIR / "templates" / "individuos.csv",
     "mediciones_quimicas.csv": BASE_DIR / "templates" / "mediciones_quimicas.csv",
+    "paleopatologias.csv": BASE_DIR / "templates" / "paleopatologias.csv",
+    "dataciones.csv": BASE_DIR / "templates" / "dataciones.csv",
+    "imagenes.csv": BASE_DIR / "templates" / "imagenes.csv",
 }
 
 app = FastAPI(
@@ -65,6 +81,7 @@ def startup_event():
     UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     IMAGES_DIR.mkdir(parents=True, exist_ok=True)
     init_db()
+    ensure_sqlite_sources()
 
 
 @app.get("/")
@@ -174,23 +191,20 @@ def _load_paleopatologias() -> list[dict]:
 
 
 def _extract_patologias() -> list[str]:
-    """Extrae nombres de patologías con valores no-null del archivo JSON."""
-    casos = _load_paleopatologias()
-    patologias_set = set()
-    
-    for caso in casos:
-        if not isinstance(caso, dict):
-            continue
-        paleo = caso.get("paleopatologia", {})
-        if not isinstance(paleo, dict):
-            continue
-        
-        for patologia_name, patologia_value in paleo.items():
-            # Solo agregar patologías que tienen al menos un valor no-null
-            if patologia_value is not None:
-                patologias_set.add(patologia_name)
-    
-    return sorted(list(patologias_set))
+    """Extrae nombres de patologías positivas desde SQLite."""
+    ensure_sqlite_sources()
+    with get_connection() as conn:
+        return [
+            row["patologia"]
+            for row in conn.execute(
+                """
+                SELECT DISTINCT patologia
+                FROM paleopatologias
+                WHERE presente = 1
+                ORDER BY patologia
+                """
+            ).fetchall()
+        ]
 
 
 def _catalogo_momias_images_for_case(case_value: str, id_individuo: Optional[str] = None) -> list[dict]:
@@ -375,14 +389,18 @@ def _write_csv_response(filename: str, rows: list[dict]) -> Response:
 
 def _table_counts(conn) -> dict:
     return {
+        "sitios": conn.execute("SELECT COUNT(*) AS n FROM sitios").fetchone()["n"],
         "individuos": conn.execute("SELECT COUNT(*) AS n FROM individuos").fetchone()["n"],
         "mediciones": conn.execute("SELECT COUNT(*) AS n FROM mediciones_quimicas").fetchone()["n"],
+        "paleopatologias": conn.execute("SELECT COUNT(*) AS n FROM paleopatologias").fetchone()["n"],
+        "dataciones": conn.execute("SELECT COUNT(*) AS n FROM dataciones").fetchone()["n"],
         "imagenes": conn.execute("SELECT COUNT(*) AS n FROM imagenes").fetchone()["n"],
     }
 
 
 @app.get("/health")
 def health_check():
+    ensure_sqlite_sources()
     with get_connection() as conn:
         counts = _table_counts(conn)
     return {
@@ -399,6 +417,7 @@ def health_check():
 
 @app.get("/admin/resumen")
 def admin_resumen():
+    ensure_sqlite_sources()
     with get_connection() as conn:
         counts = _table_counts(conn)
         individuos_estado = rows_to_dicts(conn.execute(
@@ -619,11 +638,15 @@ def download_template(template_name: str):
 
 @app.get("/admin/export/dataset.json")
 def export_dataset_json():
+    ensure_sqlite_sources()
     with get_connection() as conn:
         payload = {
             "version": APP_VERSION,
+            "sitios": rows_to_dicts(conn.execute("SELECT * FROM sitios ORDER BY nombre").fetchall()),
             "individuos": rows_to_dicts(conn.execute("SELECT * FROM individuos ORDER BY id_documento").fetchall()),
             "mediciones": rows_to_dicts(conn.execute("SELECT * FROM mediciones_quimicas ORDER BY elemento, id_medicion").fetchall()),
+            "paleopatologias": rows_to_dicts(conn.execute("SELECT * FROM paleopatologias ORDER BY patologia, id_individuo").fetchall()),
+            "dataciones": rows_to_dicts(conn.execute("SELECT * FROM dataciones ORDER BY id_individuo").fetchall()),
             "imagenes": rows_to_dicts(conn.execute("SELECT * FROM imagenes ORDER BY created_at DESC").fetchall()),
         }
     return Response(
@@ -635,13 +658,20 @@ def export_dataset_json():
 
 @app.get("/admin/export/{dataset}.csv")
 def export_dataset_csv(dataset: str):
+    ensure_sqlite_sources()
     queries = {
+        "sitios": "SELECT * FROM sitios ORDER BY nombre",
         "individuos": "SELECT * FROM individuos ORDER BY id_documento",
         "mediciones": "SELECT * FROM mediciones_quimicas ORDER BY elemento, id_medicion",
+        "paleopatologias": "SELECT * FROM paleopatologias ORDER BY patologia, id_individuo",
+        "dataciones": "SELECT * FROM dataciones ORDER BY id_individuo",
         "imagenes": "SELECT * FROM imagenes ORDER BY created_at DESC",
     }
     if dataset not in queries:
-        raise HTTPException(status_code=404, detail="Dataset no soportado. Usa individuos, mediciones o imagenes")
+        raise HTTPException(
+            status_code=404,
+            detail="Dataset no soportado. Usa sitios, individuos, mediciones, paleopatologias, dataciones o imagenes",
+        )
     with get_connection() as conn:
         rows = rows_to_dicts(conn.execute(queries[dataset]).fetchall())
     return _write_csv_response(f"arqueograph_{dataset}.csv", rows)
@@ -662,6 +692,15 @@ def create_backup_endpoint():
         "ok": True,
         "archivo": backup_path.name,
         "ruta": str(backup_path),
+    }
+
+
+@app.post("/admin/migrate/sqlite")
+def migrate_sqlite_endpoint():
+    """Reconstruye/actualiza las tablas normalizadas de SQLite desde los JSON legacy."""
+    return {
+        "ok": True,
+        "result": migrate_json_sources_to_sqlite(),
     }
 
 
@@ -714,6 +753,84 @@ def import_mediciones_file(file: UploadFile = File(...)):
     result = import_mediciones_csv(dest)
     result["uploaded_file"] = dest.name
     return result
+
+
+@app.post("/admin/import/sitios/csv")
+def import_sitios_file(file: UploadFile = File(...)):
+    dest = UPLOADS_DIR / _safe_upload_filename(file.filename)
+    with dest.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    result = import_sitios_csv(dest)
+    result["uploaded_file"] = dest.name
+    return result
+
+
+@app.post("/admin/import/paleopatologias/csv")
+def import_paleopatologias_file(file: UploadFile = File(...)):
+    dest = UPLOADS_DIR / _safe_upload_filename(file.filename)
+    with dest.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    result = import_paleopatologias_csv(dest)
+    result["uploaded_file"] = dest.name
+    return result
+
+
+@app.post("/admin/import/dataciones/csv")
+def import_dataciones_file(file: UploadFile = File(...)):
+    dest = UPLOADS_DIR / _safe_upload_filename(file.filename)
+    with dest.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    result = import_dataciones_csv(dest)
+    result["uploaded_file"] = dest.name
+    return result
+
+
+@app.post("/admin/import/imagenes/csv")
+def import_imagenes_file(file: UploadFile = File(...)):
+    dest = UPLOADS_DIR / _safe_upload_filename(file.filename)
+    with dest.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    result = import_imagenes_csv(dest)
+    result["uploaded_file"] = dest.name
+    return result
+
+
+@app.post("/admin/import/prueba-test/demo")
+def import_prueba_test_demo():
+    ensure_sqlite_sources()
+    with get_connection() as conn:
+        conn.execute("DELETE FROM imagenes WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute("DELETE FROM dataciones WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute("DELETE FROM paleopatologias WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute("DELETE FROM mediciones_quimicas WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute("DELETE FROM individuos WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute("DELETE FROM sitios WHERE id_sitio = ?", ("prueba_test",))
+
+    generate_prueba_test_csvs()
+    base = SAMPLE_DIR / "prueba_test"
+    files = {
+        "sitios": base / "sitios.csv",
+        "individuos": base / "individuos.csv",
+        "mediciones": base / "mediciones_quimicas.csv",
+        "paleopatologias": base / "paleopatologias.csv",
+        "dataciones": base / "dataciones.csv",
+        "imagenes": base / "imagenes.csv",
+    }
+    missing = [name for name, path in files.items() if not path.exists()]
+    if missing:
+        raise HTTPException(status_code=404, detail=f"Faltan CSV demo: {', '.join(missing)}")
+    return {
+        "sitios": import_sitios_csv(files["sitios"]),
+        "individuos": import_individuos_csv(files["individuos"]),
+        "mediciones": import_mediciones_csv(files["mediciones"]),
+        "paleopatologias": import_paleopatologias_csv(files["paleopatologias"]),
+        "dataciones": import_dataciones_csv(files["dataciones"]),
+        "imagenes": import_imagenes_csv(files["imagenes"]),
+    }
 
 
 @app.post("/admin/import/morro1/json")
@@ -1237,28 +1354,123 @@ def graph_azapa_case_relation(case_id: str):
 
 @app.get("/filters/options")
 def filter_options(fuente: Optional[str] = None):
+    ensure_sqlite_sources()
     fuente_norm = (fuente or "").strip().lower()
     with get_connection() as conn:
-        sexos = [r["sexo"] for r in conn.execute("SELECT DISTINCT sexo FROM individuos WHERE sexo IS NOT NULL ORDER BY sexo").fetchall()]
-        sitios = [r["sitio"] for r in conn.execute("SELECT DISTINCT sitio FROM individuos WHERE sitio IS NOT NULL ORDER BY sitio").fetchall()]
-        estilos = [r["estilo_momificacion"] for r in conn.execute("SELECT DISTINCT estilo_momificacion FROM individuos WHERE estilo_momificacion IS NOT NULL ORDER BY estilo_momificacion").fetchall()]
-        if fuente_norm == "morro1":
-            elementos = get_morro1_available_elements(MORRO1_ANALYSIS_PATHS)
-        elif fuente_norm == "azapa":
-            elementos = get_azapa_available_elements(AZAPA_ANALYSIS_PATHS)
+        individual_where = "WHERE 1=1"
+        measurement_where = "WHERE 1=1"
+        params: list[str] = []
+        measurement_params: list[str] = []
+        if fuente_norm:
+            individual_where += " AND lower(COALESCE(fuente, '')) = ?"
+            measurement_where += " AND lower(COALESCE(fuente, '')) = ?"
+            params.append(fuente_norm)
+            measurement_params.append(fuente_norm)
+
+        sexos = [
+            r["sexo"]
+            for r in conn.execute(
+                f"SELECT DISTINCT sexo FROM individuos {individual_where} AND sexo IS NOT NULL ORDER BY sexo",
+                params,
+            ).fetchall()
+        ]
+        sitios = [
+            r["sitio"]
+            for r in conn.execute(
+                "SELECT DISTINCT sitio FROM individuos WHERE sitio IS NOT NULL ORDER BY sitio"
+            ).fetchall()
+        ]
+        estilos = [
+            r["estilo_momificacion"]
+            for r in conn.execute(
+                f"""
+                SELECT DISTINCT estilo_momificacion
+                FROM individuos
+                {individual_where} AND estilo_momificacion IS NOT NULL
+                ORDER BY estilo_momificacion
+                """,
+                params,
+            ).fetchall()
+        ]
+        elementos = [
+            r["elemento"]
+            for r in conn.execute(
+                f"""
+                SELECT DISTINCT elemento
+                FROM mediciones_quimicas
+                {measurement_where} AND elemento IS NOT NULL
+                ORDER BY elemento
+                """,
+                measurement_params,
+            ).fetchall()
+        ]
+        edades = [
+            r["edad"]
+            for r in conn.execute(
+                f"SELECT DISTINCT edad FROM individuos {individual_where} AND edad IS NOT NULL ORDER BY edad",
+                params,
+            ).fetchall()
+        ]
+        if fuente_norm:
+            casos_documento = [
+                r["id_documento"]
+                for r in conn.execute(
+                    f"""
+                    SELECT DISTINCT id_documento
+                    FROM individuos
+                    {individual_where} AND id_documento IS NOT NULL
+                    ORDER BY id_documento
+                    """,
+                    params,
+                ).fetchall()
+            ]
+            casos_id = [
+                r["id_individuo"]
+                for r in conn.execute(
+                    f"""
+                    SELECT DISTINCT id_individuo
+                    FROM individuos
+                    {individual_where} AND id_individuo IS NOT NULL
+                    ORDER BY id_individuo
+                    """,
+                    params,
+                ).fetchall()
+            ]
         else:
-            elementos = [r["elemento"] for r in conn.execute("SELECT DISTINCT elemento FROM mediciones_quimicas ORDER BY elemento").fetchall()]
-        edades = [r["edad"] for r in conn.execute("SELECT DISTINCT edad FROM individuos WHERE edad IS NOT NULL ORDER BY edad").fetchall()]
-        casos_documento = [r["id_documento"] for r in conn.execute("SELECT DISTINCT id_documento FROM individuos WHERE id_documento IS NOT NULL ORDER BY id_documento").fetchall()]
-        casos_id = [r["id_individuo"] for r in conn.execute("SELECT DISTINCT id_individuo FROM individuos WHERE id_individuo IS NOT NULL ORDER BY id_individuo").fetchall()]
-    if fuente_norm == "morro1":
-        # El grafo de Morro1 usa los JSON de referencia aunque SQLite este vacio;
-        # sus filtros deben provenir de esa misma fuente.
-        sexos = get_morro1_reference_sex_options()
-        edades = get_morro1_reference_age_options()
-    casos_catalogo = [r.get("id_documento") for r in _load_catalogo_momias() if r.get("id_documento")]
+            casos_documento = [
+                r["id_documento"]
+                for r in conn.execute(
+                    "SELECT DISTINCT id_documento FROM individuos WHERE id_documento IS NOT NULL ORDER BY id_documento"
+                ).fetchall()
+            ]
+            casos_id = [
+                r["id_individuo"]
+                for r in conn.execute(
+                    "SELECT DISTINCT id_individuo FROM individuos WHERE id_individuo IS NOT NULL ORDER BY id_individuo"
+                ).fetchall()
+            ]
+    casos_catalogo = (
+        [r.get("id_documento") for r in _load_catalogo_momias() if r.get("id_documento")]
+        if not fuente_norm or fuente_norm == "morro1"
+        else []
+    )
     casos = sorted(set(casos_documento + casos_id + casos_catalogo), key=lambda x: str(x).lower())
-    patologias = _extract_patologias()
+    with get_connection() as conn:
+        if fuente_norm:
+            patologias = [
+                row["patologia"]
+                for row in conn.execute(
+                    """
+                    SELECT DISTINCT patologia
+                    FROM paleopatologias
+                    WHERE presente = 1 AND lower(COALESCE(fuente, '')) = ?
+                    ORDER BY patologia
+                    """,
+                    (fuente_norm,),
+                ).fetchall()
+            ]
+        else:
+            patologias = _extract_patologias()
     return {
         "sexos": sexos,
         "sitios": sitios,
@@ -2329,41 +2541,298 @@ def list_all_imagenes(id_individuo: Optional[str] = None):
     return [_image_row_to_dict(row) for row in rows]
 
 
+def _normalize_source(fuente: Optional[str]) -> str:
+    return (fuente or "morro1").strip().lower()
+
+
+def _morro_clone_id(value: Optional[str], source: str) -> Optional[str]:
+    if value is None:
+        return value
+    text = str(value)
+    if text == "morro1:site":
+        return f"{source}:site"
+    if text.startswith("Morro1_") or text.startswith("morro1_"):
+        return f"{source}_{text.split('_', 1)[1]}"
+    return text
+
+
+def _source_display_name(source: str) -> str:
+    with get_connection() as conn:
+        row = conn.execute("SELECT nombre FROM sitios WHERE id_sitio = ?", (source,)).fetchone()
+    return row["nombre"] if row else source
+
+
+def _adapt_morro_graph_for_source(graph: dict, fuente: Optional[str]) -> dict:
+    source = _normalize_source(fuente)
+    if source == "morro1":
+        return graph
+    display_name = _source_display_name(source)
+    adapted = json.loads(json.dumps(graph))
+    for node in adapted.get("nodes", []):
+        node["id"] = _morro_clone_id(node.get("id"), source)
+        for key in ["id_individuo", "id_documento"]:
+            if key in node:
+                node[key] = _morro_clone_id(node.get(key), source)
+        if node.get("label") == "MORRO1":
+            node["label"] = display_name
+    for edge in adapted.get("edges", []):
+        edge["source"] = _morro_clone_id(edge.get("source"), source)
+        edge["target"] = _morro_clone_id(edge.get("target"), source)
+    adapted.setdefault("summary", {})["fuente"] = source
+    return adapted
+
+
+def _build_source_table_rows(
+    fuente: Optional[str],
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    elemento: Optional[str] = None,
+) -> list[dict]:
+    source = _normalize_source(fuente)
+    sql = """
+        SELECT
+            i.id_individuo,
+            i.numero_cuerpo,
+            i.id_documento,
+            i.sexo,
+            i.edad,
+            m.tipo_muestra,
+            m.elemento,
+            m.concentracion,
+            m.unidad
+        FROM mediciones_quimicas m
+        JOIN individuos i ON i.id_individuo = m.id_individuo
+        WHERE lower(COALESCE(i.fuente, '')) = ?
+          AND m.concentracion IS NOT NULL
+    """
+    params: list = [source]
+    if sexo:
+        sql += " AND lower(COALESCE(i.sexo, '')) = ?"
+        params.append(sexo.strip().lower())
+    if edad:
+        sql += " AND lower(COALESCE(i.edad, '')) = ?"
+        params.append(edad.strip().lower())
+    if matriz:
+        sql += " AND lower(COALESCE(m.tipo_muestra, '')) = ?"
+        params.append(matriz.strip().lower())
+    if elemento:
+        sql += " AND lower(COALESCE(m.elemento, '')) = ?"
+        params.append(elemento.strip().lower())
+    sql += " ORDER BY i.numero_cuerpo, m.elemento"
+    with get_connection() as conn:
+        rows = rows_to_dicts(conn.execute(sql, params).fetchall())
+    return [
+        {
+            "id_caso": row["id_individuo"],
+            "caso": row["numero_cuerpo"] or row["id_documento"] or row["id_individuo"],
+            "sexo": row["sexo"],
+            "edad": row["edad"],
+            "elemento": row["elemento"],
+            "concentracion": row["concentracion"],
+            "unidad": row["unidad"] or "ppm",
+            "matriz": row["tipo_muestra"],
+        }
+        for row in rows
+    ]
+
+
+def _build_source_pca(
+    elements: list[str],
+    fuente: Optional[str],
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+) -> dict:
+    available = {
+        row["elemento"].lower(): row["elemento"]
+        for row in _build_source_table_rows(fuente=fuente)
+        if row.get("elemento")
+    }
+    selected = []
+    for raw in elements:
+        normalized = raw.strip().lower()
+        if normalized and normalized not in {item.lower() for item in selected}:
+            if normalized not in available:
+                raise ValueError(f"Elemento no disponible: {raw}")
+            selected.append(available[normalized])
+    if len(selected) < 3:
+        raise ValueError("Selecciona al menos tres elementos para calcular el PCA")
+
+    rows = _build_source_table_rows(fuente=fuente, sexo=sexo, edad=edad)
+    selected_set = set(selected)
+    values_by_case: dict[str, dict[str, list[float]]] = {}
+    metadata: dict[str, dict[str, str]] = {}
+    for row in rows:
+        if row["elemento"] not in selected_set:
+            continue
+        try:
+            value = float(row["concentracion"])
+        except (TypeError, ValueError):
+            continue
+        case_id = row["id_caso"]
+        values_by_case.setdefault(case_id, {}).setdefault(row["elemento"], []).append(value)
+        metadata[case_id] = {
+            "caso": row["caso"],
+            "sexo": row.get("sexo") or "",
+            "edad": row.get("edad") or "",
+        }
+    complete_cases = [
+        case_id for case_id, measures in values_by_case.items()
+        if all(measures.get(element) for element in selected)
+    ]
+    complete_cases.sort(key=lambda case_id: metadata[case_id]["caso"].lower())
+    if len(complete_cases) < 3:
+        raise ValueError("Se necesitan al menos tres casos con mediciones completas para los elementos seleccionados")
+
+    matrix = np.asarray([
+        [float(np.mean(values_by_case[case_id][element])) for element in selected]
+        for case_id in complete_cases
+    ], dtype=float)
+    deviations = matrix.std(axis=0)
+    if any(np.isclose(deviations, 0.0)):
+        constants = [selected[i] for i, value in enumerate(deviations) if np.isclose(value, 0.0)]
+        raise ValueError("No se puede calcular el PCA: no hay variacion en " + ", ".join(constants))
+    standardized = (matrix - matrix.mean(axis=0)) / deviations
+    left, singular_values, components = np.linalg.svd(standardized, full_matrices=False)
+    scores = left * singular_values
+    variances = (singular_values ** 2) / max(len(complete_cases) - 1, 1)
+    explained = variances / float(variances.sum())
+    return {
+        "elements": selected,
+        "points": [
+            {
+                "id": case_id,
+                "id_individuo": case_id,
+                "label": metadata[case_id]["caso"],
+                "caso": metadata[case_id]["caso"],
+                "type": "individuo",
+                "sexo": metadata[case_id]["sexo"],
+                "edad": metadata[case_id]["edad"],
+                "pc1": float(scores[index, 0]),
+                "pc2": float(scores[index, 1]),
+                "mediciones": {
+                    element: {"valor": float(matrix[index, element_index])}
+                    for element_index, element in enumerate(selected)
+                },
+            }
+            for index, case_id in enumerate(complete_cases)
+        ],
+        "loadings": [
+            {"elemento": element, "pc1": float(components[0, index]), "pc2": float(components[1, index])}
+            for index, element in enumerate(selected)
+        ],
+        "explained_variance": {"pc1": float(explained[0]), "pc2": float(explained[1])},
+        "summary": {
+            "complete_cases": len(complete_cases),
+            "incomplete_cases": len(values_by_case) - len(complete_cases),
+            "standardization": "z-score",
+            "duplicate_measurements": "mean",
+        },
+        "warnings": [],
+    }
+
+
+def _source_case_relation(case_id: str, fuente: Optional[str]) -> dict:
+    source = _normalize_source(fuente)
+    with get_connection() as conn:
+        individual = conn.execute(
+            """
+            SELECT *
+            FROM individuos
+            WHERE id_individuo = ? AND lower(COALESCE(fuente, '')) = ?
+            """,
+            (case_id, source),
+        ).fetchone()
+        if not individual:
+            raise HTTPException(status_code=404, detail="Caso no encontrado")
+        images = rows_to_dicts(conn.execute(
+            "SELECT * FROM imagenes WHERE id_individuo = ? ORDER BY created_at DESC",
+            (case_id,),
+        ).fetchall())
+        measurements = rows_to_dicts(conn.execute(
+            "SELECT * FROM mediciones_quimicas WHERE id_individuo = ? ORDER BY elemento",
+            (case_id,),
+        ).fetchall())
+    return {
+        "case": dict(individual),
+        "images": [{**row, "url": f"/files/imagenes/{row['relative_path']}"} for row in images],
+        "measurements": measurements,
+    }
+
+
 @app.get("/graph/morro1/reference")
 def graph_morro1_reference(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     patologia: Optional[str] = None,
+    fuente: Optional[str] = None,
 ):
-    return build_morro1_reference_graph(sexo=sexo, edad=edad, patologia=patologia)
+    graph = build_morro1_reference_graph(sexo=sexo, edad=edad, patologia=patologia)
+    return _adapt_morro_graph_for_source(graph, fuente)
 
 
 @app.get("/graph/morro1/elemento/{elemento}")
-def graph_morro1_elemento(elemento: str, sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
-    return build_morro1_element_graph(
+def graph_morro1_elemento(
+    elemento: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    fuente: Optional[str] = None,
+):
+    graph = build_morro1_element_graph(
         elemento=elemento, analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz
     )
+    return _adapt_morro_graph_for_source(graph, fuente)
 
 
 @app.get("/graph/morro1/elements")
-def graph_morro1_elements(sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
-    return build_morro1_element_graph(
+def graph_morro1_elements(
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    fuente: Optional[str] = None,
+):
+    graph = build_morro1_element_graph(
         elemento="red_completa", analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz
     )
+    return _adapt_morro_graph_for_source(graph, fuente)
 
 
 @app.get("/graph/morro1/sex-options")
-def graph_morro1_sex_options():
+def graph_morro1_sex_options(fuente: Optional[str] = None):
+    if _normalize_source(fuente) != "morro1":
+        opts = filter_options(fuente=fuente)
+        return {"sexos": opts["sexos"]}
     return {"sexos": get_morro1_reference_sex_options()}
 
 
 @app.get("/graph/morro1/matrix-options")
-def graph_morro1_matrix_options():
+def graph_morro1_matrix_options(fuente: Optional[str] = None):
+    if _normalize_source(fuente) != "morro1":
+        with get_connection() as conn:
+            rows = conn.execute(
+                """
+                SELECT DISTINCT tipo_muestra
+                FROM mediciones_quimicas
+                WHERE lower(COALESCE(fuente, '')) = ? AND tipo_muestra IS NOT NULL
+                ORDER BY tipo_muestra
+                """,
+                (_normalize_source(fuente),),
+            ).fetchall()
+        return {"matrices": [row["tipo_muestra"] for row in rows]}
     return {"matrices": get_morro1_analysis_matriz_options(MORRO1_ANALYSIS_PATHS)}
 
 
 @app.get("/graph/morro1/table")
-def graph_morro1_table(sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None, elemento: Optional[str] = None):
+def graph_morro1_table(
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    elemento: Optional[str] = None,
+    fuente: Optional[str] = None,
+):
+    if _normalize_source(fuente) != "morro1":
+        return _build_source_table_rows(fuente=fuente, sexo=sexo, edad=edad, matriz=matriz, elemento=elemento)
     return build_morro1_table_rows(
         analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz, elemento=elemento
     )
@@ -2374,15 +2843,20 @@ def analysis_morro1_pca(
     elements: str,
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
+    fuente: Optional[str] = None,
 ):
     selected = [element.strip() for element in elements.split(",") if element.strip()]
     try:
+        if _normalize_source(fuente) != "morro1":
+            return _build_source_pca(selected, fuente=fuente, sexo=sexo, edad=edad)
         return build_morro1_pca(selected, sexo=sexo, edad=edad)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 @app.get("/graph/morro1/case/{case_id}/relation")
-def graph_morro1_case_relation(case_id: str):
+def graph_morro1_case_relation(case_id: str, fuente: Optional[str] = None):
+    if _normalize_source(fuente) != "morro1":
+        return _source_case_relation(case_id, fuente=fuente)
     images_dir = BASE_DIR / "data" / "imagenes" / "imagenes_morro1"
     return resolve_morro1_case_relation(
         case_id=case_id,

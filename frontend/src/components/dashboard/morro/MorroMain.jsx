@@ -25,6 +25,7 @@ export default function MorroMain({
     mediciones,
     showTree,
     selectedRelations,
+    siteName = "Morro 1",
 }) {
     // Preparar datos para DetailPanel
     const detailData = selected ? {
@@ -51,7 +52,7 @@ export default function MorroMain({
                 <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
                     <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                         <Network size={20} className="text-blue-500" />
-                        {pcaData ? "PCA - Análisis de componentes principales" : (showTree ? "Árbol Morro1" : "Grafo Morro1")}
+                        {pcaData ? "PCA - Análisis de componentes principales" : (showTree ? `Árbol ${siteName}` : `Grafo ${siteName}`)}
                     </h2>
                     <div className="flex flex-wrap items-center gap-2">
                         <span className="text-xs font-medium text-slate-500">Elemento:</span>
@@ -212,7 +213,7 @@ export default function MorroMain({
                                 {showTree ? (
                                     <TreeGraph
                                         graph={morroTreeGraph}
-                                        rootLabel="MORRO1"
+                                        rootLabel={siteName}
                                         focusElement={selectedElement}
                                         onSelect={handleSelectNode}
                                         selectedNodeId={selected?.id || ""}

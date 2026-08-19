@@ -1,4 +1,6 @@
 # Entornos virtuales
+.venv/
+.runtime-venv/
 backend/.venv/
 backend/venv/
 backend/env/
@@ -29,3 +31,7 @@ desktop.ini
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Paquetes compartibles generados localmente
+releases/
+*.zip

@@ -1,0 +1,2 @@
+id_sitio,nombre,area,descripcion,lat,lng,view,estado
+prueba_test,prueba. test,Area de prueba,Clon de Morro 1 para validar carga CSV de nuevos sitios,-18.6123,-70.2145,visualizacion,validado
