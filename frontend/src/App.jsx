@@ -20,6 +20,14 @@ import {
   getGraphMorroElements,
   getMorroPca,
   getMorroCaseRelation,
+  getSiteGraphReference,
+  getSiteGraphElemento,
+  getSiteGraphElements,
+  getSiteGraphPatologias,
+  getSiteGraphPatologia,
+  getSiteTableRows,
+  getSitePca,
+  getSiteCaseRelation,
   getAzapaPca,
   createBackup,
   getDashboardOverview
@@ -203,9 +211,11 @@ export default function App() {
   // new
   const [showTreeMorro, setShowTreeMorro] = useState(false);
   const [showTreeAzapa, setShowTreeAzapa] = useState(false);
+  const usesGenericSiteApi = morroSource !== "morro1";
 
   const openSite = useCallback((site) => {
     const siteName = typeof site === "string" ? site : site?.sitio;
+    const siteSource = typeof site === "object" && site?.fuente ? site.fuente : "";
     if (siteName === "dashboard" || siteName === "visualizacion" || siteName === "clusters" || siteName === "administracion") {
       setActiveGenericSite("");
       setView(siteName);
@@ -225,7 +235,7 @@ export default function App() {
     }
     if (siteName) {
       setActiveGenericSite("");
-      setMorroSource(String(siteName).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, ""));
+      setMorroSource(siteSource || String(siteName).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, ""));
       setMorroSiteName(siteName);
       setView("visualizacion");
     }
@@ -233,7 +243,9 @@ export default function App() {
 
   async function loadMorroTreeGraph() {
     try {
-      const data = await getGraphMorroElements(sexo, edad, "", morroSource); // Sin matriz
+      const data = usesGenericSiteApi
+        ? await getSiteGraphElements(morroSource, { sexo, edad })
+        : await getGraphMorroElements(sexo, edad, "", morroSource);
       setMorroTreeGraph(data || { nodes: [], edges: [] });
     } catch {
       setMorroTreeGraph({ nodes: [], edges: [] });
@@ -267,7 +279,9 @@ export default function App() {
     }
     setPcaStatus("Calculando PCA...");
     try {
-      const result = await getMorroPca({ elements: pcaElements, sexo, edad, fuente: morroSource });
+      const result = usesGenericSiteApi
+        ? await getSitePca(morroSource, { elements: pcaElements, sexo, edad })
+        : await getMorroPca({ elements: pcaElements, sexo, edad, fuente: morroSource });
       setPcaData(result);
       setPcaStatus("");
     } catch (error) {
@@ -380,19 +394,39 @@ export default function App() {
       const fuenteMorro1 = morroSource;
 
       if (selectedPatologia === "RED_COMPLETA") {
-        g = await getGraphAllPatologias(edad, sexo, fuenteMorro1);
-        m = await getMediciones({ sexo, edad, fuente: fuenteMorro1 });
+        if (usesGenericSiteApi) {
+          g = await getSiteGraphPatologias(fuenteMorro1, { edad, sexo });
+          m = await getSiteTableRows(fuenteMorro1, { sexo, edad });
+        } else {
+          g = await getGraphAllPatologias(edad, sexo, fuenteMorro1);
+          m = await getMediciones({ sexo, edad, fuente: fuenteMorro1 });
+        }
       } else if (selectedPatologia) {
-        g = await getGraphPatologia(selectedPatologia, edad, sexo, fuenteMorro1);
-        m = await getMediciones({ sexo, edad, patologia: selectedPatologia, fuente: fuenteMorro1 });
+        if (usesGenericSiteApi) {
+          g = await getSiteGraphPatologia(fuenteMorro1, selectedPatologia, { edad, sexo });
+          m = await getSiteTableRows(fuenteMorro1, { sexo, edad, patologia: selectedPatologia });
+        } else {
+          g = await getGraphPatologia(selectedPatologia, edad, sexo, fuenteMorro1);
+          m = await getMediciones({ sexo, edad, patologia: selectedPatologia, fuente: fuenteMorro1 });
+        }
       } else {
         // Siempre distancia radial
         if (selectedElement === "Ninguna") {
-          g = await getGraphMorroReference(sexo, edad, selectedPatologia, fuenteMorro1);
-          m = await getMorroTableRows({ sexo, edad, fuente: fuenteMorro1 });
+          if (usesGenericSiteApi) {
+            g = await getSiteGraphReference(fuenteMorro1, { sexo, edad });
+            m = await getSiteTableRows(fuenteMorro1, { sexo, edad });
+          } else {
+            g = await getGraphMorroReference(sexo, edad, selectedPatologia, fuenteMorro1);
+            m = await getMorroTableRows({ sexo, edad, fuente: fuenteMorro1 });
+          }
         } else {
-          g = await getGraphMorroElemento(selectedElement, sexo, edad, "", fuenteMorro1);
-          m = await getMorroTableRows({ elemento: selectedElement, sexo, edad, fuente: fuenteMorro1 });
+          if (usesGenericSiteApi) {
+            g = await getSiteGraphElemento(fuenteMorro1, selectedElement, { sexo, edad });
+            m = await getSiteTableRows(fuenteMorro1, { elemento: selectedElement, sexo, edad });
+          } else {
+            g = await getGraphMorroElemento(selectedElement, sexo, edad, "", fuenteMorro1);
+            m = await getMorroTableRows({ elemento: selectedElement, sexo, edad, fuente: fuenteMorro1 });
+          }
         }
       }
       setGraph(g);
@@ -458,7 +492,9 @@ export default function App() {
       setShowImages(true);
       if (node.id_individuo) {
         try {
-          const data = await getMorroCaseRelation(node.id_individuo, morroSource);
+          const data = usesGenericSiteApi
+            ? await getSiteCaseRelation(morroSource, node.id_individuo)
+            : await getMorroCaseRelation(node.id_individuo, morroSource);
           const imgs = data.images || [];
           setSelectedImages(imgs);
         } catch (error) {
@@ -475,7 +511,9 @@ export default function App() {
         : node.id;
       if (idToFetch) {
         try {
-          const data = await getMorroCaseRelation(idToFetch, morroSource);
+          const data = usesGenericSiteApi
+            ? await getSiteCaseRelation(morroSource, idToFetch)
+            : await getMorroCaseRelation(idToFetch, morroSource);
           const imgs = data.images || [];
           setSelectedImages(imgs);
         } catch (error) {
@@ -484,7 +522,7 @@ export default function App() {
         }
       }
     }
-  }, [morroSource]);
+  }, [morroSource, usesGenericSiteApi]);
 
   const toggleImages = useCallback(() => {
     setShowImages(prev => !prev);
@@ -521,7 +559,7 @@ export default function App() {
   useEffect(() => {
     setPcaData(null);
     setPcaStatus("");
-  }, [edad, sexo]);
+  }, [edad, sexo, morroSource]);
 
   useEffect(() => {
     if (view !== "clusters") return;

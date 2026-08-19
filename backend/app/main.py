@@ -7,7 +7,7 @@ import shutil
 import uuid
 import mimetypes
 from io import StringIO
-from typing import Optional
+from typing import Any, Optional
 import numpy as np
 from fastapi import FastAPI, UploadFile, File, HTTPException, Response, Form
 from fastapi.middleware.cors import CORSMiddleware
@@ -2558,7 +2558,7 @@ def _morro_clone_id(value: Optional[str], source: str) -> Optional[str]:
 
 def _source_display_name(source: str) -> str:
     with get_connection() as conn:
-        row = conn.execute("SELECT nombre FROM sitios WHERE id_sitio = ?", (source,)).fetchone()
+        row = conn.execute("SELECT nombre FROM sitios WHERE lower(id_sitio) = ?", (source,)).fetchone()
     return row["nombre"] if row else source
 
 
@@ -2588,6 +2588,7 @@ def _build_source_table_rows(
     edad: Optional[str] = None,
     matriz: Optional[str] = None,
     elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
 ) -> list[dict]:
     source = _normalize_source(fuente)
     sql = """
@@ -2603,7 +2604,7 @@ def _build_source_table_rows(
             m.unidad
         FROM mediciones_quimicas m
         JOIN individuos i ON i.id_individuo = m.id_individuo
-        WHERE lower(COALESCE(i.fuente, '')) = ?
+        WHERE lower(COALESCE(m.fuente, i.fuente, '')) = ?
           AND m.concentracion IS NOT NULL
     """
     params: list = [source]
@@ -2619,6 +2620,18 @@ def _build_source_table_rows(
     if elemento:
         sql += " AND lower(COALESCE(m.elemento, '')) = ?"
         params.append(elemento.strip().lower())
+    if patologia:
+        sql += """
+            AND EXISTS (
+                SELECT 1
+                FROM paleopatologias p
+                WHERE p.id_individuo = i.id_individuo
+                  AND lower(COALESCE(p.fuente, i.fuente, '')) = ?
+                  AND lower(COALESCE(p.patologia, '')) = ?
+                  AND COALESCE(p.presente, 0) = 1
+            )
+        """
+        params.extend([source, patologia.strip().lower()])
     sql += " ORDER BY i.numero_cuerpo, m.elemento"
     with get_connection() as conn:
         rows = rows_to_dicts(conn.execute(sql, params).fetchall())
@@ -2758,6 +2771,505 @@ def _source_case_relation(case_id: str, fuente: Optional[str]) -> dict:
         "images": [{**row, "url": f"/files/imagenes/{row['relative_path']}"} for row in images],
         "measurements": measurements,
     }
+
+
+def _source_site_row(source: str) -> dict[str, Any] | None:
+    with get_connection() as conn:
+        row = conn.execute(
+            "SELECT * FROM sitios WHERE lower(id_sitio) = ?",
+            (source,),
+        ).fetchone()
+    return dict(row) if row else None
+
+
+def _assert_source_exists(source: str) -> None:
+    ensure_sqlite_sources()
+    with get_connection() as conn:
+        exists = conn.execute(
+            """
+            SELECT 1 FROM sitios WHERE lower(id_sitio) = ?
+            UNION
+            SELECT 1 FROM individuos WHERE lower(COALESCE(fuente, '')) = ?
+            LIMIT 1
+            """,
+            (source, source),
+        ).fetchone()
+    if not exists:
+        raise HTTPException(status_code=404, detail=f"No existe el sitio/fuente: {source}")
+
+
+def _source_individual_label(row: dict[str, Any]) -> str:
+    return (
+        str(row.get("numero_cuerpo") or "").strip()
+        or str(row.get("id_documento") or "").strip()
+        or str(row.get("id_individuo") or "").strip()
+        or "Sin identificador"
+    )
+
+
+def _source_individual_node(row: dict[str, Any]) -> dict[str, Any]:
+    label = _source_individual_label(row)
+    return {
+        "id": row["id_individuo"],
+        "tumba": label,
+        "label": label,
+        "type": "individuo",
+        "sexo": row.get("sexo"),
+        "edad": row.get("edad"),
+        "sitio": row.get("sitio"),
+        "cementerio": row.get("cementerio"),
+        "estilo_momificacion": row.get("estilo_momificacion"),
+        "estado": row.get("estado"),
+        "id_documento": row.get("id_documento"),
+        "numero_cuerpo": row.get("numero_cuerpo"),
+        "id_individuo": row.get("id_individuo"),
+        "referencia_datos": row.get("referencia_bibliografica"),
+        "matriz": row.get("matriz"),
+    }
+
+
+def _source_individual_rows(
+    source: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    patologia: Optional[str] = None,
+    ids: Optional[set[str]] = None,
+) -> list[dict[str, Any]]:
+    sql = """
+        SELECT
+            i.*,
+            (
+                SELECT GROUP_CONCAT(DISTINCT m.tipo_muestra)
+                FROM mediciones_quimicas m
+                WHERE m.id_individuo = i.id_individuo
+                  AND lower(COALESCE(m.fuente, i.fuente, '')) = ?
+                  AND m.tipo_muestra IS NOT NULL
+            ) AS matriz
+        FROM individuos i
+        WHERE lower(COALESCE(i.fuente, '')) = ?
+    """
+    params: list[Any] = [source, source]
+    if sexo:
+        sql += " AND lower(COALESCE(i.sexo, '')) = ?"
+        params.append(sexo.strip().lower())
+    if edad:
+        sql += " AND lower(COALESCE(i.edad, '')) = ?"
+        params.append(edad.strip().lower())
+    if patologia:
+        sql += """
+            AND EXISTS (
+                SELECT 1
+                FROM paleopatologias p
+                WHERE p.id_individuo = i.id_individuo
+                  AND lower(COALESCE(p.fuente, i.fuente, '')) = ?
+                  AND lower(COALESCE(p.patologia, '')) = ?
+                  AND COALESCE(p.presente, 0) = 1
+            )
+        """
+        params.extend([source, patologia.strip().lower()])
+    if ids is not None:
+        if not ids:
+            return []
+        placeholders = ",".join("?" for _ in ids)
+        sql += f" AND i.id_individuo IN ({placeholders})"
+        params.extend(sorted(ids))
+    sql += " ORDER BY COALESCE(i.numero_cuerpo, i.id_documento, i.id_individuo)"
+    with get_connection() as conn:
+        return rows_to_dicts(conn.execute(sql, params).fetchall())
+
+
+def _source_measurement_rows(
+    source: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
+    ids: Optional[set[str]] = None,
+) -> list[dict[str, Any]]:
+    sql = """
+        SELECT
+            m.*,
+            i.id_documento,
+            i.numero_cuerpo,
+            i.sexo,
+            i.edad,
+            i.sitio,
+            i.cementerio,
+            i.referencia_bibliografica
+        FROM mediciones_quimicas m
+        JOIN individuos i ON i.id_individuo = m.id_individuo
+        WHERE lower(COALESCE(m.fuente, i.fuente, '')) = ?
+          AND m.concentracion IS NOT NULL
+    """
+    params: list[Any] = [source]
+    if sexo:
+        sql += " AND lower(COALESCE(i.sexo, '')) = ?"
+        params.append(sexo.strip().lower())
+    if edad:
+        sql += " AND lower(COALESCE(i.edad, '')) = ?"
+        params.append(edad.strip().lower())
+    if matriz:
+        sql += " AND lower(COALESCE(m.tipo_muestra, '')) = ?"
+        params.append(matriz.strip().lower())
+    if elemento:
+        sql += " AND lower(COALESCE(m.elemento, '')) = ?"
+        params.append(elemento.strip().lower())
+    if patologia:
+        sql += """
+            AND EXISTS (
+                SELECT 1
+                FROM paleopatologias p
+                WHERE p.id_individuo = i.id_individuo
+                  AND lower(COALESCE(p.fuente, i.fuente, '')) = ?
+                  AND lower(COALESCE(p.patologia, '')) = ?
+                  AND COALESCE(p.presente, 0) = 1
+            )
+        """
+        params.extend([source, patologia.strip().lower()])
+    if ids is not None:
+        if not ids:
+            return []
+        placeholders = ",".join("?" for _ in ids)
+        sql += f" AND i.id_individuo IN ({placeholders})"
+        params.extend(sorted(ids))
+    sql += " ORDER BY COALESCE(i.numero_cuerpo, i.id_documento, i.id_individuo), m.elemento"
+    with get_connection() as conn:
+        return rows_to_dicts(conn.execute(sql, params).fetchall())
+
+
+def _source_positive_pathology_rows(
+    source: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    patologia: Optional[str] = None,
+) -> list[dict[str, Any]]:
+    sql = """
+        SELECT
+            p.*,
+            i.id_documento,
+            i.numero_cuerpo,
+            i.sexo,
+            i.edad,
+            i.sitio,
+            i.cementerio,
+            i.estilo_momificacion,
+            i.referencia_bibliografica
+        FROM paleopatologias p
+        JOIN individuos i ON i.id_individuo = p.id_individuo
+        WHERE lower(COALESCE(p.fuente, i.fuente, '')) = ?
+          AND COALESCE(p.presente, 0) = 1
+    """
+    params: list[Any] = [source]
+    if sexo:
+        sql += " AND lower(COALESCE(i.sexo, '')) = ?"
+        params.append(sexo.strip().lower())
+    if edad:
+        sql += " AND lower(COALESCE(i.edad, '')) = ?"
+        params.append(edad.strip().lower())
+    if patologia:
+        sql += " AND lower(COALESCE(p.patologia, '')) = ?"
+        params.append(patologia.strip().lower())
+    sql += " ORDER BY p.patologia, COALESCE(i.numero_cuerpo, i.id_documento, i.id_individuo)"
+    with get_connection() as conn:
+        return rows_to_dicts(conn.execute(sql, params).fetchall())
+
+
+def _add_unique_node(nodes: list[dict[str, Any]], seen: set[str], node: dict[str, Any]) -> None:
+    node_id = node["id"]
+    if node_id in seen:
+        return
+    seen.add(node_id)
+    nodes.append(node)
+
+
+def _build_site_reference_graph(
+    fuente: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    patologia: Optional[str] = None,
+) -> dict[str, Any]:
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    display_name = _source_display_name(source)
+    individuals = _source_individual_rows(source, sexo=sexo, edad=edad, patologia=patologia)
+    site_id = f"{source}:site"
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    _add_unique_node(nodes, seen, {
+        "id": site_id,
+        "label": display_name,
+        "type": "patologia",
+        "patologia": display_name,
+        "fuente": source,
+    })
+    for row in individuals:
+        _add_unique_node(nodes, seen, _source_individual_node(row))
+        edges.append({
+            "source": site_id,
+            "target": row["id_individuo"],
+            "label": "presenta",
+        })
+    return {
+        "mode": "reference",
+        "nodes": nodes,
+        "edges": edges,
+        "summary": {
+            "fuente": source,
+            "sitio": display_name,
+            "individuos": len(individuals),
+        },
+    }
+
+
+def _build_site_element_graph(
+    fuente: str,
+    elemento: Optional[str] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+) -> dict[str, Any]:
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    normalized_element = (elemento or "").strip().lower()
+    if normalized_element in {"", "ninguna", "ninguno", "none", "null", "no"}:
+        return _build_site_reference_graph(source, sexo=sexo, edad=edad)
+
+    selected_element = None if normalized_element in {"red_completa", "red completa", "redcompleta", "all"} else elemento
+    measurements = _source_measurement_rows(
+        source,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        elemento=selected_element,
+    )
+    individual_ids = {row["id_individuo"] for row in measurements if row.get("id_individuo")}
+    individuals = _source_individual_rows(source, sexo=sexo, edad=edad, ids=individual_ids)
+    individuals_by_id = {row["id_individuo"]: row for row in individuals}
+
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    element_meta: dict[str, dict[str, set[str]]] = {}
+    for row in measurements:
+        element_name = row.get("elemento")
+        if not element_name:
+            continue
+        meta = element_meta.setdefault(str(element_name), {"referencias": set(), "matrices": set()})
+        if row.get("observaciones"):
+            meta["referencias"].add(str(row["observaciones"]))
+        if row.get("tipo_muestra"):
+            meta["matrices"].add(str(row["tipo_muestra"]))
+
+    for row in individuals:
+        _add_unique_node(nodes, seen, _source_individual_node(row))
+    for row in measurements:
+        person_id = row.get("id_individuo")
+        element_name = row.get("elemento")
+        if not person_id or person_id not in individuals_by_id or not element_name:
+            continue
+        element_id = f"elemento:{element_name}"
+        meta = element_meta.get(str(element_name), {})
+        _add_unique_node(nodes, seen, {
+            "id": element_id,
+            "label": element_name,
+            "type": "elemento",
+            "elemento": element_name,
+            "referencia_datos": " | ".join(sorted(meta.get("referencias", set()))) or None,
+            "matriz": " | ".join(sorted(meta.get("matrices", set()))) or None,
+        })
+        edges.append({
+            "source": person_id,
+            "target": element_id,
+            "label": "mide",
+            "elemento": element_name,
+            "concentracion": row.get("concentracion"),
+            "unidad": row.get("unidad") or "ppm",
+            "referencia_datos": row.get("observaciones"),
+            "matriz": row.get("tipo_muestra"),
+        })
+    return {
+        "mode": "relational",
+        "nodes": nodes,
+        "edges": edges,
+        "summary": {
+            "fuente": source,
+            "sitio": _source_display_name(source),
+            "individuos": len(individuals),
+            "mediciones": len(measurements),
+            "elementos": len({row.get("elemento") for row in measurements if row.get("elemento")}),
+        },
+    }
+
+
+def _build_site_pathology_graph(
+    fuente: str,
+    patologia: Optional[str] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+) -> dict[str, Any]:
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    pathology_rows = _source_positive_pathology_rows(source, sexo=sexo, edad=edad, patologia=patologia)
+    individual_ids = {row["id_individuo"] for row in pathology_rows if row.get("id_individuo")}
+    individuals = _source_individual_rows(source, sexo=sexo, edad=edad, ids=individual_ids)
+    individuals_by_id = {row["id_individuo"]: row for row in individuals}
+
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for row in pathology_rows:
+        pathology_name = row.get("patologia")
+        if not pathology_name:
+            continue
+        pathology_id = f"patologia:{pathology_name}"
+        _add_unique_node(nodes, seen, {
+            "id": pathology_id,
+            "label": pathology_name,
+            "type": "patologia",
+            "patologia": pathology_name,
+        })
+        person_id = row.get("id_individuo")
+        person = individuals_by_id.get(person_id)
+        if not person:
+            continue
+        _add_unique_node(nodes, seen, _source_individual_node(person))
+        edges.append({
+            "source": pathology_id,
+            "target": person_id,
+            "label": "presenta",
+            "valor": row.get("valor"),
+        })
+
+    return {
+        "mode": "relational",
+        "nodes": nodes,
+        "edges": edges,
+        "summary": {
+            "fuente": source,
+            "sitio": _source_display_name(source),
+            "patologias": len({row.get("patologia") for row in pathology_rows if row.get("patologia")}),
+            "individuos": len(individuals),
+        },
+    }
+
+
+@app.get("/graph/site/{fuente}/reference")
+def graph_site_reference(
+    fuente: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    patologia: Optional[str] = None,
+):
+    return _build_site_reference_graph(fuente, sexo=sexo, edad=edad, patologia=patologia)
+
+
+@app.get("/graph/site/{fuente}/elemento/{elemento}")
+def graph_site_elemento(
+    fuente: str,
+    elemento: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+):
+    return _build_site_element_graph(fuente, elemento=elemento, sexo=sexo, edad=edad, matriz=matriz)
+
+
+@app.get("/graph/site/{fuente}/elements")
+def graph_site_elements(
+    fuente: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+):
+    return _build_site_element_graph(fuente, elemento="red_completa", sexo=sexo, edad=edad, matriz=matriz)
+
+
+@app.get("/graph/site/{fuente}/patologias")
+def graph_site_patologias(
+    fuente: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+):
+    return _build_site_pathology_graph(fuente, sexo=sexo, edad=edad)
+
+
+@app.get("/graph/site/{fuente}/patologia/{patologia}")
+def graph_site_patologia(
+    fuente: str,
+    patologia: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+):
+    return _build_site_pathology_graph(fuente, patologia=patologia, sexo=sexo, edad=edad)
+
+
+@app.get("/graph/site/{fuente}/table")
+def graph_site_table(
+    fuente: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
+):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    return _build_source_table_rows(
+        fuente=source,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        elemento=elemento,
+        patologia=patologia,
+    )
+
+
+@app.get("/graph/site/{fuente}/matrix-options")
+def graph_site_matrix_options(fuente: str):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    with get_connection() as conn:
+        rows = conn.execute(
+            """
+            SELECT DISTINCT m.tipo_muestra
+            FROM mediciones_quimicas m
+            JOIN individuos i ON i.id_individuo = m.id_individuo
+            WHERE lower(COALESCE(m.fuente, i.fuente, '')) = ?
+              AND m.tipo_muestra IS NOT NULL
+            ORDER BY m.tipo_muestra
+            """,
+            (source,),
+        ).fetchall()
+    return {"matrices": [row["tipo_muestra"] for row in rows]}
+
+
+@app.get("/graph/site/{fuente}/sex-options")
+def graph_site_sex_options(fuente: str):
+    opts = filter_options(fuente=_normalize_source(fuente))
+    return {"sexos": opts["sexos"]}
+
+
+@app.get("/graph/site/{fuente}/case/{case_id}/relation")
+def graph_site_case_relation(fuente: str, case_id: str):
+    return _source_case_relation(case_id, fuente=fuente)
+
+
+@app.get("/analysis/site/{fuente}/pca")
+def analysis_site_pca(
+    fuente: str,
+    elements: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    selected = [element.strip() for element in elements.split(",") if element.strip()]
+    try:
+        return _build_source_pca(selected, fuente=source, sexo=sexo, edad=edad)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
 @app.get("/graph/morro1/reference")

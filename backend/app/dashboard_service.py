@@ -152,6 +152,7 @@ def _build_records() -> list[dict[str, Any]]:
             "id": case_id,
             "label": _display_value(row.get("numero_cuerpo") or row.get("id_documento"), case_id),
             "sitio": site_name,
+            "fuente": _display_value(row.get("fuente"), ""),
             "sexo": _canonical_sex(row.get("sexo")),
             "edad": _canonical_age(row.get("edad")),
             "cultura": _display_value(raw_payload.get("cultura") or row.get("referencia_bibliografica")),
@@ -263,6 +264,7 @@ def build_dashboard_data(
         cultures = Counter(record["cultura"] for record in site_records if record["cultura"] != "Sin dato")
         site_portals.append({
             "sitio": site_name,
+            "fuente": next((record.get("fuente") for record in site_records if record.get("fuente")), ""),
             "individuos": len(site_records),
             "con_quimica": sum(bool(record["chemistry"]) for record in site_records),
             "con_patologia": sum(bool(record["pathologies"]) for record in site_records),

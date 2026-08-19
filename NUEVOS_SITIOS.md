@@ -243,3 +243,44 @@ curl "http://127.0.0.1:8001/dashboard/overview" | python3 -m json.tool
 - `validate` devuelve `ok: true`.
 - `status` muestra conteos esperados despues de importar.
 - El sitio abre desde la app y muestra filtros dinamicos.
+
+## API dinamica por sitio
+
+Los sitios nuevos ya no necesitan crear rutas Python propias. La app consume
+rutas genericas basadas en `fuente`.
+
+Para un sitio con `id_sitio=caleta_vitor`, las rutas son:
+
+```text
+GET /graph/site/caleta_vitor/reference
+GET /graph/site/caleta_vitor/elemento/{elemento}
+GET /graph/site/caleta_vitor/elements
+GET /graph/site/caleta_vitor/patologias
+GET /graph/site/caleta_vitor/patologia/{patologia}
+GET /graph/site/caleta_vitor/table
+GET /graph/site/caleta_vitor/case/{id_individuo}/relation
+GET /graph/site/caleta_vitor/matrix-options
+GET /graph/site/caleta_vitor/sex-options
+GET /analysis/site/caleta_vitor/pca?elements=As,B,Li
+```
+
+El frontend usa estas rutas automaticamente para sitios cargados por CSV. Morro
+1 y Azapa 140 conservan sus vistas especializadas, pero cualquier nuevo sitio
+con `view=visualizacion` entra por `/graph/site/{fuente}/...`.
+
+Parametros comunes:
+
+- `sexo`
+- `edad`
+- `matriz`
+- `elemento`
+- `patologia`
+
+Ejemplos:
+
+```bash
+curl "http://127.0.0.1:8001/graph/site/caleta_vitor/reference"
+curl "http://127.0.0.1:8001/graph/site/caleta_vitor/elemento/Mn"
+curl "http://127.0.0.1:8001/graph/site/caleta_vitor/patologias?sexo=femenino"
+curl "http://127.0.0.1:8001/analysis/site/caleta_vitor/pca?elements=As,B,Li"
+```

@@ -62,7 +62,24 @@ Estas partes aun conservan logica legacy basada en JSON:
 
 ## Proximo paso recomendado
 
-Migrar `graph_service.py` por capas:
+El siguiente paso historico era migrar `graph_service.py` por capas. Ya existe
+un primer motor generico por sitio que lee desde SQLite:
+
+- `GET /graph/site/{fuente}/reference`
+- `GET /graph/site/{fuente}/elemento/{elemento}`
+- `GET /graph/site/{fuente}/elements`
+- `GET /graph/site/{fuente}/patologias`
+- `GET /graph/site/{fuente}/patologia/{patologia}`
+- `GET /graph/site/{fuente}/table`
+- `GET /graph/site/{fuente}/case/{case_id}/relation`
+- `GET /graph/site/{fuente}/matrix-options`
+- `GET /graph/site/{fuente}/sex-options`
+- `GET /analysis/site/{fuente}/pca`
+
+El frontend consume estas rutas para sitios dinamicos cargados por CSV. Morro 1
+y Azapa 140 mantienen rutas especializadas por compatibilidad.
+
+Trabajo pendiente para cerrar completamente la deuda legacy:
 
 1. Crear consultas SQLite equivalentes para referencia, analisis, matriz, sexo y edad.
 2. Reemplazar loaders JSON internos por funciones SQL con el mismo formato de salida.

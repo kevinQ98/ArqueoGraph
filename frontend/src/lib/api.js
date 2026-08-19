@@ -78,6 +78,79 @@ export async function getGraphMorroReference(sexo = "", edad = "", patologia = "
   return res.json();
 }
 
+function siteApiUrl(fuente, suffix = "") {
+  return new URL(`${API_BASE}/graph/site/${encodeURIComponent(fuente)}${suffix}`);
+}
+
+function addSearchParams(url, params = {}) {
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      url.searchParams.set(key, value);
+    }
+  });
+  return url;
+}
+
+export async function getSiteGraphReference(fuente, { sexo = "", edad = "", patologia = "" } = {}) {
+  const url = addSearchParams(siteApiUrl(fuente, "/reference"), { sexo, edad, patologia });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando grafo de sitio");
+  return res.json();
+}
+
+export async function getSiteGraphElemento(fuente, elemento, { sexo = "", edad = "", matriz = "" } = {}) {
+  const url = addSearchParams(siteApiUrl(fuente, `/elemento/${encodeURIComponent(elemento)}`), { sexo, edad, matriz });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando grafo de sitio por elemento");
+  return res.json();
+}
+
+export async function getSiteGraphElements(fuente, { sexo = "", edad = "", matriz = "" } = {}) {
+  const url = addSearchParams(siteApiUrl(fuente, "/elements"), { sexo, edad, matriz });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando red completa del sitio");
+  return res.json();
+}
+
+export async function getSiteGraphPatologias(fuente, { sexo = "", edad = "" } = {}) {
+  const url = addSearchParams(siteApiUrl(fuente, "/patologias"), { sexo, edad });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando patologías del sitio");
+  return res.json();
+}
+
+export async function getSiteGraphPatologia(fuente, patologia, { sexo = "", edad = "" } = {}) {
+  const url = addSearchParams(siteApiUrl(fuente, `/patologia/${encodeURIComponent(patologia)}`), { sexo, edad });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando patología del sitio");
+  return res.json();
+}
+
+export async function getSiteTableRows(fuente, params = {}) {
+  const url = addSearchParams(siteApiUrl(fuente, "/table"), params);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando tabla del sitio");
+  return res.json();
+}
+
+export async function getSitePca(fuente, { elements = [], sexo = "", edad = "" } = {}) {
+  const url = new URL(`${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/pca`);
+  url.searchParams.set("elements", elements.join(","));
+  addSearchParams(url, { sexo, edad });
+  const res = await fetch(url);
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error calculando PCA del sitio");
+  }
+  return res.json();
+}
+
+export async function getSiteCaseRelation(fuente, caseId) {
+  const res = await fetch(`${API_BASE}/graph/site/${encodeURIComponent(fuente)}/case/${encodeURIComponent(caseId)}/relation`);
+  if (!res.ok) throw new Error("Error cargando relación del sitio");
+  return res.json();
+}
+
 export async function getGraphElemento(elemento, edad, sexo = "", patologia = "", fuente = "") {
   const url = new URL(`${API_BASE}/graph/elemento/${elemento}`);
   if (edad) url.searchParams.set("edad", edad);
