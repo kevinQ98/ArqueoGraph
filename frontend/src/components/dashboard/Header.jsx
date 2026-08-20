@@ -30,7 +30,8 @@ export default function Header({ view, setView, handleBackup, backupStatus, site
 
                     {sites.map((site) => {
                         const label = siteLabel(site);
-                        const active = activeSite === label || (label === "Morro 1" && view === "visualizacion") || (label === "Azapa 140" && view === "clusters");
+                        const active = activeSite === label || (label === "Azapa 140" && view === "clusters");
+                        // const active = activeSite === label || (label === "Morro 1" && view === "visualizacion") || (label === "Azapa 140" && view === "clusters");
                         return (
                             <button
                                 key={label}
@@ -45,17 +46,6 @@ export default function Header({ view, setView, handleBackup, backupStatus, site
                             </button>
                         );
                     })}
-
-                    {/* <button
-                        className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${view === "administracion"
-                            ? "bg-blue-50 text-blue-700 ring-1 ring-blue-200"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                            }`}
-                        onClick={() => setView("administracion")}
-                    >
-                        <Settings2 size={18} />
-                        <span className="">Administración</span>
-                    </button> */}
 
                     {/* Botón Respaldar datos */}
                     <button

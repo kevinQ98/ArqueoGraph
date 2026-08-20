@@ -211,7 +211,7 @@ export function DashboardPanel({ onNavigate }) {
       <section className="dashboardHero">
         <div>
           <p className="dashboardEyebrow"><LayoutDashboard size={15} /> ArqueoGraph 0.8 · Panel general</p>
-          <h2>Colección Bioarqueológica IAI</h2>
+          <h2>Colección Bioarqueológica</h2>
           <p>Consulta el estado general de la colección y accede a las interfaces especializadas de cada sitio.</p>
         </div>
         <div className="dashboardHeroActions">

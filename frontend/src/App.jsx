@@ -30,7 +30,9 @@ import {
   getSiteCaseRelation,
   getAzapaPca,
   createBackup,
-  getDashboardOverview
+  getDashboardOverview,
+  uploadMorro1Json,
+  uploadAzapaJson
 } from "./lib/api";
 import { AdminPanel } from "./components/AdminPanel";
 import "./style.css";
@@ -41,6 +43,7 @@ import MorroSidebar from "./components/dashboard/morro/MorroSidebar";
 import AzapaMain from "./components/dashboard/azapa/AzapaMain";
 import AzapaSidebar from "./components/dashboard/azapa/AzapaSidebar";
 import Header from "./components/dashboard/Header";
+import UnifiedSidebar from "./components/dashboard/UnifiedSidebar";
 
 function downloadText(filename, text, mime = "text/plain") {
   const blob = new Blob([text], { type: mime });
@@ -198,6 +201,9 @@ export default function App() {
   const [showElementEdges, setShowElementEdges] = useState(true);
   const { patologiaNodes, patologiaColorMap, stats } = useGraphPathologyData(graph);
 
+  const [pcaModeMorro, setPcaModeMorro] = useState(false);
+  const [pcaModeAzapa, setPcaModeAzapa] = useState(false);
+
   const [azapaTreeGraph, setAzapaTreeGraph] = useState({ nodes: [], edges: [] });
   const [morroTreeGraph, setMorroTreeGraph] = useState({ nodes: [], edges: [] });
   const [pcaElements, setPcaElements] = useState([]);
@@ -212,6 +218,20 @@ export default function App() {
   const [showTreeMorro, setShowTreeMorro] = useState(false);
   const [showTreeAzapa, setShowTreeAzapa] = useState(false);
   const usesGenericSiteApi = morroSource !== "morro1";
+
+  function resetPcaMorro() {
+    setPcaModeMorro(false);
+    setPcaData(null);
+    setPcaStatus("");
+    setPcaElements([]);
+  }
+
+  function resetPcaAzapa() {
+    setPcaModeAzapa(false);
+    setAzapaPcaData(null);
+    setAzapaPcaStatus("");
+    setAzapaPcaElements([]);
+  }
 
   const openSite = useCallback((site) => {
     const siteName = typeof site === "string" ? site : site?.sitio;
@@ -234,10 +254,11 @@ export default function App() {
       return;
     }
     if (siteName) {
-      setActiveGenericSite("");
+      // setActiveGenericSite("");
+      setActiveGenericSite(siteName);
       setMorroSource(siteSource || String(siteName).toLowerCase().replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, ""));
       setMorroSiteName(siteName);
-      setView("visualizacion");
+      setView("new_sitio");
     }
   }, []);
 
@@ -551,7 +572,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (view !== "visualizacion") return;
+    if (view !== "visualizacion" && view !== "new_sitio") return;
     load();
     loadMorroTreeGraph();
   }, [view, edad, sexo, selectedElement, patologia, selectedPatologia, morroSource]);
@@ -571,6 +592,11 @@ export default function App() {
     setAzapaPcaData(null);
     setAzapaPcaStatus("");
   }, [azapaEdad, azapaSexo, azapaMatriz]);
+
+  useEffect(() => {
+    setPcaData(null);
+    setPcaStatus("");
+  }, [view]);
 
   // ✅ MOVEMOS EL useMemo AQUÍ, EN EL NIVEL SUPERIOR
   const selectedRelations = useMemo(() => {
@@ -611,8 +637,8 @@ export default function App() {
           <AdminPanel />
         </main>
       ) : view === "clusters" ? (
-        <main className="adminMain_azapa">
-          <AzapaSidebar
+        <main>
+          {/* <AzapaSidebar
             azapaSexo={azapaSexo} setAzapaSexo={setAzapaSexo} azapaSexoOptions={azapaSexoOptions}
             azapaEdad={azapaEdad} setAzapaEdad={setAzapaEdad} azapaEdadOptions={azapaEdadOptions}
             azapaMatriz={azapaMatriz} setAzapaMatriz={setAzapaMatriz} azapaMatrizOptions={azapaMatrizOptions}
@@ -628,6 +654,38 @@ export default function App() {
             selectedAzapaCase={selectedAzapaCase}
             showTree={showTreeAzapa}
             setShowTree={setShowTreeAzapa}
+          /> */}
+          <UnifiedSidebar
+            siteType="azapa"
+            color="emerald"
+            title="Filtros Azapa"
+            sexo={azapaSexo}
+            setSexo={setAzapaSexo}
+            sexoOptions={azapaSexoOptions}
+            edad={azapaEdad}
+            setEdad={setAzapaEdad}
+            edadOptions={azapaEdadOptions}
+            matriz={azapaMatriz}
+            setMatriz={setAzapaMatriz}
+            matrizOptions={azapaMatrizOptions}
+            showElementEdges={showElementEdges}
+            setShowElementEdges={setShowElementEdges}
+            load={loadAzapaGraph}
+            status={azapaStatus}
+            graphStats={{ nodes: azapaGraph?.nodes?.length || 0, edges: azapaGraph?.edges?.length || 0 }}
+            tableRowsLength={azapaTableRows?.length || 0}
+            exportCsv={() => downloadText('arqueograph_azapa_tabla_filtrada.csv', rowsToCsv(azapaTableRows), 'text/csv')}
+            exportJson={() => downloadText('arqueograph_azapa_grafo.json', JSON.stringify(azapaGraph, null, 2), 'application/json')}
+            showTree={showTreeAzapa}
+            setShowTree={setShowTreeAzapa}
+            onUpload={async (tipo, file) => {
+              const result = await uploadAzapaJson(file);
+              await loadAzapaFilterOptions();
+              await loadAzapaGraph();
+              return result;
+            }}
+            uploadTipos={['azapa_analisis_quimico']}
+            pcaMode={pcaModeAzapa}
           />
           <AzapaMain
             azapaGraph={azapaGraph}
@@ -643,11 +701,14 @@ export default function App() {
             azapaPcaStatus={azapaPcaStatus} azapaPcaData={azapaPcaData} azapaPcaColorBy={azapaPcaColorBy} setAzapaPcaColorBy={setAzapaPcaColorBy}
             setAzapaPcaData={setAzapaPcaData}
             showTree={showTreeAzapa}
+            pcaMode={pcaModeAzapa}
+            setPcaMode={setPcaModeAzapa}
+            resetPca={resetPcaAzapa}
           />
         </main>
-      ) : (
+      ) : view === 'visualizacion' ? (
         <main>
-          <MorroSidebar
+          {/* <MorroSidebar
             sexo={sexo} setSexo={setSexo} options={options}
             edad={edad} setEdad={setEdad}
             modoGrafo={modoGrafo} setModoGrafo={setModoGrafo}
@@ -662,6 +723,35 @@ export default function App() {
             selectedImages={selectedImages} selected={selected}
             selectedRelations={selectedRelations} showTree={showTreeMorro}
             setShowTree={setShowTreeMorro}
+          /> */}
+          <UnifiedSidebar
+            siteType="morro"
+            color="blue"
+            title="Filtros"
+            sexo={sexo}
+            setSexo={setSexo}
+            sexoOptions={options.sexos || []}
+            edad={edad}
+            setEdad={setEdad}
+            edadOptions={options.edades || []}
+            showElementEdges={showElementEdges}
+            setShowElementEdges={setShowElementEdges}
+            load={load}
+            status={status}
+            graphStats={{ nodes: graph.nodes?.length || 0, edges: graph.edges?.length || 0 }}
+            tableRowsLength={mediciones.length}
+            exportCsv={() => downloadText('arqueograph_tabla_filtrada.csv', rowsToCsv(mediciones), 'text/csv')}
+            exportJson={() => downloadText('arqueograph_grafo.json', JSON.stringify(graph, null, 2), 'application/json')}
+            showTree={showTreeMorro}
+            setShowTree={setShowTreeMorro}
+            onUpload={async (tipo, file) => {
+              const result = await uploadMorro1Json(tipo, file);
+              await loadOptions();
+              await load();
+              return result;
+            }}
+            uploadTipos={['morro1_analisis_quimico', 'morro1_paleopatologia']}
+            pcaMode={pcaModeMorro}
           />
           <MorroMain
             graph={graph}
@@ -684,6 +774,66 @@ export default function App() {
             showTree={showTreeMorro}
             setPcaData={setPcaData}
             siteName={morroSiteName}
+            pcaMode={pcaModeMorro}
+            setPcaMode={setPcaModeMorro}
+            resetPca={resetPcaMorro}
+          />
+        </main>
+      ) : (
+        <main>
+          <UnifiedSidebar
+            siteType="new_site"
+            color="violet"
+            title="Filtros"
+            sexo={sexo}
+            setSexo={setSexo}
+            sexoOptions={options.sexos || []}
+            edad={edad}
+            setEdad={setEdad}
+            edadOptions={options.edades || []}
+            showElementEdges={showElementEdges}
+            setShowElementEdges={setShowElementEdges}
+            load={load}
+            status={status}
+            graphStats={{ nodes: graph.nodes?.length || 0, edges: graph.edges?.length || 0 }}
+            tableRowsLength={mediciones.length}
+            exportCsv={() => downloadText('arqueograph_tabla_filtrada.csv', rowsToCsv(mediciones), 'text/csv')}
+            exportJson={() => downloadText('arqueograph_grafo.json', JSON.stringify(graph, null, 2), 'application/json')}
+            showTree={showTreeMorro}
+            setShowTree={setShowTreeMorro}
+            onUpload={async (tipo, file) => {
+              const result = await uploadMorro1Json(tipo, file);
+              await loadOptions();
+              await load();
+              return result;
+            }}
+            uploadTipos={['morro1_analisis_quimico', 'morro1_paleopatologia']}
+            pcaMode={pcaModeMorro}
+          />
+          <MorroMain
+            graph={graph}
+            selectedElement={selectedElement} setSelectedElement={setSelectedElement}
+            selectedPatologia={selectedPatologia} setSelectedPatologia={setSelectedPatologia}
+            modoGrafo={modoGrafo}
+            handleSelectNode={handleSelectNode}
+            selected={selected}
+            selectedImages={selectedImages}
+            showImages={showImages}
+            showElementEdges={showElementEdges}
+            hideElementNodes={selectedPatologia !== "" || modoGrafo === "disperso"}
+            morroTreeGraph={morroTreeGraph}
+            options={options}
+            pcaElements={pcaElements} togglePcaElement={togglePcaElement} loadPca={loadPca} pcaStatus={pcaStatus} pcaData={pcaData} pcaColorBy={pcaColorBy} setPcaColorBy={setPcaColorBy}
+            mediciones={mediciones}
+            patologiaColorMap={patologiaColorMap}
+            patologiaNodes={patologiaNodes}
+            stats={stats}
+            showTree={showTreeMorro}
+            setPcaData={setPcaData}
+            siteName={morroSiteName}
+            pcaMode={pcaModeMorro}
+            setPcaMode={setPcaModeMorro}
+            resetPca={resetPcaMorro}
           />
         </main>
       )}

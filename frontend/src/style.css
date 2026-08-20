@@ -159,8 +159,8 @@ main {
   align-items: start;
 }
 
-.azapaMain > aside,
-.azapaMain > .panel_grafo_azapa {
+.azapaMain>aside,
+.azapaMain>.panel_grafo_azapa {
   min-width: 0;
 }
 
@@ -1571,11 +1571,30 @@ td {
   font-size: 11px;
 }
 
-.dashboardKpi.blue .dashboardKpiIcon { color: #1d4ed8; background: #dbeafe; }
-.dashboardKpi.violet .dashboardKpiIcon { color: #7c3aed; background: #ede9fe; }
-.dashboardKpi.amber .dashboardKpiIcon { color: #d97706; background: #fef3c7; }
-.dashboardKpi.green .dashboardKpiIcon { color: #059669; background: #d1fae5; }
-.dashboardKpi.rose .dashboardKpiIcon { color: #e11d48; background: #ffe4e6; }
+.dashboardKpi.blue .dashboardKpiIcon {
+  color: #1d4ed8;
+  background: #dbeafe;
+}
+
+.dashboardKpi.violet .dashboardKpiIcon {
+  color: #7c3aed;
+  background: #ede9fe;
+}
+
+.dashboardKpi.amber .dashboardKpiIcon {
+  color: #d97706;
+  background: #fef3c7;
+}
+
+.dashboardKpi.green .dashboardKpiIcon {
+  color: #059669;
+  background: #d1fae5;
+}
+
+.dashboardKpi.rose .dashboardKpiIcon {
+  color: #e11d48;
+  background: #ffe4e6;
+}
 
 .dashboardGrid {
   display: grid;
@@ -1583,9 +1602,17 @@ td {
   margin-bottom: 14px;
 }
 
-.dashboardGridThree { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.dashboardGridTwo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.dashboardNestedGrid { margin-bottom: 0; }
+.dashboardGridThree {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.dashboardGridTwo {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboardNestedGrid {
+  margin-bottom: 0;
+}
 
 .dashboardVisual {
   min-width: 0;
@@ -1654,7 +1681,7 @@ td {
   white-space: nowrap;
 }
 
-.dashboardBarRow > strong {
+.dashboardBarRow>strong {
   color: #334155;
   font-size: 12px;
   text-align: right;
@@ -1677,18 +1704,32 @@ td {
   background: #2563eb;
 }
 
-.dashboardBarTrack i.violet { background: #7c3aed; }
-.dashboardBarTrack i.green { background: #059669; }
-.dashboardBarTrack i.cyan { background: #0891b2; }
-.dashboardBarTrack i.amber { background: #d97706; }
-.dashboardBarTrack i.rose { background: #e11d48; }
+.dashboardBarTrack i.violet {
+  background: #7c3aed;
+}
+
+.dashboardBarTrack i.green {
+  background: #059669;
+}
+
+.dashboardBarTrack i.cyan {
+  background: #0891b2;
+}
+
+.dashboardBarTrack i.amber {
+  background: #d97706;
+}
+
+.dashboardBarTrack i.rose {
+  background: #e11d48;
+}
 
 .availabilityGrid {
   display: grid;
   gap: 12px;
 }
 
-.availabilityItem > div:first-child {
+.availabilityItem>div:first-child {
   display: flex;
   justify-content: space-between;
   margin-bottom: 5px;
@@ -1704,7 +1745,9 @@ td {
   text-align: right;
 }
 
-.availabilityTrack i { background: linear-gradient(90deg, #2563eb, #06b6d4); }
+.availabilityTrack i {
+  background: linear-gradient(90deg, #2563eb, #06b6d4);
+}
 
 .dashboardCallout {
   display: flex;
@@ -1716,7 +1759,10 @@ td {
   background: linear-gradient(135deg, #eff6ff, #f8fafc);
 }
 
-.dashboardCallout p { margin: 3px 0 0; font-size: 12px; }
+.dashboardCallout p {
+  margin: 3px 0 0;
+  font-size: 12px;
+}
 
 .chemicalSummaryGrid {
   display: grid;
@@ -1745,9 +1791,13 @@ td {
   font-size: 11px;
 }
 
-.chemicalSummaryGrid article strong { color: #1e293b; }
+.chemicalSummaryGrid article strong {
+  color: #1e293b;
+}
 
-.dashboardCases { margin-bottom: 14px; }
+.dashboardCases {
+  margin-bottom: 14px;
+}
 
 .dashboardSearch {
   display: flex;
@@ -1768,8 +1818,13 @@ td {
   outline: 0;
 }
 
-.dashboardCases table { font-size: 11px; }
-.dashboardCases td { vertical-align: top; }
+.dashboardCases table {
+  font-size: 11px;
+}
+
+.dashboardCases td {
+  vertical-align: top;
+}
 
 .dashboardCaseId {
   display: block;
@@ -1811,9 +1866,20 @@ td {
   background: #fff7ed;
 }
 
-.dashboardWarnings div { flex: 1; }
-.dashboardWarnings p { margin: 3px 0 0; color: #9a3412; font-size: 11px; }
-.dashboardWarnings button { width: auto; margin: 0; }
+.dashboardWarnings div {
+  flex: 1;
+}
+
+.dashboardWarnings p {
+  margin: 3px 0 0;
+  color: #9a3412;
+  font-size: 11px;
+}
+
+.dashboardWarnings button {
+  width: auto;
+  margin: 0;
+}
 
 .collectionOverviewGrid {
   grid-template-columns: minmax(380px, 1.15fr) minmax(300px, 0.85fr);
@@ -1929,18 +1995,20 @@ td {
   transform: rotate(45deg);
   border: 3px solid white;
   border-radius: 50% 50% 50% 0;
-  background: #2563eb;
+  /* background: #2563eb; */
+  background: #94a3b8;
+  /* gris */
   box-shadow: 0 5px 12px rgba(15, 23, 42, 0.35);
   transition: transform 140ms ease, background 140ms ease;
 }
 
-.realMapPin.azapa {
+/* .realMapPin.azapa {
   background: #0d9488;
-}
+} */
 
 .realMapPin.active {
   transform: rotate(45deg) scale(1.2);
-  background: #e11d48;
+  background: #2563eb;
 }
 
 .realMapPin span {
@@ -2101,14 +2169,16 @@ td {
   font-size: 18px;
 }
 
-.sitePortal.azapa .sitePortalMetrics strong { color: #115e59; }
+.sitePortal.azapa .sitePortalMetrics strong {
+  color: #115e59;
+}
 
 .sitePortalMetrics span {
   color: #64748b;
   font-size: 9px;
 }
 
-.sitePortal > p {
+.sitePortal>p {
   min-height: 16px;
   margin: 8px 0;
   color: #64748b;
@@ -2129,12 +2199,21 @@ td {
 }
 
 @media (max-width: 1100px) {
-  .dashboardSlicers { grid-template-columns: repeat(3, minmax(140px, 1fr)); }
-  .dashboardKpis { grid-template-columns: repeat(3, minmax(150px, 1fr)); }
-  .dashboardGridThree { grid-template-columns: 1fr 1fr; }
+  .dashboardSlicers {
+    grid-template-columns: repeat(3, minmax(140px, 1fr));
+  }
+
+  .dashboardKpis {
+    grid-template-columns: repeat(3, minmax(150px, 1fr));
+  }
+
+  .dashboardGridThree {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media (max-width: 760px) {
+
   .dashboardHero,
   .dashboardVisualHeader,
   .dashboardTableHeader,
@@ -2142,6 +2221,7 @@ td {
     align-items: stretch;
     flex-direction: column;
   }
+
   .dashboardSlicers,
   .dashboardKpis,
   .dashboardGridThree,
@@ -2151,6 +2231,12 @@ td {
   .sitePortalGrid {
     grid-template-columns: 1fr;
   }
-  .dashboardSearch { width: 100%; }
-  .dashboardBarRow { grid-template-columns: minmax(85px, 1fr) minmax(70px, 1.2fr) 32px; }
+
+  .dashboardSearch {
+    width: 100%;
+  }
+
+  .dashboardBarRow {
+    grid-template-columns: minmax(85px, 1fr) minmax(70px, 1.2fr) 32px;
+  }
 }
