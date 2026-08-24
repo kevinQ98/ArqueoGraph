@@ -91,36 +91,53 @@ function addSearchParams(url, params = {}) {
   return url;
 }
 
-export async function getSiteGraphReference(fuente, { sexo = "", edad = "", patologia = "" } = {}) {
-  const url = addSearchParams(siteApiUrl(fuente, "/reference"), { sexo, edad, patologia });
+export async function getSiteGraphReference(
+  fuente,
+  { sexo = "", edad = "", patologia = "", matriz = "", referencia = "" } = {},
+) {
+  const url = addSearchParams(siteApiUrl(fuente, "/reference"), { sexo, edad, patologia, matriz, referencia });
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de sitio");
   return res.json();
 }
 
-export async function getSiteGraphElemento(fuente, elemento, { sexo = "", edad = "", matriz = "" } = {}) {
-  const url = addSearchParams(siteApiUrl(fuente, `/elemento/${encodeURIComponent(elemento)}`), { sexo, edad, matriz });
+export async function getSiteGraphElemento(
+  fuente,
+  elemento,
+  { sexo = "", edad = "", matriz = "", referencia = "" } = {},
+) {
+  const url = addSearchParams(siteApiUrl(fuente, `/elemento/${encodeURIComponent(elemento)}`), { sexo, edad, matriz, referencia });
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de sitio por elemento");
   return res.json();
 }
 
-export async function getSiteGraphElements(fuente, { sexo = "", edad = "", matriz = "" } = {}) {
-  const url = addSearchParams(siteApiUrl(fuente, "/elements"), { sexo, edad, matriz });
+export async function getSiteGraphElements(
+  fuente,
+  { sexo = "", edad = "", matriz = "", referencia = "" } = {},
+) {
+  const url = addSearchParams(siteApiUrl(fuente, "/elements"), { sexo, edad, matriz, referencia });
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando red completa del sitio");
   return res.json();
 }
 
-export async function getSiteGraphPatologias(fuente, { sexo = "", edad = "" } = {}) {
-  const url = addSearchParams(siteApiUrl(fuente, "/patologias"), { sexo, edad });
+export async function getSiteGraphPatologias(
+  fuente,
+  { sexo = "", edad = "", matriz = "", referencia = "" } = {},
+) {
+  const url = addSearchParams(siteApiUrl(fuente, "/patologias"), { sexo, edad, matriz, referencia });
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando patologías del sitio");
   return res.json();
 }
 
-export async function getSiteGraphPatologia(fuente, patologia, { sexo = "", edad = "" } = {}) {
-  const url = addSearchParams(siteApiUrl(fuente, `/patologia/${encodeURIComponent(patologia)}`), { sexo, edad });
+export async function getSiteGraphPatologia(
+  fuente,
+  patologia,
+  { sexo = "", edad = "", matriz = "", referencia = "" } = {},
+) {
+  const url = addSearchParams(siteApiUrl(fuente, `/patologia/${encodeURIComponent(patologia)}`), { sexo, edad, matriz, referencia });
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando patología del sitio");
   return res.json();
@@ -133,10 +150,13 @@ export async function getSiteTableRows(fuente, params = {}) {
   return res.json();
 }
 
-export async function getSitePca(fuente, { elements = [], sexo = "", edad = "" } = {}) {
+export async function getSitePca(
+  fuente,
+  { elements = [], sexo = "", edad = "", matriz = "", referencia = "", patologia = "" } = {},
+) {
   const url = new URL(`${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/pca`);
   url.searchParams.set("elements", elements.join(","));
-  addSearchParams(url, { sexo, edad });
+  addSearchParams(url, { sexo, edad, matriz, referencia, patologia });
   const res = await fetch(url);
   if (!res.ok) {
     const payload = await res.json().catch(() => null);
@@ -148,6 +168,36 @@ export async function getSitePca(fuente, { elements = [], sexo = "", edad = "" }
 export async function getSiteCaseRelation(fuente, caseId) {
   const res = await fetch(`${API_BASE}/graph/site/${encodeURIComponent(fuente)}/case/${encodeURIComponent(caseId)}/relation`);
   if (!res.ok) throw new Error("Error cargando relación del sitio");
+  return res.json();
+}
+
+export async function getSiteMatrixOptions(fuente) {
+  const res = await fetch(`${API_BASE}/graph/site/${encodeURIComponent(fuente)}/matrix-options`);
+  if (!res.ok) throw new Error("Error cargando opciones de matriz del sitio");
+  return res.json();
+}
+
+export async function getSiteAnalysisContext(fuente, params = {}) {
+  const url = new URL(`${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/context`);
+  addSearchParams(url, params);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando el contexto analítico del sitio");
+  return res.json();
+}
+
+export async function getSiteSamples(fuente, params = {}) {
+  const url = new URL(`${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/samples`);
+  addSearchParams(url, params);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando las muestras del sitio");
+  return res.json();
+}
+
+export async function getSiteSampleDetail(fuente, sampleId) {
+  const res = await fetch(
+    `${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/sample/${encodeURIComponent(sampleId)}`,
+  );
+  if (!res.ok) throw new Error("Error cargando el detalle de la muestra");
   return res.json();
 }
 

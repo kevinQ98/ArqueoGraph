@@ -11,12 +11,15 @@ from app.graph_service import (
 
 def test_build_azapa_reference_graph_uses_reference_tumbas():
     reference_path = Path(__file__).resolve().parents[1] / "data" / "azapa140_referencia.json"
+    import json
+    with reference_path.open(encoding="utf-8") as handle:
+        expected_cases = len(json.load(handle)["azapa_140"]["casos"])
 
     graph = build_azapa_reference_graph(reference_path=reference_path)
 
     assert graph["mode"] == "relational"
     individuo_nodes = [node for node in graph["nodes"] if node.get("type") == "individuo"]
-    assert len(individuo_nodes) == 140
+    assert len(individuo_nodes) == expected_cases
     assert any(node.get("label") == "T1" for node in individuo_nodes)
     assert any(node.get("label") == "T2" for node in individuo_nodes)
 

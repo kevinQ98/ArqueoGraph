@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useMemo } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import * as d3 from "d3";
-import { absoluteImageUrl } from "../lib/api";
 import { checkAndFix } from "../lib/utils";
 
 /**
@@ -30,7 +29,6 @@ import { checkAndFix } from "../lib/utils";
  *  - mode: "distancia" | "similitud" | "disperso"
  *  - onSelect(node)
  *  - selectedNodeId
- *  - imageNodes, showImages
  *  - showElementEdges
  *  - sizeBy: "fixed" | "mediciones"  (default "fixed")
  *  - height (default 620)
@@ -41,8 +39,6 @@ export function InteractiveGraph({
     mode = "distancia",
     onSelect,
     selectedNodeId = "",
-    imageNodes = [],
-    showImages = false,
     showElementEdges = true,
     sizeBy = "fixed",
     height = 620,
@@ -51,12 +47,11 @@ export function InteractiveGraph({
     const containerRef = useRef(null);
     const svgRef = useRef(null);
     const gRef = useRef(null);
-    const simRef = useRef(null);
     const zoomRef = useRef(null);
     const tooltipRef = useRef(null);
 
     // ---- datos derivados (memo, no dependen del layout) ----------------
-    const { nodesData, edgesData, concentrationById, maxConc, radiusScale } = useMemo(() => {
+    const { nodesData, edgesData, concentrationById, radiusScale } = useMemo(() => {
         const rawNodes = graph?.nodes || [];
         const rawEdges = graph?.edges || [];
 
@@ -65,33 +60,6 @@ export function InteractiveGraph({
         if (hideElementNodes) {
             filteredNodes = filteredNodes.filter(n => n.type !== "elemento");
         }
-
-        // patologías: convertir aristas "presenta" (patologia -> individuo)
-        // en un atributo `patologias` dentro de cada nodo individuo, y quitar
-        // los nodos tipo "patologia" del layout (nunca deben ser centro).
-        const patologiaNodesRaw = rawNodes.filter((n) => n.type === "patologia");
-        const patologiaColor = d3.scaleOrdinal(
-            patologiaNodesRaw.map((p) => p.id),
-            d3.quantize(d3.interpolateRainbow, Math.max(patologiaNodesRaw.length, 1))
-        );
-
-        const patologiasByIndividuo = {};
-        rawEdges.forEach((e) => {
-            if (e.label !== "presenta") return;
-            if (!patologiaNodesRaw.some((p) => p.id === e.source)) return;
-            patologiasByIndividuo[e.target] = patologiasByIndividuo[e.target] || [];
-            patologiasByIndividuo[e.target].push({
-                id: e.source,
-                color: patologiaColor(e.source),
-            });
-        });
-
-        const nodes = rawNodes
-            .filter((n) => n.type !== "patologia") // nunca nodo-centro
-            .map((n) => ({
-                ...n,
-                patologias: patologiasByIndividuo[n.id] || [],
-            }));
 
         // concentración por individuo (para el elemento activo, o cualquiera si no hay filtro)
         const concentrationById = {};
@@ -104,8 +72,6 @@ export function InteractiveGraph({
         });
 
         const values = Object.values(concentrationById).filter((v) => v > 0);
-        const maxConc = values.length ? Math.max(...values) : 1;
-
         // Escala LOG: evita que un outlier absorba todo el rango.
         const minV = values.length ? Math.min(...values) : 1;
         const maxV = values.length ? Math.max(...values) : 10;
@@ -124,7 +90,6 @@ export function InteractiveGraph({
             nodesData: filteredNodes,
             edgesData: filteredEdges,
             concentrationById,
-            maxConc,
             radiusScale,
         };
     }, [graph, elemento, hideElementNodes]);
@@ -137,8 +102,8 @@ export function InteractiveGraph({
     };
 
     const nodeFill = (d) => {
-        if (d.type === "elemento") return "#7c3aed";
-        if (d.isCentral) return "#7c3aed"; // central se ve como elemento
+        if (d.type === "elemento") return "#bf7af0";
+        if (d.type === "sitio" || d.isCentral) return "#54c8f0";
         if (d.type === "imagen") return "#ec4899";
         if (d.type === "sitio") return "#2d3748";
         return sexoColor(d.sexo);
@@ -146,7 +111,7 @@ export function InteractiveGraph({
 
     const nodeRadius = (d) => {
         if (d.type === "elemento") return 26;
-        if (d.isCentral) return 42; // central también grande
+        if (d.type === "sitio" || d.isCentral) return 42;
         if (d.type === "imagen") return 20;
         if (sizeBy === "mediciones" && typeof d.mediciones === "object") {
             const n = Object.keys(d.mediciones || {}).length;
@@ -233,7 +198,7 @@ export function InteractiveGraph({
         let centralNode = null;
         if (!hasElementNode) {
             // Buscar el nodo que representa el sitio (label MORRO1 o AZAPA)
-            centralNode = nodes.find(n =>
+            centralNode = nodes.find(n => n.type === "sitio") || nodes.find(n =>
                 n.type === "patologia" &&
                 (n.label === "MORRO1" || n.label === "AZAPA140" || n.label?.includes("MORRO1") || n.label?.includes("AZAPA140"))
             );
@@ -279,8 +244,6 @@ export function InteractiveGraph({
                 d3.forceX(center.x).strength(0.03)
             ).force("y", d3.forceY(center.y).strength(0.03));
         }
-
-        simRef.current = sim;
 
         const g = d3.select(gRef.current);
         g.selectAll("*").remove();
@@ -455,17 +418,9 @@ export function InteractiveGraph({
     useEffect(() => {
         const g = d3.select(gRef.current);
         g.selectAll("g.node .main-circle")
-            .attr("stroke", (d) => (d.id === selectedNodeId ? "#0f172a" : "white"))
+            .attr("stroke", (d) => (d.id === selectedNodeId ? "#54c8f0" : "white"))
             .attr("stroke-width", (d) => (d.id === selectedNodeId ? 4 : 2));
     }, [selectedNodeId]);
-
-    // ---------------------------------------------------------------
-    // imágenes flotantes alrededor del nodo seleccionado (overlay simple)
-    // ---------------------------------------------------------------
-    const selectedSimNode = useMemo(() => {
-        if (!simRef.current || !selectedNodeId) return null;
-        return simRef.current.nodes().find((n) => n.id === selectedNodeId) || null;
-    }, [selectedNodeId, nodesData]);
 
     return (
         <div ref={containerRef} className="" style={{ position: "relative", width: "100%", cursor: "default" }}>
@@ -491,45 +446,6 @@ export function InteractiveGraph({
             </svg>
 
             <div ref={tooltipRef} className="graphTooltip" />
-        </div>
-    );
-}
-
-function ImageOverlay({ node, images }) {
-    // Overlay HTML simple posicionado sobre el nodo seleccionado.
-    // Se mantiene fuera del SVG para poder usar <img> normal (mejor caching / lazy loading).
-    return (
-        <div
-            style={{
-                position: "absolute",
-                left: node.x,
-                top: node.y,
-                display: "flex",
-                gap: 6,
-                transform: "translate(20px, -50%)",
-                pointerEvents: "none",
-            }}
-        >
-            {images.slice(0, 6).map((img) => (
-                <div
-                    key={img.id_imagen}
-                    style={{
-                        width: 44,
-                        height: 44,
-                        borderRadius: 10,
-                        overflow: "hidden",
-                        border: "2px solid #7c3aed",
-                        background: "white",
-                        boxShadow: "0 4px 10px rgba(15,23,42,0.18)",
-                    }}
-                >
-                    <img
-                        src={absoluteImageUrl(img.url)}
-                        alt={img.titulo || img.filename_original}
-                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                    />
-                </div>
-            ))}
         </div>
     );
 }

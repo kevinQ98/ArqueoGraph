@@ -1,66 +1,64 @@
-import { LayoutDashboard, Network, Save } from 'lucide-react';
+import { useEffect, useRef, useState } from "react";
+import { ChevronDown, DatabaseBackup, LayoutDashboard, Menu, Network, Settings, X } from "lucide-react";
 
-function siteLabel(site) {
-    return String(site?.sitio || "").replace(/\s+/g, " ").trim();
-}
+export default function Header({ view, onNavigate, onOpenSite, onBackup, backupStatus, sites = [], activeSite }) {
+  const [siteMenuOpen, setSiteMenuOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const menuRef = useRef(null);
 
-export default function Header({ view, setView, handleBackup, backupStatus, sites = [], activeSite = "", onOpenSite }) {
-    return (
-        <header className="bg-white shadow-sm border-b border-gray-200 px-4 py-3 sm:px-6 lg:px-8">
-            <div className="w-full mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-                {/* Logo / Título */}
-                <div className="flex items-center gap-2">
-                    <h1 className="text-2xl font-bold text-gray-800 tracking-tight">ArqueoGraph</h1>
-                    {/* <span className="hidden sm:inline text-sm text-gray-500 font-light">Visualización arqueométrica</span> */}
-                </div>
+  useEffect(() => {
+    function closeMenu(event) {
+      if (!menuRef.current?.contains(event.target)) setSiteMenuOpen(false);
+    }
+    document.addEventListener("pointerdown", closeMenu);
+    return () => document.removeEventListener("pointerdown", closeMenu);
+  }, []);
 
-                {/* Navegación y acciones */}
-                <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 w-full sm:w-auto">
-                    {/* Botones de navegación */}
-                    <button
-                        className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${view === "dashboard"
-                            ? "bg-blue-50 text-blue-700 ring-1 ring-blue-200"
-                            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                            }`}
-                        onClick={() => setView("dashboard")}
-                    >
-                        <LayoutDashboard size={18} />
-                        <span className="">Dashboard</span>
-                    </button>
+  function navigate(next) {
+    onNavigate(next);
+    setMobileOpen(false);
+    setSiteMenuOpen(false);
+  }
 
-                    {sites.map((site) => {
-                        const label = siteLabel(site);
-                        const active = activeSite === label || (label === "Azapa 140" && view === "clusters");
-                        // const active = activeSite === label || (label === "Morro 1" && view === "visualizacion") || (label === "Azapa 140" && view === "clusters");
-                        return (
-                            <button
-                                key={label}
-                                className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${active
-                                    ? "bg-blue-50 text-blue-700 ring-1 ring-blue-200"
-                                    : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
-                                    }`}
-                                onClick={() => onOpenSite?.(site)}
-                            >
-                                <Network size={18} />
-                                <span className="">{label}</span>
-                            </button>
-                        );
-                    })}
+  return (
+    <header className="appHeader">
+      <div className="appBrand">ArqueoGraph</div>
+      <button type="button" className="mobileMenuButton" onClick={() => setMobileOpen((current) => !current)} title="Abrir navegación">
+        {mobileOpen ? <X size={19} /> : <Menu size={19} />}
+      </button>
 
-                    {/* Botón Respaldar datos */}
-                    <button
-                        onClick={handleBackup}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg text-sm font-medium text-white bg-slate-700 hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-colors duration-200"
-                    >
-                        <Save size={18} />
-                        <span className="">Respaldar datos</span>
-                    </button>
-                    {backupStatus && (
-                        <span className="text-xs text-slate-500 whitespace-nowrap">{backupStatus}</span>
-                    )}
+      <div className={`appHeaderContent ${mobileOpen ? "open" : ""}`}>
+        <nav className="globalNav" aria-label="Navegación principal">
+          <button type="button" className={view === "dashboard" ? "active" : ""} onClick={() => navigate("dashboard")}>
+            <LayoutDashboard size={15} /> Dashboard
+          </button>
+          <div className="siteNavMenu" ref={menuRef}>
+            <button type="button" className={view === "site" ? "active" : ""} onClick={() => setSiteMenuOpen((current) => !current)}>
+              <Network size={15} /> Sitios <ChevronDown size={13} />
+            </button>
+            {siteMenuOpen && (
+              <div className="siteNavPopover">
+                {(sites || []).map((site) => (
+                  <button type="button" key={site.fuente || site.sitio} className={activeSite?.fuente === site.fuente ? "active" : ""} onClick={() => { onOpenSite(site); setSiteMenuOpen(false); setMobileOpen(false); }}>
+                    <span>{site.sitio}</span><code>{site.fuente}</code>
+                  </button>
+                ))}
+                {!sites.length && <p>No hay sitios registrados.</p>}
+              </div>
+            )}
+          </div>
+          <button type="button" className={view === "admin" ? "active" : ""} onClick={() => navigate("admin")}>
+            <Settings size={15} /> Administración
+          </button>
+        </nav>
 
-                </div>
-            </div>
-        </header>
-    );
+        <div className="appHeaderActions">
+          <button type="button" className="backupButton" onClick={onBackup} title="Crear respaldo de SQLite">
+            <DatabaseBackup size={16} /> Respaldar datos
+          </button>
+          {backupStatus && <span className="backupStatus" title={backupStatus}>{backupStatus}</span>}
+        </div>
+      </div>
+    </header>
+  );
 }

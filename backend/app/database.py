@@ -81,6 +81,106 @@ def init_db() -> None:
         CREATE INDEX IF NOT EXISTS idx_mediciones_elemento ON mediciones_quimicas(elemento);
         CREATE INDEX IF NOT EXISTS idx_individuos_sitio ON individuos(sitio);
 
+        CREATE TABLE IF NOT EXISTS matrices (
+            id_matriz TEXT PRIMARY KEY,
+            codigo TEXT NOT NULL UNIQUE,
+            nombre TEXT NOT NULL,
+            categoria TEXT,
+            descripcion TEXT,
+            estado TEXT NOT NULL DEFAULT 'validado',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS matrices_aliases (
+            alias_normalizado TEXT PRIMARY KEY,
+            alias_original TEXT NOT NULL,
+            id_matriz TEXT NOT NULL,
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (id_matriz) REFERENCES matrices(id_matriz)
+                ON UPDATE CASCADE
+                ON DELETE CASCADE
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_matrices_aliases_matriz ON matrices_aliases(id_matriz);
+
+        CREATE TABLE IF NOT EXISTS muestras (
+            id_muestra TEXT PRIMARY KEY,
+            id_individuo TEXT NOT NULL,
+            id_matriz TEXT NOT NULL,
+            codigo_muestra TEXT NOT NULL UNIQUE,
+            tipo_muestra_original TEXT,
+            elemento_anatomico TEXT,
+            lateralidad TEXT,
+            ubicacion_anatomica TEXT,
+            fecha_muestreo TEXT,
+            estado_conservacion TEXT,
+            observaciones TEXT,
+            es_inferida INTEGER NOT NULL DEFAULT 0,
+            fuente TEXT,
+            estado TEXT NOT NULL DEFAULT 'validado',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (id_individuo) REFERENCES individuos(id_individuo)
+                ON UPDATE CASCADE
+                ON DELETE CASCADE,
+            FOREIGN KEY (id_matriz) REFERENCES matrices(id_matriz)
+                ON UPDATE CASCADE
+                ON DELETE RESTRICT
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_muestras_individuo ON muestras(id_individuo);
+        CREATE INDEX IF NOT EXISTS idx_muestras_matriz ON muestras(id_matriz);
+        CREATE INDEX IF NOT EXISTS idx_muestras_fuente ON muestras(fuente);
+
+        CREATE TABLE IF NOT EXISTS referencias_analiticas (
+            id_referencia TEXT PRIMARY KEY,
+            clave TEXT NOT NULL UNIQUE,
+            titulo TEXT NOT NULL,
+            cita TEXT,
+            doi TEXT,
+            url TEXT,
+            laboratorio TEXT,
+            metodo TEXT,
+            fecha TEXT,
+            dataset_origen TEXT,
+            fuente TEXT,
+            estado TEXT NOT NULL DEFAULT 'validado',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_referencias_fuente ON referencias_analiticas(fuente);
+
+        CREATE TABLE IF NOT EXISTS analisis_quimicos (
+            id_analisis TEXT PRIMARY KEY,
+            id_muestra TEXT NOT NULL,
+            id_referencia TEXT,
+            codigo_analisis TEXT NOT NULL UNIQUE,
+            dataset_origen TEXT,
+            metodo TEXT,
+            laboratorio TEXT,
+            fecha TEXT,
+            lote TEXT,
+            unidad_declarada TEXT,
+            observaciones TEXT,
+            es_inferido INTEGER NOT NULL DEFAULT 0,
+            fuente TEXT,
+            estado TEXT NOT NULL DEFAULT 'validado',
+            created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (id_muestra) REFERENCES muestras(id_muestra)
+                ON UPDATE CASCADE
+                ON DELETE CASCADE,
+            FOREIGN KEY (id_referencia) REFERENCES referencias_analiticas(id_referencia)
+                ON UPDATE CASCADE
+                ON DELETE SET NULL
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_analisis_muestra ON analisis_quimicos(id_muestra);
+        CREATE INDEX IF NOT EXISTS idx_analisis_referencia ON analisis_quimicos(id_referencia);
+        CREATE INDEX IF NOT EXISTS idx_analisis_fuente ON analisis_quimicos(fuente);
+
         CREATE TABLE IF NOT EXISTS paleopatologias (
             id_paleopatologia TEXT PRIMARY KEY,
             id_individuo TEXT NOT NULL,
@@ -141,10 +241,21 @@ def init_db() -> None:
         CREATE INDEX IF NOT EXISTS idx_imagenes_individuo ON imagenes(id_individuo);
         ''')
         _ensure_source_columns(conn)
+        _ensure_analytical_columns(conn)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_individuos_fuente ON individuos(fuente)")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_mediciones_fuente ON mediciones_quimicas(fuente)")
         conn.execute("CREATE INDEX IF NOT EXISTS idx_imagenes_fuente ON imagenes(fuente)")
         _migrate_imagenes_table(conn)
+
+
+def _ensure_analytical_columns(conn: sqlite3.Connection) -> None:
+    columns = {
+        row["name"]
+        for row in conn.execute("PRAGMA table_info(mediciones_quimicas)").fetchall()
+    }
+    if "id_analisis" not in columns:
+        conn.execute("ALTER TABLE mediciones_quimicas ADD COLUMN id_analisis TEXT")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_mediciones_analisis ON mediciones_quimicas(id_analisis)")
 
 
 def _ensure_source_columns(conn: sqlite3.Connection) -> None:
@@ -242,6 +353,11 @@ def reset_db() -> None:
         DROP TABLE IF EXISTS dataciones;
         DROP TABLE IF EXISTS paleopatologias;
         DROP TABLE IF EXISTS mediciones_quimicas;
+        DROP TABLE IF EXISTS analisis_quimicos;
+        DROP TABLE IF EXISTS referencias_analiticas;
+        DROP TABLE IF EXISTS muestras;
+        DROP TABLE IF EXISTS matrices_aliases;
+        DROP TABLE IF EXISTS matrices;
         DROP TABLE IF EXISTS individuos;
         DROP TABLE IF EXISTS sitios;
         ''')

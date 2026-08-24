@@ -36,7 +36,12 @@ from .importer import (
     import_sitios_csv,
 )
 from .sqlite_migration import ensure_sqlite_sources, migrate_json_sources_to_sqlite
-from scripts.generate_prueba_test_from_morro import main as generate_prueba_test_csvs
+from .analytical_migration import analytical_model_audit, ensure_analytical_model
+from .analytical_service import build_analysis_context, get_sample_detail, list_samples
+try:
+    from backend.scripts.generate_prueba_test_from_morro import main as generate_prueba_test_csvs
+except ModuleNotFoundError:
+    from scripts.generate_prueba_test_from_morro import main as generate_prueba_test_csvs
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
 from .dashboard_service import build_dashboard_data
 from .backup import create_backup
@@ -82,6 +87,7 @@ def startup_event():
     IMAGES_DIR.mkdir(parents=True, exist_ok=True)
     init_db()
     ensure_sqlite_sources()
+    ensure_analytical_model()
 
 
 @app.get("/")
@@ -1332,7 +1338,8 @@ def analysis_azapa_pca(
 ):
     selected = [element.strip() for element in elements.split(",") if element.strip()]
     try:
-        return build_azapa_pca(selected, sexo=sexo, edad=edad, matriz=matriz)
+        payload = build_azapa_pca(selected, sexo=sexo, edad=edad, matriz=matriz)
+        return _enrich_pca_with_pathologies(payload, fuente="azapa")
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
@@ -2587,6 +2594,7 @@ def _build_source_table_rows(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
     elemento: Optional[str] = None,
     patologia: Optional[str] = None,
 ) -> list[dict]:
@@ -2598,13 +2606,39 @@ def _build_source_table_rows(
             i.id_documento,
             i.sexo,
             i.edad,
+            m.id_medicion,
             m.tipo_muestra,
             m.elemento,
             m.concentracion,
-            m.unidad
+            m.unidad,
+            mu.id_muestra,
+            mu.codigo_muestra,
+            mu.tipo_muestra_original,
+            mu.es_inferida AS muestra_inferida,
+            mx.id_matriz,
+            mx.codigo AS matriz_codigo,
+            mx.nombre AS matriz_nombre,
+            mx.categoria AS matriz_categoria,
+            a.id_analisis,
+            a.codigo_analisis,
+            a.dataset_origen,
+            a.metodo,
+            a.laboratorio,
+            a.fecha AS fecha_analisis,
+            a.es_inferido AS analisis_inferido,
+            r.id_referencia,
+            r.clave AS referencia_clave,
+            r.titulo AS referencia_titulo,
+            r.cita AS referencia_cita,
+            r.doi AS referencia_doi,
+            r.url AS referencia_url
         FROM mediciones_quimicas m
         JOIN individuos i ON i.id_individuo = m.id_individuo
-        WHERE lower(COALESCE(m.fuente, i.fuente, '')) = ?
+        LEFT JOIN analisis_quimicos a ON a.id_analisis = m.id_analisis
+        LEFT JOIN muestras mu ON mu.id_muestra = a.id_muestra
+        LEFT JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+        LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
+        WHERE lower(COALESCE(a.fuente, mu.fuente, m.fuente, i.fuente, '')) = ?
           AND m.concentracion IS NOT NULL
     """
     params: list = [source]
@@ -2615,8 +2649,24 @@ def _build_source_table_rows(
         sql += " AND lower(COALESCE(i.edad, '')) = ?"
         params.append(edad.strip().lower())
     if matriz:
-        sql += " AND lower(COALESCE(m.tipo_muestra, '')) = ?"
-        params.append(matriz.strip().lower())
+        normalized = matriz.strip().lower()
+        sql += """
+            AND (
+                lower(COALESCE(mx.codigo, '')) = ?
+                OR lower(COALESCE(mx.id_matriz, '')) = ?
+                OR lower(COALESCE(m.tipo_muestra, '')) = ?
+                OR EXISTS (
+                    SELECT 1 FROM matrices_aliases ma
+                    WHERE ma.id_matriz = mx.id_matriz
+                      AND lower(ma.alias_normalizado) = ?
+                )
+            )
+        """
+        params.extend([normalized, normalized, normalized, normalized])
+    if referencia:
+        normalized = referencia.strip().lower()
+        sql += " AND (lower(COALESCE(a.id_referencia, '')) = ? OR lower(COALESCE(r.clave, '')) = ?)"
+        params.extend([normalized, normalized])
     if elemento:
         sql += " AND lower(COALESCE(m.elemento, '')) = ?"
         params.append(elemento.strip().lower())
@@ -2638,13 +2688,35 @@ def _build_source_table_rows(
     return [
         {
             "id_caso": row["id_individuo"],
+            "id_individuo": row["id_individuo"],
+            "id_medicion": row["id_medicion"],
             "caso": row["numero_cuerpo"] or row["id_documento"] or row["id_individuo"],
             "sexo": row["sexo"],
             "edad": row["edad"],
             "elemento": row["elemento"],
             "concentracion": row["concentracion"],
             "unidad": row["unidad"] or "ppm",
-            "matriz": row["tipo_muestra"],
+            "matriz": row["matriz_codigo"] or row["tipo_muestra"],
+            "matriz_codigo": row["matriz_codigo"],
+            "matriz_nombre": row["matriz_nombre"],
+            "matriz_categoria": row["matriz_categoria"],
+            "tipo_muestra_original": row["tipo_muestra_original"] or row["tipo_muestra"],
+            "id_muestra": row["id_muestra"],
+            "codigo_muestra": row["codigo_muestra"],
+            "muestra_inferida": bool(row["muestra_inferida"]),
+            "id_analisis": row["id_analisis"],
+            "codigo_analisis": row["codigo_analisis"],
+            "dataset_origen": row["dataset_origen"],
+            "metodo": row["metodo"],
+            "laboratorio": row["laboratorio"],
+            "fecha_analisis": row["fecha_analisis"],
+            "analisis_inferido": bool(row["analisis_inferido"]),
+            "id_referencia": row["id_referencia"],
+            "referencia_clave": row["referencia_clave"],
+            "referencia_titulo": row["referencia_titulo"],
+            "referencia_cita": row["referencia_cita"],
+            "referencia_doi": row["referencia_doi"],
+            "referencia_url": row["referencia_url"],
         }
         for row in rows
     ]
@@ -2655,10 +2727,21 @@ def _build_source_pca(
     fuente: Optional[str],
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    patologia: Optional[str] = None,
 ) -> dict:
+    rows = _build_source_table_rows(
+        fuente=fuente,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+        patologia=patologia,
+    )
     available = {
         row["elemento"].lower(): row["elemento"]
-        for row in _build_source_table_rows(fuente=fuente)
+        for row in rows
         if row.get("elemento")
     }
     selected = []
@@ -2671,21 +2754,72 @@ def _build_source_pca(
     if len(selected) < 3:
         raise ValueError("Selecciona al menos tres elementos para calcular el PCA")
 
-    rows = _build_source_table_rows(fuente=fuente, sexo=sexo, edad=edad)
     selected_set = set(selected)
+    selected_rows = [row for row in rows if row.get("elemento") in selected_set]
+    matrix_codes = {
+        str(row.get("matriz_codigo") or row.get("matriz") or "").strip()
+        for row in selected_rows
+        if str(row.get("matriz_codigo") or row.get("matriz") or "").strip()
+    }
+    if not matriz and len(matrix_codes) > 1:
+        raise ValueError(
+            "Selecciona una matriz biologica antes de calcular el PCA: "
+            + ", ".join(sorted(matrix_codes, key=str.casefold))
+        )
+
+    reference_ids = {
+        str(row.get("id_referencia") or "").strip()
+        for row in selected_rows
+        if str(row.get("id_referencia") or "").strip()
+    }
+
+    contexts_by_sample_element: dict[tuple[str, str], set[tuple[str, str, str]]] = {}
+    for row in selected_rows:
+        sample_id = str(row.get("id_muestra") or row.get("id_caso") or "")
+        key = (sample_id, str(row.get("elemento") or ""))
+        contexts_by_sample_element.setdefault(key, set()).add((
+            str(row.get("id_referencia") or ""),
+            str(row.get("unidad") or ""),
+            str(row.get("matriz_codigo") or row.get("matriz") or ""),
+        ))
+    context_conflicts = [key for key, contexts in contexts_by_sample_element.items() if len(contexts) > 1]
+    if context_conflicts:
+        raise ValueError(
+            "Hay mediciones repetidas de una misma muestra y elemento en referencias, matrices o unidades diferentes. "
+            "Selecciona una fuente analitica mas especifica antes de calcular el PCA."
+        )
+
+    units_by_element: dict[str, set[str]] = {}
+    for row in selected_rows:
+        unit = str(row.get("unidad") or "").strip()
+        if unit:
+            units_by_element.setdefault(row["elemento"], set()).add(unit)
+    incompatible_units = {
+        element: units for element, units in units_by_element.items() if len(units) > 1
+    }
+    if incompatible_units:
+        detail = "; ".join(
+            f"{element}: {', '.join(sorted(units))}"
+            for element, units in sorted(incompatible_units.items())
+        )
+        raise ValueError(
+            "No se puede combinar unidades distintas en el PCA. Selecciona una fuente analitica compatible. "
+            + detail
+        )
+
     values_by_case: dict[str, dict[str, list[float]]] = {}
     metadata: dict[str, dict[str, str]] = {}
-    for row in rows:
-        if row["elemento"] not in selected_set:
-            continue
+    for row in selected_rows:
         try:
             value = float(row["concentracion"])
         except (TypeError, ValueError):
             continue
-        case_id = row["id_caso"]
+        case_id = row.get("id_muestra") or row["id_caso"]
         values_by_case.setdefault(case_id, {}).setdefault(row["elemento"], []).append(value)
         metadata[case_id] = {
             "caso": row["caso"],
+            "codigo_muestra": row.get("codigo_muestra") or "",
+            "id_individuo": row["id_caso"],
             "sexo": row.get("sexo") or "",
             "edad": row.get("edad") or "",
         }
@@ -2693,7 +2827,7 @@ def _build_source_pca(
         case_id for case_id, measures in values_by_case.items()
         if all(measures.get(element) for element in selected)
     ]
-    complete_cases.sort(key=lambda case_id: metadata[case_id]["caso"].lower())
+    complete_cases.sort(key=lambda case_id: (metadata[case_id]["caso"].lower(), metadata[case_id]["codigo_muestra"].lower()))
     if len(complete_cases) < 3:
         raise ValueError("Se necesitan al menos tres casos con mediciones completas para los elementos seleccionados")
 
@@ -2715,10 +2849,12 @@ def _build_source_pca(
         "points": [
             {
                 "id": case_id,
-                "id_individuo": case_id,
+                "id_muestra": case_id,
+                "codigo_muestra": metadata[case_id]["codigo_muestra"],
+                "id_individuo": metadata[case_id]["id_individuo"],
                 "label": metadata[case_id]["caso"],
                 "caso": metadata[case_id]["caso"],
-                "type": "individuo",
+                "type": "muestra",
                 "sexo": metadata[case_id]["sexo"],
                 "edad": metadata[case_id]["edad"],
                 "pc1": float(scores[index, 0]),
@@ -2739,10 +2875,95 @@ def _build_source_pca(
             "complete_cases": len(complete_cases),
             "incomplete_cases": len(values_by_case) - len(complete_cases),
             "standardization": "z-score",
-            "duplicate_measurements": "mean",
+            "duplicate_measurements": "media solo dentro de la misma muestra, referencia y unidad",
+            "replicate_measurements": sum(
+                max(0, len(values) - 1)
+                for measures in values_by_case.values()
+                for values in measures.values()
+            ),
         },
-        "warnings": [],
+        "analysis_context": {
+            "matriz": {
+                "codigo": next(iter(matrix_codes), ""),
+                "nombre": next((row.get("matriz_nombre") for row in selected_rows if row.get("matriz_nombre")), ""),
+            },
+            "referencia": {
+                "id_referencia": next(iter(reference_ids), ""),
+                "titulo": next((row.get("referencia_titulo") for row in selected_rows if row.get("referencia_titulo")), ""),
+                "cita": next((row.get("referencia_cita") for row in selected_rows if row.get("referencia_cita")), ""),
+            } if len(reference_ids) == 1 else None,
+            "referencias": [
+                {
+                    "id_referencia": reference_id,
+                    "titulo": next((
+                        row.get("referencia_titulo")
+                        for row in selected_rows
+                        if row.get("id_referencia") == reference_id
+                    ), ""),
+                    "cita": next((
+                        row.get("referencia_cita")
+                        for row in selected_rows
+                        if row.get("id_referencia") == reference_id
+                    ), ""),
+                }
+                for reference_id in sorted(reference_ids)
+            ],
+            "unidades": {
+                element: next(iter(units), "") for element, units in units_by_element.items()
+            },
+            "muestras": len(values_by_case),
+            "analisis": len({row.get("id_analisis") for row in selected_rows if row.get("id_analisis")}),
+        },
+        "warnings": ([{
+            "code": "multiple_analytical_references",
+            "severity": "info",
+            "message": "El PCA integra elementos procedentes de referencias distintas sin promediar una misma variable entre ellas.",
+        }] if len(reference_ids) > 1 else []),
     }
+
+
+def _enrich_pca_with_pathologies(payload: dict, fuente: Optional[str]) -> dict:
+    """Añade el estado paleopatológico registrado para cada punto del PCA."""
+    source = _normalize_source(fuente)
+    points = payload.get("points") or []
+    point_ids = {
+        str(point.get("id_individuo") or point.get("id") or "").strip()
+        for point in points
+    }
+    point_ids.discard("")
+
+    with get_connection() as conn:
+        rows = rows_to_dicts(conn.execute(
+            """
+            SELECT id_individuo, patologia, MAX(COALESCE(presente, 0)) AS presente
+            FROM paleopatologias
+            WHERE lower(COALESCE(fuente, '')) = ?
+            GROUP BY id_individuo, patologia
+            ORDER BY patologia, id_individuo
+            """,
+            (source,),
+        ).fetchall())
+
+    pathology_options = sorted(
+        {str(row.get("patologia") or "").strip() for row in rows if row.get("patologia")},
+        key=str.casefold,
+    )
+    statuses_by_case: dict[str, dict[str, str]] = {}
+    for row in rows:
+        case_id = str(row.get("id_individuo") or "").strip()
+        pathology = str(row.get("patologia") or "").strip()
+        if case_id not in point_ids or not pathology:
+            continue
+        statuses_by_case.setdefault(case_id, {})[pathology] = (
+            "presente" if row.get("presente") else "ausente"
+        )
+
+    for point in points:
+        case_id = str(point.get("id_individuo") or point.get("id") or "").strip()
+        point["pathology_status"] = statuses_by_case.get(case_id, {})
+
+    payload["pathology_options"] = pathology_options
+    return payload
 
 
 def _source_case_relation(case_id: str, fuente: Optional[str]) -> dict:
@@ -2763,13 +2984,67 @@ def _source_case_relation(case_id: str, fuente: Optional[str]) -> dict:
             (case_id,),
         ).fetchall())
         measurements = rows_to_dicts(conn.execute(
-            "SELECT * FROM mediciones_quimicas WHERE id_individuo = ? ORDER BY elemento",
+            """
+            SELECT
+                m.*,
+                mu.id_muestra,
+                mu.codigo_muestra,
+                mu.tipo_muestra_original,
+                mu.es_inferida AS muestra_inferida,
+                mx.codigo AS matriz_codigo,
+                mx.nombre AS matriz_nombre,
+                a.codigo_analisis,
+                a.dataset_origen,
+                a.metodo AS analisis_metodo,
+                a.laboratorio AS analisis_laboratorio,
+                a.fecha AS fecha_analisis,
+                a.es_inferido AS analisis_inferido,
+                r.id_referencia,
+                r.titulo AS referencia_titulo,
+                r.cita AS referencia_cita,
+                r.doi AS referencia_doi,
+                r.url AS referencia_url
+            FROM mediciones_quimicas m
+            LEFT JOIN analisis_quimicos a ON a.id_analisis = m.id_analisis
+            LEFT JOIN muestras mu ON mu.id_muestra = a.id_muestra
+            LEFT JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+            LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
+            WHERE m.id_individuo = ?
+            ORDER BY mu.codigo_muestra, a.codigo_analisis, m.elemento
+            """,
+            (case_id,),
+        ).fetchall())
+        sample_ids = [
+            row["id_muestra"]
+            for row in conn.execute(
+                "SELECT id_muestra FROM muestras WHERE id_individuo = ? ORDER BY codigo_muestra",
+                (case_id,),
+            ).fetchall()
+        ]
+        pathologies = rows_to_dicts(conn.execute(
+            """
+            SELECT *
+            FROM paleopatologias
+            WHERE id_individuo = ? AND presente = 1
+            ORDER BY patologia
+            """,
+            (case_id,),
+        ).fetchall())
+        datings = rows_to_dicts(conn.execute(
+            "SELECT * FROM dataciones WHERE id_individuo = ? ORDER BY fecha_bp",
             (case_id,),
         ).fetchall())
     return {
         "case": dict(individual),
         "images": [{**row, "url": f"/files/imagenes/{row['relative_path']}"} for row in images],
         "measurements": measurements,
+        "samples": [
+            sample
+            for sample_id in sample_ids
+            if (sample := get_sample_detail(source, sample_id)) is not None
+        ],
+        "pathologies": pathologies,
+        "datings": datings,
     }
 
 
@@ -2833,17 +3108,19 @@ def _source_individual_rows(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     patologia: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
     ids: Optional[set[str]] = None,
 ) -> list[dict[str, Any]]:
     sql = """
         SELECT
             i.*,
             (
-                SELECT GROUP_CONCAT(DISTINCT m.tipo_muestra)
-                FROM mediciones_quimicas m
-                WHERE m.id_individuo = i.id_individuo
-                  AND lower(COALESCE(m.fuente, i.fuente, '')) = ?
-                  AND m.tipo_muestra IS NOT NULL
+                SELECT GROUP_CONCAT(DISTINCT mx.nombre)
+                FROM muestras mu
+                JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+                WHERE mu.id_individuo = i.id_individuo
+                  AND lower(COALESCE(mu.fuente, i.fuente, '')) = ?
             ) AS matriz
         FROM individuos i
         WHERE lower(COALESCE(i.fuente, '')) = ?
@@ -2867,6 +3144,34 @@ def _source_individual_rows(
             )
         """
         params.extend([source, patologia.strip().lower()])
+    if matriz or referencia:
+        sql += """
+            AND EXISTS (
+                SELECT 1
+                FROM muestras mu
+                JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+                JOIN analisis_quimicos a ON a.id_muestra = mu.id_muestra
+                LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
+                WHERE mu.id_individuo = i.id_individuo
+        """
+        if matriz:
+            normalized = matriz.strip().lower()
+            sql += """
+                AND (
+                    lower(mx.codigo) = ? OR lower(mx.id_matriz) = ?
+                    OR EXISTS (
+                        SELECT 1 FROM matrices_aliases ma
+                        WHERE ma.id_matriz = mx.id_matriz
+                          AND lower(ma.alias_normalizado) = ?
+                    )
+                )
+            """
+            params.extend([normalized, normalized, normalized])
+        if referencia:
+            normalized = referencia.strip().lower()
+            sql += " AND (lower(COALESCE(a.id_referencia, '')) = ? OR lower(COALESCE(r.clave, '')) = ?)"
+            params.extend([normalized, normalized])
+        sql += ")"
     if ids is not None:
         if not ids:
             return []
@@ -2883,6 +3188,7 @@ def _source_measurement_rows(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
     elemento: Optional[str] = None,
     patologia: Optional[str] = None,
     ids: Optional[set[str]] = None,
@@ -2896,10 +3202,30 @@ def _source_measurement_rows(
             i.edad,
             i.sitio,
             i.cementerio,
-            i.referencia_bibliografica
+            i.referencia_bibliografica,
+            mu.id_muestra,
+            mu.codigo_muestra,
+            mu.tipo_muestra_original,
+            mu.es_inferida AS muestra_inferida,
+            mx.id_matriz,
+            mx.codigo AS matriz_codigo,
+            mx.nombre AS matriz_nombre,
+            a.codigo_analisis,
+            a.dataset_origen,
+            a.metodo AS analisis_metodo,
+            a.laboratorio AS analisis_laboratorio,
+            a.fecha AS fecha_analisis,
+            r.id_referencia,
+            r.clave AS referencia_clave,
+            r.titulo AS referencia_titulo,
+            r.cita AS referencia_cita
         FROM mediciones_quimicas m
         JOIN individuos i ON i.id_individuo = m.id_individuo
-        WHERE lower(COALESCE(m.fuente, i.fuente, '')) = ?
+        LEFT JOIN analisis_quimicos a ON a.id_analisis = m.id_analisis
+        LEFT JOIN muestras mu ON mu.id_muestra = a.id_muestra
+        LEFT JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+        LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
+        WHERE lower(COALESCE(a.fuente, mu.fuente, m.fuente, i.fuente, '')) = ?
           AND m.concentracion IS NOT NULL
     """
     params: list[Any] = [source]
@@ -2910,8 +3236,24 @@ def _source_measurement_rows(
         sql += " AND lower(COALESCE(i.edad, '')) = ?"
         params.append(edad.strip().lower())
     if matriz:
-        sql += " AND lower(COALESCE(m.tipo_muestra, '')) = ?"
-        params.append(matriz.strip().lower())
+        normalized = matriz.strip().lower()
+        sql += """
+            AND (
+                lower(COALESCE(mx.codigo, '')) = ?
+                OR lower(COALESCE(mx.id_matriz, '')) = ?
+                OR lower(COALESCE(m.tipo_muestra, '')) = ?
+                OR EXISTS (
+                    SELECT 1 FROM matrices_aliases ma
+                    WHERE ma.id_matriz = mx.id_matriz
+                      AND lower(ma.alias_normalizado) = ?
+                )
+            )
+        """
+        params.extend([normalized, normalized, normalized, normalized])
+    if referencia:
+        normalized = referencia.strip().lower()
+        sql += " AND (lower(COALESCE(a.id_referencia, '')) = ? OR lower(COALESCE(r.clave, '')) = ?)"
+        params.extend([normalized, normalized])
     if elemento:
         sql += " AND lower(COALESCE(m.elemento, '')) = ?"
         params.append(elemento.strip().lower())
@@ -2943,6 +3285,8 @@ def _source_positive_pathology_rows(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     patologia: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
 ) -> list[dict[str, Any]]:
     sql = """
         SELECT
@@ -2970,6 +3314,25 @@ def _source_positive_pathology_rows(
     if patologia:
         sql += " AND lower(COALESCE(p.patologia, '')) = ?"
         params.append(patologia.strip().lower())
+    if matriz or referencia:
+        sql += """
+            AND EXISTS (
+                SELECT 1
+                FROM muestras mu
+                JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+                JOIN analisis_quimicos a ON a.id_muestra = mu.id_muestra
+                LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
+                WHERE mu.id_individuo = i.id_individuo
+        """
+        if matriz:
+            normalized = matriz.strip().lower()
+            sql += " AND (lower(mx.codigo) = ? OR lower(mx.id_matriz) = ?)"
+            params.extend([normalized, normalized])
+        if referencia:
+            normalized = referencia.strip().lower()
+            sql += " AND (lower(COALESCE(a.id_referencia, '')) = ? OR lower(COALESCE(r.clave, '')) = ?)"
+            params.extend([normalized, normalized])
+        sql += ")"
     sql += " ORDER BY p.patologia, COALESCE(i.numero_cuerpo, i.id_documento, i.id_individuo)"
     with get_connection() as conn:
         return rows_to_dicts(conn.execute(sql, params).fetchall())
@@ -2988,11 +3351,20 @@ def _build_site_reference_graph(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     patologia: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
 ) -> dict[str, Any]:
     source = _normalize_source(fuente)
     _assert_source_exists(source)
     display_name = _source_display_name(source)
-    individuals = _source_individual_rows(source, sexo=sexo, edad=edad, patologia=patologia)
+    individuals = _source_individual_rows(
+        source,
+        sexo=sexo,
+        edad=edad,
+        patologia=patologia,
+        matriz=matriz,
+        referencia=referencia,
+    )
     site_id = f"{source}:site"
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
@@ -3029,12 +3401,19 @@ def _build_site_element_graph(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
 ) -> dict[str, Any]:
     source = _normalize_source(fuente)
     _assert_source_exists(source)
     normalized_element = (elemento or "").strip().lower()
     if normalized_element in {"", "ninguna", "ninguno", "none", "null", "no"}:
-        return _build_site_reference_graph(source, sexo=sexo, edad=edad)
+        return _build_site_reference_graph(
+            source,
+            sexo=sexo,
+            edad=edad,
+            matriz=matriz,
+            referencia=referencia,
+        )
 
     selected_element = None if normalized_element in {"red_completa", "red completa", "redcompleta", "all"} else elemento
     measurements = _source_measurement_rows(
@@ -3042,6 +3421,7 @@ def _build_site_element_graph(
         sexo=sexo,
         edad=edad,
         matriz=matriz,
+        referencia=referencia,
         elemento=selected_element,
     )
     individual_ids = {row["id_individuo"] for row in measurements if row.get("id_individuo")}
@@ -3057,10 +3437,10 @@ def _build_site_element_graph(
         if not element_name:
             continue
         meta = element_meta.setdefault(str(element_name), {"referencias": set(), "matrices": set()})
-        if row.get("observaciones"):
-            meta["referencias"].add(str(row["observaciones"]))
-        if row.get("tipo_muestra"):
-            meta["matrices"].add(str(row["tipo_muestra"]))
+        if row.get("referencia_titulo"):
+            meta["referencias"].add(str(row["referencia_titulo"]))
+        if row.get("matriz_nombre") or row.get("tipo_muestra"):
+            meta["matrices"].add(str(row.get("matriz_nombre") or row["tipo_muestra"]))
 
     for row in individuals:
         _add_unique_node(nodes, seen, _source_individual_node(row))
@@ -3086,8 +3466,12 @@ def _build_site_element_graph(
             "elemento": element_name,
             "concentracion": row.get("concentracion"),
             "unidad": row.get("unidad") or "ppm",
-            "referencia_datos": row.get("observaciones"),
-            "matriz": row.get("tipo_muestra"),
+            "id_muestra": row.get("id_muestra"),
+            "codigo_muestra": row.get("codigo_muestra"),
+            "id_analisis": row.get("id_analisis"),
+            "id_referencia": row.get("id_referencia"),
+            "referencia_datos": row.get("referencia_titulo") or row.get("observaciones"),
+            "matriz": row.get("matriz_nombre") or row.get("tipo_muestra"),
         })
     return {
         "mode": "relational",
@@ -3108,10 +3492,19 @@ def _build_site_pathology_graph(
     patologia: Optional[str] = None,
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
 ) -> dict[str, Any]:
     source = _normalize_source(fuente)
     _assert_source_exists(source)
-    pathology_rows = _source_positive_pathology_rows(source, sexo=sexo, edad=edad, patologia=patologia)
+    pathology_rows = _source_positive_pathology_rows(
+        source,
+        sexo=sexo,
+        edad=edad,
+        patologia=patologia,
+        matriz=matriz,
+        referencia=referencia,
+    )
     individual_ids = {row["id_individuo"] for row in pathology_rows if row.get("id_individuo")}
     individuals = _source_individual_rows(source, sexo=sexo, edad=edad, ids=individual_ids)
     individuals_by_id = {row["id_individuo"]: row for row in individuals}
@@ -3161,8 +3554,17 @@ def graph_site_reference(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     patologia: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
 ):
-    return _build_site_reference_graph(fuente, sexo=sexo, edad=edad, patologia=patologia)
+    return _build_site_reference_graph(
+        fuente,
+        sexo=sexo,
+        edad=edad,
+        patologia=patologia,
+        matriz=matriz,
+        referencia=referencia,
+    )
 
 
 @app.get("/graph/site/{fuente}/elemento/{elemento}")
@@ -3172,8 +3574,16 @@ def graph_site_elemento(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
 ):
-    return _build_site_element_graph(fuente, elemento=elemento, sexo=sexo, edad=edad, matriz=matriz)
+    return _build_site_element_graph(
+        fuente,
+        elemento=elemento,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+    )
 
 
 @app.get("/graph/site/{fuente}/elements")
@@ -3182,8 +3592,16 @@ def graph_site_elements(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
 ):
-    return _build_site_element_graph(fuente, elemento="red_completa", sexo=sexo, edad=edad, matriz=matriz)
+    return _build_site_element_graph(
+        fuente,
+        elemento="red_completa",
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+    )
 
 
 @app.get("/graph/site/{fuente}/patologias")
@@ -3191,8 +3609,16 @@ def graph_site_patologias(
     fuente: str,
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
 ):
-    return _build_site_pathology_graph(fuente, sexo=sexo, edad=edad)
+    return _build_site_pathology_graph(
+        fuente,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+    )
 
 
 @app.get("/graph/site/{fuente}/patologia/{patologia}")
@@ -3201,8 +3627,17 @@ def graph_site_patologia(
     patologia: str,
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
 ):
-    return _build_site_pathology_graph(fuente, patologia=patologia, sexo=sexo, edad=edad)
+    return _build_site_pathology_graph(
+        fuente,
+        patologia=patologia,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+    )
 
 
 @app.get("/graph/site/{fuente}/table")
@@ -3211,6 +3646,7 @@ def graph_site_table(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
     elemento: Optional[str] = None,
     patologia: Optional[str] = None,
 ):
@@ -3221,6 +3657,7 @@ def graph_site_table(
         sexo=sexo,
         edad=edad,
         matriz=matriz,
+        referencia=referencia,
         elemento=elemento,
         patologia=patologia,
     )
@@ -3230,19 +3667,75 @@ def graph_site_table(
 def graph_site_matrix_options(fuente: str):
     source = _normalize_source(fuente)
     _assert_source_exists(source)
-    with get_connection() as conn:
-        rows = conn.execute(
-            """
-            SELECT DISTINCT m.tipo_muestra
-            FROM mediciones_quimicas m
-            JOIN individuos i ON i.id_individuo = m.id_individuo
-            WHERE lower(COALESCE(m.fuente, i.fuente, '')) = ?
-              AND m.tipo_muestra IS NOT NULL
-            ORDER BY m.tipo_muestra
-            """,
-            (source,),
-        ).fetchall()
-    return {"matrices": [row["tipo_muestra"] for row in rows]}
+    context = build_analysis_context(source)
+    return {
+        "matrices": [row["codigo"] for row in context["matrices"]],
+        "items": context["matrices"],
+    }
+
+
+@app.get("/analysis/site/{fuente}/context")
+def analysis_site_context(
+    fuente: str,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
+):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    return build_analysis_context(
+        source,
+        matriz=matriz,
+        referencia=referencia,
+        sexo=sexo,
+        edad=edad,
+        elemento=elemento,
+        patologia=patologia,
+    )
+
+
+@app.get("/analysis/site/{fuente}/samples")
+def analysis_site_samples(
+    fuente: str,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
+    limit: int = 500,
+):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    return list_samples(
+        source,
+        matriz=matriz,
+        referencia=referencia,
+        sexo=sexo,
+        edad=edad,
+        elemento=elemento,
+        patologia=patologia,
+        limit=limit,
+    )
+
+
+@app.get("/analysis/site/{fuente}/sample/{sample_id}")
+def analysis_site_sample_detail(fuente: str, sample_id: str):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    sample = get_sample_detail(source, sample_id)
+    if not sample:
+        raise HTTPException(status_code=404, detail="Muestra no encontrada")
+    return sample
+
+
+@app.get("/admin/analytical-model/audit")
+def admin_analytical_model_audit():
+    ensure_analytical_model()
+    return analytical_model_audit()
 
 
 @app.get("/graph/site/{fuente}/sex-options")
@@ -3262,12 +3755,24 @@ def analysis_site_pca(
     elements: str,
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    patologia: Optional[str] = None,
 ):
     source = _normalize_source(fuente)
     _assert_source_exists(source)
     selected = [element.strip() for element in elements.split(",") if element.strip()]
     try:
-        return _build_source_pca(selected, fuente=source, sexo=sexo, edad=edad)
+        payload = _build_source_pca(
+            selected,
+            fuente=source,
+            sexo=sexo,
+            edad=edad,
+            matriz=matriz,
+            referencia=referencia,
+            patologia=patologia,
+        )
+        return _enrich_pca_with_pathologies(payload, fuente=source)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
@@ -3359,9 +3864,12 @@ def analysis_morro1_pca(
 ):
     selected = [element.strip() for element in elements.split(",") if element.strip()]
     try:
-        if _normalize_source(fuente) != "morro1":
-            return _build_source_pca(selected, fuente=fuente, sexo=sexo, edad=edad)
-        return build_morro1_pca(selected, sexo=sexo, edad=edad)
+        source = _normalize_source(fuente)
+        if source != "morro1":
+            payload = _build_source_pca(selected, fuente=source, sexo=sexo, edad=edad)
+        else:
+            payload = build_morro1_pca(selected, sexo=sexo, edad=edad)
+        return _enrich_pca_with_pathologies(payload, fuente=source)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 

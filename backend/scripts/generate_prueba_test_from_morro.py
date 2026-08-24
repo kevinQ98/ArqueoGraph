@@ -7,7 +7,11 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT.parent))
 
-from app.database import get_connection  # noqa: E402
+try:
+    from backend.app.database import get_connection  # noqa: E402
+except ModuleNotFoundError:
+    sys.path.insert(0, str(ROOT))
+    from app.database import get_connection  # noqa: E402
 
 
 OUT_DIR = ROOT / "sample_data" / "prueba_test"

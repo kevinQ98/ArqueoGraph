@@ -538,7 +538,7 @@ def import_azapa_master_data(
                     fuente = COALESCE(excluded.fuente, fuente),
                     updated_at = CURRENT_TIMESTAMP
             ''', (
-                case_id, referencia, numero_cuerpo, sexo, edad, sitio,
+                case_id, case_id, numero_cuerpo, sexo, edad, sitio,
                 cementerio, None, None, referencia, notas, "azapa"
             ))
             updated += 1 if exists else 0

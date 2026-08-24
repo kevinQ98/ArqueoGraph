@@ -1,0 +1,6 @@
+id_individuo,id_documento,numero_cuerpo,sexo,edad,sitio,cementerio,cronologia,estilo_momificacion,referencia_bibliografica,fuente,estado,notas
+sitio_demo_csv_001,SDC-001,SDC1,femenino,adulto,Sitio Demo CSV,Sector A,Formativo temprano,natural,Dataset demo CSV,sitio_demo_csv,validado,Caso completo para grafo PCA e imagenes
+sitio_demo_csv_002,SDC-002,SDC2,masculino,adulto,Sitio Demo CSV,Sector A,Formativo temprano,natural,Dataset demo CSV,sitio_demo_csv,validado,Caso completo para grafo PCA
+sitio_demo_csv_003,SDC-003,SDC3,indeterminado,subadulto,Sitio Demo CSV,Sector B,Formativo medio,preparacion simple,Dataset demo CSV,sitio_demo_csv,validado,Caso con patologia positiva
+sitio_demo_csv_004,SDC-004,SDC4,femenino,adulto,Sitio Demo CSV,Sector B,Formativo medio,natural,Dataset demo CSV,sitio_demo_csv,validado,Caso completo para PCA
+sitio_demo_csv_005,SDC-005,SDC5,masculino,indeterminado,Sitio Demo CSV,Sector C,Sin dato,,Dataset demo CSV,sitio_demo_csv,validado,Caso con mediciones parciales

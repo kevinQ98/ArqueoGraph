@@ -1,0 +1,4 @@
+id_imagen,id_individuo,filename_original,filename_saved,relative_path,content_type,label,descripcion,fuente,estado
+sitio_demo_csv_i001,sitio_demo_csv_001,3724.jpg,3724.jpg,imagenes_morro1/Morro1_017/3724.jpg,image/jpeg,Imagen demo 1,Referencia a imagen local existente para probar visor,sitio_demo_csv,validado
+sitio_demo_csv_i002,sitio_demo_csv_001,3723.jpg,3723.jpg,imagenes_morro1/Morro1_017/3723.jpg,image/jpeg,Imagen demo 2,Referencia a imagen local existente para probar visor,sitio_demo_csv,validado
+sitio_demo_csv_i003,sitio_demo_csv_003,3722.jpg,3722.jpg,imagenes_morro1/Morro1_017/3722.jpg,image/jpeg,Imagen demo 3,Referencia a imagen local existente para probar visor,sitio_demo_csv,validado

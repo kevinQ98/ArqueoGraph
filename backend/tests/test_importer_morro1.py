@@ -50,19 +50,19 @@ def test_import_morro1_master_data_creates_individuals_and_measurements(tmp_path
                     "conservacion": "INCOMPLETO"
                 },
                 "contexto_funerario": {
-                    "tipo_inhumacion": null,
-                    "tipo_momificacion": null,
-                    "posicion": null
+                        "tipo_inhumacion": None,
+                        "tipo_momificacion": None,
+                        "posicion": None
                 },
                 "paleopatologia": {
-                    "periostitis": null,
-                    "trauma_fractura": null,
-                    "patologia_degenerativa": null,
-                    "osteoporosis": null,
-                    "patologia_dental": null,
-                    "espina_bifida": null,
-                    "columna_vertebral_espondilosis_espondiloartrosis": null,
-                    "exostosis_osteoma_auditivo": null
+                        "periostitis": None,
+                        "trauma_fractura": None,
+                        "patologia_degenerativa": None,
+                        "osteoporosis": None,
+                        "patologia_dental": None,
+                        "espina_bifida": None,
+                        "columna_vertebral_espondilosis_espondiloartrosis": None,
+                        "exostosis_osteoma_auditivo": None
                 }
             }]
         }
