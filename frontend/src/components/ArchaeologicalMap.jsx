@@ -1,12 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
 const DEFAULT_CENTER = [-18.5183, -70.2232];
 
-function markerClass(siteName, active) {
-  const siteClass = siteName === "Morro 1" ? "morro" : "azapa";
-  return `realMapPin ${siteClass} ${active ? "active" : ""}`;
+// function markerClass(siteName, active) {
+//   const siteClass = siteName === "Morro 1" ? "morro" : "azapa";
+//   return `realMapPin ${siteClass} ${active ? "active" : ""}`;
+// }
+function markerClass(_siteName, active) {
+  return `realMapPin ${active ? "active" : ""}`;
 }
 
 function popupContent(site) {
@@ -74,8 +77,17 @@ export function ArchaeologicalMap({ sites = [], selectedSite = "", onSelectSite 
       marker.addTo(layerRef.current);
     });
 
-    if (bounds.length) {
-      map.fitBounds(bounds, { padding: [42, 42], maxZoom: 13 });
+    // ---------- NUEVA LÓGICA DE ZOOM ----------
+    if (selectedSite) {
+      const selected = sites.find(s => s.sitio === selectedSite && s.coordinates);
+      if (selected) {
+        const pos = [selected.coordinates.lat, selected.coordinates.lng];
+        map.flyTo(pos, 14, { duration: 1.2 });
+      } else {
+        if (bounds.length) map.fitBounds(bounds, { padding: [42, 42], maxZoom: 13 });
+      }
+    } else {
+      if (bounds.length) map.fitBounds(bounds, { padding: [42, 42], maxZoom: 13 });
     }
   }, [map, sites, selectedSite, onSelectSite]);
 

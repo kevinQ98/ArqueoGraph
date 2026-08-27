@@ -1,1 +1,2 @@
-id_individuo,id_documento,numero_cuerpo,sexo,edad,sitio,cementerio,cronologia,estilo_momificacion,referencia_bibliografica
+id_individuo,id_documento,numero_cuerpo,sexo,edad,sitio,cementerio,cronologia,estilo_momificacion,referencia_bibliografica,fuente,estado,notas
+mi_sitio_001,MS-001,T1,indeterminado,adulto,Mi Sitio,Mi Sitio,,,,mi_sitio,validado,Registro de ejemplo

@@ -7,12 +7,32 @@ from .database import get_connection
 
 INDIVIDUOS_COLUMNS = [
     "id_individuo", "id_documento", "numero_cuerpo", "sexo", "edad", "sitio",
-    "cementerio", "cronologia", "estilo_momificacion", "referencia_bibliografica"
+    "cementerio", "cronologia", "estilo_momificacion", "referencia_bibliografica",
+    "fuente", "estado", "notas"
 ]
 
 MEDICIONES_COLUMNS = [
     "id_medicion", "id_individuo", "tipo_muestra", "elemento", "concentracion", "unidad",
-    "metodo", "laboratorio", "fecha", "observaciones"
+    "metodo", "laboratorio", "fecha", "observaciones", "fuente", "estado"
+]
+
+SITIOS_COLUMNS = [
+    "id_sitio", "nombre", "area", "descripcion", "lat", "lng", "view", "estado"
+]
+
+PALEOPATOLOGIAS_COLUMNS = [
+    "id_paleopatologia", "id_individuo", "patologia", "valor", "presente", "fuente", "estado"
+]
+
+DATACIONES_COLUMNS = [
+    "id_datacion", "id_individuo", "muestra", "fecha_bp", "fecha_1sigma_ad",
+    "interceptos_ad", "rango_calibrado_min", "rango_calibrado_max",
+    "referencia_datos", "fuente", "estado"
+]
+
+IMAGENES_COLUMNS = [
+    "id_imagen", "id_individuo", "filename_original", "filename_saved",
+    "relative_path", "content_type", "label", "descripcion", "fuente", "estado"
 ]
 
 
@@ -23,6 +43,70 @@ def _clean(value):
         value = value.strip()
         return value if value else None
     return value
+
+
+def _clean_number(value):
+    value = _clean(value)
+    if value is None:
+        return None
+    try:
+        return float(value)
+    except Exception:
+        return None
+
+
+def _clean_int(value):
+    value = _clean(value)
+    if value is None:
+        return None
+    try:
+        return int(float(value))
+    except Exception:
+        return None
+
+
+def _clean_bool(value, default=True) -> int:
+    value = _clean(value)
+    if value is None:
+        return 1 if default else 0
+    normalized = str(value).strip().lower()
+    return 0 if normalized in {"0", "false", "falso", "no", "negativo", "ausente"} else 1
+
+
+def import_sitios_csv(path: Path) -> dict:
+    df = pd.read_csv(path)
+    missing = [c for c in ["id_sitio", "nombre"] if c not in df.columns]
+    if missing:
+        return {"inserted": 0, "updated": 0, "skipped": 0, "rows_total": len(df), "errors": ["Faltan columnas: " + ", ".join(missing)]}
+
+    inserted, updated, errors = 0, 0, []
+    with get_connection() as conn:
+        for idx, row in df.iterrows():
+            data = {col: _clean(row[col]) if col in row else None for col in SITIOS_COLUMNS}
+            if not data["id_sitio"] or not data["nombre"]:
+                errors.append(f"Fila {idx + 2}: id_sitio y nombre son obligatorios")
+                continue
+            exists = conn.execute("SELECT 1 FROM sitios WHERE id_sitio = ?", (data["id_sitio"],)).fetchone()
+            conn.execute('''
+                INSERT INTO sitios (id_sitio, nombre, area, descripcion, lat, lng, view, estado)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(id_sitio) DO UPDATE SET
+                    nombre = excluded.nombre,
+                    area = excluded.area,
+                    descripcion = excluded.descripcion,
+                    lat = excluded.lat,
+                    lng = excluded.lng,
+                    view = excluded.view,
+                    estado = excluded.estado,
+                    updated_at = CURRENT_TIMESTAMP
+            ''', (
+                data["id_sitio"], data["nombre"], data["area"], data["descripcion"],
+                _clean_number(data["lat"]), _clean_number(data["lng"]),
+                data["view"] or "dashboard", data["estado"] or "validado",
+            ))
+            updated += 1 if exists else 0
+            inserted += 0 if exists else 1
+    return {"inserted": inserted, "updated": updated, "skipped": len(errors), "rows_total": len(df), "errors": errors}
 
 
 def import_individuos_csv(path: Path) -> dict:
@@ -48,8 +132,9 @@ def import_individuos_csv(path: Path) -> dict:
             conn.execute('''
                 INSERT INTO individuos (
                     id_individuo, id_documento, numero_cuerpo, sexo, edad, sitio,
-                    cementerio, cronologia, estilo_momificacion, referencia_bibliografica
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    cementerio, cronologia, estilo_momificacion, referencia_bibliografica,
+                    fuente, estado, notas
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(id_individuo) DO UPDATE SET
                     id_documento = excluded.id_documento,
                     numero_cuerpo = excluded.numero_cuerpo,
@@ -60,8 +145,17 @@ def import_individuos_csv(path: Path) -> dict:
                     cronologia = excluded.cronologia,
                     estilo_momificacion = excluded.estilo_momificacion,
                     referencia_bibliografica = excluded.referencia_bibliografica,
+                    fuente = COALESCE(excluded.fuente, fuente),
+                    estado = COALESCE(excluded.estado, estado),
+                    notas = COALESCE(excluded.notas, notas),
                     updated_at = CURRENT_TIMESTAMP
-            ''', tuple(data[c] for c in INDIVIDUOS_COLUMNS))
+            ''', (
+                data["id_individuo"], data["id_documento"], data["numero_cuerpo"],
+                data["sexo"], data["edad"], data["sitio"], data["cementerio"],
+                data["cronologia"], data["estilo_momificacion"],
+                data["referencia_bibliografica"], data["fuente"],
+                data["estado"] or "validado", data["notas"],
+            ))
             updated += 1 if exists else 0
             inserted += 0 if exists else 1
     return {
@@ -83,8 +177,8 @@ def _insert_mediciones_rows(conn, rows: list[dict]) -> dict:
         conn.execute('''
             INSERT INTO mediciones_quimicas (
                 id_medicion, id_individuo, tipo_muestra, elemento, concentracion, unidad,
-                metodo, laboratorio, fecha, observaciones
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                metodo, laboratorio, fecha, observaciones, fuente, estado
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT(id_medicion) DO UPDATE SET
                 id_individuo = excluded.id_individuo,
                 tipo_muestra = excluded.tipo_muestra,
@@ -95,11 +189,13 @@ def _insert_mediciones_rows(conn, rows: list[dict]) -> dict:
                 laboratorio = excluded.laboratorio,
                 fecha = excluded.fecha,
                 observaciones = excluded.observaciones,
+                fuente = COALESCE(excluded.fuente, fuente),
+                estado = COALESCE(excluded.estado, estado),
                 updated_at = CURRENT_TIMESTAMP
         ''', (
             row["id_medicion"], row["id_individuo"], row.get("tipo_muestra"), row["elemento"],
             row["concentracion"], row.get("unidad") or "ppm", row.get("metodo"), row.get("laboratorio"),
-            row.get("fecha"), row.get("observaciones")
+            row.get("fecha"), row.get("observaciones"), row.get("fuente"), row.get("estado") or "validado"
         ))
         updated += 1 if exists else 0
         inserted += 0 if exists else 1
@@ -214,8 +310,8 @@ def import_mediciones_csv(path: Path) -> dict:
             conn.execute('''
                 INSERT INTO mediciones_quimicas (
                     id_medicion, id_individuo, tipo_muestra, elemento, concentracion, unidad,
-                    metodo, laboratorio, fecha, observaciones
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    metodo, laboratorio, fecha, observaciones, fuente, estado
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 ON CONFLICT(id_medicion) DO UPDATE SET
                     id_individuo = excluded.id_individuo,
                     tipo_muestra = excluded.tipo_muestra,
@@ -226,11 +322,13 @@ def import_mediciones_csv(path: Path) -> dict:
                     laboratorio = excluded.laboratorio,
                     fecha = excluded.fecha,
                     observaciones = excluded.observaciones,
+                    fuente = COALESCE(excluded.fuente, fuente),
+                    estado = COALESCE(excluded.estado, estado),
                     updated_at = CURRENT_TIMESTAMP
             ''', (
                 data["id_medicion"], data["id_individuo"], data["tipo_muestra"], data["elemento"],
                 data["concentracion"], data["unidad"] or "ppm", data["metodo"], data["laboratorio"],
-                data["fecha"], data["observaciones"]
+                data["fecha"], data["observaciones"], data["fuente"], data["estado"] or "validado"
             ))
             updated += 1 if exists else 0
             inserted += 0 if exists else 1
@@ -241,6 +339,133 @@ def import_mediciones_csv(path: Path) -> dict:
         "rows_total": len(df),
         "errors": errors,
     }
+
+
+def import_paleopatologias_csv(path: Path) -> dict:
+    df = pd.read_csv(path)
+    missing = [c for c in ["id_paleopatologia", "id_individuo", "patologia"] if c not in df.columns]
+    if missing:
+        return {"inserted": 0, "updated": 0, "skipped": 0, "rows_total": len(df), "errors": ["Faltan columnas: " + ", ".join(missing)]}
+
+    inserted, updated, errors = 0, 0, []
+    with get_connection() as conn:
+        for idx, row in df.iterrows():
+            data = {col: _clean(row[col]) if col in row else None for col in PALEOPATOLOGIAS_COLUMNS}
+            if not data["id_paleopatologia"] or not data["id_individuo"] or not data["patologia"]:
+                errors.append(f"Fila {idx + 2}: id_paleopatologia, id_individuo y patologia son obligatorios")
+                continue
+            if not conn.execute("SELECT 1 FROM individuos WHERE id_individuo = ?", (data["id_individuo"],)).fetchone():
+                errors.append(f"Fila {idx + 2}: id_individuo no existe: {data['id_individuo']}")
+                continue
+            exists = conn.execute("SELECT 1 FROM paleopatologias WHERE id_paleopatologia = ?", (data["id_paleopatologia"],)).fetchone()
+            conn.execute('''
+                INSERT INTO paleopatologias (
+                    id_paleopatologia, id_individuo, patologia, valor, presente, fuente, estado
+                ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(id_paleopatologia) DO UPDATE SET
+                    id_individuo = excluded.id_individuo,
+                    patologia = excluded.patologia,
+                    valor = excluded.valor,
+                    presente = excluded.presente,
+                    fuente = COALESCE(excluded.fuente, fuente),
+                    estado = COALESCE(excluded.estado, estado),
+                    updated_at = CURRENT_TIMESTAMP
+            ''', (
+                data["id_paleopatologia"], data["id_individuo"], data["patologia"],
+                data["valor"], _clean_bool(data["presente"]), data["fuente"], data["estado"] or "validado",
+            ))
+            updated += 1 if exists else 0
+            inserted += 0 if exists else 1
+    return {"inserted": inserted, "updated": updated, "skipped": len(errors), "rows_total": len(df), "errors": errors}
+
+
+def import_dataciones_csv(path: Path) -> dict:
+    df = pd.read_csv(path)
+    missing = [c for c in ["id_datacion", "id_individuo"] if c not in df.columns]
+    if missing:
+        return {"inserted": 0, "updated": 0, "skipped": 0, "rows_total": len(df), "errors": ["Faltan columnas: " + ", ".join(missing)]}
+
+    inserted, updated, errors = 0, 0, []
+    with get_connection() as conn:
+        for idx, row in df.iterrows():
+            data = {col: _clean(row[col]) if col in row else None for col in DATACIONES_COLUMNS}
+            if not data["id_datacion"] or not data["id_individuo"]:
+                errors.append(f"Fila {idx + 2}: id_datacion e id_individuo son obligatorios")
+                continue
+            if not conn.execute("SELECT 1 FROM individuos WHERE id_individuo = ?", (data["id_individuo"],)).fetchone():
+                errors.append(f"Fila {idx + 2}: id_individuo no existe: {data['id_individuo']}")
+                continue
+            exists = conn.execute("SELECT 1 FROM dataciones WHERE id_datacion = ?", (data["id_datacion"],)).fetchone()
+            conn.execute('''
+                INSERT INTO dataciones (
+                    id_datacion, id_individuo, muestra, fecha_bp, fecha_1sigma_ad,
+                    interceptos_ad, rango_calibrado_min, rango_calibrado_max,
+                    referencia_datos, fuente, estado
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(id_datacion) DO UPDATE SET
+                    id_individuo = excluded.id_individuo,
+                    muestra = excluded.muestra,
+                    fecha_bp = excluded.fecha_bp,
+                    fecha_1sigma_ad = excluded.fecha_1sigma_ad,
+                    interceptos_ad = excluded.interceptos_ad,
+                    rango_calibrado_min = excluded.rango_calibrado_min,
+                    rango_calibrado_max = excluded.rango_calibrado_max,
+                    referencia_datos = excluded.referencia_datos,
+                    fuente = COALESCE(excluded.fuente, fuente),
+                    estado = COALESCE(excluded.estado, estado),
+                    updated_at = CURRENT_TIMESTAMP
+            ''', (
+                data["id_datacion"], data["id_individuo"], data["muestra"], data["fecha_bp"],
+                data["fecha_1sigma_ad"], data["interceptos_ad"],
+                _clean_int(data["rango_calibrado_min"]), _clean_int(data["rango_calibrado_max"]),
+                data["referencia_datos"], data["fuente"], data["estado"] or "validado",
+            ))
+            updated += 1 if exists else 0
+            inserted += 0 if exists else 1
+    return {"inserted": inserted, "updated": updated, "skipped": len(errors), "rows_total": len(df), "errors": errors}
+
+
+def import_imagenes_csv(path: Path) -> dict:
+    df = pd.read_csv(path)
+    missing = [c for c in ["id_imagen", "id_individuo", "filename_original", "filename_saved", "relative_path"] if c not in df.columns]
+    if missing:
+        return {"inserted": 0, "updated": 0, "skipped": 0, "rows_total": len(df), "errors": ["Faltan columnas: " + ", ".join(missing)]}
+
+    inserted, updated, errors = 0, 0, []
+    with get_connection() as conn:
+        for idx, row in df.iterrows():
+            data = {col: _clean(row[col]) if col in row else None for col in IMAGENES_COLUMNS}
+            if not data["id_imagen"] or not data["id_individuo"] or not data["relative_path"]:
+                errors.append(f"Fila {idx + 2}: id_imagen, id_individuo y relative_path son obligatorios")
+                continue
+            if not conn.execute("SELECT 1 FROM individuos WHERE id_individuo = ?", (data["id_individuo"],)).fetchone():
+                errors.append(f"Fila {idx + 2}: id_individuo no existe: {data['id_individuo']}")
+                continue
+            exists = conn.execute("SELECT 1 FROM imagenes WHERE id_imagen = ?", (data["id_imagen"],)).fetchone()
+            conn.execute('''
+                INSERT INTO imagenes (
+                    id_imagen, id_individuo, filename_original, filename_saved,
+                    relative_path, content_type, label, descripcion, fuente, estado
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT(id_imagen) DO UPDATE SET
+                    id_individuo = excluded.id_individuo,
+                    filename_original = excluded.filename_original,
+                    filename_saved = excluded.filename_saved,
+                    relative_path = excluded.relative_path,
+                    content_type = excluded.content_type,
+                    label = excluded.label,
+                    descripcion = excluded.descripcion,
+                    fuente = COALESCE(excluded.fuente, fuente),
+                    estado = COALESCE(excluded.estado, estado),
+                    updated_at = CURRENT_TIMESTAMP
+            ''', (
+                data["id_imagen"], data["id_individuo"], data["filename_original"],
+                data["filename_saved"], data["relative_path"], data["content_type"],
+                data["label"], data["descripcion"], data["fuente"], data["estado"] or "validado",
+            ))
+            updated += 1 if exists else 0
+            inserted += 0 if exists else 1
+    return {"inserted": inserted, "updated": updated, "skipped": len(errors), "rows_total": len(df), "errors": errors}
 
 
 def _load_json_cases(path: Path) -> tuple[list[dict], dict]:
@@ -313,7 +538,7 @@ def import_azapa_master_data(
                     fuente = COALESCE(excluded.fuente, fuente),
                     updated_at = CURRENT_TIMESTAMP
             ''', (
-                case_id, referencia, numero_cuerpo, sexo, edad, sitio,
+                case_id, case_id, numero_cuerpo, sexo, edad, sitio,
                 cementerio, None, None, referencia, notas, "azapa"
             ))
             updated += 1 if exists else 0

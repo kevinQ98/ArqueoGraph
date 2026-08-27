@@ -1,0 +1,3 @@
+id_datacion,id_individuo,muestra,fecha_bp,fecha_1sigma_ad,interceptos_ad,rango_calibrado_min,rango_calibrado_max,referencia_datos,fuente,estado
+sitio_demo_csv_d001,sitio_demo_csv_001,costilla,3150,-1210,-1180,-1280,-1120,Datacion ficticia para prueba CSV,sitio_demo_csv,validado
+sitio_demo_csv_d002,sitio_demo_csv_003,diente,2980,-1030,-990,-1100,-930,Datacion ficticia para prueba CSV,sitio_demo_csv,validado

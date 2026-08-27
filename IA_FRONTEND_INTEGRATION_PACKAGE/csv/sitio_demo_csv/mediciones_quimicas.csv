@@ -1,0 +1,23 @@
+id_medicion,id_individuo,tipo_muestra,elemento,concentracion,unidad,metodo,laboratorio,fecha,observaciones,fuente,estado
+sitio_demo_csv_m001,sitio_demo_csv_001,costilla,As,1.20,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m002,sitio_demo_csv_001,costilla,B,72.50,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m003,sitio_demo_csv_001,costilla,Li,0.82,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m004,sitio_demo_csv_001,costilla,Mn,11.40,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m005,sitio_demo_csv_001,costilla,Zn,96.00,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m006,sitio_demo_csv_002,costilla,As,0.95,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m007,sitio_demo_csv_002,costilla,B,68.10,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m008,sitio_demo_csv_002,costilla,Li,0.67,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m009,sitio_demo_csv_002,costilla,Mn,9.80,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m010,sitio_demo_csv_002,costilla,Zn,88.30,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m011,sitio_demo_csv_003,diente,As,1.85,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m012,sitio_demo_csv_003,diente,B,81.20,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m013,sitio_demo_csv_003,diente,Li,1.05,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m014,sitio_demo_csv_003,diente,Mn,14.90,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m015,sitio_demo_csv_003,diente,Zn,102.40,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m016,sitio_demo_csv_004,costilla,As,1.45,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m017,sitio_demo_csv_004,costilla,B,75.90,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m018,sitio_demo_csv_004,costilla,Li,0.91,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m019,sitio_demo_csv_004,costilla,Mn,12.70,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m020,sitio_demo_csv_004,costilla,Zn,94.10,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio de prueba,sitio_demo_csv,validado
+sitio_demo_csv_m021,sitio_demo_csv_005,diente,As,0.70,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio parcial,sitio_demo_csv,validado
+sitio_demo_csv_m022,sitio_demo_csv_005,diente,Mn,8.60,ppm,ICP-MS,Laboratorio Demo,2026-08-19,Valor ficticio parcial,sitio_demo_csv,validado

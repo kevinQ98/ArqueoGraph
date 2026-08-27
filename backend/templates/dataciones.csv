@@ -1,0 +1,2 @@
+id_datacion,id_individuo,muestra,fecha_bp,fecha_1sigma_ad,interceptos_ad,rango_calibrado_min,rango_calibrado_max,referencia_datos,fuente,estado
+mi_sitio_dat_001,mi_sitio_001,carbon vegetal,4100 BP,2450-2300 AC,2380 AC,-2450,-2300,Datacion de ejemplo,mi_sitio,validado

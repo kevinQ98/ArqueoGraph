@@ -1,0 +1,9 @@
+id_paleopatologia,id_individuo,patologia,valor,presente,fuente,estado
+sitio_demo_csv_p001,sitio_demo_csv_001,patologia_dental,positivo,1,sitio_demo_csv,validado
+sitio_demo_csv_p002,sitio_demo_csv_001,trauma_fractura,negativo,0,sitio_demo_csv,validado
+sitio_demo_csv_p003,sitio_demo_csv_002,patologia_dental,negativo,0,sitio_demo_csv,validado
+sitio_demo_csv_p004,sitio_demo_csv_002,periostitis,positivo,1,sitio_demo_csv,validado
+sitio_demo_csv_p005,sitio_demo_csv_003,trauma_fractura,positivo,1,sitio_demo_csv,validado
+sitio_demo_csv_p006,sitio_demo_csv_003,osteoporosis,positivo,1,sitio_demo_csv,validado
+sitio_demo_csv_p007,sitio_demo_csv_004,patologia_degenerativa,positivo,1,sitio_demo_csv,validado
+sitio_demo_csv_p008,sitio_demo_csv_005,periostitis,negativo,0,sitio_demo_csv,validado

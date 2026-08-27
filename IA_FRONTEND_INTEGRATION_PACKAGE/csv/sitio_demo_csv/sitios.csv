@@ -1,0 +1,2 @@
+id_sitio,nombre,area,descripcion,lat,lng,view,estado
+sitio_demo_csv,Sitio Demo CSV,Area de prueba,Sitio pequeno para probar carga CSV y API generica,-18.4788,-70.3124,visualizacion,validado

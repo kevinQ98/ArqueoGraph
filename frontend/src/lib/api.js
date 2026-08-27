@@ -67,13 +67,137 @@ export async function getGraphRelational({
   return res.json();
 }
 
-export async function getGraphMorroReference(sexo = "", edad = "", patologia = "") {
+export async function getGraphMorroReference(sexo = "", edad = "", patologia = "", fuente = "") {
   const url = new URL(`${API_BASE}/graph/morro1/reference`);
   if (sexo) url.searchParams.set("sexo", sexo);
   if (edad) url.searchParams.set("edad", edad);
   if (patologia) url.searchParams.set("patologia", patologia);
+  if (fuente) url.searchParams.set("fuente", fuente);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de referencia de Morro1");
+  return res.json();
+}
+
+function siteApiUrl(fuente, suffix = "") {
+  return new URL(`${API_BASE}/graph/site/${encodeURIComponent(fuente)}${suffix}`);
+}
+
+function addSearchParams(url, params = {}) {
+  Object.entries(params).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      url.searchParams.set(key, value);
+    }
+  });
+  return url;
+}
+
+export async function getSiteGraphReference(
+  fuente,
+  { sexo = "", edad = "", patologia = "", matriz = "", referencia = "" } = {},
+) {
+  const url = addSearchParams(siteApiUrl(fuente, "/reference"), { sexo, edad, patologia, matriz, referencia });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando grafo de sitio");
+  return res.json();
+}
+
+export async function getSiteGraphElemento(
+  fuente,
+  elemento,
+  { sexo = "", edad = "", matriz = "", referencia = "" } = {},
+) {
+  const url = addSearchParams(siteApiUrl(fuente, `/elemento/${encodeURIComponent(elemento)}`), { sexo, edad, matriz, referencia });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando grafo de sitio por elemento");
+  return res.json();
+}
+
+export async function getSiteGraphElements(
+  fuente,
+  { sexo = "", edad = "", matriz = "", referencia = "" } = {},
+) {
+  const url = addSearchParams(siteApiUrl(fuente, "/elements"), { sexo, edad, matriz, referencia });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando red completa del sitio");
+  return res.json();
+}
+
+export async function getSiteGraphPatologias(
+  fuente,
+  { sexo = "", edad = "", matriz = "", referencia = "" } = {},
+) {
+  const url = addSearchParams(siteApiUrl(fuente, "/patologias"), { sexo, edad, matriz, referencia });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando patologías del sitio");
+  return res.json();
+}
+
+export async function getSiteGraphPatologia(
+  fuente,
+  patologia,
+  { sexo = "", edad = "", matriz = "", referencia = "" } = {},
+) {
+  const url = addSearchParams(siteApiUrl(fuente, `/patologia/${encodeURIComponent(patologia)}`), { sexo, edad, matriz, referencia });
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando patología del sitio");
+  return res.json();
+}
+
+export async function getSiteTableRows(fuente, params = {}) {
+  const url = addSearchParams(siteApiUrl(fuente, "/table"), params);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando tabla del sitio");
+  return res.json();
+}
+
+export async function getSitePca(
+  fuente,
+  { elements = [], sexo = "", edad = "", matriz = "", referencia = "", patologia = "" } = {},
+) {
+  const url = new URL(`${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/pca`);
+  url.searchParams.set("elements", elements.join(","));
+  addSearchParams(url, { sexo, edad, matriz, referencia, patologia });
+  const res = await fetch(url);
+  if (!res.ok) {
+    const payload = await res.json().catch(() => null);
+    throw new Error(payload?.detail || "Error calculando PCA del sitio");
+  }
+  return res.json();
+}
+
+export async function getSiteCaseRelation(fuente, caseId) {
+  const res = await fetch(`${API_BASE}/graph/site/${encodeURIComponent(fuente)}/case/${encodeURIComponent(caseId)}/relation`);
+  if (!res.ok) throw new Error("Error cargando relación del sitio");
+  return res.json();
+}
+
+export async function getSiteMatrixOptions(fuente) {
+  const res = await fetch(`${API_BASE}/graph/site/${encodeURIComponent(fuente)}/matrix-options`);
+  if (!res.ok) throw new Error("Error cargando opciones de matriz del sitio");
+  return res.json();
+}
+
+export async function getSiteAnalysisContext(fuente, params = {}) {
+  const url = new URL(`${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/context`);
+  addSearchParams(url, params);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando el contexto analítico del sitio");
+  return res.json();
+}
+
+export async function getSiteSamples(fuente, params = {}) {
+  const url = new URL(`${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/samples`);
+  addSearchParams(url, params);
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("Error cargando las muestras del sitio");
+  return res.json();
+}
+
+export async function getSiteSampleDetail(fuente, sampleId) {
+  const res = await fetch(
+    `${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/sample/${encodeURIComponent(sampleId)}`,
+  );
+  if (!res.ok) throw new Error("Error cargando el detalle de la muestra");
   return res.json();
 }
 
@@ -404,31 +528,34 @@ export async function getMorroTableRows(params = {}) {
   return res.json();
 }
 
-export async function getGraphMorroElemento(elemento, sexo = "", edad = "", matriz = "") {
+export async function getGraphMorroElemento(elemento, sexo = "", edad = "", matriz = "", fuente = "") {
   const url = new URL(`${API_BASE}/graph/morro1/elemento/${encodeURIComponent(elemento)}`);
   if (sexo) url.searchParams.set("sexo", sexo);
   if (edad) url.searchParams.set("edad", edad);
   if (matriz) url.searchParams.set("matriz", matriz);
+  if (fuente) url.searchParams.set("fuente", fuente);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando grafo de Morro1 por elemento");
   return res.json();
 }
 
-export async function getGraphMorroElements(sexo = "", edad = "", matriz = "") {
+export async function getGraphMorroElements(sexo = "", edad = "", matriz = "", fuente = "") {
   const url = new URL(`${API_BASE}/graph/morro1/elements`);
   if (sexo) url.searchParams.set("sexo", sexo);
   if (edad) url.searchParams.set("edad", edad);
   if (matriz) url.searchParams.set("matriz", matriz);
+  if (fuente) url.searchParams.set("fuente", fuente);
   const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando red completa de Morro1");
   return res.json();
 }
 
-export async function getMorroPca({ elements = [], sexo = "", edad = "" } = {}) {
+export async function getMorroPca({ elements = [], sexo = "", edad = "", fuente = "" } = {}) {
   const url = new URL(`${API_BASE}/analysis/morro1/pca`);
   url.searchParams.set("elements", elements.join(","));
   if (sexo) url.searchParams.set("sexo", sexo);
   if (edad) url.searchParams.set("edad", edad);
+  if (fuente) url.searchParams.set("fuente", fuente);
   const res = await fetch(url);
   if (!res.ok) {
     const payload = await res.json().catch(() => null);
@@ -451,8 +578,10 @@ export async function getAzapaPca({ elements = [], sexo = "", edad = "", matriz 
   return res.json();
 }
 
-export async function getMorroCaseRelation(caseId) {
-  const res = await fetch(`${API_BASE}/graph/morro1/case/${encodeURIComponent(caseId)}/relation`);
+export async function getMorroCaseRelation(caseId, fuente = "") {
+  const url = new URL(`${API_BASE}/graph/morro1/case/${encodeURIComponent(caseId)}/relation`);
+  if (fuente) url.searchParams.set("fuente", fuente);
+  const res = await fetch(url);
   if (!res.ok) throw new Error("Error cargando relación de Morro1");
   return res.json();
 }

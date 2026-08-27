@@ -1,9 +1,10 @@
-import React, { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 import {
   Activity,
   Beaker,
   Bone,
   Database,
+  Filter,
   Image as ImageIcon,
   LayoutDashboard,
   RefreshCw,
@@ -157,7 +158,7 @@ function SitePortal({ site, onOpen, onFilter }) {
       <p>{site.culturas?.length ? `Contextos: ${site.culturas.join(", ")}` : "Contexto cultural pendiente de normalización."}</p>
       <div className="sitePortalActions">
         <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md" onClick={() => onFilter(site.sitio)}>Filtrar panel</button>
-        <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md bg-black text-white" onClick={() => onOpen(site.view)}>Abrir visualización</button>
+        <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md bg-black text-white" onClick={() => onOpen(site)}>Abrir visualización</button>
       </div>
     </article>
   );
@@ -207,11 +208,30 @@ export function DashboardPanel({ onNavigate }) {
   const activeFilterCount = Object.values(filters).filter(Boolean).length;
 
   return (
-    <main className="dashboardMain">
+    <main className="dashboardShell">
+      <aside className="dashboardRail">
+        <div className="dashboardRailBrand">
+          <span>Proyecto ArqueoGraph</span>
+          <strong>Análisis Bioarqueológico</strong>
+          <small>v0.8 · Panel general</small>
+        </div>
+        <nav aria-label="Secciones del dashboard">
+          <a href="#dashboard-filters" className="active"><Filter size={15} /> Filtros</a>
+          <a href="#dashboard-map"><MapPinned size={15} /> Mapa</a>
+          <a href="#dashboard-cases"><Users size={15} /> Individuos</a>
+          <a href="#dashboard-chemistry"><Beaker size={15} /> Químicos</a>
+          <a href="#dashboard-pathologies"><Bone size={15} /> Patologías</a>
+        </nav>
+        <button type="button" className="dashboardRailClear" onClick={clearFilters} disabled={!activeFilterCount}>
+          <RotateCcw size={14} /> Limpiar filtros ({activeFilterCount})
+        </button>
+      </aside>
+
+      <div className="dashboardMain">
       <section className="dashboardHero">
         <div>
           <p className="dashboardEyebrow"><LayoutDashboard size={15} /> ArqueoGraph 0.8 · Panel general</p>
-          <h2>Colección Bioarqueológica IAI</h2>
+          <h2>Colección Bioarqueológica</h2>
           <p>Consulta el estado general de la colección y accede a las interfaces especializadas de cada sitio.</p>
         </div>
         <div className="dashboardHeroActions">
@@ -220,7 +240,7 @@ export function DashboardPanel({ onNavigate }) {
         </div>
       </section>
 
-      <section className="dashboardSlicers" aria-label="Segmentadores del dashboard">
+      <section id="dashboard-filters" className="dashboardSlicers" aria-label="Segmentadores del dashboard">
         <label>Sitio<select value={filters.sitio} onChange={(event) => updateFilter("sitio", event.target.value)}><option value="">Todos</option>{options.sitios.map((value) => <option key={value}>{value}</option>)}</select></label>
         <label>Sexo<select value={filters.sexo} onChange={(event) => updateFilter("sexo", event.target.value)}><option value="">Todos</option>{options.sexos.map((value) => <option key={value}>{value}</option>)}</select></label>
         <label>Edad<select value={filters.edad} onChange={(event) => updateFilter("edad", event.target.value)}><option value="">Todas</option>{options.edades.map((value) => <option key={value}>{value}</option>)}</select></label>
@@ -238,7 +258,7 @@ export function DashboardPanel({ onNavigate }) {
         <KpiCard icon={ImageIcon} label="Con imágenes" value={kpis.con_imagenes || 0} note="carpetas asociadas" tone="green" />
       </section>
 
-      <section className="dashboardGrid dashboardGridTwo collectionOverviewGrid">
+      <section id="dashboard-map" className="dashboardGrid dashboardGridTwo collectionOverviewGrid">
         <Suspense fallback={<section className="dashboardVisual dashboardMapLoading">Cargando cartografía...</section>}>
           <ArchaeologicalMap sites={data?.site_portals || []} selectedSite={filters.sitio} onSelectSite={(value) => updateFilter("sitio", value)} />
         </Suspense>
@@ -260,17 +280,17 @@ export function DashboardPanel({ onNavigate }) {
         </div>
       </section>
 
-      <section className="dashboardGrid dashboardGridTwo">
+      <section id="dashboard-chemistry" className="dashboardGrid dashboardGridTwo">
         <BarChart title="Cobertura química" subtitle="Número de individuos con medición." data={data?.chemical_coverage} selected={filters.elemento} onSelect={(value) => updateFilter("elemento", value)} color="cyan" />
         <ChemicalSummary rows={data?.chemical_summary} element={filters.elemento} />
       </section>
 
-      <section className="dashboardGrid dashboardGridTwo">
+      <section id="dashboard-pathologies" className="dashboardGrid dashboardGridTwo">
         <BarChart title="Paleopatologías" subtitle="Frecuencia de presencias positivas." data={data?.pathology_distribution} selected={filters.patologia} onSelect={(value) => updateFilter("patologia", value)} color="amber" formatLabels />
         <BarChart title="Estado de conservación" subtitle="Ocho categorías más frecuentes." data={data?.distributions?.conservacion} color="rose" />
       </section>
 
-      <section className="dashboardVisual dashboardCases">
+      <section id="dashboard-cases" className="dashboardVisual dashboardCases">
         <div className="dashboardTableHeader">
           <div>
             <h3>Casos de la selección</h3>
@@ -302,6 +322,7 @@ export function DashboardPanel({ onNavigate }) {
         <div><strong>Notas de interpretación</strong>{(data?.warnings || []).map((warning) => <p key={warning}>{warning}</p>)}</div>
         <button type="button" className="secondary small" onClick={() => onNavigate?.("visualizacion")}>Abrir Morro 1</button>
       </section>
+      </div>
     </main>
   );
 }

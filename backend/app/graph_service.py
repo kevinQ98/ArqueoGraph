@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import mimetypes
 from pathlib import Path
 from typing import Any, Optional
 
@@ -195,6 +196,48 @@ def _load_azapa_reference_cases(reference_path: Optional[Path] = None) -> list[d
     except Exception:
         return []
     return []
+
+
+def resolve_azapa_case_relation(case_id: str, reference_path: Path, images_dir: Path) -> dict[str, Any]:
+    """Relaciona un caso Azapa con su ficha de referencia e imagenes locales."""
+    cases = _load_azapa_reference_cases(reference_path)
+    case = next((item for item in cases if str(item.get("id") or "").strip() == case_id), None)
+    reference = None
+    if case:
+        individual = case.get("individuo") or {}
+        reference = {
+            "id": case.get("id"),
+            "tumba": case.get("tumba") or case.get("referencia"),
+            "sexo": individual.get("sexo"),
+            "edad": individual.get("grupo_edad") or individual.get("edad"),
+            "cultura": case.get("cultura"),
+        }
+
+    images = []
+    case_dir = images_dir / case_id
+    image_root = images_dir.parent
+    allowed_extensions = {".jpg", ".jpeg", ".png", ".webp", ".gif", ".tif", ".tiff"}
+    if case_dir.exists() and case_dir.is_dir():
+        for path in sorted(case_dir.iterdir()):
+            if not path.is_file() or path.suffix.lower() not in allowed_extensions:
+                continue
+            relative_path = str(path.relative_to(image_root)).replace("\\", "/")
+            images.append({
+                "id_imagen": f"{case_id}_{path.name}",
+                "id_individuo": case_id,
+                "filename_original": path.name,
+                "relative_path": relative_path,
+                "url": f"/files/imagenes/{relative_path}",
+                "titulo": path.name,
+                "mime_type": mimetypes.guess_type(path.name)[0] or "image/jpeg",
+            })
+
+    return {
+        "case_id": case_id,
+        "reference": reference,
+        "images": images,
+        "images_count": len(images),
+    }
 
 
 def _normalize_azapa_sexo_filter(value: Optional[str]) -> str:

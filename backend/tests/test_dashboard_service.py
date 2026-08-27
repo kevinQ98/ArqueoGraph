@@ -1,17 +1,18 @@
 from app.dashboard_service import build_dashboard_data
 
 
-def test_dashboard_combines_both_sites():
+def test_dashboard_combines_registered_sites():
     data = build_dashboard_data()
 
     assert data["version"] == "0.8.0"
-    assert data["kpis"]["individuos"] == 338
-    assert data["kpis"]["sitios"] == 2
-    assert len(data["site_portals"]) == 2
+    assert data["kpis"]["individuos"] == sum(item["individuos"] for item in data["site_portals"])
+    assert data["kpis"]["sitios"] == len(data["site_portals"])
+    assert len(data["site_portals"]) >= 2
     coordinates = {item["sitio"]: item["coordinates"] for item in data["site_portals"]}
     assert coordinates["Morro 1"] == {"lat": -18.508333, "lng": -70.266667}
     assert coordinates["Azapa 140"] == {"lat": -18.528267, "lng": -70.179785}
-    assert {row["label"] for row in data["distributions"]["sitio"]} == {"Morro 1", "Azapa 140"}
+    site_labels = {row["label"] for row in data["distributions"]["sitio"]}
+    assert {"Morro 1", "Azapa 140"}.issubset(site_labels)
 
 
 def test_dashboard_cross_filters_age_sex_and_site():

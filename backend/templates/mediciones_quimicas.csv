@@ -1,1 +1,2 @@
-id_medicion,id_individuo,tipo_muestra,elemento,concentracion,unidad,metodo,laboratorio,fecha,categoria,observaciones
+id_medicion,id_individuo,tipo_muestra,elemento,concentracion,unidad,metodo,laboratorio,fecha,observaciones,fuente,estado
+mi_sitio_med_001,mi_sitio_001,costilla,Mn,12.5,ppm,,,,Medicion de ejemplo,mi_sitio,validado

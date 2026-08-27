@@ -1,0 +1,2 @@
+id_imagen,id_individuo,filename_original,filename_saved,relative_path,content_type,label,descripcion,fuente,estado
+mi_sitio_img_001,mi_sitio_001,mi_sitio_001.jpg,mi_sitio_001.jpg,imagenes_mi_sitio/mi_sitio_001.jpg,image/jpeg,Imagen de ejemplo,Registro visual de ejemplo,mi_sitio,validado

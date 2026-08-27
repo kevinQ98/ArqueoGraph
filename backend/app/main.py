@@ -7,7 +7,8 @@ import shutil
 import uuid
 import mimetypes
 from io import StringIO
-from typing import Optional
+from typing import Any, Optional
+import numpy as np
 from fastapi import FastAPI, UploadFile, File, HTTPException, Response, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -24,7 +25,23 @@ from .config import (
     register_uploaded_file,
 )
 from .database import init_db, reset_db, get_connection, rows_to_dicts, IMAGES_DIR
-from .importer import import_individuos_csv, import_mediciones_csv, import_morro1_master_data, import_azapa_master_data
+from .importer import (
+    import_azapa_master_data,
+    import_dataciones_csv,
+    import_imagenes_csv,
+    import_individuos_csv,
+    import_mediciones_csv,
+    import_morro1_master_data,
+    import_paleopatologias_csv,
+    import_sitios_csv,
+)
+from .sqlite_migration import ensure_sqlite_sources, migrate_json_sources_to_sqlite
+from .analytical_migration import analytical_model_audit, ensure_analytical_model
+from .analytical_service import build_analysis_context, get_sample_detail, list_samples
+try:
+    from backend.scripts.generate_prueba_test_from_morro import main as generate_prueba_test_csvs
+except ModuleNotFoundError:
+    from scripts.generate_prueba_test_from_morro import main as generate_prueba_test_csvs
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
 from .dashboard_service import build_dashboard_data
 from .backup import create_backup
@@ -38,8 +55,12 @@ APP_VERSION = "0.8.0"
 
 VALID_ESTADOS = {"borrador", "revisar", "validado", "descartado"}
 TEMPLATE_FILES = {
+    "sitios.csv": BASE_DIR / "templates" / "sitios.csv",
     "individuos.csv": BASE_DIR / "templates" / "individuos.csv",
     "mediciones_quimicas.csv": BASE_DIR / "templates" / "mediciones_quimicas.csv",
+    "paleopatologias.csv": BASE_DIR / "templates" / "paleopatologias.csv",
+    "dataciones.csv": BASE_DIR / "templates" / "dataciones.csv",
+    "imagenes.csv": BASE_DIR / "templates" / "imagenes.csv",
 }
 
 app = FastAPI(
@@ -65,6 +86,8 @@ def startup_event():
     UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     IMAGES_DIR.mkdir(parents=True, exist_ok=True)
     init_db()
+    ensure_sqlite_sources()
+    ensure_analytical_model()
 
 
 @app.get("/")
@@ -174,23 +197,20 @@ def _load_paleopatologias() -> list[dict]:
 
 
 def _extract_patologias() -> list[str]:
-    """Extrae nombres de patologías con valores no-null del archivo JSON."""
-    casos = _load_paleopatologias()
-    patologias_set = set()
-    
-    for caso in casos:
-        if not isinstance(caso, dict):
-            continue
-        paleo = caso.get("paleopatologia", {})
-        if not isinstance(paleo, dict):
-            continue
-        
-        for patologia_name, patologia_value in paleo.items():
-            # Solo agregar patologías que tienen al menos un valor no-null
-            if patologia_value is not None:
-                patologias_set.add(patologia_name)
-    
-    return sorted(list(patologias_set))
+    """Extrae nombres de patologías positivas desde SQLite."""
+    ensure_sqlite_sources()
+    with get_connection() as conn:
+        return [
+            row["patologia"]
+            for row in conn.execute(
+                """
+                SELECT DISTINCT patologia
+                FROM paleopatologias
+                WHERE presente = 1
+                ORDER BY patologia
+                """
+            ).fetchall()
+        ]
 
 
 def _catalogo_momias_images_for_case(case_value: str, id_individuo: Optional[str] = None) -> list[dict]:
@@ -375,14 +395,18 @@ def _write_csv_response(filename: str, rows: list[dict]) -> Response:
 
 def _table_counts(conn) -> dict:
     return {
+        "sitios": conn.execute("SELECT COUNT(*) AS n FROM sitios").fetchone()["n"],
         "individuos": conn.execute("SELECT COUNT(*) AS n FROM individuos").fetchone()["n"],
         "mediciones": conn.execute("SELECT COUNT(*) AS n FROM mediciones_quimicas").fetchone()["n"],
+        "paleopatologias": conn.execute("SELECT COUNT(*) AS n FROM paleopatologias").fetchone()["n"],
+        "dataciones": conn.execute("SELECT COUNT(*) AS n FROM dataciones").fetchone()["n"],
         "imagenes": conn.execute("SELECT COUNT(*) AS n FROM imagenes").fetchone()["n"],
     }
 
 
 @app.get("/health")
 def health_check():
+    ensure_sqlite_sources()
     with get_connection() as conn:
         counts = _table_counts(conn)
     return {
@@ -399,6 +423,7 @@ def health_check():
 
 @app.get("/admin/resumen")
 def admin_resumen():
+    ensure_sqlite_sources()
     with get_connection() as conn:
         counts = _table_counts(conn)
         individuos_estado = rows_to_dicts(conn.execute(
@@ -619,11 +644,15 @@ def download_template(template_name: str):
 
 @app.get("/admin/export/dataset.json")
 def export_dataset_json():
+    ensure_sqlite_sources()
     with get_connection() as conn:
         payload = {
             "version": APP_VERSION,
+            "sitios": rows_to_dicts(conn.execute("SELECT * FROM sitios ORDER BY nombre").fetchall()),
             "individuos": rows_to_dicts(conn.execute("SELECT * FROM individuos ORDER BY id_documento").fetchall()),
             "mediciones": rows_to_dicts(conn.execute("SELECT * FROM mediciones_quimicas ORDER BY elemento, id_medicion").fetchall()),
+            "paleopatologias": rows_to_dicts(conn.execute("SELECT * FROM paleopatologias ORDER BY patologia, id_individuo").fetchall()),
+            "dataciones": rows_to_dicts(conn.execute("SELECT * FROM dataciones ORDER BY id_individuo").fetchall()),
             "imagenes": rows_to_dicts(conn.execute("SELECT * FROM imagenes ORDER BY created_at DESC").fetchall()),
         }
     return Response(
@@ -635,13 +664,20 @@ def export_dataset_json():
 
 @app.get("/admin/export/{dataset}.csv")
 def export_dataset_csv(dataset: str):
+    ensure_sqlite_sources()
     queries = {
+        "sitios": "SELECT * FROM sitios ORDER BY nombre",
         "individuos": "SELECT * FROM individuos ORDER BY id_documento",
         "mediciones": "SELECT * FROM mediciones_quimicas ORDER BY elemento, id_medicion",
+        "paleopatologias": "SELECT * FROM paleopatologias ORDER BY patologia, id_individuo",
+        "dataciones": "SELECT * FROM dataciones ORDER BY id_individuo",
         "imagenes": "SELECT * FROM imagenes ORDER BY created_at DESC",
     }
     if dataset not in queries:
-        raise HTTPException(status_code=404, detail="Dataset no soportado. Usa individuos, mediciones o imagenes")
+        raise HTTPException(
+            status_code=404,
+            detail="Dataset no soportado. Usa sitios, individuos, mediciones, paleopatologias, dataciones o imagenes",
+        )
     with get_connection() as conn:
         rows = rows_to_dicts(conn.execute(queries[dataset]).fetchall())
     return _write_csv_response(f"arqueograph_{dataset}.csv", rows)
@@ -662,6 +698,15 @@ def create_backup_endpoint():
         "ok": True,
         "archivo": backup_path.name,
         "ruta": str(backup_path),
+    }
+
+
+@app.post("/admin/migrate/sqlite")
+def migrate_sqlite_endpoint():
+    """Reconstruye/actualiza las tablas normalizadas de SQLite desde los JSON legacy."""
+    return {
+        "ok": True,
+        "result": migrate_json_sources_to_sqlite(),
     }
 
 
@@ -714,6 +759,84 @@ def import_mediciones_file(file: UploadFile = File(...)):
     result = import_mediciones_csv(dest)
     result["uploaded_file"] = dest.name
     return result
+
+
+@app.post("/admin/import/sitios/csv")
+def import_sitios_file(file: UploadFile = File(...)):
+    dest = UPLOADS_DIR / _safe_upload_filename(file.filename)
+    with dest.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    result = import_sitios_csv(dest)
+    result["uploaded_file"] = dest.name
+    return result
+
+
+@app.post("/admin/import/paleopatologias/csv")
+def import_paleopatologias_file(file: UploadFile = File(...)):
+    dest = UPLOADS_DIR / _safe_upload_filename(file.filename)
+    with dest.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    result = import_paleopatologias_csv(dest)
+    result["uploaded_file"] = dest.name
+    return result
+
+
+@app.post("/admin/import/dataciones/csv")
+def import_dataciones_file(file: UploadFile = File(...)):
+    dest = UPLOADS_DIR / _safe_upload_filename(file.filename)
+    with dest.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    result = import_dataciones_csv(dest)
+    result["uploaded_file"] = dest.name
+    return result
+
+
+@app.post("/admin/import/imagenes/csv")
+def import_imagenes_file(file: UploadFile = File(...)):
+    dest = UPLOADS_DIR / _safe_upload_filename(file.filename)
+    with dest.open("wb") as f:
+        shutil.copyfileobj(file.file, f)
+
+    result = import_imagenes_csv(dest)
+    result["uploaded_file"] = dest.name
+    return result
+
+
+@app.post("/admin/import/prueba-test/demo")
+def import_prueba_test_demo():
+    ensure_sqlite_sources()
+    with get_connection() as conn:
+        conn.execute("DELETE FROM imagenes WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute("DELETE FROM dataciones WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute("DELETE FROM paleopatologias WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute("DELETE FROM mediciones_quimicas WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute("DELETE FROM individuos WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute("DELETE FROM sitios WHERE id_sitio = ?", ("prueba_test",))
+
+    generate_prueba_test_csvs()
+    base = SAMPLE_DIR / "prueba_test"
+    files = {
+        "sitios": base / "sitios.csv",
+        "individuos": base / "individuos.csv",
+        "mediciones": base / "mediciones_quimicas.csv",
+        "paleopatologias": base / "paleopatologias.csv",
+        "dataciones": base / "dataciones.csv",
+        "imagenes": base / "imagenes.csv",
+    }
+    missing = [name for name, path in files.items() if not path.exists()]
+    if missing:
+        raise HTTPException(status_code=404, detail=f"Faltan CSV demo: {', '.join(missing)}")
+    return {
+        "sitios": import_sitios_csv(files["sitios"]),
+        "individuos": import_individuos_csv(files["individuos"]),
+        "mediciones": import_mediciones_csv(files["mediciones"]),
+        "paleopatologias": import_paleopatologias_csv(files["paleopatologias"]),
+        "dataciones": import_dataciones_csv(files["dataciones"]),
+        "imagenes": import_imagenes_csv(files["imagenes"]),
+    }
 
 
 @app.post("/admin/import/morro1/json")
@@ -1215,7 +1338,8 @@ def analysis_azapa_pca(
 ):
     selected = [element.strip() for element in elements.split(",") if element.strip()]
     try:
-        return build_azapa_pca(selected, sexo=sexo, edad=edad, matriz=matriz)
+        payload = build_azapa_pca(selected, sexo=sexo, edad=edad, matriz=matriz)
+        return _enrich_pca_with_pathologies(payload, fuente="azapa")
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
@@ -1237,28 +1361,123 @@ def graph_azapa_case_relation(case_id: str):
 
 @app.get("/filters/options")
 def filter_options(fuente: Optional[str] = None):
+    ensure_sqlite_sources()
     fuente_norm = (fuente or "").strip().lower()
     with get_connection() as conn:
-        sexos = [r["sexo"] for r in conn.execute("SELECT DISTINCT sexo FROM individuos WHERE sexo IS NOT NULL ORDER BY sexo").fetchall()]
-        sitios = [r["sitio"] for r in conn.execute("SELECT DISTINCT sitio FROM individuos WHERE sitio IS NOT NULL ORDER BY sitio").fetchall()]
-        estilos = [r["estilo_momificacion"] for r in conn.execute("SELECT DISTINCT estilo_momificacion FROM individuos WHERE estilo_momificacion IS NOT NULL ORDER BY estilo_momificacion").fetchall()]
-        if fuente_norm == "morro1":
-            elementos = get_morro1_available_elements(MORRO1_ANALYSIS_PATHS)
-        elif fuente_norm == "azapa":
-            elementos = get_azapa_available_elements(AZAPA_ANALYSIS_PATHS)
+        individual_where = "WHERE 1=1"
+        measurement_where = "WHERE 1=1"
+        params: list[str] = []
+        measurement_params: list[str] = []
+        if fuente_norm:
+            individual_where += " AND lower(COALESCE(fuente, '')) = ?"
+            measurement_where += " AND lower(COALESCE(fuente, '')) = ?"
+            params.append(fuente_norm)
+            measurement_params.append(fuente_norm)
+
+        sexos = [
+            r["sexo"]
+            for r in conn.execute(
+                f"SELECT DISTINCT sexo FROM individuos {individual_where} AND sexo IS NOT NULL ORDER BY sexo",
+                params,
+            ).fetchall()
+        ]
+        sitios = [
+            r["sitio"]
+            for r in conn.execute(
+                "SELECT DISTINCT sitio FROM individuos WHERE sitio IS NOT NULL ORDER BY sitio"
+            ).fetchall()
+        ]
+        estilos = [
+            r["estilo_momificacion"]
+            for r in conn.execute(
+                f"""
+                SELECT DISTINCT estilo_momificacion
+                FROM individuos
+                {individual_where} AND estilo_momificacion IS NOT NULL
+                ORDER BY estilo_momificacion
+                """,
+                params,
+            ).fetchall()
+        ]
+        elementos = [
+            r["elemento"]
+            for r in conn.execute(
+                f"""
+                SELECT DISTINCT elemento
+                FROM mediciones_quimicas
+                {measurement_where} AND elemento IS NOT NULL
+                ORDER BY elemento
+                """,
+                measurement_params,
+            ).fetchall()
+        ]
+        edades = [
+            r["edad"]
+            for r in conn.execute(
+                f"SELECT DISTINCT edad FROM individuos {individual_where} AND edad IS NOT NULL ORDER BY edad",
+                params,
+            ).fetchall()
+        ]
+        if fuente_norm:
+            casos_documento = [
+                r["id_documento"]
+                for r in conn.execute(
+                    f"""
+                    SELECT DISTINCT id_documento
+                    FROM individuos
+                    {individual_where} AND id_documento IS NOT NULL
+                    ORDER BY id_documento
+                    """,
+                    params,
+                ).fetchall()
+            ]
+            casos_id = [
+                r["id_individuo"]
+                for r in conn.execute(
+                    f"""
+                    SELECT DISTINCT id_individuo
+                    FROM individuos
+                    {individual_where} AND id_individuo IS NOT NULL
+                    ORDER BY id_individuo
+                    """,
+                    params,
+                ).fetchall()
+            ]
         else:
-            elementos = [r["elemento"] for r in conn.execute("SELECT DISTINCT elemento FROM mediciones_quimicas ORDER BY elemento").fetchall()]
-        edades = [r["edad"] for r in conn.execute("SELECT DISTINCT edad FROM individuos WHERE edad IS NOT NULL ORDER BY edad").fetchall()]
-        casos_documento = [r["id_documento"] for r in conn.execute("SELECT DISTINCT id_documento FROM individuos WHERE id_documento IS NOT NULL ORDER BY id_documento").fetchall()]
-        casos_id = [r["id_individuo"] for r in conn.execute("SELECT DISTINCT id_individuo FROM individuos WHERE id_individuo IS NOT NULL ORDER BY id_individuo").fetchall()]
-    if fuente_norm == "morro1":
-        # El grafo de Morro1 usa los JSON de referencia aunque SQLite este vacio;
-        # sus filtros deben provenir de esa misma fuente.
-        sexos = get_morro1_reference_sex_options()
-        edades = get_morro1_reference_age_options()
-    casos_catalogo = [r.get("id_documento") for r in _load_catalogo_momias() if r.get("id_documento")]
+            casos_documento = [
+                r["id_documento"]
+                for r in conn.execute(
+                    "SELECT DISTINCT id_documento FROM individuos WHERE id_documento IS NOT NULL ORDER BY id_documento"
+                ).fetchall()
+            ]
+            casos_id = [
+                r["id_individuo"]
+                for r in conn.execute(
+                    "SELECT DISTINCT id_individuo FROM individuos WHERE id_individuo IS NOT NULL ORDER BY id_individuo"
+                ).fetchall()
+            ]
+    casos_catalogo = (
+        [r.get("id_documento") for r in _load_catalogo_momias() if r.get("id_documento")]
+        if not fuente_norm or fuente_norm == "morro1"
+        else []
+    )
     casos = sorted(set(casos_documento + casos_id + casos_catalogo), key=lambda x: str(x).lower())
-    patologias = _extract_patologias()
+    with get_connection() as conn:
+        if fuente_norm:
+            patologias = [
+                row["patologia"]
+                for row in conn.execute(
+                    """
+                    SELECT DISTINCT patologia
+                    FROM paleopatologias
+                    WHERE presente = 1 AND lower(COALESCE(fuente, '')) = ?
+                    ORDER BY patologia
+                    """,
+                    (fuente_norm,),
+                ).fetchall()
+            ]
+        else:
+            patologias = _extract_patologias()
     return {
         "sexos": sexos,
         "sitios": sitios,
@@ -2329,41 +2548,1308 @@ def list_all_imagenes(id_individuo: Optional[str] = None):
     return [_image_row_to_dict(row) for row in rows]
 
 
+def _normalize_source(fuente: Optional[str]) -> str:
+    return (fuente or "morro1").strip().lower()
+
+
+def _morro_clone_id(value: Optional[str], source: str) -> Optional[str]:
+    if value is None:
+        return value
+    text = str(value)
+    if text == "morro1:site":
+        return f"{source}:site"
+    if text.startswith("Morro1_") or text.startswith("morro1_"):
+        return f"{source}_{text.split('_', 1)[1]}"
+    return text
+
+
+def _source_display_name(source: str) -> str:
+    with get_connection() as conn:
+        row = conn.execute("SELECT nombre FROM sitios WHERE lower(id_sitio) = ?", (source,)).fetchone()
+    return row["nombre"] if row else source
+
+
+def _adapt_morro_graph_for_source(graph: dict, fuente: Optional[str]) -> dict:
+    source = _normalize_source(fuente)
+    if source == "morro1":
+        return graph
+    display_name = _source_display_name(source)
+    adapted = json.loads(json.dumps(graph))
+    for node in adapted.get("nodes", []):
+        node["id"] = _morro_clone_id(node.get("id"), source)
+        for key in ["id_individuo", "id_documento"]:
+            if key in node:
+                node[key] = _morro_clone_id(node.get(key), source)
+        if node.get("label") == "MORRO1":
+            node["label"] = display_name
+    for edge in adapted.get("edges", []):
+        edge["source"] = _morro_clone_id(edge.get("source"), source)
+        edge["target"] = _morro_clone_id(edge.get("target"), source)
+    adapted.setdefault("summary", {})["fuente"] = source
+    return adapted
+
+
+def _build_source_table_rows(
+    fuente: Optional[str],
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
+) -> list[dict]:
+    source = _normalize_source(fuente)
+    sql = """
+        SELECT
+            i.id_individuo,
+            i.numero_cuerpo,
+            i.id_documento,
+            i.sexo,
+            i.edad,
+            m.id_medicion,
+            m.tipo_muestra,
+            m.elemento,
+            m.concentracion,
+            m.unidad,
+            mu.id_muestra,
+            mu.codigo_muestra,
+            mu.tipo_muestra_original,
+            mu.es_inferida AS muestra_inferida,
+            mx.id_matriz,
+            mx.codigo AS matriz_codigo,
+            mx.nombre AS matriz_nombre,
+            mx.categoria AS matriz_categoria,
+            a.id_analisis,
+            a.codigo_analisis,
+            a.dataset_origen,
+            a.metodo,
+            a.laboratorio,
+            a.fecha AS fecha_analisis,
+            a.es_inferido AS analisis_inferido,
+            r.id_referencia,
+            r.clave AS referencia_clave,
+            r.titulo AS referencia_titulo,
+            r.cita AS referencia_cita,
+            r.doi AS referencia_doi,
+            r.url AS referencia_url
+        FROM mediciones_quimicas m
+        JOIN individuos i ON i.id_individuo = m.id_individuo
+        LEFT JOIN analisis_quimicos a ON a.id_analisis = m.id_analisis
+        LEFT JOIN muestras mu ON mu.id_muestra = a.id_muestra
+        LEFT JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+        LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
+        WHERE lower(COALESCE(a.fuente, mu.fuente, m.fuente, i.fuente, '')) = ?
+          AND m.concentracion IS NOT NULL
+    """
+    params: list = [source]
+    if sexo:
+        sql += " AND lower(COALESCE(i.sexo, '')) = ?"
+        params.append(sexo.strip().lower())
+    if edad:
+        sql += " AND lower(COALESCE(i.edad, '')) = ?"
+        params.append(edad.strip().lower())
+    if matriz:
+        normalized = matriz.strip().lower()
+        sql += """
+            AND (
+                lower(COALESCE(mx.codigo, '')) = ?
+                OR lower(COALESCE(mx.id_matriz, '')) = ?
+                OR lower(COALESCE(m.tipo_muestra, '')) = ?
+                OR EXISTS (
+                    SELECT 1 FROM matrices_aliases ma
+                    WHERE ma.id_matriz = mx.id_matriz
+                      AND lower(ma.alias_normalizado) = ?
+                )
+            )
+        """
+        params.extend([normalized, normalized, normalized, normalized])
+    if referencia:
+        normalized = referencia.strip().lower()
+        sql += " AND (lower(COALESCE(a.id_referencia, '')) = ? OR lower(COALESCE(r.clave, '')) = ?)"
+        params.extend([normalized, normalized])
+    if elemento:
+        sql += " AND lower(COALESCE(m.elemento, '')) = ?"
+        params.append(elemento.strip().lower())
+    if patologia:
+        sql += """
+            AND EXISTS (
+                SELECT 1
+                FROM paleopatologias p
+                WHERE p.id_individuo = i.id_individuo
+                  AND lower(COALESCE(p.fuente, i.fuente, '')) = ?
+                  AND lower(COALESCE(p.patologia, '')) = ?
+                  AND COALESCE(p.presente, 0) = 1
+            )
+        """
+        params.extend([source, patologia.strip().lower()])
+    sql += " ORDER BY i.numero_cuerpo, m.elemento"
+    with get_connection() as conn:
+        rows = rows_to_dicts(conn.execute(sql, params).fetchall())
+    return [
+        {
+            "id_caso": row["id_individuo"],
+            "id_individuo": row["id_individuo"],
+            "id_medicion": row["id_medicion"],
+            "caso": row["numero_cuerpo"] or row["id_documento"] or row["id_individuo"],
+            "sexo": row["sexo"],
+            "edad": row["edad"],
+            "elemento": row["elemento"],
+            "concentracion": row["concentracion"],
+            "unidad": row["unidad"] or "ppm",
+            "matriz": row["matriz_codigo"] or row["tipo_muestra"],
+            "matriz_codigo": row["matriz_codigo"],
+            "matriz_nombre": row["matriz_nombre"],
+            "matriz_categoria": row["matriz_categoria"],
+            "tipo_muestra_original": row["tipo_muestra_original"] or row["tipo_muestra"],
+            "id_muestra": row["id_muestra"],
+            "codigo_muestra": row["codigo_muestra"],
+            "muestra_inferida": bool(row["muestra_inferida"]),
+            "id_analisis": row["id_analisis"],
+            "codigo_analisis": row["codigo_analisis"],
+            "dataset_origen": row["dataset_origen"],
+            "metodo": row["metodo"],
+            "laboratorio": row["laboratorio"],
+            "fecha_analisis": row["fecha_analisis"],
+            "analisis_inferido": bool(row["analisis_inferido"]),
+            "id_referencia": row["id_referencia"],
+            "referencia_clave": row["referencia_clave"],
+            "referencia_titulo": row["referencia_titulo"],
+            "referencia_cita": row["referencia_cita"],
+            "referencia_doi": row["referencia_doi"],
+            "referencia_url": row["referencia_url"],
+        }
+        for row in rows
+    ]
+
+
+def _build_source_pca(
+    elements: list[str],
+    fuente: Optional[str],
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    patologia: Optional[str] = None,
+) -> dict:
+    rows = _build_source_table_rows(
+        fuente=fuente,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+        patologia=patologia,
+    )
+    available = {
+        row["elemento"].lower(): row["elemento"]
+        for row in rows
+        if row.get("elemento")
+    }
+    selected = []
+    for raw in elements:
+        normalized = raw.strip().lower()
+        if normalized and normalized not in {item.lower() for item in selected}:
+            if normalized not in available:
+                raise ValueError(f"Elemento no disponible: {raw}")
+            selected.append(available[normalized])
+    if len(selected) < 3:
+        raise ValueError("Selecciona al menos tres elementos para calcular el PCA")
+
+    selected_set = set(selected)
+    selected_rows = [row for row in rows if row.get("elemento") in selected_set]
+    matrix_codes = {
+        str(row.get("matriz_codigo") or row.get("matriz") or "").strip()
+        for row in selected_rows
+        if str(row.get("matriz_codigo") or row.get("matriz") or "").strip()
+    }
+    if not matriz and len(matrix_codes) > 1:
+        raise ValueError(
+            "Selecciona una matriz biologica antes de calcular el PCA: "
+            + ", ".join(sorted(matrix_codes, key=str.casefold))
+        )
+
+    reference_ids = {
+        str(row.get("id_referencia") or "").strip()
+        for row in selected_rows
+        if str(row.get("id_referencia") or "").strip()
+    }
+
+    contexts_by_sample_element: dict[tuple[str, str], set[tuple[str, str, str]]] = {}
+    for row in selected_rows:
+        sample_id = str(row.get("id_muestra") or row.get("id_caso") or "")
+        key = (sample_id, str(row.get("elemento") or ""))
+        contexts_by_sample_element.setdefault(key, set()).add((
+            str(row.get("id_referencia") or ""),
+            str(row.get("unidad") or ""),
+            str(row.get("matriz_codigo") or row.get("matriz") or ""),
+        ))
+    context_conflicts = [key for key, contexts in contexts_by_sample_element.items() if len(contexts) > 1]
+    if context_conflicts:
+        raise ValueError(
+            "Hay mediciones repetidas de una misma muestra y elemento en referencias, matrices o unidades diferentes. "
+            "Selecciona una fuente analitica mas especifica antes de calcular el PCA."
+        )
+
+    units_by_element: dict[str, set[str]] = {}
+    for row in selected_rows:
+        unit = str(row.get("unidad") or "").strip()
+        if unit:
+            units_by_element.setdefault(row["elemento"], set()).add(unit)
+    incompatible_units = {
+        element: units for element, units in units_by_element.items() if len(units) > 1
+    }
+    if incompatible_units:
+        detail = "; ".join(
+            f"{element}: {', '.join(sorted(units))}"
+            for element, units in sorted(incompatible_units.items())
+        )
+        raise ValueError(
+            "No se puede combinar unidades distintas en el PCA. Selecciona una fuente analitica compatible. "
+            + detail
+        )
+
+    values_by_case: dict[str, dict[str, list[float]]] = {}
+    metadata: dict[str, dict[str, str]] = {}
+    for row in selected_rows:
+        try:
+            value = float(row["concentracion"])
+        except (TypeError, ValueError):
+            continue
+        case_id = row.get("id_muestra") or row["id_caso"]
+        values_by_case.setdefault(case_id, {}).setdefault(row["elemento"], []).append(value)
+        metadata[case_id] = {
+            "caso": row["caso"],
+            "codigo_muestra": row.get("codigo_muestra") or "",
+            "id_individuo": row["id_caso"],
+            "sexo": row.get("sexo") or "",
+            "edad": row.get("edad") or "",
+        }
+    complete_cases = [
+        case_id for case_id, measures in values_by_case.items()
+        if all(measures.get(element) for element in selected)
+    ]
+    complete_cases.sort(key=lambda case_id: (metadata[case_id]["caso"].lower(), metadata[case_id]["codigo_muestra"].lower()))
+    if len(complete_cases) < 3:
+        raise ValueError("Se necesitan al menos tres casos con mediciones completas para los elementos seleccionados")
+
+    matrix = np.asarray([
+        [float(np.mean(values_by_case[case_id][element])) for element in selected]
+        for case_id in complete_cases
+    ], dtype=float)
+    deviations = matrix.std(axis=0)
+    if any(np.isclose(deviations, 0.0)):
+        constants = [selected[i] for i, value in enumerate(deviations) if np.isclose(value, 0.0)]
+        raise ValueError("No se puede calcular el PCA: no hay variacion en " + ", ".join(constants))
+    standardized = (matrix - matrix.mean(axis=0)) / deviations
+    left, singular_values, components = np.linalg.svd(standardized, full_matrices=False)
+    scores = left * singular_values
+    variances = (singular_values ** 2) / max(len(complete_cases) - 1, 1)
+    explained = variances / float(variances.sum())
+    return {
+        "elements": selected,
+        "points": [
+            {
+                "id": case_id,
+                "id_muestra": case_id,
+                "codigo_muestra": metadata[case_id]["codigo_muestra"],
+                "id_individuo": metadata[case_id]["id_individuo"],
+                "label": metadata[case_id]["caso"],
+                "caso": metadata[case_id]["caso"],
+                "type": "muestra",
+                "sexo": metadata[case_id]["sexo"],
+                "edad": metadata[case_id]["edad"],
+                "pc1": float(scores[index, 0]),
+                "pc2": float(scores[index, 1]),
+                "mediciones": {
+                    element: {"valor": float(matrix[index, element_index])}
+                    for element_index, element in enumerate(selected)
+                },
+            }
+            for index, case_id in enumerate(complete_cases)
+        ],
+        "loadings": [
+            {"elemento": element, "pc1": float(components[0, index]), "pc2": float(components[1, index])}
+            for index, element in enumerate(selected)
+        ],
+        "explained_variance": {"pc1": float(explained[0]), "pc2": float(explained[1])},
+        "summary": {
+            "complete_cases": len(complete_cases),
+            "incomplete_cases": len(values_by_case) - len(complete_cases),
+            "standardization": "z-score",
+            "duplicate_measurements": "media solo dentro de la misma muestra, referencia y unidad",
+            "replicate_measurements": sum(
+                max(0, len(values) - 1)
+                for measures in values_by_case.values()
+                for values in measures.values()
+            ),
+        },
+        "analysis_context": {
+            "matriz": {
+                "codigo": next(iter(matrix_codes), ""),
+                "nombre": next((row.get("matriz_nombre") for row in selected_rows if row.get("matriz_nombre")), ""),
+            },
+            "referencia": {
+                "id_referencia": next(iter(reference_ids), ""),
+                "titulo": next((row.get("referencia_titulo") for row in selected_rows if row.get("referencia_titulo")), ""),
+                "cita": next((row.get("referencia_cita") for row in selected_rows if row.get("referencia_cita")), ""),
+            } if len(reference_ids) == 1 else None,
+            "referencias": [
+                {
+                    "id_referencia": reference_id,
+                    "titulo": next((
+                        row.get("referencia_titulo")
+                        for row in selected_rows
+                        if row.get("id_referencia") == reference_id
+                    ), ""),
+                    "cita": next((
+                        row.get("referencia_cita")
+                        for row in selected_rows
+                        if row.get("id_referencia") == reference_id
+                    ), ""),
+                }
+                for reference_id in sorted(reference_ids)
+            ],
+            "unidades": {
+                element: next(iter(units), "") for element, units in units_by_element.items()
+            },
+            "muestras": len(values_by_case),
+            "analisis": len({row.get("id_analisis") for row in selected_rows if row.get("id_analisis")}),
+        },
+        "warnings": ([{
+            "code": "multiple_analytical_references",
+            "severity": "info",
+            "message": "El PCA integra elementos procedentes de referencias distintas sin promediar una misma variable entre ellas.",
+        }] if len(reference_ids) > 1 else []),
+    }
+
+
+def _enrich_pca_with_pathologies(payload: dict, fuente: Optional[str]) -> dict:
+    """Añade el estado paleopatológico registrado para cada punto del PCA."""
+    source = _normalize_source(fuente)
+    points = payload.get("points") or []
+    point_ids = {
+        str(point.get("id_individuo") or point.get("id") or "").strip()
+        for point in points
+    }
+    point_ids.discard("")
+
+    with get_connection() as conn:
+        rows = rows_to_dicts(conn.execute(
+            """
+            SELECT id_individuo, patologia, MAX(COALESCE(presente, 0)) AS presente
+            FROM paleopatologias
+            WHERE lower(COALESCE(fuente, '')) = ?
+            GROUP BY id_individuo, patologia
+            ORDER BY patologia, id_individuo
+            """,
+            (source,),
+        ).fetchall())
+
+    pathology_options = sorted(
+        {str(row.get("patologia") or "").strip() for row in rows if row.get("patologia")},
+        key=str.casefold,
+    )
+    statuses_by_case: dict[str, dict[str, str]] = {}
+    for row in rows:
+        case_id = str(row.get("id_individuo") or "").strip()
+        pathology = str(row.get("patologia") or "").strip()
+        if case_id not in point_ids or not pathology:
+            continue
+        statuses_by_case.setdefault(case_id, {})[pathology] = (
+            "presente" if row.get("presente") else "ausente"
+        )
+
+    for point in points:
+        case_id = str(point.get("id_individuo") or point.get("id") or "").strip()
+        point["pathology_status"] = statuses_by_case.get(case_id, {})
+
+    payload["pathology_options"] = pathology_options
+    return payload
+
+
+def _source_case_relation(case_id: str, fuente: Optional[str]) -> dict:
+    source = _normalize_source(fuente)
+    with get_connection() as conn:
+        individual = conn.execute(
+            """
+            SELECT *
+            FROM individuos
+            WHERE id_individuo = ? AND lower(COALESCE(fuente, '')) = ?
+            """,
+            (case_id, source),
+        ).fetchone()
+        if not individual:
+            raise HTTPException(status_code=404, detail="Caso no encontrado")
+        images = rows_to_dicts(conn.execute(
+            "SELECT * FROM imagenes WHERE id_individuo = ? ORDER BY created_at DESC",
+            (case_id,),
+        ).fetchall())
+        measurements = rows_to_dicts(conn.execute(
+            """
+            SELECT
+                m.*,
+                mu.id_muestra,
+                mu.codigo_muestra,
+                mu.tipo_muestra_original,
+                mu.es_inferida AS muestra_inferida,
+                mx.codigo AS matriz_codigo,
+                mx.nombre AS matriz_nombre,
+                a.codigo_analisis,
+                a.dataset_origen,
+                a.metodo AS analisis_metodo,
+                a.laboratorio AS analisis_laboratorio,
+                a.fecha AS fecha_analisis,
+                a.es_inferido AS analisis_inferido,
+                r.id_referencia,
+                r.titulo AS referencia_titulo,
+                r.cita AS referencia_cita,
+                r.doi AS referencia_doi,
+                r.url AS referencia_url
+            FROM mediciones_quimicas m
+            LEFT JOIN analisis_quimicos a ON a.id_analisis = m.id_analisis
+            LEFT JOIN muestras mu ON mu.id_muestra = a.id_muestra
+            LEFT JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+            LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
+            WHERE m.id_individuo = ?
+            ORDER BY mu.codigo_muestra, a.codigo_analisis, m.elemento
+            """,
+            (case_id,),
+        ).fetchall())
+        sample_ids = [
+            row["id_muestra"]
+            for row in conn.execute(
+                "SELECT id_muestra FROM muestras WHERE id_individuo = ? ORDER BY codigo_muestra",
+                (case_id,),
+            ).fetchall()
+        ]
+        pathologies = rows_to_dicts(conn.execute(
+            """
+            SELECT *
+            FROM paleopatologias
+            WHERE id_individuo = ? AND presente = 1
+            ORDER BY patologia
+            """,
+            (case_id,),
+        ).fetchall())
+        datings = rows_to_dicts(conn.execute(
+            "SELECT * FROM dataciones WHERE id_individuo = ? ORDER BY fecha_bp",
+            (case_id,),
+        ).fetchall())
+    return {
+        "case": dict(individual),
+        "images": [{**row, "url": f"/files/imagenes/{row['relative_path']}"} for row in images],
+        "measurements": measurements,
+        "samples": [
+            sample
+            for sample_id in sample_ids
+            if (sample := get_sample_detail(source, sample_id)) is not None
+        ],
+        "pathologies": pathologies,
+        "datings": datings,
+    }
+
+
+def _source_site_row(source: str) -> dict[str, Any] | None:
+    with get_connection() as conn:
+        row = conn.execute(
+            "SELECT * FROM sitios WHERE lower(id_sitio) = ?",
+            (source,),
+        ).fetchone()
+    return dict(row) if row else None
+
+
+def _assert_source_exists(source: str) -> None:
+    ensure_sqlite_sources()
+    with get_connection() as conn:
+        exists = conn.execute(
+            """
+            SELECT 1 FROM sitios WHERE lower(id_sitio) = ?
+            UNION
+            SELECT 1 FROM individuos WHERE lower(COALESCE(fuente, '')) = ?
+            LIMIT 1
+            """,
+            (source, source),
+        ).fetchone()
+    if not exists:
+        raise HTTPException(status_code=404, detail=f"No existe el sitio/fuente: {source}")
+
+
+def _source_individual_label(row: dict[str, Any]) -> str:
+    return (
+        str(row.get("numero_cuerpo") or "").strip()
+        or str(row.get("id_documento") or "").strip()
+        or str(row.get("id_individuo") or "").strip()
+        or "Sin identificador"
+    )
+
+
+def _source_individual_node(row: dict[str, Any]) -> dict[str, Any]:
+    label = _source_individual_label(row)
+    return {
+        "id": row["id_individuo"],
+        "tumba": label,
+        "label": label,
+        "type": "individuo",
+        "sexo": row.get("sexo"),
+        "edad": row.get("edad"),
+        "sitio": row.get("sitio"),
+        "cementerio": row.get("cementerio"),
+        "estilo_momificacion": row.get("estilo_momificacion"),
+        "estado": row.get("estado"),
+        "id_documento": row.get("id_documento"),
+        "numero_cuerpo": row.get("numero_cuerpo"),
+        "id_individuo": row.get("id_individuo"),
+        "referencia_datos": row.get("referencia_bibliografica"),
+        "matriz": row.get("matriz"),
+    }
+
+
+def _source_individual_rows(
+    source: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    patologia: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    ids: Optional[set[str]] = None,
+) -> list[dict[str, Any]]:
+    sql = """
+        SELECT
+            i.*,
+            (
+                SELECT GROUP_CONCAT(DISTINCT mx.nombre)
+                FROM muestras mu
+                JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+                WHERE mu.id_individuo = i.id_individuo
+                  AND lower(COALESCE(mu.fuente, i.fuente, '')) = ?
+            ) AS matriz
+        FROM individuos i
+        WHERE lower(COALESCE(i.fuente, '')) = ?
+    """
+    params: list[Any] = [source, source]
+    if sexo:
+        sql += " AND lower(COALESCE(i.sexo, '')) = ?"
+        params.append(sexo.strip().lower())
+    if edad:
+        sql += " AND lower(COALESCE(i.edad, '')) = ?"
+        params.append(edad.strip().lower())
+    if patologia:
+        sql += """
+            AND EXISTS (
+                SELECT 1
+                FROM paleopatologias p
+                WHERE p.id_individuo = i.id_individuo
+                  AND lower(COALESCE(p.fuente, i.fuente, '')) = ?
+                  AND lower(COALESCE(p.patologia, '')) = ?
+                  AND COALESCE(p.presente, 0) = 1
+            )
+        """
+        params.extend([source, patologia.strip().lower()])
+    if matriz or referencia:
+        sql += """
+            AND EXISTS (
+                SELECT 1
+                FROM muestras mu
+                JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+                JOIN analisis_quimicos a ON a.id_muestra = mu.id_muestra
+                LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
+                WHERE mu.id_individuo = i.id_individuo
+        """
+        if matriz:
+            normalized = matriz.strip().lower()
+            sql += """
+                AND (
+                    lower(mx.codigo) = ? OR lower(mx.id_matriz) = ?
+                    OR EXISTS (
+                        SELECT 1 FROM matrices_aliases ma
+                        WHERE ma.id_matriz = mx.id_matriz
+                          AND lower(ma.alias_normalizado) = ?
+                    )
+                )
+            """
+            params.extend([normalized, normalized, normalized])
+        if referencia:
+            normalized = referencia.strip().lower()
+            sql += " AND (lower(COALESCE(a.id_referencia, '')) = ? OR lower(COALESCE(r.clave, '')) = ?)"
+            params.extend([normalized, normalized])
+        sql += ")"
+    if ids is not None:
+        if not ids:
+            return []
+        placeholders = ",".join("?" for _ in ids)
+        sql += f" AND i.id_individuo IN ({placeholders})"
+        params.extend(sorted(ids))
+    sql += " ORDER BY COALESCE(i.numero_cuerpo, i.id_documento, i.id_individuo)"
+    with get_connection() as conn:
+        return rows_to_dicts(conn.execute(sql, params).fetchall())
+
+
+def _source_measurement_rows(
+    source: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
+    ids: Optional[set[str]] = None,
+) -> list[dict[str, Any]]:
+    sql = """
+        SELECT
+            m.*,
+            i.id_documento,
+            i.numero_cuerpo,
+            i.sexo,
+            i.edad,
+            i.sitio,
+            i.cementerio,
+            i.referencia_bibliografica,
+            mu.id_muestra,
+            mu.codigo_muestra,
+            mu.tipo_muestra_original,
+            mu.es_inferida AS muestra_inferida,
+            mx.id_matriz,
+            mx.codigo AS matriz_codigo,
+            mx.nombre AS matriz_nombre,
+            a.codigo_analisis,
+            a.dataset_origen,
+            a.metodo AS analisis_metodo,
+            a.laboratorio AS analisis_laboratorio,
+            a.fecha AS fecha_analisis,
+            r.id_referencia,
+            r.clave AS referencia_clave,
+            r.titulo AS referencia_titulo,
+            r.cita AS referencia_cita
+        FROM mediciones_quimicas m
+        JOIN individuos i ON i.id_individuo = m.id_individuo
+        LEFT JOIN analisis_quimicos a ON a.id_analisis = m.id_analisis
+        LEFT JOIN muestras mu ON mu.id_muestra = a.id_muestra
+        LEFT JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+        LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
+        WHERE lower(COALESCE(a.fuente, mu.fuente, m.fuente, i.fuente, '')) = ?
+          AND m.concentracion IS NOT NULL
+    """
+    params: list[Any] = [source]
+    if sexo:
+        sql += " AND lower(COALESCE(i.sexo, '')) = ?"
+        params.append(sexo.strip().lower())
+    if edad:
+        sql += " AND lower(COALESCE(i.edad, '')) = ?"
+        params.append(edad.strip().lower())
+    if matriz:
+        normalized = matriz.strip().lower()
+        sql += """
+            AND (
+                lower(COALESCE(mx.codigo, '')) = ?
+                OR lower(COALESCE(mx.id_matriz, '')) = ?
+                OR lower(COALESCE(m.tipo_muestra, '')) = ?
+                OR EXISTS (
+                    SELECT 1 FROM matrices_aliases ma
+                    WHERE ma.id_matriz = mx.id_matriz
+                      AND lower(ma.alias_normalizado) = ?
+                )
+            )
+        """
+        params.extend([normalized, normalized, normalized, normalized])
+    if referencia:
+        normalized = referencia.strip().lower()
+        sql += " AND (lower(COALESCE(a.id_referencia, '')) = ? OR lower(COALESCE(r.clave, '')) = ?)"
+        params.extend([normalized, normalized])
+    if elemento:
+        sql += " AND lower(COALESCE(m.elemento, '')) = ?"
+        params.append(elemento.strip().lower())
+    if patologia:
+        sql += """
+            AND EXISTS (
+                SELECT 1
+                FROM paleopatologias p
+                WHERE p.id_individuo = i.id_individuo
+                  AND lower(COALESCE(p.fuente, i.fuente, '')) = ?
+                  AND lower(COALESCE(p.patologia, '')) = ?
+                  AND COALESCE(p.presente, 0) = 1
+            )
+        """
+        params.extend([source, patologia.strip().lower()])
+    if ids is not None:
+        if not ids:
+            return []
+        placeholders = ",".join("?" for _ in ids)
+        sql += f" AND i.id_individuo IN ({placeholders})"
+        params.extend(sorted(ids))
+    sql += " ORDER BY COALESCE(i.numero_cuerpo, i.id_documento, i.id_individuo), m.elemento"
+    with get_connection() as conn:
+        return rows_to_dicts(conn.execute(sql, params).fetchall())
+
+
+def _source_positive_pathology_rows(
+    source: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    patologia: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+) -> list[dict[str, Any]]:
+    sql = """
+        SELECT
+            p.*,
+            i.id_documento,
+            i.numero_cuerpo,
+            i.sexo,
+            i.edad,
+            i.sitio,
+            i.cementerio,
+            i.estilo_momificacion,
+            i.referencia_bibliografica
+        FROM paleopatologias p
+        JOIN individuos i ON i.id_individuo = p.id_individuo
+        WHERE lower(COALESCE(p.fuente, i.fuente, '')) = ?
+          AND COALESCE(p.presente, 0) = 1
+    """
+    params: list[Any] = [source]
+    if sexo:
+        sql += " AND lower(COALESCE(i.sexo, '')) = ?"
+        params.append(sexo.strip().lower())
+    if edad:
+        sql += " AND lower(COALESCE(i.edad, '')) = ?"
+        params.append(edad.strip().lower())
+    if patologia:
+        sql += " AND lower(COALESCE(p.patologia, '')) = ?"
+        params.append(patologia.strip().lower())
+    if matriz or referencia:
+        sql += """
+            AND EXISTS (
+                SELECT 1
+                FROM muestras mu
+                JOIN matrices mx ON mx.id_matriz = mu.id_matriz
+                JOIN analisis_quimicos a ON a.id_muestra = mu.id_muestra
+                LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
+                WHERE mu.id_individuo = i.id_individuo
+        """
+        if matriz:
+            normalized = matriz.strip().lower()
+            sql += " AND (lower(mx.codigo) = ? OR lower(mx.id_matriz) = ?)"
+            params.extend([normalized, normalized])
+        if referencia:
+            normalized = referencia.strip().lower()
+            sql += " AND (lower(COALESCE(a.id_referencia, '')) = ? OR lower(COALESCE(r.clave, '')) = ?)"
+            params.extend([normalized, normalized])
+        sql += ")"
+    sql += " ORDER BY p.patologia, COALESCE(i.numero_cuerpo, i.id_documento, i.id_individuo)"
+    with get_connection() as conn:
+        return rows_to_dicts(conn.execute(sql, params).fetchall())
+
+
+def _add_unique_node(nodes: list[dict[str, Any]], seen: set[str], node: dict[str, Any]) -> None:
+    node_id = node["id"]
+    if node_id in seen:
+        return
+    seen.add(node_id)
+    nodes.append(node)
+
+
+def _build_site_reference_graph(
+    fuente: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    patologia: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+) -> dict[str, Any]:
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    display_name = _source_display_name(source)
+    individuals = _source_individual_rows(
+        source,
+        sexo=sexo,
+        edad=edad,
+        patologia=patologia,
+        matriz=matriz,
+        referencia=referencia,
+    )
+    site_id = f"{source}:site"
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    _add_unique_node(nodes, seen, {
+        "id": site_id,
+        "label": display_name,
+        "type": "patologia",
+        "patologia": display_name,
+        "fuente": source,
+    })
+    for row in individuals:
+        _add_unique_node(nodes, seen, _source_individual_node(row))
+        edges.append({
+            "source": site_id,
+            "target": row["id_individuo"],
+            "label": "presenta",
+        })
+    return {
+        "mode": "reference",
+        "nodes": nodes,
+        "edges": edges,
+        "summary": {
+            "fuente": source,
+            "sitio": display_name,
+            "individuos": len(individuals),
+        },
+    }
+
+
+def _build_site_element_graph(
+    fuente: str,
+    elemento: Optional[str] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+) -> dict[str, Any]:
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    normalized_element = (elemento or "").strip().lower()
+    if normalized_element in {"", "ninguna", "ninguno", "none", "null", "no"}:
+        return _build_site_reference_graph(
+            source,
+            sexo=sexo,
+            edad=edad,
+            matriz=matriz,
+            referencia=referencia,
+        )
+
+    selected_element = None if normalized_element in {"red_completa", "red completa", "redcompleta", "all"} else elemento
+    measurements = _source_measurement_rows(
+        source,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+        elemento=selected_element,
+    )
+    individual_ids = {row["id_individuo"] for row in measurements if row.get("id_individuo")}
+    individuals = _source_individual_rows(source, sexo=sexo, edad=edad, ids=individual_ids)
+    individuals_by_id = {row["id_individuo"]: row for row in individuals}
+
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    element_meta: dict[str, dict[str, set[str]]] = {}
+    for row in measurements:
+        element_name = row.get("elemento")
+        if not element_name:
+            continue
+        meta = element_meta.setdefault(str(element_name), {"referencias": set(), "matrices": set()})
+        if row.get("referencia_titulo"):
+            meta["referencias"].add(str(row["referencia_titulo"]))
+        if row.get("matriz_nombre") or row.get("tipo_muestra"):
+            meta["matrices"].add(str(row.get("matriz_nombre") or row["tipo_muestra"]))
+
+    for row in individuals:
+        _add_unique_node(nodes, seen, _source_individual_node(row))
+    for row in measurements:
+        person_id = row.get("id_individuo")
+        element_name = row.get("elemento")
+        if not person_id or person_id not in individuals_by_id or not element_name:
+            continue
+        element_id = f"elemento:{element_name}"
+        meta = element_meta.get(str(element_name), {})
+        _add_unique_node(nodes, seen, {
+            "id": element_id,
+            "label": element_name,
+            "type": "elemento",
+            "elemento": element_name,
+            "referencia_datos": " | ".join(sorted(meta.get("referencias", set()))) or None,
+            "matriz": " | ".join(sorted(meta.get("matrices", set()))) or None,
+        })
+        edges.append({
+            "source": person_id,
+            "target": element_id,
+            "label": "mide",
+            "elemento": element_name,
+            "concentracion": row.get("concentracion"),
+            "unidad": row.get("unidad") or "ppm",
+            "id_muestra": row.get("id_muestra"),
+            "codigo_muestra": row.get("codigo_muestra"),
+            "id_analisis": row.get("id_analisis"),
+            "id_referencia": row.get("id_referencia"),
+            "referencia_datos": row.get("referencia_titulo") or row.get("observaciones"),
+            "matriz": row.get("matriz_nombre") or row.get("tipo_muestra"),
+        })
+    return {
+        "mode": "relational",
+        "nodes": nodes,
+        "edges": edges,
+        "summary": {
+            "fuente": source,
+            "sitio": _source_display_name(source),
+            "individuos": len(individuals),
+            "mediciones": len(measurements),
+            "elementos": len({row.get("elemento") for row in measurements if row.get("elemento")}),
+        },
+    }
+
+
+def _build_site_pathology_graph(
+    fuente: str,
+    patologia: Optional[str] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+) -> dict[str, Any]:
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    pathology_rows = _source_positive_pathology_rows(
+        source,
+        sexo=sexo,
+        edad=edad,
+        patologia=patologia,
+        matriz=matriz,
+        referencia=referencia,
+    )
+    individual_ids = {row["id_individuo"] for row in pathology_rows if row.get("id_individuo")}
+    individuals = _source_individual_rows(source, sexo=sexo, edad=edad, ids=individual_ids)
+    individuals_by_id = {row["id_individuo"]: row for row in individuals}
+
+    nodes: list[dict[str, Any]] = []
+    edges: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for row in pathology_rows:
+        pathology_name = row.get("patologia")
+        if not pathology_name:
+            continue
+        pathology_id = f"patologia:{pathology_name}"
+        _add_unique_node(nodes, seen, {
+            "id": pathology_id,
+            "label": pathology_name,
+            "type": "patologia",
+            "patologia": pathology_name,
+        })
+        person_id = row.get("id_individuo")
+        person = individuals_by_id.get(person_id)
+        if not person:
+            continue
+        _add_unique_node(nodes, seen, _source_individual_node(person))
+        edges.append({
+            "source": pathology_id,
+            "target": person_id,
+            "label": "presenta",
+            "valor": row.get("valor"),
+        })
+
+    return {
+        "mode": "relational",
+        "nodes": nodes,
+        "edges": edges,
+        "summary": {
+            "fuente": source,
+            "sitio": _source_display_name(source),
+            "patologias": len({row.get("patologia") for row in pathology_rows if row.get("patologia")}),
+            "individuos": len(individuals),
+        },
+    }
+
+
+@app.get("/graph/site/{fuente}/reference")
+def graph_site_reference(
+    fuente: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    patologia: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+):
+    return _build_site_reference_graph(
+        fuente,
+        sexo=sexo,
+        edad=edad,
+        patologia=patologia,
+        matriz=matriz,
+        referencia=referencia,
+    )
+
+
+@app.get("/graph/site/{fuente}/elemento/{elemento}")
+def graph_site_elemento(
+    fuente: str,
+    elemento: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+):
+    return _build_site_element_graph(
+        fuente,
+        elemento=elemento,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+    )
+
+
+@app.get("/graph/site/{fuente}/elements")
+def graph_site_elements(
+    fuente: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+):
+    return _build_site_element_graph(
+        fuente,
+        elemento="red_completa",
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+    )
+
+
+@app.get("/graph/site/{fuente}/patologias")
+def graph_site_patologias(
+    fuente: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+):
+    return _build_site_pathology_graph(
+        fuente,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+    )
+
+
+@app.get("/graph/site/{fuente}/patologia/{patologia}")
+def graph_site_patologia(
+    fuente: str,
+    patologia: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+):
+    return _build_site_pathology_graph(
+        fuente,
+        patologia=patologia,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+    )
+
+
+@app.get("/graph/site/{fuente}/table")
+def graph_site_table(
+    fuente: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
+):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    return _build_source_table_rows(
+        fuente=source,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        referencia=referencia,
+        elemento=elemento,
+        patologia=patologia,
+    )
+
+
+@app.get("/graph/site/{fuente}/matrix-options")
+def graph_site_matrix_options(fuente: str):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    context = build_analysis_context(source)
+    return {
+        "matrices": [row["codigo"] for row in context["matrices"]],
+        "items": context["matrices"],
+    }
+
+
+@app.get("/analysis/site/{fuente}/context")
+def analysis_site_context(
+    fuente: str,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
+):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    return build_analysis_context(
+        source,
+        matriz=matriz,
+        referencia=referencia,
+        sexo=sexo,
+        edad=edad,
+        elemento=elemento,
+        patologia=patologia,
+    )
+
+
+@app.get("/analysis/site/{fuente}/samples")
+def analysis_site_samples(
+    fuente: str,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    elemento: Optional[str] = None,
+    patologia: Optional[str] = None,
+    limit: int = 500,
+):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    return list_samples(
+        source,
+        matriz=matriz,
+        referencia=referencia,
+        sexo=sexo,
+        edad=edad,
+        elemento=elemento,
+        patologia=patologia,
+        limit=limit,
+    )
+
+
+@app.get("/analysis/site/{fuente}/sample/{sample_id}")
+def analysis_site_sample_detail(fuente: str, sample_id: str):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    sample = get_sample_detail(source, sample_id)
+    if not sample:
+        raise HTTPException(status_code=404, detail="Muestra no encontrada")
+    return sample
+
+
+@app.get("/admin/analytical-model/audit")
+def admin_analytical_model_audit():
+    ensure_analytical_model()
+    return analytical_model_audit()
+
+
+@app.get("/graph/site/{fuente}/sex-options")
+def graph_site_sex_options(fuente: str):
+    opts = filter_options(fuente=_normalize_source(fuente))
+    return {"sexos": opts["sexos"]}
+
+
+@app.get("/graph/site/{fuente}/case/{case_id}/relation")
+def graph_site_case_relation(fuente: str, case_id: str):
+    return _source_case_relation(case_id, fuente=fuente)
+
+
+@app.get("/analysis/site/{fuente}/pca")
+def analysis_site_pca(
+    fuente: str,
+    elements: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    referencia: Optional[str] = None,
+    patologia: Optional[str] = None,
+):
+    source = _normalize_source(fuente)
+    _assert_source_exists(source)
+    selected = [element.strip() for element in elements.split(",") if element.strip()]
+    try:
+        payload = _build_source_pca(
+            selected,
+            fuente=source,
+            sexo=sexo,
+            edad=edad,
+            matriz=matriz,
+            referencia=referencia,
+            patologia=patologia,
+        )
+        return _enrich_pca_with_pathologies(payload, fuente=source)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
 @app.get("/graph/morro1/reference")
 def graph_morro1_reference(
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
     patologia: Optional[str] = None,
+    fuente: Optional[str] = None,
 ):
-    return build_morro1_reference_graph(sexo=sexo, edad=edad, patologia=patologia)
+    graph = build_morro1_reference_graph(sexo=sexo, edad=edad, patologia=patologia)
+    return _adapt_morro_graph_for_source(graph, fuente)
 
 
 @app.get("/graph/morro1/elemento/{elemento}")
-def graph_morro1_elemento(elemento: str, sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
-    return build_morro1_element_graph(
+def graph_morro1_elemento(
+    elemento: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    fuente: Optional[str] = None,
+):
+    graph = build_morro1_element_graph(
         elemento=elemento, analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz
     )
+    return _adapt_morro_graph_for_source(graph, fuente)
 
 
 @app.get("/graph/morro1/elements")
-def graph_morro1_elements(sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
-    return build_morro1_element_graph(
+def graph_morro1_elements(
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    fuente: Optional[str] = None,
+):
+    graph = build_morro1_element_graph(
         elemento="red_completa", analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz
     )
+    return _adapt_morro_graph_for_source(graph, fuente)
 
 
 @app.get("/graph/morro1/sex-options")
-def graph_morro1_sex_options():
+def graph_morro1_sex_options(fuente: Optional[str] = None):
+    if _normalize_source(fuente) != "morro1":
+        opts = filter_options(fuente=fuente)
+        return {"sexos": opts["sexos"]}
     return {"sexos": get_morro1_reference_sex_options()}
 
 
 @app.get("/graph/morro1/matrix-options")
-def graph_morro1_matrix_options():
+def graph_morro1_matrix_options(fuente: Optional[str] = None):
+    if _normalize_source(fuente) != "morro1":
+        with get_connection() as conn:
+            rows = conn.execute(
+                """
+                SELECT DISTINCT tipo_muestra
+                FROM mediciones_quimicas
+                WHERE lower(COALESCE(fuente, '')) = ? AND tipo_muestra IS NOT NULL
+                ORDER BY tipo_muestra
+                """,
+                (_normalize_source(fuente),),
+            ).fetchall()
+        return {"matrices": [row["tipo_muestra"] for row in rows]}
     return {"matrices": get_morro1_analysis_matriz_options(MORRO1_ANALYSIS_PATHS)}
 
 
 @app.get("/graph/morro1/table")
-def graph_morro1_table(sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None, elemento: Optional[str] = None):
+def graph_morro1_table(
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+    elemento: Optional[str] = None,
+    fuente: Optional[str] = None,
+):
+    if _normalize_source(fuente) != "morro1":
+        return _build_source_table_rows(fuente=fuente, sexo=sexo, edad=edad, matriz=matriz, elemento=elemento)
     return build_morro1_table_rows(
         analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz, elemento=elemento
     )
@@ -2374,15 +3860,23 @@ def analysis_morro1_pca(
     elements: str,
     sexo: Optional[str] = None,
     edad: Optional[str] = None,
+    fuente: Optional[str] = None,
 ):
     selected = [element.strip() for element in elements.split(",") if element.strip()]
     try:
-        return build_morro1_pca(selected, sexo=sexo, edad=edad)
+        source = _normalize_source(fuente)
+        if source != "morro1":
+            payload = _build_source_pca(selected, fuente=source, sexo=sexo, edad=edad)
+        else:
+            payload = build_morro1_pca(selected, sexo=sexo, edad=edad)
+        return _enrich_pca_with_pathologies(payload, fuente=source)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 @app.get("/graph/morro1/case/{case_id}/relation")
-def graph_morro1_case_relation(case_id: str):
+def graph_morro1_case_relation(case_id: str, fuente: Optional[str] = None):
+    if _normalize_source(fuente) != "morro1":
+        return _source_case_relation(case_id, fuente=fuente)
     images_dir = BASE_DIR / "data" / "imagenes" / "imagenes_morro1"
     return resolve_morro1_case_relation(
         case_id=case_id,
