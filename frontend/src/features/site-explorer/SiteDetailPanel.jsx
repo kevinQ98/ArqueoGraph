@@ -97,7 +97,7 @@ export function SiteDetailPanel({ selected, detail, loading, onClose }) {
                 <div key={item.id_muestra} className="explorerSampleRecord">
                   <header>
                     <strong>{item.codigo_muestra}</strong>
-                    <span className={item.es_inferida ? "inferred" : ""}>{item.es_inferida ? "Reconstruida" : "Registrada"}</span>
+                    {/* <span className={item.es_inferida ? "inferred" : ""}>{item.es_inferida ? "Reconstruida" : "Registrada"}</span> */}
                   </header>
                   <dl>
                     <div><dt>Matriz biológica</dt><dd>{item.matriz?.nombre || "—"}</dd></div>

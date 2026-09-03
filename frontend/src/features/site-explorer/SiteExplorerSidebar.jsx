@@ -48,6 +48,7 @@ export function SiteExplorerSidebar({
   uploadOptions = [],
   showElementEdges,
   onToggleElementEdges,
+  activeTab,
 }) {
   const [uploadType, setUploadType] = useState(uploadOptions[0]?.value || "");
   const activeCount = [
@@ -154,10 +155,16 @@ export function SiteExplorerSidebar({
             </select>
           </label>
 
-          <label className="explorerToggle">
-            <input type="checkbox" checked={showElementEdges} onChange={(event) => onToggleElementEdges(event.target.checked)} />
-            <span><Eye size={15} /> Mostrar conexiones químicas</span>
-          </label>
+          {activeTab === "network" && filters.elemento !== "Ninguna" && (
+            <label className="explorerToggle">
+              <input
+                type="checkbox"
+                checked={showElementEdges}
+                onChange={(event) => onToggleElementEdges(event.target.checked)}
+              />
+              <span><Eye size={15} /> Mostrar conexiones químicas</span>
+            </label>
+          )}
 
           <button type="button" className="explorerPrimaryAction" onClick={onRefresh}>
             <RefreshCw size={15} /> Actualizar vista

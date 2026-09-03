@@ -47,9 +47,9 @@ export default function Header({ view, onNavigate, onOpenSite, onBackup, backupS
               </div>
             )}
           </div>
-          <button type="button" className={view === "admin" ? "active" : ""} onClick={() => navigate("admin")}>
+          {/* <button type="button" className={view === "admin" ? "active" : ""} onClick={() => navigate("admin")}>
             <Settings size={15} /> Administración
-          </button>
+          </button> */}
         </nav>
 
         <div className="appHeaderActions">

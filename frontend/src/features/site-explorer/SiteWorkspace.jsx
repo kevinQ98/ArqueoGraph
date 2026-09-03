@@ -92,7 +92,7 @@ function AnalyticalContext({ context, filters, selected, detail }) {
     : uniqueSampleReferences.length > 1
       ? `${uniqueSampleReferences.length} fuentes analíticas`
       : selectedReference?.titulo
-    || ((context.referencias || []).length === 1 ? context.referencias[0].titulo : `${context.referencias?.length || 0} fuentes compatibles`);
+      || ((context.referencias || []).length === 1 ? context.referencias[0].titulo : `${context.referencias?.length || 0} fuentes compatibles`);
   const measurementCount = sample
     ? Number(sample.mediciones ?? analyses.reduce((total, analysis) => total + (analysis.mediciones?.length || 0), 0))
     : context.summary?.mediciones || 0;
@@ -113,7 +113,7 @@ function AnalyticalContext({ context, filters, selected, detail }) {
         <div><dt>Unidades</dt><dd>{units.length ? units.join(" · ") : "Sin datos"}</dd></div>
         <div><dt>Cobertura</dt><dd>{sample ? `1 muestra · ${measurementLabel}` : `${context.summary?.muestras || 0} muestras · ${measurementLabel}`}</dd></div>
       </dl>
-      {warnings.length > 0 && (
+      {/* {warnings.length > 0 && (
         <div className="explorerContextWarnings">
           {warnings.map((warning) => (
             <span key={warning.code} title={warning.message} className={warning.severity === "warning" ? "warning" : "info"}>
@@ -121,7 +121,7 @@ function AnalyticalContext({ context, filters, selected, detail }) {
             </span>
           ))}
         </div>
-      )}
+      )} */}
     </section>
   );
 }
@@ -259,6 +259,7 @@ export function SiteWorkspace({
   samples,
   pca,
   pcaElements,
+  pcaAvailableElements,
   onTogglePcaElement,
   onCalculatePca,
   onPcaColorBy,
@@ -319,7 +320,7 @@ export function SiteWorkspace({
             <PcaView
               pca={pca}
               elements={pcaElements}
-              availableElements={options.elementos || []}
+              availableElements={pcaAvailableElements || []}
               onToggle={onTogglePcaElement}
               onCalculate={onCalculatePca}
               onColorBy={onPcaColorBy}

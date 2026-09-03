@@ -161,6 +161,11 @@ export function SiteExplorerPage({ site }) {
     }
   }, [currentSite.fuente, filters]);
 
+  const pcaAvailableElements = useMemo(() => {
+    // analysisContext.elementos viene como [{ elemento: 'Mn', mediciones: 10, ... }]
+    return (analysisContext?.elementos || []).map((item) => item.elemento);
+  }, [analysisContext]);
+
   useEffect(() => {
     setFilters(EMPTY_FILTERS);
     setSelected(null);
@@ -369,6 +374,7 @@ export function SiteExplorerPage({ site }) {
         uploadOptions={uploadOptions}
         showElementEdges={showElementEdges}
         onToggleElementEdges={setShowElementEdges}
+        activeTab={activeTab}
       />
       <SiteWorkspace
         siteName={currentSite.sitio}
@@ -391,6 +397,7 @@ export function SiteExplorerPage({ site }) {
         samples={samples}
         pca={pca}
         pcaElements={pcaElements}
+        pcaAvailableElements={pcaAvailableElements}
         onTogglePcaElement={togglePcaElement}
         onCalculatePca={calculatePca}
         onPcaColorBy={(colorBy) => setPca((current) => ({ ...current, colorBy }))}
