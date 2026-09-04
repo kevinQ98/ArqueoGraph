@@ -13,6 +13,13 @@ IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def get_connection() -> sqlite3.Connection:
+    """
+    Establece una conexión a la base de datos SQLite con row_factory = sqlite3.Row.
+
+    Returns:
+        sqlite3.Connection: Conexión con PRAGMA foreign_keys activado.
+    """
+
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
@@ -24,8 +31,24 @@ def rows_to_dicts(rows: list[sqlite3.Row]) -> list[dict[str, Any]]:
 
 
 def init_db() -> None:
+    """
+    Crea todas las tablas e índices si no existen.
+
+    Incluye:
+        - Tablas principales: sitios, individuos, mediciones_quimicas,
+          paleopatologias, dataciones, imagenes.
+        - Modelo analítico: matrices, matrices_aliases, muestras,
+          referencias_analiticas, analisis_quimicos.
+        - Índices para acelerar filtros por fuente, elemento, individuo.
+        - Columnas de compatibilidad (fuente, id_analisis, etc.)
+        - Migración de imágenes legacy.
+
+    Returns:
+        None
+    """
+    
     with get_connection() as conn:
-        conn.executescript('''
+        conn.executescript("""
         CREATE TABLE IF NOT EXISTS individuos (
             id_individuo TEXT PRIMARY KEY,
             id_documento TEXT NOT NULL,
@@ -239,12 +262,18 @@ def init_db() -> None:
         );
 
         CREATE INDEX IF NOT EXISTS idx_imagenes_individuo ON imagenes(id_individuo);
-        ''')
+        """)
         _ensure_source_columns(conn)
         _ensure_analytical_columns(conn)
-        conn.execute("CREATE INDEX IF NOT EXISTS idx_individuos_fuente ON individuos(fuente)")
-        conn.execute("CREATE INDEX IF NOT EXISTS idx_mediciones_fuente ON mediciones_quimicas(fuente)")
-        conn.execute("CREATE INDEX IF NOT EXISTS idx_imagenes_fuente ON imagenes(fuente)")
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_individuos_fuente ON individuos(fuente)"
+        )
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_mediciones_fuente ON mediciones_quimicas(fuente)"
+        )
+        conn.execute(
+            "CREATE INDEX IF NOT EXISTS idx_imagenes_fuente ON imagenes(fuente)"
+        )
         _migrate_imagenes_table(conn)
 
 
@@ -255,7 +284,9 @@ def _ensure_analytical_columns(conn: sqlite3.Connection) -> None:
     }
     if "id_analisis" not in columns:
         conn.execute("ALTER TABLE mediciones_quimicas ADD COLUMN id_analisis TEXT")
-    conn.execute("CREATE INDEX IF NOT EXISTS idx_mediciones_analisis ON mediciones_quimicas(id_analisis)")
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_mediciones_analisis ON mediciones_quimicas(id_analisis)"
+    )
 
 
 def _ensure_source_columns(conn: sqlite3.Connection) -> None:
@@ -264,7 +295,10 @@ def _ensure_source_columns(conn: sqlite3.Connection) -> None:
         ("mediciones_quimicas", "fuente"),
         ("imagenes", "fuente"),
     ]:
-        cols = {row["name"] for row in conn.execute(f"PRAGMA table_info({table})").fetchall()}
+        cols = {
+            row["name"]
+            for row in conn.execute(f"PRAGMA table_info({table})").fetchall()
+        }
         if column not in cols:
             conn.execute(f"ALTER TABLE {table} ADD COLUMN {column} TEXT")
 
@@ -306,8 +340,7 @@ def _migrate_imagenes_table(conn: sqlite3.Connection) -> None:
     otros filename_guardado/mime_type/titulo/tipo_imagen/fecha_imagen.
     """
     cols = {
-        row["name"]
-        for row in conn.execute("PRAGMA table_info(imagenes)").fetchall()
+        row["name"] for row in conn.execute("PRAGMA table_info(imagenes)").fetchall()
     }
 
     if "filename_guardado" not in cols:
@@ -323,8 +356,7 @@ def _migrate_imagenes_table(conn: sqlite3.Connection) -> None:
 
     # Rellena columnas nuevas desde columnas antiguas si existen.
     cols = {
-        row["name"]
-        for row in conn.execute("PRAGMA table_info(imagenes)").fetchall()
+        row["name"] for row in conn.execute("PRAGMA table_info(imagenes)").fetchall()
     }
     if "filename_saved" in cols:
         conn.execute("""
@@ -347,8 +379,15 @@ def _migrate_imagenes_table(conn: sqlite3.Connection) -> None:
 
 
 def reset_db() -> None:
+    """
+    Elimina y recrea todas las tablas.
+
+    Útil para pruebas o para empezar desde cero.
+    CUIDADO: borra todos los datos.
+    """
+
     with get_connection() as conn:
-        conn.executescript('''
+        conn.executescript("""
         DROP TABLE IF EXISTS imagenes;
         DROP TABLE IF EXISTS dataciones;
         DROP TABLE IF EXISTS paleopatologias;
@@ -360,5 +399,5 @@ def reset_db() -> None:
         DROP TABLE IF EXISTS matrices;
         DROP TABLE IF EXISTS individuos;
         DROP TABLE IF EXISTS sitios;
-        ''')
+        """)
     init_db()

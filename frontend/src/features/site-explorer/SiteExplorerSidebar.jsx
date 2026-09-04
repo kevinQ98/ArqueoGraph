@@ -30,6 +30,29 @@ function ElementDistribution({ rows = [], activeElement, onSelect }) {
   );
 }
 
+/**
+ * Barra lateral del explorador de sitio: filtros, distribución de elementos y herramientas.
+ * @param {Object} props
+ * @param {string} props.siteName - Nombre del sitio.
+ * @param {string} props.fuente - ID del sitio.
+ * @param {Object} props.filters - Filtros actuales.
+ * @param {Object} props.options - Opciones de filtros.
+ * @param {Array} props.elementDistribution - Distribución de elementos (label, value).
+ * @param {number} props.filteredCount - Número de individuos filtrados.
+ * @param {number} props.totalCount - Total de individuos.
+ * @param {string} props.status - Mensaje de estado.
+ * @param {Function} props.onChange - Callback al cambiar un filtro.
+ * @param {Function} props.onClear - Limpia filtros.
+ * @param {Function} props.onRefresh - Recarga los datos.
+ * @param {Function} props.onExportCsv - Exporta tabla a CSV.
+ * @param {Function} props.onExportJson - Exporta grafo a JSON.
+ * @param {Function} props.onUpload - Sube un JSON al backend.
+ * @param {Array} props.uploadOptions - Opciones de tipo de archivo.
+ * @param {boolean} props.showElementEdges - Muestra aristas de elementos.
+ * @param {Function} props.onToggleElementEdges - Alterna aristas de elementos.
+ * @param {string} props.activeTab - Pestaña activa (para mostrar/ocultar toggles).
+ * @returns {JSX.Element}
+ */
 export function SiteExplorerSidebar({
   siteName,
   fuente,

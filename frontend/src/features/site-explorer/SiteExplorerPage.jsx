@@ -62,6 +62,13 @@ function normalizedSite(site) {
   };
 }
 
+/**
+ * Página de exploración de un sitio arqueológico.
+ * Carga el contexto, los grafos, la tabla y las muestras, y maneja los filtros y la selección.
+ * @param {Object} props
+ * @param {Object} props.site - Sitio seleccionado (con sitio, fuente, individuos).
+ * @returns {JSX.Element}
+ */
 export function SiteExplorerPage({ site }) {
   const currentSite = useMemo(() => normalizedSite(site), [site]);
   const kind = siteKind(currentSite.fuente);
@@ -89,6 +96,10 @@ export function SiteExplorerPage({ site }) {
   const [pcaElements, setPcaElements] = useState([]);
   const [pca, setPca] = useState({ data: null, loading: false, error: "", colorBy: "sexo", pathology: "" });
 
+  /**
+   * Carga las opciones iniciales del sitio (filtros y contexto).
+   * @returns {Promise<void>}
+   */
   const loadOptions = useCallback(async () => {
     try {
       const [filterData, contextData, siteData] = await Promise.all([
@@ -112,6 +123,10 @@ export function SiteExplorerPage({ site }) {
     }
   }, [currentSite.fuente, currentSite.sitio]);
 
+  /**
+   * Carga los datos del sitio (grafos, tabla, muestras, contexto actualizado).
+   * @returns {Promise<void>}
+   */
   const loadSiteData = useCallback(async () => {
     setStatus("Actualizando visualización...");
     const { sexo, edad, matriz, referencia, elemento, patologia } = filters;
@@ -161,11 +176,15 @@ export function SiteExplorerPage({ site }) {
     }
   }, [currentSite.fuente, filters]);
 
+  /**
+ * Elementos disponibles para el PCA (extraídos del contexto analítico filtrado).
+ */
   const pcaAvailableElements = useMemo(() => {
     // analysisContext.elementos viene como [{ elemento: 'Mn', mediciones: 10, ... }]
     return (analysisContext?.elementos || []).map((item) => item.elemento);
   }, [analysisContext]);
 
+  // Efecto: cargar opciones al cambiar de sitio.
   useEffect(() => {
     setFilters(EMPTY_FILTERS);
     setSelected(null);
@@ -176,11 +195,17 @@ export function SiteExplorerPage({ site }) {
     loadOptions();
   }, [currentSite.fuente, loadOptions]);
 
+  // Efecto: cargar datos al cambiar los filtros.
   useEffect(() => {
     loadSiteData();
     setPca((current) => ({ ...current, data: null, error: "" }));
   }, [loadSiteData]);
 
+  /**
+   * Maneja la selección de un nodo en los grafos o en la tabla.
+   * @param {Object} node - Nodo seleccionado (individuo, muestra, elemento).
+   * @returns {Promise<void>}
+   */
   const handleSelect = useCallback(async (node) => {
     if (!node) return;
     if (node.type === "elemento") {
@@ -261,6 +286,12 @@ export function SiteExplorerPage({ site }) {
     }
   }, [currentSite.fuente, kind]);
 
+  /**
+   * Actualiza un filtro específico y limpia la selección.
+   * @param {string} field - Campo del filtro.
+   * @param {string} value - Nuevo valor.
+   * @returns {void}
+   */
   function updateFilter(field, value) {
     setFilters((current) => {
       if (field === "elemento" && value !== "Ninguna") return { ...current, elemento: value, patologia: "" };
@@ -280,17 +311,30 @@ export function SiteExplorerPage({ site }) {
     setDetail(null);
   }
 
+  /**
+   * Limpia todos los filtros.
+   * @returns {void}
+   */
   function clearFilters() {
     setFilters(EMPTY_FILTERS);
     setSelected(null);
     setDetail(null);
   }
 
+  /**
+   * Agrega o quita un elemento de la selección para PCA.
+   * @param {string} element - Nombre del elemento.
+   * @returns {void}
+   */
   function togglePcaElement(element) {
     setPcaElements((current) => current.includes(element) ? current.filter((item) => item !== element) : [...current, element]);
     setPca((current) => ({ ...current, data: null, error: "" }));
   }
 
+  /**
+ * Calcula el PCA con los elementos seleccionados.
+ * @returns {Promise<void>}
+ */
   async function calculatePca() {
     if (pcaElements.length < 3) return;
     setPca((current) => ({ ...current, data: null, loading: true, error: "" }));
@@ -322,6 +366,12 @@ export function SiteExplorerPage({ site }) {
     }
   }
 
+  /**
+  * Sube un archivo JSON (análisis o paleopatología) al backend.
+  * @param {string} type - Tipo de archivo.
+  * @param {File} file - Archivo JSON.
+  * @returns {Promise<void>}
+  */
   async function uploadJson(type, file) {
     setStatus(`Importando ${file.name}...`);
     try {

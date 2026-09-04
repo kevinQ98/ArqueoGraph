@@ -25,6 +25,13 @@ const TABS = [
   { id: "samples", label: "Muestras", icon: Microscope },
 ];
 
+/**
+ * Vista de datos (tabla de mediciones).
+ * @param {Object} props
+ * @param {Array} props.rows - Filas de la tabla.
+ * @param {Function} props.onSelect - Callback al hacer clic en una fila.
+ * @returns {JSX.Element}
+ */
 function DataView({ rows, onSelect }) {
   return (
     <div className="explorerDataView">
@@ -61,6 +68,15 @@ function DataView({ rows, onSelect }) {
   );
 }
 
+/**
+ * Barra de contexto analítico (muestra matriz, referencia, unidades, cobertura).
+ * @param {Object} props
+ * @param {Object} props.context - Contexto analítico.
+ * @param {Object} props.filters - Filtros actuales.
+ * @param {Object} props.selected - Nodo seleccionado.
+ * @param {Object} props.detail - Detalle del nodo.
+ * @returns {JSX.Element|null}
+ */
 function AnalyticalContext({ context, filters, selected, detail }) {
   const sample = selected?.type === "muestra" ? (detail?.sample || selected) : null;
   const specificElement = filters.elemento !== "Ninguna" && filters.elemento !== "Red Completa"
@@ -126,6 +142,13 @@ function AnalyticalContext({ context, filters, selected, detail }) {
   );
 }
 
+/**
+ * Vista de muestras (tabla de muestras con metadatos).
+ * @param {Object} props
+ * @param {Array} props.samples - Lista de muestras.
+ * @param {Function} props.onSelect - Callback al seleccionar una muestra.
+ * @returns {JSX.Element}
+ */
 function SamplesView({ samples, onSelect }) {
   return (
     <div className="explorerDataView explorerSamplesView">
@@ -164,6 +187,19 @@ function SamplesView({ samples, onSelect }) {
   );
 }
 
+/**
+ * Vista de PCA (selección de elementos, cálculo y gráfico).
+ * @param {Object} props
+ * @param {Object} props.pca - Datos del PCA.
+ * @param {Array} props.elements - Elementos seleccionados.
+ * @param {Array} props.availableElements - Elementos disponibles.
+ * @param {Function} props.onToggle - Alterna un elemento.
+ * @param {Function} props.onCalculate - Calcula el PCA.
+ * @param {Function} props.onColorBy - Cambia el color de los puntos.
+ * @param {Function} props.onPathology - Selecciona patología para colorear.
+ * @param {Function} props.onSelect - Callback al seleccionar un punto.
+ * @returns {JSX.Element}
+ */
 function PcaView({ pca, elements, availableElements, onToggle, onCalculate, onColorBy, onPathology, onSelect }) {
   const pathologyOptions = pca.data?.pathology_options || [];
   const pcaContext = pca.data?.analysis_context;
@@ -238,6 +274,37 @@ function PcaView({ pca, elements, availableElements, onToggle, onCalculate, onCo
   );
 }
 
+/**
+ * Área de trabajo del explorador de sitio: pestañas, canvas y panel de detalle.
+ * @param {Object} props
+ * @param {string} props.siteName - Nombre del sitio.
+ * @param {Object} props.graph - Grafo de red.
+ * @param {Object} props.treeGraph - Grafo de árbol.
+ * @param {Array} props.tableRows - Filas de la tabla.
+ * @param {string} props.activeTab - Pestaña activa ("network", "tree", "pca", "data", "samples").
+ * @param {Function} props.onTabChange - Cambia la pestaña activa.
+ * @param {Object} props.selected - Nodo seleccionado.
+ * @param {Object} props.detail - Detalle del nodo seleccionado.
+ * @param {boolean} props.detailLoading - Indica si el detalle está cargando.
+ * @param {Function} props.onSelect - Callback al seleccionar un nodo.
+ * @param {Function} props.onCloseDetail - Cierra el panel de detalle.
+ * @param {string} props.selectedElement - Elemento activo.
+ * @param {boolean} props.showElementEdges - Muestra conexiones de elementos.
+ * @param {Object} props.options - Opciones de filtros.
+ * @param {Object} props.filters - Filtros actuales.
+ * @param {Object} props.analysisContext - Contexto analítico.
+ * @param {boolean} props.showAnalyticalContext - Muestra barra de contexto.
+ * @param {Array} props.samples - Lista de muestras.
+ * @param {Object} props.pca - Datos del PCA.
+ * @param {Array} props.pcaElements - Elementos seleccionados para PCA.
+ * @param {Array} props.pcaAvailableElements - Elementos disponibles.
+ * @param {Function} props.onTogglePcaElement - Alterna un elemento en PCA.
+ * @param {Function} props.onCalculatePca - Calcula el PCA.
+ * @param {Function} props.onPcaColorBy - Cambia el criterio de color (sexo/edad/patologia).
+ * @param {Function} props.onPcaPathology - Selecciona patología para colorear.
+ * @param {Function} props.onExportJson - Exporta el grafo a JSON.
+ * @returns {JSX.Element}
+ */
 export function SiteWorkspace({
   siteName,
   graph,

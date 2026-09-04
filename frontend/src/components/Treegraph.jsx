@@ -1,38 +1,18 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as d3 from "d3";
 import { checkAndFix } from "../lib/utils";
 
 /**
- * TreeGraph (genérico)
- * ------------------------------------------------------------------
- * Árbol navegable con d3-hierarchy. Sirve para AZAPA (raíz -> elementos
- * -> individuos) y MORRO1 (raíz -> elementos y/o patologías ->
- * individuos), agrupando por CUALQUIER arista "mide" (individuo ->
- * elemento) y "presenta" (patologia -> individuo) presente en el grafo.
- *
- * REDISEÑO clave respecto a la versión anterior:
- *
- * 1) SIN DUPLICADOS. Antes, un individuo con mediciones en varios
- *    elementos se dibujaba como una hoja distinta por cada rama abierta
- *    (mismo id, "clonado" N veces), lo que inflaba el árbol y generaba
- *    curvas larguísimas y una vista imposible de encuadrar.
- *    Ahora cada individuo se renderiza UNA sola vez: en la primera rama
- *    que abras que lo contenga. Si abres una segunda rama que también
- *    lo tiene, NO se crea un nodo nuevo — se traza una línea punteada
- *    desde esa segunda rama hacia el nodo único ya existente.
- *
- * 2) AUTO-FIT. Después de cada expand/collapse la cámara (zoom/pan) se
- *    reajusta sola para encuadrar todo el árbol visible, así nunca te
- *    quedas "perdido" mirando una esquina vacía.
- *
- * Props:
- *  - graph: { nodes, edges }
- *  - rootLabel: texto del nodo raíz (ej. "AZAPA", "MORRO1")
- *  - focusGroup: "" | "Red Completa" | nombre de rama -> qué rama
- *    empieza expandida (compara contra el `label` de la rama)
- *  - onSelect(node)
- *  - selectedNodeId
- *  - height
+ * Árbol jerárquico navegable con d3-hierarchy.
+ * Soporta expansión/colapso de ramas y resalta intersecciones entre ramas abiertas.
+ * @param {Object} props
+ * @param {Object} props.graph - Grafo con nodes y edges.
+ * @param {string} props.rootLabel - Etiqueta del nodo raíz.
+ * @param {string} props.focusGroup - Rama a expandir por defecto.
+ * @param {Function} props.onSelect - Callback al seleccionar un nodo.
+ * @param {string} props.selectedNodeId - ID del nodo seleccionado.
+ * @param {number} props.height - Altura del SVG.
+ * @returns {JSX.Element}
  */
 export function TreeGraph({
     graph,

@@ -33,6 +33,15 @@ function referenceUrl(analysis) {
   return analysis.doi.startsWith("http") ? analysis.doi : `https://doi.org/${analysis.doi}`;
 }
 
+/**
+ * Panel lateral que muestra el detalle completo de un individuo o muestra seleccionado.
+ * @param {Object} props
+ * @param {Object} props.selected - Nodo seleccionado.
+ * @param {Object} props.detail - Datos completos del caso (incluye images, pathologies, datings, measurements, sample, etc.).
+ * @param {boolean} props.loading - Indicador de carga.
+ * @param {Function} props.onClose - Cierra el panel.
+ * @returns {JSX.Element}
+ */
 export function SiteDetailPanel({ selected, detail, loading, onClose }) {
   if (!selected) {
     return (

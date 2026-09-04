@@ -26,7 +26,9 @@ REFERENCE_PATH = BASE_DIR / "data" / "morro1_referencia.json"
 # Archivos de análisis de Morro1 (solo uno por ahora)
 MORRO1_ANALISIS_PATH = BASE_DIR / "data" / "morro1_analisis_quimicos_Mn_costilla.json"
 # NUEVO ARCHIVIO PARA ANALISIS
-MORRO1_ANALISIS_PATH_2 = BASE_DIR / "data" / "morro1_analisis_quimicos_B_As_Li_costilla.json",
+MORRO1_ANALISIS_PATH_2 = (
+    BASE_DIR / "data" / "morro1_analisis_quimicos_B_As_Li_costilla.json",
+)
 
 
 def _load_morro1_analysis_metadata() -> dict[str, dict[str, str]]:
@@ -67,7 +69,10 @@ def _load_morro1_analysis_metadata() -> dict[str, dict[str, str]]:
     except Exception:
         return {}
 
-def _load_azapa_analysis_metadata(analysis_paths: Optional[list[Path]] = None) -> dict[str, dict[str, str]]:
+
+def _load_azapa_analysis_metadata(
+    analysis_paths: Optional[list[Path]] = None,
+) -> dict[str, dict[str, str]]:
     """Carga todos los JSON de análisis de AZAPA y devuelve metadatos por id de caso."""
     if not analysis_paths:
         analysis_paths = AZAPA_ANALYSIS_PATHS
@@ -125,18 +130,21 @@ def _load_paleopatologia_cases() -> list[dict[str, Any]]:
         if not isinstance(payload, dict):
             continue
         if isinstance(payload.get("casos"), list):
-            all_cases.extend([caso for caso in payload["casos"] if isinstance(caso, dict)])
+            all_cases.extend(
+                [caso for caso in payload["casos"] if isinstance(caso, dict)]
+            )
             continue
         for value in payload.values():
             if isinstance(value, dict) and isinstance(value.get("casos"), list):
-                all_cases.extend([caso for caso in value["casos"] if isinstance(caso, dict)])
+                all_cases.extend(
+                    [caso for caso in value["casos"] if isinstance(caso, dict)]
+                )
                 break
     return all_cases
 
 
 def _load_reference_map() -> dict[str, str]:
-    """Carga `morro1_referencia.json` y devuelve un mapa id -> tumba.
-    """
+    """Carga `morro1_referencia.json` y devuelve un mapa id -> tumba."""
     if not REFERENCE_PATH.exists():
         return {}
     try:
@@ -176,12 +184,25 @@ def _pathology_present(case: dict[str, Any], patologia_name: str) -> bool:
         return False
     if isinstance(value, str):
         normalized = value.strip().lower()
-        if normalized in {"", "none", "null", "no", "negativo", "absente", "ausente", "false", "falso", "0"}:
+        if normalized in {
+            "",
+            "none",
+            "null",
+            "no",
+            "negativo",
+            "absente",
+            "ausente",
+            "false",
+            "falso",
+            "0",
+        }:
             return False
     return True
 
 
-def _load_azapa_reference_cases(reference_path: Optional[Path] = None) -> list[dict[str, Any]]:
+def _load_azapa_reference_cases(
+    reference_path: Optional[Path] = None,
+) -> list[dict[str, Any]]:
     path = reference_path or BASE_DIR / "data" / "azapa140_referencia.json"
     if not path.exists():
         return []
@@ -189,8 +210,14 @@ def _load_azapa_reference_cases(reference_path: Optional[Path] = None) -> list[d
         with path.open("r", encoding="utf-8") as fh:
             payload = json.load(fh)
         if isinstance(payload, dict):
-            if isinstance(payload.get("azapa_140"), dict) and isinstance(payload["azapa_140"].get("casos"), list):
-                return [case for case in payload["azapa_140"]["casos"] if isinstance(case, dict)]
+            if isinstance(payload.get("azapa_140"), dict) and isinstance(
+                payload["azapa_140"].get("casos"), list
+            ):
+                return [
+                    case
+                    for case in payload["azapa_140"]["casos"]
+                    if isinstance(case, dict)
+                ]
             if isinstance(payload.get("casos"), list):
                 return [case for case in payload["casos"] if isinstance(case, dict)]
     except Exception:
@@ -198,10 +225,14 @@ def _load_azapa_reference_cases(reference_path: Optional[Path] = None) -> list[d
     return []
 
 
-def resolve_azapa_case_relation(case_id: str, reference_path: Path, images_dir: Path) -> dict[str, Any]:
+def resolve_azapa_case_relation(
+    case_id: str, reference_path: Path, images_dir: Path
+) -> dict[str, Any]:
     """Relaciona un caso Azapa con su ficha de referencia e imagenes locales."""
     cases = _load_azapa_reference_cases(reference_path)
-    case = next((item for item in cases if str(item.get("id") or "").strip() == case_id), None)
+    case = next(
+        (item for item in cases if str(item.get("id") or "").strip() == case_id), None
+    )
     reference = None
     if case:
         individual = case.get("individuo") or {}
@@ -222,15 +253,17 @@ def resolve_azapa_case_relation(case_id: str, reference_path: Path, images_dir: 
             if not path.is_file() or path.suffix.lower() not in allowed_extensions:
                 continue
             relative_path = str(path.relative_to(image_root)).replace("\\", "/")
-            images.append({
-                "id_imagen": f"{case_id}_{path.name}",
-                "id_individuo": case_id,
-                "filename_original": path.name,
-                "relative_path": relative_path,
-                "url": f"/files/imagenes/{relative_path}",
-                "titulo": path.name,
-                "mime_type": mimetypes.guess_type(path.name)[0] or "image/jpeg",
-            })
+            images.append(
+                {
+                    "id_imagen": f"{case_id}_{path.name}",
+                    "id_individuo": case_id,
+                    "filename_original": path.name,
+                    "relative_path": relative_path,
+                    "url": f"/files/imagenes/{relative_path}",
+                    "titulo": path.name,
+                    "mime_type": mimetypes.guess_type(path.name)[0] or "image/jpeg",
+                }
+            )
 
     return {
         "case_id": case_id,
@@ -246,7 +279,9 @@ def _normalize_azapa_sexo_filter(value: Optional[str]) -> str:
     return _normalize_filter_value(str(value))
 
 
-def _filter_azapa_cases_by_sexo(cases: list[dict[str, Any]], sexo: Optional[str] = None) -> list[dict[str, Any]]:
+def _filter_azapa_cases_by_sexo(
+    cases: list[dict[str, Any]], sexo: Optional[str] = None
+) -> list[dict[str, Any]]:
     normalized_sexo = _normalize_azapa_sexo_filter(sexo)
     if not normalized_sexo:
         return cases
@@ -269,7 +304,9 @@ def _normalize_azapa_edad_filter(value: Optional[str]) -> str:
     return _normalize_filter_value(str(value))
 
 
-def _filter_azapa_cases_by_edad(cases: list[dict[str, Any]], edad: Optional[str] = None) -> list[dict[str, Any]]:
+def _filter_azapa_cases_by_edad(
+    cases: list[dict[str, Any]], edad: Optional[str] = None
+) -> list[dict[str, Any]]:
     normalized_edad = _normalize_azapa_edad_filter(edad)
     if not normalized_edad:
         return cases
@@ -280,7 +317,9 @@ def _filter_azapa_cases_by_edad(cases: list[dict[str, Any]], edad: Optional[str]
         individuo_data = case.get("individuo") or {}
         if not isinstance(individuo_data, dict):
             continue
-        case_edad = str(individuo_data.get("grupo_edad") or individuo_data.get("edad") or "").strip()
+        case_edad = str(
+            individuo_data.get("grupo_edad") or individuo_data.get("edad") or ""
+        ).strip()
         if _normalize_azapa_edad_filter(case_edad) == normalized_edad:
             filtered.append(case)
     return filtered
@@ -308,7 +347,9 @@ def _normalize_azapa_matriz_filter(value: Optional[str]) -> str:
     return _normalize_filter_value(str(value))
 
 
-def _filter_azapa_analysis_cases_by_matriz(cases: list[dict[str, Any]], matriz: Optional[str] = None) -> list[dict[str, Any]]:
+def _filter_azapa_analysis_cases_by_matriz(
+    cases: list[dict[str, Any]], matriz: Optional[str] = None
+) -> list[dict[str, Any]]:
     normalized_matriz = _normalize_azapa_matriz_filter(matriz)
     if not normalized_matriz:
         return cases
@@ -325,7 +366,9 @@ def _filter_azapa_analysis_cases_by_matriz(cases: list[dict[str, Any]], matriz: 
     return filtered
 
 
-def get_azapa_analysis_matriz_options(analysis_paths: Optional[list[Path]] = None) -> list[str]:
+def get_azapa_analysis_matriz_options(
+    analysis_paths: Optional[list[Path]] = None,
+) -> list[str]:
     if not analysis_paths:
         analysis_paths = AZAPA_ANALYSIS_PATHS
     options: list[str] = []
@@ -344,7 +387,9 @@ def get_azapa_analysis_matriz_options(analysis_paths: Optional[list[Path]] = Non
     return sorted(options, key=lambda item: str(item).lower())
 
 
-def _load_azapa_analysis_cases(analysis_path: Optional[Path] = None) -> list[dict[str, Any]]:
+def _load_azapa_analysis_cases(
+    analysis_path: Optional[Path] = None,
+) -> list[dict[str, Any]]:
     if not analysis_path or not analysis_path.exists():
         return []
     try:
@@ -385,13 +430,26 @@ def _azapa_value_is_present(value: Any) -> bool:
         normalized = value.strip().lower()
         if not normalized:
             return False
-        if normalized in {"nd", "n.d.", "n/d", "none", "null", "na", "nan", "no data", "sin dato", "sin datos"}:
+        if normalized in {
+            "nd",
+            "n.d.",
+            "n/d",
+            "none",
+            "null",
+            "na",
+            "nan",
+            "no data",
+            "sin dato",
+            "sin datos",
+        }:
             return False
         return True
     return True
 
 
-def get_azapa_available_elements(analysis_paths: Optional[list[Path]] = None) -> list[str]:
+def get_azapa_available_elements(
+    analysis_paths: Optional[list[Path]] = None,
+) -> list[str]:
     if not analysis_paths:
         analysis_paths = AZAPA_ANALYSIS_PATHS
 
@@ -430,11 +488,17 @@ def build_azapa_table_rows(
         _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo),
         edad,
     )
-    case_lookup = {str(case.get("id") or "").strip(): case for case in cases if isinstance(case, dict) and str(case.get("id") or "").strip()}
+    case_lookup = {
+        str(case.get("id") or "").strip(): case
+        for case in cases
+        if isinstance(case, dict) and str(case.get("id") or "").strip()
+    }
 
     rows: list[dict[str, Any]] = []
     for path in analysis_paths:
-        for analysis_case in _filter_azapa_analysis_cases_by_matriz(_load_azapa_analysis_cases(path), matriz):
+        for analysis_case in _filter_azapa_analysis_cases_by_matriz(
+            _load_azapa_analysis_cases(path), matriz
+        ):
             if not isinstance(analysis_case, dict):
                 continue
             case_id = str(analysis_case.get("id") or "").strip()
@@ -457,7 +521,9 @@ def build_azapa_table_rows(
                 if not nombre_elemento:
                     continue
                 element_name = str(nombre_elemento)
-                if elemento and _normalize_azapa_element_filter(element_name) != _normalize_azapa_element_filter(elemento):
+                if elemento and _normalize_azapa_element_filter(
+                    element_name
+                ) != _normalize_azapa_element_filter(elemento):
                     continue
                 if isinstance(elemento_data, dict):
                     value = elemento_data.get("valor")
@@ -465,19 +531,33 @@ def build_azapa_table_rows(
                 else:
                     value = elemento_data
                     unit = "ppm"
-                if not _azapa_measurement_has_value(elemento_data if isinstance(elemento_data, dict) else value):
+                if not _azapa_measurement_has_value(
+                    elemento_data if isinstance(elemento_data, dict) else value
+                ):
                     continue
-                rows.append({
-                    "id_caso": case_id,
-                    "caso": str(reference_case.get("tumba") or reference_case.get("referencia") or case_id),
-                    "sexo": str(individuo_data.get("sexo") or "").strip() or "",
-                    "edad": str(individuo_data.get("grupo_edad") or individuo_data.get("edad") or "").strip() or "",
-                    "elemento": element_name,
-                    "concentracion": value,
-                    "unidad": unit,
-                    "matriz": matriz_value,
-                    "cultura": str(reference_case.get("cultura") or "").strip() or "",
-                })
+                rows.append(
+                    {
+                        "id_caso": case_id,
+                        "caso": str(
+                            reference_case.get("tumba")
+                            or reference_case.get("referencia")
+                            or case_id
+                        ),
+                        "sexo": str(individuo_data.get("sexo") or "").strip() or "",
+                        "edad": str(
+                            individuo_data.get("grupo_edad")
+                            or individuo_data.get("edad")
+                            or ""
+                        ).strip()
+                        or "",
+                        "elemento": element_name,
+                        "concentracion": value,
+                        "unidad": unit,
+                        "matriz": matriz_value,
+                        "cultura": str(reference_case.get("cultura") or "").strip()
+                        or "",
+                    }
+                )
     return rows
 
 
@@ -545,10 +625,13 @@ def build_azapa_pca(
             "Se necesitan al menos tres casos con mediciones completas para los elementos seleccionados"
         )
 
-    matrix = np.asarray([
-        [float(np.mean(values_by_case[case_id][element])) for element in selected]
-        for case_id in complete_cases
-    ], dtype=float)
+    matrix = np.asarray(
+        [
+            [float(np.mean(values_by_case[case_id][element])) for element in selected]
+            for case_id in complete_cases
+        ],
+        dtype=float,
+    )
     means = matrix.mean(axis=0)
     standard_deviations = matrix.std(axis=0)
     constant_elements = [
@@ -558,34 +641,39 @@ def build_azapa_pca(
     ]
     if constant_elements:
         raise ValueError(
-            "No se puede calcular el PCA: no hay variacion en " + ", ".join(constant_elements)
+            "No se puede calcular el PCA: no hay variacion en "
+            + ", ".join(constant_elements)
         )
 
     standardized = (matrix - means) / standard_deviations
     left, singular_values, components = np.linalg.svd(standardized, full_matrices=False)
     scores = left * singular_values
-    variances = (singular_values ** 2) / max(len(complete_cases) - 1, 1)
+    variances = (singular_values**2) / max(len(complete_cases) - 1, 1)
     total_variance = float(variances.sum())
-    explained = variances / total_variance if total_variance else np.zeros_like(variances)
+    explained = (
+        variances / total_variance if total_variance else np.zeros_like(variances)
+    )
 
     points = []
     for index, case_id in enumerate(complete_cases):
         meta = case_metadata[case_id]
-        points.append({
-            "id": case_id,
-            "id_individuo": case_id,
-            "label": meta["caso"],
-            "caso": meta["caso"],
-            "type": "individuo",
-            "sexo": meta["sexo"],
-            "edad": meta["edad"],
-            "pc1": float(scores[index, 0]),
-            "pc2": float(scores[index, 1]),
-            "mediciones": {
-                element: {"valor": float(matrix[index, element_index])}
-                for element_index, element in enumerate(selected)
-            },
-        })
+        points.append(
+            {
+                "id": case_id,
+                "id_individuo": case_id,
+                "label": meta["caso"],
+                "caso": meta["caso"],
+                "type": "individuo",
+                "sexo": meta["sexo"],
+                "edad": meta["edad"],
+                "pc1": float(scores[index, 0]),
+                "pc2": float(scores[index, 1]),
+                "mediciones": {
+                    element: {"valor": float(matrix[index, element_index])}
+                    for element_index, element in enumerate(selected)
+                },
+            }
+        )
 
     loadings = [
         {
@@ -755,6 +843,7 @@ def build_azapa_pca(
 #         },
 #     }
 
+
 def build_azapa_element_graph(
     elemento: Optional[str] = None,
     reference_path: Optional[Path] = None,
@@ -774,7 +863,9 @@ def build_azapa_element_graph(
 
     normalized_element = _normalize_azapa_element_filter(elemento)
     if normalized_element in {"", "ninguna", "none", "null", "no"}:
-        return build_azapa_reference_graph(reference_path=reference_path, sexo=sexo, edad=edad, matriz=matriz)
+        return build_azapa_reference_graph(
+            reference_path=reference_path, sexo=sexo, edad=edad, matriz=matriz
+        )
 
     cases = _filter_azapa_cases_by_edad(
         _filter_azapa_cases_by_sexo(_load_azapa_reference_cases(reference_path), sexo),
@@ -794,15 +885,23 @@ def build_azapa_element_graph(
         nodes.append(node)
 
     # Diccionarios para acumular metadatos
-    analysis_map: dict[str, dict[str, dict[str, Any]]] = {}  # case_id -> {elemento: {valor, unidad}}
-    case_metadata: dict[str, dict[str, str]] = {}             # case_id -> {referencia_datos, matriz}
-    element_metadata: dict[str, dict[str, set[str]]] = {}     # elemento -> {referencias: set, matrices: set}
+    analysis_map: dict[
+        str, dict[str, dict[str, Any]]
+    ] = {}  # case_id -> {elemento: {valor, unidad}}
+    case_metadata: dict[
+        str, dict[str, str]
+    ] = {}  # case_id -> {referencia_datos, matriz}
+    element_metadata: dict[
+        str, dict[str, set[str]]
+    ] = {}  # elemento -> {referencias: set, matrices: set}
 
     available_elements: list[str] = []
 
     # Primer pase: leer todos los archivos de análisis y recolectar datos
     for path in analysis_paths:
-        for case in _filter_azapa_analysis_cases_by_matriz(_load_azapa_analysis_cases(path), matriz):
+        for case in _filter_azapa_analysis_cases_by_matriz(
+            _load_azapa_analysis_cases(path), matriz
+        ):
             case_id = str(case.get("id") or "").strip()
             if not case_id:
                 continue
@@ -848,7 +947,9 @@ def build_azapa_element_graph(
                     value = elemento_data
                     unit = "ppm"
 
-                if not _azapa_measurement_has_value(elemento_data if isinstance(elemento_data, dict) else value):
+                if not _azapa_measurement_has_value(
+                    elemento_data if isinstance(elemento_data, dict) else value
+                ):
                     continue
 
                 case_measurements[name] = {
@@ -885,45 +986,51 @@ def build_azapa_element_graph(
                 meta_elem = element_metadata.get(elemento_name, {})
                 refs = " | ".join(sorted(meta_elem.get("referencias", [])))
                 mats = " | ".join(sorted(meta_elem.get("matrices", [])))
-                add_node({
-                    "id": element_id,
-                    "label": elemento_name,
-                    "type": "elemento",
-                    "elemento": elemento_name,
-                    "referencia_datos": refs or None,
-                    "matriz": mats or None,
-                })
+                add_node(
+                    {
+                        "id": element_id,
+                        "label": elemento_name,
+                        "type": "elemento",
+                        "elemento": elemento_name,
+                        "referencia_datos": refs or None,
+                        "matriz": mats or None,
+                    }
+                )
 
             measure = measurements[elemento_name]
-            valid_edges_for_case.append({
-                "source": case_id,
-                "target": element_id,
-                "label": "mide",
-                "elemento": elemento_name,
-                "concentracion": measure.get("valor"),
-                "unidad": measure.get("unidad"),
-                "referencia_datos": meta.get("referencia_datos"),
-                "matriz": meta.get("matriz"),
-            })
+            valid_edges_for_case.append(
+                {
+                    "source": case_id,
+                    "target": element_id,
+                    "label": "mide",
+                    "elemento": elemento_name,
+                    "concentracion": measure.get("valor"),
+                    "unidad": measure.get("unidad"),
+                    "referencia_datos": meta.get("referencia_datos"),
+                    "matriz": meta.get("matriz"),
+                }
+            )
 
         if not valid_edges_for_case:
             continue
 
         meta = case_metadata.get(case_id, {})
-        add_node({
-            "id": case_id,
-            "tumba": str(tumba),
-            "label": str(tumba),
-            "type": "individuo",
-            "sexo": individuo_data.get("sexo"),
-            "edad": individuo_data.get("grupo_edad") or individuo_data.get("edad"),
-            "cultura": case.get("cultura"),
-            "id_documento": case_id,
-            "numero_cuerpo": str(tumba),
-            "id_individuo": case_id,
-            "referencia_datos": meta.get("referencia_datos"),   # <-- añadir
-            "matriz": meta.get("matriz"), 
-        })
+        add_node(
+            {
+                "id": case_id,
+                "tumba": str(tumba),
+                "label": str(tumba),
+                "type": "individuo",
+                "sexo": individuo_data.get("sexo"),
+                "edad": individuo_data.get("grupo_edad") or individuo_data.get("edad"),
+                "cultura": case.get("cultura"),
+                "id_documento": case_id,
+                "numero_cuerpo": str(tumba),
+                "id_individuo": case_id,
+                "referencia_datos": meta.get("referencia_datos"),  # <-- añadir
+                "matriz": meta.get("matriz"),
+            }
+        )
         edges.extend(valid_edges_for_case)
 
     return {
@@ -938,7 +1045,12 @@ def build_azapa_element_graph(
     }
 
 
-def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None) -> dict[str, Any]:
+def build_azapa_reference_graph(
+    reference_path: Optional[Path] = None,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+) -> dict[str, Any]:
     """Construye un grafo simple a partir del JSON de referencia de Azapa.
 
     Usa el campo `tumba` de cada caso como etiqueta del nodo para mostrar los 140 registros.
@@ -948,14 +1060,16 @@ def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Opt
         edad,
     )
 
-      # Cargar metadatos de todos los análisis para enriquecer
+    # Cargar metadatos de todos los análisis para enriquecer
     azapa_metadata = _load_azapa_analysis_metadata()  # <-- nuevo
 
     if matriz:
         normalized_matriz = _normalize_azapa_matriz_filter(matriz)
         allowed_case_ids: set[str] = set()
         for path in AZAPA_ANALYSIS_PATHS:
-            for analysis_case in _filter_azapa_analysis_cases_by_matriz(_load_azapa_analysis_cases(path), matriz):
+            for analysis_case in _filter_azapa_analysis_cases_by_matriz(
+                _load_azapa_analysis_cases(path), matriz
+            ):
                 case_id = str(analysis_case.get("id") or "").strip()
                 if case_id:
                     allowed_case_ids.add(case_id)
@@ -981,12 +1095,14 @@ def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Opt
         nodes.append(node)
 
     site_id = "azapa:site"
-    add_node({
-        "id": site_id,
-        "label": "AZAPA140",
-        "type": "patologia",
-        "patologia": "AZAPA",
-    })
+    add_node(
+        {
+            "id": site_id,
+            "label": "AZAPA140",
+            "type": "patologia",
+            "patologia": "AZAPA",
+        }
+    )
 
     for index, case in enumerate(cases, start=1):
         if not isinstance(case, dict):
@@ -997,26 +1113,30 @@ def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Opt
         meta = azapa_metadata.get(case_id, {})
         if not isinstance(individuo_data, dict):
             individuo_data = {}
-        add_node({
-            "id": case_id,
-            "tumba": str(tumba),
-            "label": str(tumba),
-            "type": "individuo",
-            "sexo": individuo_data.get("sexo"),
-            "edad": individuo_data.get("grupo_edad") or individuo_data.get("edad"),
-            "cultura": case.get("cultura"),
-            "id_documento": case_id,
-            "numero_cuerpo": str(tumba),
-            "id_individuo": case_id,
-            "referencia_datos": meta.get("referencia_datos"),   # <-- añadir
-            "matriz": meta.get("matriz"),                       # <-- añadir
-        })
-        edges.append({
-            "source": site_id,
-            "target": case_id,
-            "label": "presenta",
-            "tumba": str(tumba),
-        })
+        add_node(
+            {
+                "id": case_id,
+                "tumba": str(tumba),
+                "label": str(tumba),
+                "type": "individuo",
+                "sexo": individuo_data.get("sexo"),
+                "edad": individuo_data.get("grupo_edad") or individuo_data.get("edad"),
+                "cultura": case.get("cultura"),
+                "id_documento": case_id,
+                "numero_cuerpo": str(tumba),
+                "id_individuo": case_id,
+                "referencia_datos": meta.get("referencia_datos"),  # <-- añadir
+                "matriz": meta.get("matriz"),  # <-- añadir
+            }
+        )
+        edges.append(
+            {
+                "source": site_id,
+                "target": case_id,
+                "label": "presenta",
+                "tumba": str(tumba),
+            }
+        )
 
     return {
         "mode": "relational",
@@ -1029,7 +1149,9 @@ def build_azapa_reference_graph(reference_path: Optional[Path] = None, sexo: Opt
     }
 
 
-def filter_individuos_by_patologia(individuos: list[dict[str, Any]], patologia_name: Optional[str] = None) -> list[dict[str, Any]]:
+def filter_individuos_by_patologia(
+    individuos: list[dict[str, Any]], patologia_name: Optional[str] = None
+) -> list[dict[str, Any]]:
     if not patologia_name:
         return individuos
 
@@ -1070,15 +1192,37 @@ def build_relational_graph_from_rows(
     patologia: Optional[str] = None,
     fuente: Optional[str] = None,
 ) -> dict[str, Any]:
-    """Convierte tablas relacionales en un grafo de nodos y aristas."""
+    """
+    Construye un grafo relacional a partir de listas de individuos, mediciones e imágenes.
+
+    Los nodos pueden ser de tipo: individuo, elemento, imagen.
+    Aristas: "mide" (individuo → elemento) y "tiene_imagen" (individuo → imagen).
+
+    Args:
+        individuos (list): Lista de individuos (diccionarios).
+        mediciones (list): Lista de mediciones (diccionarios).
+        imagenes (list): Lista de imágenes (diccionarios).
+        elemento (Optional[str]): Si se proporciona, filtra por este elemento.
+        edad (Optional[str]): Filtra individuos por edad.
+        caso (Optional[str]): Filtra por id_documento o id_individuo.
+        sexo (Optional[str]): Filtra por sexo.
+        patologia (Optional[str]): Filtra por patología presente.
+        fuente (Optional[str]): Filtra por fuente del sitio.
+
+    Returns:
+        dict: Grafo con "nodes", "edges" y "summary".
+    """
+
     # load reference map id -> tumba for labeling
     reference_map = _load_reference_map()
     morro1_metadata = _load_morro1_analysis_metadata()
     if caso:
         case_value = caso.strip()
         individuos = [
-            i for i in individuos
-            if i.get("id_documento") == case_value or i.get("id_individuo") == case_value
+            i
+            for i in individuos
+            if i.get("id_documento") == case_value
+            or i.get("id_individuo") == case_value
         ]
         allowed_ids = {i["id_individuo"] for i in individuos}
         mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
@@ -1086,19 +1230,35 @@ def build_relational_graph_from_rows(
 
     if fuente:
         fuente_norm = str(fuente).strip().lower()
-        individuos = [i for i in individuos if str(i.get("fuente") or "").strip().lower() == fuente_norm]
+        individuos = [
+            i
+            for i in individuos
+            if str(i.get("fuente") or "").strip().lower() == fuente_norm
+        ]
         allowed_ids = {i["id_individuo"] for i in individuos if i.get("id_individuo")}
-        mediciones = [m for m in mediciones if str(m.get("fuente") or "").strip().lower() == fuente_norm]
-        imagenes = [img for img in imagenes if str(img.get("fuente") or "").strip().lower() == fuente_norm]
+        mediciones = [
+            m
+            for m in mediciones
+            if str(m.get("fuente") or "").strip().lower() == fuente_norm
+        ]
+        imagenes = [
+            img
+            for img in imagenes
+            if str(img.get("fuente") or "").strip().lower() == fuente_norm
+        ]
         if allowed_ids:
             mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
-            imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
+            imagenes = [
+                img for img in imagenes if img.get("id_individuo") in allowed_ids
+            ]
 
     # Filtrar por sexo (usa el campo `sexo` de la tabla `individuos`,
     # que al importar Morro1 proviene de `sexo_normalizado`).
     if sexo:
         s_norm = str(sexo).strip().lower()
-        individuos = [i for i in individuos if (i.get("sexo") or "").strip().lower() == s_norm]
+        individuos = [
+            i for i in individuos if (i.get("sexo") or "").strip().lower() == s_norm
+        ]
         allowed_ids = {i["id_individuo"] for i in individuos}
         mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
         imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
@@ -1118,9 +1278,12 @@ def build_relational_graph_from_rows(
 
     # En build_relational_graph_from_rows
     filtered_mediciones = [
-        m for m in mediciones
+        m
+        for m in mediciones
         # Si elemento es None, "", "ninguno" o "ninguna", no filtrar
-        if not elemento or elemento.lower() in ["ninguna", "ninguno", "all"] or m.get("elemento") == elemento
+        if not elemento
+        or elemento.lower() in ["ninguna", "ninguno", "all"]
+        or m.get("elemento") == elemento
     ]
 
     # Solo mantener individuos que tienen mediciones del elemento seleccionado
@@ -1128,16 +1291,23 @@ def build_relational_graph_from_rows(
     # Si no hay un elemento específico seleccionado, no deberías filtrar individuos
     if elemento and elemento.lower() not in ["ninguna", "ninguno", "all"]:
         individuos_with_measurements = {
-            m.get("id_individuo") for m in filtered_mediciones 
+            m.get("id_individuo")
+            for m in filtered_mediciones
             if m.get("concentracion") is not None
         }
-        individuos = [i for i in individuos if i.get("id_individuo") in individuos_with_measurements]
-    
+        individuos = [
+            i
+            for i in individuos
+            if i.get("id_individuo") in individuos_with_measurements
+        ]
+
     # Actualizar imagenes para solo las de individuos con mediciones
     allowed_ids = {i["id_individuo"] for i in individuos}
     imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
 
-    individuos_by_id = {i["id_individuo"]: i for i in individuos if i.get("id_individuo")}
+    individuos_by_id = {
+        i["id_individuo"]: i for i in individuos if i.get("id_individuo")
+    }
     images_by_person: dict[str, list[dict[str, Any]]] = {}
     for image in imagenes:
         person_id = image.get("id_individuo")
@@ -1180,21 +1350,27 @@ def build_relational_graph_from_rows(
             continue
         # prefer `tumba` from reference map when available; use empty label otherwise
         tumba_val = reference_map.get(person_id)
-        meta = morro1_metadata.get(person_id) or morro1_metadata.get(individuo.get("numero_cuerpo")) or {}
-        add_node({
-            "id": person_id,
-            "tumba": tumba_val,
-            "label": tumba_val or "",
-            "type": "individuo",
-            "sexo": individuo.get("sexo"),
-            "edad": individuo.get("edad"),
-            "estilo_momificacion": individuo.get("estilo_momificacion"),
-            "estado": individuo.get("estado"),
-            "id_documento": individuo.get("id_documento"),
-            "numero_cuerpo": individuo.get("numero_cuerpo"),
-            "referencia_datos": meta.get("referencia_datos"),   # <-- añadir
-            "matriz": meta.get("matriz"),
-        })
+        meta = (
+            morro1_metadata.get(person_id)
+            or morro1_metadata.get(individuo.get("numero_cuerpo"))
+            or {}
+        )
+        add_node(
+            {
+                "id": person_id,
+                "tumba": tumba_val,
+                "label": tumba_val or "",
+                "type": "individuo",
+                "sexo": individuo.get("sexo"),
+                "edad": individuo.get("edad"),
+                "estilo_momificacion": individuo.get("estilo_momificacion"),
+                "estado": individuo.get("estado"),
+                "id_documento": individuo.get("id_documento"),
+                "numero_cuerpo": individuo.get("numero_cuerpo"),
+                "referencia_datos": meta.get("referencia_datos"),  # <-- añadir
+                "matriz": meta.get("matriz"),
+            }
+        )
 
     element_ids: set[str] = set()
     for medicion in filtered_mediciones:
@@ -1207,14 +1383,16 @@ def build_relational_graph_from_rows(
                 meta = element_metadata.get(elemento_name, {})
                 refs = " | ".join(sorted(meta.get("referencias", [])))
                 mats = " | ".join(sorted(meta.get("matrices", [])))
-                add_node({
-                    "id": element_id,
-                    "label": elemento_name,
-                    "type": "elemento",
-                    "elemento": elemento_name,
-                    "referencia_datos": refs or None,
-                    "matriz": mats or None,
-                })
+                add_node(
+                    {
+                        "id": element_id,
+                        "label": elemento_name,
+                        "type": "elemento",
+                        "elemento": elemento_name,
+                        "referencia_datos": refs or None,
+                        "matriz": mats or None,
+                    }
+                )
                 element_ids.add(element_id)
         if person_id and elemento_name:
             # Solo crear arista si hay valor de concentración (no null)
@@ -1223,39 +1401,49 @@ def build_relational_graph_from_rows(
                 ref_med = medicion.get("observaciones")
                 mat_med = medicion.get("tipo_muestra") or medicion.get("metodo")
                 meta = morro1_metadata.get(person_id, {})
-                edges.append({
-                    "source": person_id,
-                    "target": f"elemento:{elemento_name}",
-                    "label": "mide",
-                    "elemento": elemento_name,
-                    "concentracion": medicion.get("concentracion"),
-                    "unidad": medicion.get("unidad"),
-                    "estado": medicion.get("estado"),
-                    "referencia_datos": ref_med,
-                    "matriz": mat_med,
-                })
+                edges.append(
+                    {
+                        "source": person_id,
+                        "target": f"elemento:{elemento_name}",
+                        "label": "mide",
+                        "elemento": elemento_name,
+                        "concentracion": medicion.get("concentracion"),
+                        "unidad": medicion.get("unidad"),
+                        "estado": medicion.get("estado"),
+                        "referencia_datos": ref_med,
+                        "matriz": mat_med,
+                    }
+                )
 
     for person_id, person_images in images_by_person.items():
         if not person_id:
             continue
         for image in person_images:
-            image_id = image.get("id_imagen") or f"imagen:{person_id}:{len(person_images)}"
+            image_id = (
+                image.get("id_imagen") or f"imagen:{person_id}:{len(person_images)}"
+            )
             image_url = image.get("url") or image.get("relative_path")
             if image_url and not image_url.startswith("/"):
                 image_url = f"/files/imagenes/{image_url}"
-            add_node({
-                "id": image_id,
-                "label": image.get("titulo") or image.get("filename_original") or "Imagen",
-                "type": "imagen",
-                "url": image_url,
-                "id_individuo": person_id,
-            })
-            edges.append({
-                "source": person_id,
-                "target": image_id,
-                "label": "tiene_imagen",
-                "url": image_url,
-            })
+            add_node(
+                {
+                    "id": image_id,
+                    "label": image.get("titulo")
+                    or image.get("filename_original")
+                    or "Imagen",
+                    "type": "imagen",
+                    "url": image_url,
+                    "id_individuo": person_id,
+                }
+            )
+            edges.append(
+                {
+                    "source": person_id,
+                    "target": image_id,
+                    "label": "tiene_imagen",
+                    "url": image_url,
+                }
+            )
 
     return {
         "mode": "relational",
@@ -1267,6 +1455,7 @@ def build_relational_graph_from_rows(
             "imagenes": len(imagenes),
         },
     }
+
 
 def build_relational_graph_from_patologia(
     individuos: list[dict[str, Any]],
@@ -1283,14 +1472,28 @@ def build_relational_graph_from_patologia(
 
     if fuente:
         fuente_norm = str(fuente).strip().lower()
-        individuos = [i for i in individuos if str(i.get("fuente") or "").strip().lower() == fuente_norm]
+        individuos = [
+            i
+            for i in individuos
+            if str(i.get("fuente") or "").strip().lower() == fuente_norm
+        ]
         allowed_ids = {i["id_individuo"] for i in individuos if i.get("id_individuo")}
-        mediciones = [m for m in mediciones if str(m.get("fuente") or "").strip().lower() == fuente_norm]
-        imagenes = [img for img in imagenes if str(img.get("fuente") or "").strip().lower() == fuente_norm]
+        mediciones = [
+            m
+            for m in mediciones
+            if str(m.get("fuente") or "").strip().lower() == fuente_norm
+        ]
+        imagenes = [
+            img
+            for img in imagenes
+            if str(img.get("fuente") or "").strip().lower() == fuente_norm
+        ]
         if allowed_ids:
             mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
-            imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
-    
+            imagenes = [
+                img for img in imagenes if img.get("id_individuo") in allowed_ids
+            ]
+
     # Filtrar individuos por patología
     individuos = filter_individuos_by_patologia(individuos, patologia)
     allowed_ids = {i["id_individuo"] for i in individuos}
@@ -1300,7 +1503,9 @@ def build_relational_graph_from_patologia(
     # Filtrar por sexo
     if sexo:
         s_norm = str(sexo).strip().lower()
-        individuos = [i for i in individuos if (i.get("sexo") or "").strip().lower() == s_norm]
+        individuos = [
+            i for i in individuos if (i.get("sexo") or "").strip().lower() == s_norm
+        ]
         allowed_ids = {i["id_individuo"] for i in individuos}
         mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
         imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
@@ -1312,7 +1517,9 @@ def build_relational_graph_from_patologia(
         mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
         imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
 
-    individuos_by_id = {i["id_individuo"]: i for i in individuos if i.get("id_individuo")}
+    individuos_by_id = {
+        i["id_individuo"]: i for i in individuos if i.get("id_individuo")
+    }
     images_by_person: dict[str, list[dict[str, Any]]] = {}
     for image in imagenes:
         person_id = image.get("id_individuo")
@@ -1332,12 +1539,14 @@ def build_relational_graph_from_patologia(
 
     # Agregar nodo central de patología
     patologia_id = f"patologia:{patologia}"
-    add_node({
-        "id": patologia_id,
-        "label": patologia,
-        "type": "patologia",
-        "patologia": patologia,
-    })
+    add_node(
+        {
+            "id": patologia_id,
+            "label": patologia,
+            "type": "patologia",
+            "patologia": patologia,
+        }
+    )
 
     # Agregar nodos de individuos
     for individuo in individuos:
@@ -1347,27 +1556,35 @@ def build_relational_graph_from_patologia(
         if person_id not in individuos_by_id:
             continue
         tumba_val = reference_map.get(person_id)
-        meta = morro1_metadata.get(person_id) or morro1_metadata.get(individuo.get("numero_cuerpo")) or {}
-        add_node({
-            "id": person_id,
-            "tumba": tumba_val,
-            "label": tumba_val or "",
-            "type": "individuo",
-            "sexo": individuo.get("sexo"),
-            "edad": individuo.get("edad"),
-            "estilo_momificacion": individuo.get("estilo_momificacion"),
-            "estado": individuo.get("estado"),
-            "id_documento": individuo.get("id_documento"),
-            "numero_cuerpo": individuo.get("numero_cuerpo"),
-            "referencia_datos": meta.get("referencia_datos"),
-            "matriz": meta.get("matriz"),
-        })
+        meta = (
+            morro1_metadata.get(person_id)
+            or morro1_metadata.get(individuo.get("numero_cuerpo"))
+            or {}
+        )
+        add_node(
+            {
+                "id": person_id,
+                "tumba": tumba_val,
+                "label": tumba_val or "",
+                "type": "individuo",
+                "sexo": individuo.get("sexo"),
+                "edad": individuo.get("edad"),
+                "estilo_momificacion": individuo.get("estilo_momificacion"),
+                "estado": individuo.get("estado"),
+                "id_documento": individuo.get("id_documento"),
+                "numero_cuerpo": individuo.get("numero_cuerpo"),
+                "referencia_datos": meta.get("referencia_datos"),
+                "matriz": meta.get("matriz"),
+            }
+        )
         # Conectar individuo a patología
-        edges.append({
-            "source": patologia_id,
-            "target": person_id,
-            "label": "presenta",
-        })
+        edges.append(
+            {
+                "source": patologia_id,
+                "target": person_id,
+                "label": "presenta",
+            }
+        )
 
     # Agregar mediciones (elementos) y conectarlos a individuos
     element_ids: set[str] = set()
@@ -1378,49 +1595,61 @@ def build_relational_graph_from_patologia(
         if elemento_name:
             element_id = f"elemento:{elemento_name}"
             if element_id not in element_ids:
-                add_node({
-                    "id": element_id,
-                    "label": elemento_name,
-                    "type": "elemento",
-                    "elemento": elemento_name,
-                })
+                add_node(
+                    {
+                        "id": element_id,
+                        "label": elemento_name,
+                        "type": "elemento",
+                        "elemento": elemento_name,
+                    }
+                )
                 element_ids.add(element_id)
         if person_id and elemento_name:
             if medicion.get("concentracion") is not None:
-                edges.append({
-                    "source": person_id,
-                    "target": f"elemento:{elemento_name}",
-                    "label": "mide",
-                    "elemento": elemento_name,
-                    "concentracion": medicion.get("concentracion"),
-                    "unidad": medicion.get("unidad"),
-                    "estado": medicion.get("estado"),
-                    "referencia_datos": meta.get("referencia_datos"),
-                    "matriz": meta.get("matriz"),
-                })
+                edges.append(
+                    {
+                        "source": person_id,
+                        "target": f"elemento:{elemento_name}",
+                        "label": "mide",
+                        "elemento": elemento_name,
+                        "concentracion": medicion.get("concentracion"),
+                        "unidad": medicion.get("unidad"),
+                        "estado": medicion.get("estado"),
+                        "referencia_datos": meta.get("referencia_datos"),
+                        "matriz": meta.get("matriz"),
+                    }
+                )
 
     # Agregar imágenes
     for person_id, person_images in images_by_person.items():
         if not person_id:
             continue
         for image in person_images:
-            image_id = image.get("id_imagen") or f"imagen:{person_id}:{len(person_images)}"
+            image_id = (
+                image.get("id_imagen") or f"imagen:{person_id}:{len(person_images)}"
+            )
             image_url = image.get("url") or image.get("relative_path")
             if image_url and not image_url.startswith("/"):
                 image_url = f"/files/imagenes/{image_url}"
-            add_node({
-                "id": image_id,
-                "label": image.get("titulo") or image.get("filename_original") or "Imagen",
-                "type": "imagen",
-                "url": image_url,
-                "id_individuo": person_id,
-            })
-            edges.append({
-                "source": person_id,
-                "target": image_id,
-                "label": "tiene_imagen",
-                "url": image_url,
-            })
+            add_node(
+                {
+                    "id": image_id,
+                    "label": image.get("titulo")
+                    or image.get("filename_original")
+                    or "Imagen",
+                    "type": "imagen",
+                    "url": image_url,
+                    "id_individuo": person_id,
+                }
+            )
+            edges.append(
+                {
+                    "source": person_id,
+                    "target": image_id,
+                    "label": "tiene_imagen",
+                    "url": image_url,
+                }
+            )
 
     return {
         "mode": "relational",
@@ -1542,18 +1771,34 @@ def build_relational_graph_all_patologias(
 
     if fuente:
         fuente_norm = str(fuente).strip().lower()
-        individuos = [i for i in individuos if str(i.get("fuente") or "").strip().lower() == fuente_norm]
+        individuos = [
+            i
+            for i in individuos
+            if str(i.get("fuente") or "").strip().lower() == fuente_norm
+        ]
         allowed_ids = {i["id_individuo"] for i in individuos if i.get("id_individuo")}
-        mediciones = [m for m in mediciones if str(m.get("fuente") or "").strip().lower() == fuente_norm]
-        imagenes = [img for img in imagenes if str(img.get("fuente") or "").strip().lower() == fuente_norm]
+        mediciones = [
+            m
+            for m in mediciones
+            if str(m.get("fuente") or "").strip().lower() == fuente_norm
+        ]
+        imagenes = [
+            img
+            for img in imagenes
+            if str(img.get("fuente") or "").strip().lower() == fuente_norm
+        ]
         if allowed_ids:
             mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
-            imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
+            imagenes = [
+                img for img in imagenes if img.get("id_individuo") in allowed_ids
+            ]
 
     # Filtrar por sexo
     if sexo:
         s_norm = str(sexo).strip().lower()
-        individuos = [i for i in individuos if (i.get("sexo") or "").strip().lower() == s_norm]
+        individuos = [
+            i for i in individuos if (i.get("sexo") or "").strip().lower() == s_norm
+        ]
         allowed_ids = {i["id_individuo"] for i in individuos}
         mediciones = [m for m in mediciones if m.get("id_individuo") in allowed_ids]
         imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
@@ -1566,7 +1811,9 @@ def build_relational_graph_all_patologias(
         imagenes = [img for img in imagenes if img.get("id_individuo") in allowed_ids]
 
     reference_map = _load_reference_map()
-    individuos_by_id = {i["id_individuo"]: i for i in individuos if i.get("id_individuo")}
+    individuos_by_id = {
+        i["id_individuo"]: i for i in individuos if i.get("id_individuo")
+    }
 
     # Obtener todas las patologías disponibles
     patologia_cases = _load_paleopatologia_cases()
@@ -1578,7 +1825,7 @@ def build_relational_graph_all_patologias(
         for patologia_name, value in paleo.items():
             if _pathology_present(case, patologia_name):
                 patologias_set.add(patologia_name)
-    
+
     patologias = sorted(list(patologias_set))
 
     nodes: list[dict[str, Any]] = []
@@ -1597,19 +1844,21 @@ def build_relational_graph_all_patologias(
     for patologia in patologias:
         patologia_id = f"patologia:{patologia}"
         patologia_ids.append(patologia_id)
-        add_node({
-            "id": patologia_id,
-            "label": patologia,
-            "type": "patologia",
-            "patologia": patologia,
-        })
+        add_node(
+            {
+                "id": patologia_id,
+                "label": patologia,
+                "type": "patologia",
+                "patologia": patologia,
+            }
+        )
 
     # Para cada patología, agregar individuos que la tienen
     for patologia in patologias:
         patologia_id = f"patologia:{patologia}"
         # Filtrar individuos que tienen esta patología
         filtered_individuos = filter_individuos_by_patologia(individuos, patologia)
-        
+
         for individuo in filtered_individuos:
             person_id = individuo.get("id_individuo")
             if not person_id:
@@ -1618,26 +1867,30 @@ def build_relational_graph_all_patologias(
                 continue
             tumba_val = reference_map.get(person_id)
             meta = morro1_metadata.get(person_id, {})
-            add_node({
-                "id": person_id,
-                "tumba": tumba_val,
-                "label": tumba_val or "",
-                "type": "individuo",
-                "sexo": individuo.get("sexo"),
-                "edad": individuo.get("edad"),
-                "estilo_momificacion": individuo.get("estilo_momificacion"),
-                "estado": individuo.get("estado"),
-                "id_documento": individuo.get("id_documento"),
-                "numero_cuerpo": individuo.get("numero_cuerpo"),
-                "referencia_datos": meta.get("referencia_datos"),
-                "matriz": meta.get("matriz"),
-            })
+            add_node(
+                {
+                    "id": person_id,
+                    "tumba": tumba_val,
+                    "label": tumba_val or "",
+                    "type": "individuo",
+                    "sexo": individuo.get("sexo"),
+                    "edad": individuo.get("edad"),
+                    "estilo_momificacion": individuo.get("estilo_momificacion"),
+                    "estado": individuo.get("estado"),
+                    "id_documento": individuo.get("id_documento"),
+                    "numero_cuerpo": individuo.get("numero_cuerpo"),
+                    "referencia_datos": meta.get("referencia_datos"),
+                    "matriz": meta.get("matriz"),
+                }
+            )
             # Conectar individuo a patología
-            edges.append({
-                "source": patologia_id,
-                "target": person_id,
-                "label": "presenta",
-            })
+            edges.append(
+                {
+                    "source": patologia_id,
+                    "target": person_id,
+                    "label": "presenta",
+                }
+            )
 
     # Agregar mediciones (elementos)
     for medicion in mediciones:
@@ -1647,25 +1900,29 @@ def build_relational_graph_all_patologias(
         if elemento_name:
             element_id = f"elemento:{elemento_name}"
             if element_id not in seen_nodes:
-                add_node({
-                    "id": element_id,
-                    "label": elemento_name,
-                    "type": "elemento",
-                    "elemento": elemento_name,
-                })
+                add_node(
+                    {
+                        "id": element_id,
+                        "label": elemento_name,
+                        "type": "elemento",
+                        "elemento": elemento_name,
+                    }
+                )
         if person_id and elemento_name:
             if medicion.get("concentracion") is not None:
-                edges.append({
-                    "source": person_id,
-                    "target": f"elemento:{elemento_name}",
-                    "label": "mide",
-                    "elemento": elemento_name,
-                    "concentracion": medicion.get("concentracion"),
-                    "unidad": medicion.get("unidad"),
-                    "estado": medicion.get("estado"),
-                    "referencia_datos": meta.get("referencia_datos"),
-                    "matriz": meta.get("matriz"),
-                })
+                edges.append(
+                    {
+                        "source": person_id,
+                        "target": f"elemento:{elemento_name}",
+                        "label": "mide",
+                        "elemento": elemento_name,
+                        "concentracion": medicion.get("concentracion"),
+                        "unidad": medicion.get("unidad"),
+                        "estado": medicion.get("estado"),
+                        "referencia_datos": meta.get("referencia_datos"),
+                        "matriz": meta.get("matriz"),
+                    }
+                )
 
     return {
         "mode": "relational",
@@ -1689,7 +1946,9 @@ def _load_morro1_reference_cases() -> list[dict[str, Any]]:
         with path.open("r", encoding="utf-8") as fh:
             payload = json.load(fh)
         if isinstance(payload, dict):
-            if isinstance(payload.get("morro_1"), dict) and isinstance(payload["morro_1"].get("casos"), list):
+            if isinstance(payload.get("morro_1"), dict) and isinstance(
+                payload["morro_1"].get("casos"), list
+            ):
                 return payload["morro_1"]["casos"]
             if isinstance(payload.get("casos"), list):
                 return payload["casos"]
@@ -1709,7 +1968,12 @@ def build_morro1_reference_graph(
     """
     cases = _load_morro1_reference_cases()
     if not cases:
-        return {"mode": "reference", "nodes": [], "edges": [], "summary": {"individuos": 0}}
+        return {
+            "mode": "reference",
+            "nodes": [],
+            "edges": [],
+            "summary": {"individuos": 0},
+        }
 
     # Cargar metadatos de análisis de Morro1 (referencia_datos, matriz)
     morro1_metadata = _load_morro1_analysis_metadata()
@@ -1741,11 +2005,13 @@ def build_morro1_reference_graph(
 
     # Nodo central "MORRO1"
     site_id = "morro1:site"
-    nodes.append({
-        "id": site_id,
-        "label": "MORRO1",
-        "type": "patologia",   # se usa el mismo tipo que en Azapa para mantener compatibilidad
-    })
+    nodes.append(
+        {
+            "id": site_id,
+            "label": "MORRO1",
+            "type": "patologia",  # se usa el mismo tipo que en Azapa para mantener compatibilidad
+        }
+    )
     seen.add(site_id)
 
     for case in cases:
@@ -1758,27 +2024,31 @@ def build_morro1_reference_graph(
         # Obtener metadatos para este caso
         meta = morro1_metadata.get(case_id, {})
 
-        nodes.append({
-            "id": case_id,
-            "label": str(tumba),
-            "type": "individuo",
-            "sexo": _canonical_morro1_sexo(individuo.get("sexo")),
-            "edad": _canonical_morro1_edad(
-                individuo.get("grupo_edad") or individuo.get("edad")
-            ),
-            "tumba": str(tumba),
-            "id_documento": case_id,
-            "numero_cuerpo": str(tumba),
-            "id_individuo": case_id,
-            # Añadir metadatos si existen
-            "referencia_datos": meta.get("referencia_datos"),
-            "matriz": meta.get("matriz"),
-        })
-        edges.append({
-            "source": site_id,
-            "target": case_id,
-            "label": "presenta",
-        })
+        nodes.append(
+            {
+                "id": case_id,
+                "label": str(tumba),
+                "type": "individuo",
+                "sexo": _canonical_morro1_sexo(individuo.get("sexo")),
+                "edad": _canonical_morro1_edad(
+                    individuo.get("grupo_edad") or individuo.get("edad")
+                ),
+                "tumba": str(tumba),
+                "id_documento": case_id,
+                "numero_cuerpo": str(tumba),
+                "id_individuo": case_id,
+                # Añadir metadatos si existen
+                "referencia_datos": meta.get("referencia_datos"),
+                "matriz": meta.get("matriz"),
+            }
+        )
+        edges.append(
+            {
+                "source": site_id,
+                "target": case_id,
+                "label": "presenta",
+            }
+        )
 
     return {
         "mode": "reference",
@@ -1788,6 +2058,7 @@ def build_morro1_reference_graph(
             "individuos": len(cases),
         },
     }
+
 
 def build_morro1_patologia_graph(
     patologia: str,
@@ -1807,7 +2078,12 @@ def build_morro1_patologia_graph(
                 matching_ids.add(pid)
 
     if not matching_ids:
-        return {"mode": "patologia", "nodes": [], "edges": [], "summary": {"individuos": 0}}
+        return {
+            "mode": "patologia",
+            "nodes": [],
+            "edges": [],
+            "summary": {"individuos": 0},
+        }
 
     # Filtrar casos de referencia y aplicar filtros de sexo/edad
     filtered_cases = []
@@ -1840,12 +2116,14 @@ def build_morro1_patologia_graph(
 
     # Nodo central de patología
     patologia_id = f"patologia:{patologia}"
-    add_node({
-        "id": patologia_id,
-        "label": patologia,
-        "type": "patologia",
-        "patologia": patologia,
-    })
+    add_node(
+        {
+            "id": patologia_id,
+            "label": patologia,
+            "type": "patologia",
+            "patologia": patologia,
+        }
+    )
 
     # Nodos individuos y aristas
     for case in filtered_cases:
@@ -1853,26 +2131,30 @@ def build_morro1_patologia_graph(
         tumba = case.get("tumba") or case.get("referencia") or case_id
         individuo = case.get("individuo") or {}
         meta = morro1_metadata.get(case_id, {})
-        add_node({
-            "id": case_id,
-            "tumba": tumba,
-            "label": tumba or "",
-            "type": "individuo",
-            "sexo": individuo.get("sexo"),
-            "edad": individuo.get("edad") or individuo.get("grupo_edad"),
-            "id_documento": case_id,
-            "numero_cuerpo": tumba,
-            "id_individuo": case_id,
-            "referencia_datos": meta.get("referencia_datos"),
-            "matriz": meta.get("matriz"),
-            "estilo_momificacion": None,  # no disponible en JSON
-            "estado": "borrador",         # valor por defecto
-        })
-        edges.append({
-            "source": patologia_id,
-            "target": case_id,
-            "label": "presenta",
-        })
+        add_node(
+            {
+                "id": case_id,
+                "tumba": tumba,
+                "label": tumba or "",
+                "type": "individuo",
+                "sexo": individuo.get("sexo"),
+                "edad": individuo.get("edad") or individuo.get("grupo_edad"),
+                "id_documento": case_id,
+                "numero_cuerpo": tumba,
+                "id_individuo": case_id,
+                "referencia_datos": meta.get("referencia_datos"),
+                "matriz": meta.get("matriz"),
+                "estilo_momificacion": None,  # no disponible en JSON
+                "estado": "borrador",  # valor por defecto
+            }
+        )
+        edges.append(
+            {
+                "source": patologia_id,
+                "target": case_id,
+                "label": "presenta",
+            }
+        )
 
     return {
         "mode": "patologia",
@@ -1880,6 +2162,7 @@ def build_morro1_patologia_graph(
         "edges": edges,
         "summary": {"individuos": len(filtered_cases)},
     }
+
 
 def build_morro1_all_patologias_graph(
     sexo: Optional[str] = None,
@@ -1899,7 +2182,12 @@ def build_morro1_all_patologias_graph(
     patologias = sorted(patologias_set)
 
     if not patologias:
-        return {"mode": "patologias", "nodes": [], "edges": [], "summary": {"patologias": 0, "individuos": 0}}
+        return {
+            "mode": "patologias",
+            "nodes": [],
+            "edges": [],
+            "summary": {"patologias": 0, "individuos": 0},
+        }
 
     # Cargar metadatos de análisis
     morro1_metadata = _load_morro1_analysis_metadata()
@@ -1919,12 +2207,14 @@ def build_morro1_all_patologias_graph(
     for pat in patologias:
         pat_id = f"patologia:{pat}"
         patologia_ids.append(pat_id)
-        add_node({
-            "id": pat_id,
-            "label": pat,
-            "type": "patologia",
-            "patologia": pat,
-        })
+        add_node(
+            {
+                "id": pat_id,
+                "label": pat,
+                "type": "patologia",
+                "patologia": pat,
+            }
+        )
 
     # Para cada patología, obtener los casos que la tienen
     for pat in patologias:
@@ -1951,26 +2241,30 @@ def build_morro1_all_patologias_graph(
                     continue
             tumba = case.get("tumba") or case.get("referencia") or case_id
             meta = morro1_metadata.get(case_id, {})
-            add_node({
-                "id": case_id,
-                "tumba": tumba,
-                "label": tumba or "",
-                "type": "individuo",
-                "sexo": individuo.get("sexo"),
-                "edad": individuo.get("edad") or individuo.get("grupo_edad"),
-                "id_documento": case_id,
-                "numero_cuerpo": tumba,
-                "id_individuo": case_id,
-                "referencia_datos": meta.get("referencia_datos"),
-                "matriz": meta.get("matriz"),
-                "estilo_momificacion": None,
-                "estado": "borrador",
-            })
-            edges.append({
-                "source": f"patologia:{pat}",
-                "target": case_id,
-                "label": "presenta",
-            })
+            add_node(
+                {
+                    "id": case_id,
+                    "tumba": tumba,
+                    "label": tumba or "",
+                    "type": "individuo",
+                    "sexo": individuo.get("sexo"),
+                    "edad": individuo.get("edad") or individuo.get("grupo_edad"),
+                    "id_documento": case_id,
+                    "numero_cuerpo": tumba,
+                    "id_individuo": case_id,
+                    "referencia_datos": meta.get("referencia_datos"),
+                    "matriz": meta.get("matriz"),
+                    "estilo_momificacion": None,
+                    "estado": "borrador",
+                }
+            )
+            edges.append(
+                {
+                    "source": f"patologia:{pat}",
+                    "target": case_id,
+                    "label": "presenta",
+                }
+            )
 
     return {
         "mode": "patologias",
@@ -1982,11 +2276,15 @@ def build_morro1_all_patologias_graph(
         },
     }
 
+
 # ============================================================
 # MORRO1 - Grafo generalizado multi-elemento (espejo de AZAPA)
 # ============================================================
 
-def _load_morro1_analysis_cases(analysis_path: Optional[Path] = None) -> list[dict[str, Any]]:
+
+def _load_morro1_analysis_cases(
+    analysis_path: Optional[Path] = None,
+) -> list[dict[str, Any]]:
     if not analysis_path or not analysis_path.exists():
         return []
     try:
@@ -2023,7 +2321,9 @@ def _canonical_morro1_edad(value: Optional[str]) -> str:
     return str(value or "").strip().lower()
 
 
-def _filter_morro1_cases_by_sexo(cases: list[dict[str, Any]], sexo: Optional[str] = None) -> list[dict[str, Any]]:
+def _filter_morro1_cases_by_sexo(
+    cases: list[dict[str, Any]], sexo: Optional[str] = None
+) -> list[dict[str, Any]]:
     normalized = _canonical_morro1_sexo(sexo)
     if not normalized:
         return cases
@@ -2035,20 +2335,26 @@ def _filter_morro1_cases_by_sexo(cases: list[dict[str, Any]], sexo: Optional[str
     return out
 
 
-def _filter_morro1_cases_by_edad(cases: list[dict[str, Any]], edad: Optional[str] = None) -> list[dict[str, Any]]:
+def _filter_morro1_cases_by_edad(
+    cases: list[dict[str, Any]], edad: Optional[str] = None
+) -> list[dict[str, Any]]:
     normalized = _canonical_morro1_edad(edad)
     if not normalized:
         return cases
     out = []
     for case in cases:
         individuo = case.get("individuo") or {}
-        case_edad = str(individuo.get("grupo_edad") or individuo.get("edad") or "").strip()
+        case_edad = str(
+            individuo.get("grupo_edad") or individuo.get("edad") or ""
+        ).strip()
         if _canonical_morro1_edad(case_edad) == normalized:
             out.append(case)
     return out
 
 
-def _filter_morro1_analysis_cases_by_matriz(cases: list[dict[str, Any]], matriz: Optional[str] = None) -> list[dict[str, Any]]:
+def _filter_morro1_analysis_cases_by_matriz(
+    cases: list[dict[str, Any]], matriz: Optional[str] = None
+) -> list[dict[str, Any]]:
     normalized = _normalize_filter_value(matriz)
     if not normalized:
         return cases
@@ -2086,7 +2392,9 @@ def get_morro1_reference_age_options() -> list[str]:
     return sorted(options, key=lambda value: (preferred_order.get(value, 99), value))
 
 
-def get_morro1_analysis_matriz_options(analysis_paths: Optional[list[Path]] = None) -> list[str]:
+def get_morro1_analysis_matriz_options(
+    analysis_paths: Optional[list[Path]] = None,
+) -> list[str]:
     if not analysis_paths:
         analysis_paths = MORRO1_ANALYSIS_PATHS
     options, seen = [], set()
@@ -2102,7 +2410,9 @@ def get_morro1_analysis_matriz_options(analysis_paths: Optional[list[Path]] = No
     return sorted(options, key=lambda x: str(x).lower())
 
 
-def get_morro1_available_elements(analysis_paths: Optional[list[Path]] = None) -> list[str]:
+def get_morro1_available_elements(
+    analysis_paths: Optional[list[Path]] = None,
+) -> list[str]:
     if not analysis_paths:
         analysis_paths = MORRO1_ANALYSIS_PATHS
     elements: list[str] = []
@@ -2129,11 +2439,17 @@ def build_morro1_table_rows(
     cases = _filter_morro1_cases_by_edad(
         _filter_morro1_cases_by_sexo(_load_morro1_reference_cases(), sexo), edad
     )
-    case_lookup = {str(c.get("id") or "").strip(): c for c in cases if str(c.get("id") or "").strip()}
+    case_lookup = {
+        str(c.get("id") or "").strip(): c
+        for c in cases
+        if str(c.get("id") or "").strip()
+    }
 
     rows: list[dict[str, Any]] = []
     for path in analysis_paths:
-        for analysis_case in _filter_morro1_analysis_cases_by_matriz(_load_morro1_analysis_cases(path), matriz):
+        for analysis_case in _filter_morro1_analysis_cases_by_matriz(
+            _load_morro1_analysis_cases(path), matriz
+        ):
             case_id = str(analysis_case.get("id") or "").strip()
             reference_case = case_lookup.get(case_id)
             if not case_id or not reference_case:
@@ -2148,7 +2464,9 @@ def build_morro1_table_rows(
                 if not nombre_elemento:
                     continue
                 element_name = str(nombre_elemento)
-                if elemento and _normalize_azapa_element_filter(element_name) != _normalize_azapa_element_filter(elemento):
+                if elemento and _normalize_azapa_element_filter(
+                    element_name
+                ) != _normalize_azapa_element_filter(elemento):
                     continue
                 if isinstance(elemento_data, dict):
                     value = elemento_data.get("valor")
@@ -2156,20 +2474,28 @@ def build_morro1_table_rows(
                 else:
                     value = elemento_data
                     unit = "ppm"
-                if not _azapa_measurement_has_value(elemento_data if isinstance(elemento_data, dict) else value):
+                if not _azapa_measurement_has_value(
+                    elemento_data if isinstance(elemento_data, dict) else value
+                ):
                     continue
-                rows.append({
-                    "id_caso": case_id,
-                    "caso": str(reference_case.get("tumba") or reference_case.get("referencia") or case_id),
-                    "sexo": _canonical_morro1_sexo(individuo.get("sexo")),
-                    "edad": _canonical_morro1_edad(
-                        individuo.get("grupo_edad") or individuo.get("edad")
-                    ),
-                    "elemento": element_name,
-                    "concentracion": value,
-                    "unidad": unit,
-                    "matriz": matriz_value,
-                })
+                rows.append(
+                    {
+                        "id_caso": case_id,
+                        "caso": str(
+                            reference_case.get("tumba")
+                            or reference_case.get("referencia")
+                            or case_id
+                        ),
+                        "sexo": _canonical_morro1_sexo(individuo.get("sexo")),
+                        "edad": _canonical_morro1_edad(
+                            individuo.get("grupo_edad") or individuo.get("edad")
+                        ),
+                        "elemento": element_name,
+                        "concentracion": value,
+                        "unidad": unit,
+                        "matriz": matriz_value,
+                    }
+                )
     return rows
 
 
@@ -2236,10 +2562,13 @@ def build_morro1_pca(
             "Se necesitan al menos tres casos con mediciones completas para los elementos seleccionados"
         )
 
-    matrix = np.asarray([
-        [float(np.mean(values_by_case[case_id][element])) for element in selected]
-        for case_id in complete_cases
-    ], dtype=float)
+    matrix = np.asarray(
+        [
+            [float(np.mean(values_by_case[case_id][element])) for element in selected]
+            for case_id in complete_cases
+        ],
+        dtype=float,
+    )
     means = matrix.mean(axis=0)
     standard_deviations = matrix.std(axis=0)
     constant_elements = [
@@ -2249,34 +2578,39 @@ def build_morro1_pca(
     ]
     if constant_elements:
         raise ValueError(
-            "No se puede calcular el PCA: no hay variacion en " + ", ".join(constant_elements)
+            "No se puede calcular el PCA: no hay variacion en "
+            + ", ".join(constant_elements)
         )
 
     standardized = (matrix - means) / standard_deviations
     left, singular_values, components = np.linalg.svd(standardized, full_matrices=False)
     scores = left * singular_values
-    variances = (singular_values ** 2) / max(len(complete_cases) - 1, 1)
+    variances = (singular_values**2) / max(len(complete_cases) - 1, 1)
     total_variance = float(variances.sum())
-    explained = variances / total_variance if total_variance else np.zeros_like(variances)
+    explained = (
+        variances / total_variance if total_variance else np.zeros_like(variances)
+    )
 
     points = []
     for index, case_id in enumerate(complete_cases):
         meta = case_metadata[case_id]
-        points.append({
-            "id": case_id,
-            "id_individuo": case_id,
-            "label": meta["caso"],
-            "caso": meta["caso"],
-            "type": "individuo",
-            "sexo": meta["sexo"],
-            "edad": meta["edad"],
-            "pc1": float(scores[index, 0]),
-            "pc2": float(scores[index, 1]),
-            "mediciones": {
-                element: {"valor": float(matrix[index, element_index])}
-                for element_index, element in enumerate(selected)
-            },
-        })
+        points.append(
+            {
+                "id": case_id,
+                "id_individuo": case_id,
+                "label": meta["caso"],
+                "caso": meta["caso"],
+                "type": "individuo",
+                "sexo": meta["sexo"],
+                "edad": meta["edad"],
+                "pc1": float(scores[index, 0]),
+                "pc2": float(scores[index, 1]),
+                "mediciones": {
+                    element: {"valor": float(matrix[index, element_index])}
+                    for element_index, element in enumerate(selected)
+                },
+            }
+        )
 
     loadings = [
         {
@@ -2343,7 +2677,9 @@ def build_morro1_element_graph(
     available_elements: list[str] = []
 
     for path in analysis_paths:
-        for case in _filter_morro1_analysis_cases_by_matriz(_load_morro1_analysis_cases(path), matriz):
+        for case in _filter_morro1_analysis_cases_by_matriz(
+            _load_morro1_analysis_cases(path), matriz
+        ):
             case_id = str(case.get("id") or "").strip()
             if not case_id:
                 continue
@@ -2366,7 +2702,9 @@ def build_morro1_element_graph(
                 name = str(name)
                 if name not in available_elements:
                     available_elements.append(name)
-                element_metadata.setdefault(name, {"referencias": set(), "matrices": set()})
+                element_metadata.setdefault(
+                    name, {"referencias": set(), "matrices": set()}
+                )
                 if ref_data:
                     element_metadata[name]["referencias"].add(ref_data)
                 if mat:
@@ -2377,11 +2715,15 @@ def build_morro1_element_graph(
                 else:
                     value = edata
                     unit = "ppm"
-                if not _azapa_measurement_has_value(edata if isinstance(edata, dict) else value):
+                if not _azapa_measurement_has_value(
+                    edata if isinstance(edata, dict) else value
+                ):
                     continue
                 case_measurements[name] = {"valor": value, "unidad": unit}
 
-    selected_elements = available_elements if is_red_completa else [str(elemento).strip()]
+    selected_elements = (
+        available_elements if is_red_completa else [str(elemento).strip()]
+    )
 
     for idx, case in enumerate(cases, start=1):
         case_id = str(case.get("id") or "").strip() or f"morro1_case_{idx}"
@@ -2399,33 +2741,59 @@ def build_morro1_element_graph(
                 meta_elem = element_metadata.get(elemento_name, {})
                 refs = " | ".join(sorted(meta_elem.get("referencias", [])))
                 mats = " | ".join(sorted(meta_elem.get("matrices", [])))
-                add_node({
-                    "id": element_id, "label": elemento_name, "type": "elemento",
-                    "elemento": elemento_name, "referencia_datos": refs or None, "matriz": mats or None,
-                })
+                add_node(
+                    {
+                        "id": element_id,
+                        "label": elemento_name,
+                        "type": "elemento",
+                        "elemento": elemento_name,
+                        "referencia_datos": refs or None,
+                        "matriz": mats or None,
+                    }
+                )
             measure = measurements[elemento_name]
-            valid_edges.append({
-                "source": case_id, "target": element_id, "label": "mide",
-                "elemento": elemento_name,
-                "concentracion": measure.get("valor"), "unidad": measure.get("unidad"),
-                "referencia_datos": meta.get("referencia_datos"), "matriz": meta.get("matriz"),
-            })
+            valid_edges.append(
+                {
+                    "source": case_id,
+                    "target": element_id,
+                    "label": "mide",
+                    "elemento": elemento_name,
+                    "concentracion": measure.get("valor"),
+                    "unidad": measure.get("unidad"),
+                    "referencia_datos": meta.get("referencia_datos"),
+                    "matriz": meta.get("matriz"),
+                }
+            )
 
         if not valid_edges:
             continue
 
-        add_node({
-            "id": case_id, "tumba": str(tumba), "label": str(tumba), "type": "individuo",
-            "sexo": _canonical_morro1_sexo(individuo.get("sexo")),
-            "edad": _canonical_morro1_edad(individuo.get("grupo_edad") or individuo.get("edad")),
-            "id_documento": case_id, "numero_cuerpo": str(tumba), "id_individuo": case_id,
-            "referencia_datos": meta.get("referencia_datos"), "matriz": meta.get("matriz"),
-        })
+        add_node(
+            {
+                "id": case_id,
+                "tumba": str(tumba),
+                "label": str(tumba),
+                "type": "individuo",
+                "sexo": _canonical_morro1_sexo(individuo.get("sexo")),
+                "edad": _canonical_morro1_edad(
+                    individuo.get("grupo_edad") or individuo.get("edad")
+                ),
+                "id_documento": case_id,
+                "numero_cuerpo": str(tumba),
+                "id_individuo": case_id,
+                "referencia_datos": meta.get("referencia_datos"),
+                "matriz": meta.get("matriz"),
+            }
+        )
         edges.extend(valid_edges)
 
     return {
         "mode": "relational",
         "nodes": nodes,
         "edges": edges,
-        "summary": {"individuos": len(cases), "tumbas": len(cases), "elementos": len(selected_elements)},
+        "summary": {
+            "individuos": len(cases),
+            "tumbas": len(cases),
+            "elementos": len(selected_elements),
+        },
     }

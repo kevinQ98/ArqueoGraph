@@ -3,35 +3,18 @@ import * as d3 from "d3";
 import { checkAndFix } from "../lib/utils";
 
 /**
- * InteractiveGraph
- * ------------------------------------------------------------------
- * Reemplazo de GraphSvg.jsx. Usa d3-force para el layout, d3-zoom
- * para pan/zoom y d3-drag para mover nodos. Todo se pinta de forma
- * imperativa (selection.join) en cada "tick" de la simulación, así
- * que no depende de re-renders de React durante el drag/zoom.
- *
- * Reglas de diseño (ajustes pedidos):
- * 1) La concentración SOLO se codifica con la posición radial
- *    (distancia al centro). El tamaño del círculo ya NO depende de
- *    la concentración (es fijo, o depende de nº de mediciones si
- *    se pasa `sizeBy="mediciones"`).
- * 2) La escala radial es logarítmica (d3.scaleLog) sobre percentiles
- *    reales de los datos, así un outlier no aplasta al resto contra
- *    el centro.
- * 3) La patología NUNCA es un nodo-centro que compite por el layout.
- *    Se representa como anillo(s) de color alrededor del individuo,
- *    igual en todos los modos. El "centro" del layout radial es
- *    siempre el elemento químico (o la referencia, en Azapa).
- *
- * Props:
- *  - graph: { nodes, edges, mode, summary }
- *  - elemento: string (elemento activo, para "distancia")
- *  - mode: "distancia" | "similitud" | "disperso"
- *  - onSelect(node)
- *  - selectedNodeId
- *  - showElementEdges
- *  - sizeBy: "fixed" | "mediciones"  (default "fixed")
- *  - height (default 620)
+ * Grafo interactivo con d3-force, zoom, drag y tooltips.
+ * @param {Object} props
+ * @param {Object} props.graph - Grafo con nodes y edges.
+ * @param {string} props.elemento - Elemento activo (para codificar concentración).
+ * @param {string} props.mode - "distancia" | "similitud" | "disperso".
+ * @param {Function} props.onSelect - Callback al seleccionar un nodo.
+ * @param {string} props.selectedNodeId - ID del nodo seleccionado.
+ * @param {boolean} props.showElementEdges - Muestra aristas de elementos.
+ * @param {string} props.sizeBy - "fixed" | "mediciones" (tamaño de nodos).
+ * @param {number} props.height - Altura del SVG.
+ * @param {boolean} props.hideElementNodes - Oculta nodos de elementos.
+ * @returns {JSX.Element}
  */
 export function InteractiveGraph({
     graph,

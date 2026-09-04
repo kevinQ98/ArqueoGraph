@@ -44,6 +44,16 @@ MATRIX_SPECS = {
 
 
 def _normalized_text(value: Any) -> str:
+    """
+    Normaliza texto eliminando acentos y caracteres no alfanuméricos.
+
+    Args:
+        value (Any): Texto a normalizar.
+
+    Returns:
+        str: Texto normalizado en minúsculas con guiones bajos.
+    """
+
     text = unicodedata.normalize("NFKD", str(value or "").strip().lower())
     text = "".join(char for char in text if not unicodedata.combining(char))
     return re.sub(r"[^a-z0-9]+", "_", text).strip("_")
@@ -67,7 +77,9 @@ def _stable_digest(*parts: Any) -> str:
     return hashlib.sha1(raw.encode("utf-8")).hexdigest()[:12]
 
 
-def _reference_title(citation: str | None, dataset: str, laboratory: str | None, method: str | None) -> str:
+def _reference_title(
+    citation: str | None, dataset: str, laboratory: str | None, method: str | None
+) -> str:
     if citation:
         return citation if len(citation) <= 110 else citation[:107].rstrip() + "..."
     if laboratory and method:
@@ -107,10 +119,14 @@ def _legacy_dataset_catalog() -> dict[str, list[dict[str, Any]]]:
                 analysis = case.get("analisis_quimicos") or {}
                 if not isinstance(analysis, dict):
                     continue
-                metadata["citation"] = metadata["citation"] or analysis.get("referencia_datos")
+                metadata["citation"] = metadata["citation"] or analysis.get(
+                    "referencia_datos"
+                )
                 metadata["matrix"] = metadata["matrix"] or analysis.get("matriz")
                 metadata["method"] = metadata["method"] or analysis.get("metodo")
-                metadata["laboratory"] = metadata["laboratory"] or analysis.get("laboratorio")
+                metadata["laboratory"] = metadata["laboratory"] or analysis.get(
+                    "laboratorio"
+                )
                 metadata["date"] = metadata["date"] or analysis.get("fecha")
                 if metadata["citation"] and metadata["matrix"]:
                     break
@@ -121,6 +137,19 @@ def _legacy_dataset_catalog() -> dict[str, list[dict[str, Any]]]:
 
 
 def _upsert_matrix(conn, raw_matrix: Any) -> tuple[str, dict[str, str]]:
+    """
+    Inserta o actualiza una matriz biológica en la tabla matrices.
+
+    Si el alias (raw_matrix) ya existe, se reutiliza. Si no, se crea.
+
+    Args:
+        conn: Conexión SQLite.
+        raw_matrix (Any): Nombre de la matriz (ej. "costilla", "cabello").
+
+    Returns:
+        tuple: (id_matriz, spec dict con código, nombre, categoría)
+    """
+
     alias = _normalized_text(raw_matrix) or "sin_especificar"
     spec = _matrix_spec(raw_matrix)
     matrix_id = f"matriz_{_safe_id(spec['codigo']).lower()}"
@@ -144,7 +173,11 @@ def _upsert_matrix(conn, raw_matrix: Any) -> tuple[str, dict[str, str]]:
             alias_original = excluded.alias_original,
             id_matriz = excluded.id_matriz
         """,
-        (alias, str(raw_matrix or "Sin especificar").strip() or "Sin especificar", matrix_id),
+        (
+            alias,
+            str(raw_matrix or "Sin especificar").strip() or "Sin especificar",
+            matrix_id,
+        ),
     )
     return matrix_id, spec
 
@@ -159,11 +192,31 @@ def _upsert_reference(
     method: str | None,
     date: str | None,
 ) -> str:
-    reference_key = _normalized_text(citation) if citation else _normalized_text(
-        f"{source}_{dataset}_{laboratory}_{method}_{date}"
+    """
+    Inserta o actualiza una referencia analítica (bibliográfica o de laboratorio).
+
+    Args:
+        conn: Conexión SQLite.
+        source (str): Fuente del sitio (ej. "morro1").
+        dataset (str): Nombre del dataset original.
+        citation (str | None): Cita bibliográfica.
+        laboratory (str | None): Laboratorio que realizó el análisis.
+        method (str | None): Método analítico.
+        date (str | None): Fecha del análisis.
+
+    Returns:
+        str: id_referencia generado o existente.
+    """
+
+    reference_key = (
+        _normalized_text(citation)
+        if citation
+        else _normalized_text(f"{source}_{dataset}_{laboratory}_{method}_{date}")
     )
     reference_key = reference_key or f"{source}_sin_referencia"
-    reference_id = f"ref_{_safe_id(source).lower()}_{_stable_digest(source, reference_key)}"
+    reference_id = (
+        f"ref_{_safe_id(source).lower()}_{_stable_digest(source, reference_key)}"
+    )
     doi, url = _citation_links(citation)
     title = _reference_title(citation, dataset, laboratory, method)
     conn.execute(
@@ -199,15 +252,23 @@ def _upsert_reference(
     return reference_id
 
 
-def _match_dataset(measurement_id: str, datasets: list[dict[str, Any]]) -> dict[str, Any] | None:
+def _match_dataset(
+    measurement_id: str, datasets: list[dict[str, Any]]
+) -> dict[str, Any] | None:
     normalized_id = measurement_id.lower()
     return next(
-        (metadata for metadata in datasets if metadata["dataset"].lower() in normalized_id),
+        (
+            metadata
+            for metadata in datasets
+            if metadata["dataset"].lower() in normalized_id
+        ),
         None,
     )
 
 
-def _get_or_create_sample(conn, row: dict[str, Any], matrix_id: str, spec: dict[str, str]) -> str:
+def _get_or_create_sample(
+    conn, row: dict[str, Any], matrix_id: str, spec: dict[str, str]
+) -> str:
     existing = conn.execute(
         """
         SELECT id_muestra
@@ -299,6 +360,19 @@ def _get_or_create_analysis(
 
 
 def analytical_model_audit(conn=None) -> dict[str, Any]:
+    """
+    Audita la integridad del modelo analítico.
+
+    Revisa:
+        - Conteos de tablas (matrices, muestras, referencias, análisis, mediciones).
+        - Mediciones sin id_analisis.
+        - Análisis huérfanos (id_analisis no existe).
+        - Conflictos de unidades para una misma muestra y elemento.
+
+    Returns:
+        dict: Estadísticas de auditoría.
+    """
+    
     owns_connection = conn is None
     if owns_connection:
         conn = get_connection()
@@ -350,6 +424,21 @@ def analytical_model_audit(conn=None) -> dict[str, Any]:
 
 
 def migrate_analytical_model() -> dict[str, Any]:
+    """
+    Construye el modelo analítico a partir de mediciones existentes.
+
+    Proceso:
+        1. Recolecta todas las matrices únicas y las upserta.
+        2. Crea un catálogo de datasets y referencias.
+        3. Para cada medición sin id_analisis:
+            - Crea o reutiliza una muestra (id_individuo + id_matriz).
+            - Busca el dataset de origen y asigna referencia.
+            - Crea un análisis (analisis_quimicos) y lo vincula a la medición.
+
+    Returns:
+        dict: Resumen de mediciones enlazadas y auditoría del modelo.
+    """
+
     init_db()
     dataset_catalog = _legacy_dataset_catalog()
     linked = 0
@@ -389,7 +478,9 @@ def migrate_analytical_model() -> dict[str, Any]:
             source = str(row.get("fuente") or "sin_fuente").strip().lower()
             matrix_id, matrix_spec = _upsert_matrix(conn, row.get("tipo_muestra"))
             sample_id = _get_or_create_sample(conn, row, matrix_id, matrix_spec)
-            metadata = _match_dataset(str(row.get("id_medicion") or ""), dataset_catalog.get(source, []))
+            metadata = _match_dataset(
+                str(row.get("id_medicion") or ""), dataset_catalog.get(source, [])
+            )
             if metadata:
                 dataset = metadata["dataset"]
                 citation = metadata.get("citation")
@@ -438,7 +529,9 @@ def ensure_analytical_model() -> dict[str, Any]:
         pending = conn.execute(
             "SELECT COUNT(*) AS n FROM mediciones_quimicas WHERE id_analisis IS NULL OR TRIM(id_analisis) = ''"
         ).fetchone()["n"]
-        has_catalog = conn.execute("SELECT COUNT(*) AS n FROM matrices").fetchone()["n"] > 0
+        has_catalog = (
+            conn.execute("SELECT COUNT(*) AS n FROM matrices").fetchone()["n"] > 0
+        )
         if pending == 0 and has_catalog:
             return {"linked_measurements": 0, "audit": analytical_model_audit(conn)}
     return migrate_analytical_model()

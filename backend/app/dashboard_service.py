@@ -13,8 +13,17 @@ from .sqlite_migration import ensure_sqlite_sources
 
 IMAGE_EXTENSIONS = {".gif", ".jpeg", ".jpg", ".png", ".tif", ".tiff", ".webp"}
 NEGATIVE_VALUES = {
-    "", "0", "absente", "ausente", "false", "falso", "n/a", "negativo",
-    "no", "none", "null",
+    "",
+    "0",
+    "absente",
+    "ausente",
+    "false",
+    "falso",
+    "n/a",
+    "negativo",
+    "no",
+    "none",
+    "null",
 }
 MISSING_MEASUREMENTS = {"", "-", "na", "nan", "n/d", "n.d.", "nd", "none", "null"}
 
@@ -40,7 +49,14 @@ def _load_cases(path: Path) -> list[dict[str, Any]]:
 
 
 def _compact(value: Any) -> str:
-    return str(value or "").strip().lower().replace(" ", "").replace("_", "").replace("-", "")
+    return (
+        str(value or "")
+        .strip()
+        .lower()
+        .replace(" ", "")
+        .replace("_", "")
+        .replace("-", "")
+    )
 
 
 def _canonical_sex(value: Any) -> str:
@@ -87,8 +103,9 @@ def _numeric_measurement(value: Any) -> Optional[float]:
 def _build_records() -> list[dict[str, Any]]:
     ensure_sqlite_sources()
     with get_connection() as conn:
-        individuals = rows_to_dicts(conn.execute(
-            """
+        individuals = rows_to_dicts(
+            conn.execute(
+                """
             SELECT i.id_individuo, i.id_documento, i.numero_cuerpo, i.sexo, i.edad,
                    i.sitio, i.referencia_bibliografica, i.notas, i.fuente,
                    s.nombre AS sitio_nombre, s.area, s.lat, s.lng, s.view
@@ -96,21 +113,26 @@ def _build_records() -> list[dict[str, Any]]:
             LEFT JOIN sitios s ON s.id_sitio = i.fuente OR s.nombre = i.sitio
             ORDER BY i.sitio, i.id_documento
             """
-        ).fetchall())
-        measurements = rows_to_dicts(conn.execute(
-            """
+            ).fetchall()
+        )
+        measurements = rows_to_dicts(
+            conn.execute(
+                """
             SELECT id_individuo, elemento, concentracion
             FROM mediciones_quimicas
             WHERE concentracion IS NOT NULL
             """
-        ).fetchall())
-        pathologies = rows_to_dicts(conn.execute(
-            """
+            ).fetchall()
+        )
+        pathologies = rows_to_dicts(
+            conn.execute(
+                """
             SELECT id_individuo, patologia
             FROM paleopatologias
             WHERE presente = 1
             """
-        ).fetchall())
+            ).fetchall()
+        )
         image_counts = {
             row["id_individuo"]: row["n"]
             for row in conn.execute(
@@ -119,10 +141,14 @@ def _build_records() -> list[dict[str, Any]]:
         }
         dated = {
             row["id_individuo"]
-            for row in conn.execute("SELECT DISTINCT id_individuo FROM dataciones").fetchall()
+            for row in conn.execute(
+                "SELECT DISTINCT id_individuo FROM dataciones"
+            ).fetchall()
         }
 
-    chemistry_by_case: dict[str, dict[str, list[float]]] = defaultdict(lambda: defaultdict(list))
+    chemistry_by_case: dict[str, dict[str, list[float]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
     for row in measurements:
         number = _numeric_measurement(row.get("concentracion"))
         if row.get("id_individuo") and row.get("elemento") and number is not None:
@@ -146,28 +172,38 @@ def _build_records() -> list[dict[str, Any]]:
                     raw_payload = parsed
             except (TypeError, ValueError):
                 raw_payload = {}
-        individual = raw_payload.get("individuo") if isinstance(raw_payload.get("individuo"), dict) else {}
+        individual = (
+            raw_payload.get("individuo")
+            if isinstance(raw_payload.get("individuo"), dict)
+            else {}
+        )
         site_name = _display_value(row.get("sitio_nombre") or row.get("sitio"))
-        raw_records.append({
-            "id": case_id,
-            "label": _display_value(row.get("numero_cuerpo") or row.get("id_documento"), case_id),
-            "sitio": site_name,
-            "fuente": _display_value(row.get("fuente"), ""),
-            "sexo": _canonical_sex(row.get("sexo")),
-            "edad": _canonical_age(row.get("edad")),
-            "cultura": _display_value(raw_payload.get("cultura") or row.get("referencia_bibliografica")),
-            "conservacion": _display_value(individual.get("conservacion")),
-            "chemistry": chemistry_by_case.get(case_id, {}),
-            "pathologies": sorted(set(pathologies_by_case.get(case_id, []))),
-            "has_dating": case_id in dated,
-            "image_count": image_counts.get(case_id, 0),
-            "site_view": row.get("view") or "",
-            "site_coordinates": (
-                {"lat": row["lat"], "lng": row["lng"]}
-                if row.get("lat") is not None and row.get("lng") is not None
-                else None
-            ),
-        })
+        raw_records.append(
+            {
+                "id": case_id,
+                "label": _display_value(
+                    row.get("numero_cuerpo") or row.get("id_documento"), case_id
+                ),
+                "sitio": site_name,
+                "fuente": _display_value(row.get("fuente"), ""),
+                "sexo": _canonical_sex(row.get("sexo")),
+                "edad": _canonical_age(row.get("edad")),
+                "cultura": _display_value(
+                    raw_payload.get("cultura") or row.get("referencia_bibliografica")
+                ),
+                "conservacion": _display_value(individual.get("conservacion")),
+                "chemistry": chemistry_by_case.get(case_id, {}),
+                "pathologies": sorted(set(pathologies_by_case.get(case_id, []))),
+                "has_dating": case_id in dated,
+                "image_count": image_counts.get(case_id, 0),
+                "site_view": row.get("view") or "",
+                "site_coordinates": (
+                    {"lat": row["lat"], "lng": row["lng"]}
+                    if row.get("lat") is not None and row.get("lng") is not None
+                    else None
+                ),
+            }
+        )
     return raw_records
 
 
@@ -175,7 +211,9 @@ def _distribution(records: list[dict[str, Any]], field: str) -> list[dict[str, A
     counts = Counter(str(record.get(field) or "Sin dato") for record in records)
     return [
         {"label": label, "value": value}
-        for label, value in sorted(counts.items(), key=lambda item: (-item[1], item[0].lower()))
+        for label, value in sorted(
+            counts.items(), key=lambda item: (-item[1], item[0].lower())
+        )
     ]
 
 
@@ -185,7 +223,9 @@ def _chemical_coverage(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
         coverage.update(record["chemistry"].keys())
     return [
         {"label": element, "value": count}
-        for element, count in sorted(coverage.items(), key=lambda item: (-item[1], item[0].lower()))
+        for element, count in sorted(
+            coverage.items(), key=lambda item: (-item[1], item[0].lower())
+        )
     ]
 
 
@@ -195,11 +235,15 @@ def _pathology_distribution(records: list[dict[str, Any]]) -> list[dict[str, Any
         counts.update(record["pathologies"])
     return [
         {"label": pathology, "value": count}
-        for pathology, count in sorted(counts.items(), key=lambda item: (-item[1], item[0].lower()))
+        for pathology, count in sorted(
+            counts.items(), key=lambda item: (-item[1], item[0].lower())
+        )
     ]
 
 
-def _chemical_summary(records: list[dict[str, Any]], element: str) -> list[dict[str, Any]]:
+def _chemical_summary(
+    records: list[dict[str, Any]], element: str
+) -> list[dict[str, Any]]:
     by_site: dict[str, list[float]] = defaultdict(list)
     for record in records:
         values = record["chemistry"].get(element, [])
@@ -208,14 +252,16 @@ def _chemical_summary(records: list[dict[str, Any]], element: str) -> list[dict[
     for site, values in sorted(by_site.items()):
         if not values:
             continue
-        summaries.append({
-            "sitio": site,
-            "n": len(values),
-            "min": min(values),
-            "median": median(values),
-            "mean": mean(values),
-            "max": max(values),
-        })
+        summaries.append(
+            {
+                "sitio": site,
+                "n": len(values),
+                "min": min(values),
+                "median": median(values),
+                "mean": mean(values),
+                "max": max(values),
+            }
+        )
     return summaries
 
 
@@ -226,15 +272,50 @@ def build_dashboard_data(
     elemento: Optional[str] = None,
     patologia: Optional[str] = None,
 ) -> dict[str, Any]:
+    """
+    Construye los datos agregados para el dashboard principal.
+
+    El proceso:
+        1. Obtiene todos los individuos, mediciones, patologías e imágenes de la base.
+        2. Construye un registro por individuo con su química y patologías.
+        3. Aplica los filtros (sitio, sexo, edad, elemento, patologia).
+        4. Calcula KPIs, distribuciones, cobertura química y portales de sitios.
+        5. Devuelve el resultado en un diccionario.
+
+    Args:
+        sitio (Optional[str]): Nombre del sitio.
+        sexo (Optional[str]): Sexo.
+        edad (Optional[str]): Edad.
+        elemento (Optional[str]): Elemento químico.
+        patologia (Optional[str]): Patología.
+
+    Returns:
+        dict: Datos del dashboard.
+    """
+
     all_records = _build_records()
-    all_elements = sorted({element for record in all_records for element in record["chemistry"]})
-    all_pathologies = sorted({item for record in all_records for item in record["pathologies"]})
+    all_elements = sorted(
+        {element for record in all_records for element in record["chemistry"]}
+    )
+    all_pathologies = sorted(
+        {item for record in all_records for item in record["pathologies"]}
+    )
 
     site_filter = str(sitio or "").strip().lower()
     sex_filter = _canonical_sex(sexo) if sexo else ""
     age_filter = _canonical_age(edad) if edad else ""
-    element_filter = next((item for item in all_elements if item.lower() == str(elemento or "").lower()), "")
-    pathology_filter = next((item for item in all_pathologies if item.lower() == str(patologia or "").lower()), "")
+    element_filter = next(
+        (item for item in all_elements if item.lower() == str(elemento or "").lower()),
+        "",
+    )
+    pathology_filter = next(
+        (
+            item
+            for item in all_pathologies
+            if item.lower() == str(patologia or "").lower()
+        ),
+        "",
+    )
 
     records = []
     for record in all_records:
@@ -259,37 +340,66 @@ def build_dashboard_data(
 
     site_portals = []
     for site_name in sorted({record["sitio"] for record in all_records}):
-        site_records = [record for record in all_records if record["sitio"] == site_name]
-        representative = next((record for record in site_records if record.get("site_coordinates")), None)
-        cultures = Counter(record["cultura"] for record in site_records if record["cultura"] != "Sin dato")
-        site_portals.append({
-            "sitio": site_name,
-            "fuente": next((record.get("fuente") for record in site_records if record.get("fuente")), ""),
-            "individuos": len(site_records),
-            "con_quimica": sum(bool(record["chemistry"]) for record in site_records),
-            "con_patologia": sum(bool(record["pathologies"]) for record in site_records),
-            "con_imagenes": sum(record["image_count"] > 0 for record in site_records),
-            "con_datacion": sum(record["has_dating"] for record in site_records),
-            "culturas": [label for label, _ in cultures.most_common(3)],
-            "view": representative.get("site_view") if representative else "",
-            "coordinates": representative.get("site_coordinates") if representative else None,
-        })
+        site_records = [
+            record for record in all_records if record["sitio"] == site_name
+        ]
+        representative = next(
+            (record for record in site_records if record.get("site_coordinates")), None
+        )
+        cultures = Counter(
+            record["cultura"]
+            for record in site_records
+            if record["cultura"] != "Sin dato"
+        )
+        site_portals.append(
+            {
+                "sitio": site_name,
+                "fuente": next(
+                    (
+                        record.get("fuente")
+                        for record in site_records
+                        if record.get("fuente")
+                    ),
+                    "",
+                ),
+                "individuos": len(site_records),
+                "con_quimica": sum(
+                    bool(record["chemistry"]) for record in site_records
+                ),
+                "con_patologia": sum(
+                    bool(record["pathologies"]) for record in site_records
+                ),
+                "con_imagenes": sum(
+                    record["image_count"] > 0 for record in site_records
+                ),
+                "con_datacion": sum(record["has_dating"] for record in site_records),
+                "culturas": [label for label, _ in cultures.most_common(3)],
+                "view": representative.get("site_view") if representative else "",
+                "coordinates": representative.get("site_coordinates")
+                if representative
+                else None,
+            }
+        )
 
     case_rows = []
-    for record in sorted(records, key=lambda item: (item["sitio"], item["label"].lower()))[:100]:
-        case_rows.append({
-            "id": record["id"],
-            "label": record["label"],
-            "sitio": record["sitio"],
-            "sexo": record["sexo"],
-            "edad": record["edad"],
-            "cultura": record["cultura"],
-            "conservacion": record["conservacion"],
-            "elementos": sorted(record["chemistry"].keys()),
-            "patologias": record["pathologies"],
-            "imagenes": record["image_count"],
-            "datacion": record["has_dating"],
-        })
+    for record in sorted(
+        records, key=lambda item: (item["sitio"], item["label"].lower())
+    )[:100]:
+        case_rows.append(
+            {
+                "id": record["id"],
+                "label": record["label"],
+                "sitio": record["sitio"],
+                "sexo": record["sexo"],
+                "edad": record["edad"],
+                "cultura": record["cultura"],
+                "conservacion": record["conservacion"],
+                "elementos": sorted(record["chemistry"].keys()),
+                "patologias": record["pathologies"],
+                "imagenes": record["image_count"],
+                "datacion": record["has_dating"],
+            }
+        )
 
     return {
         "version": "0.8.0",
@@ -302,8 +412,12 @@ def build_dashboard_data(
         },
         "filter_options": {
             "sitios": sorted({record["sitio"] for record in all_records}),
-            "sexos": sorted({record["sexo"] for record in all_records if record["sexo"]}),
-            "edades": sorted({record["edad"] for record in all_records if record["edad"]}),
+            "sexos": sorted(
+                {record["sexo"] for record in all_records if record["sexo"]}
+            ),
+            "edades": sorted(
+                {record["edad"] for record in all_records if record["edad"]}
+            ),
             "elementos": all_elements,
             "patologias": all_pathologies,
         },
@@ -314,7 +428,9 @@ def build_dashboard_data(
             "con_patologia": with_pathology,
             "con_imagenes": with_images,
             "con_datacion": with_dating,
-            "cobertura_quimica_pct": round((with_chemistry / total) * 100, 1) if total else 0,
+            "cobertura_quimica_pct": round((with_chemistry / total) * 100, 1)
+            if total
+            else 0,
         },
         "distributions": {
             "sitio": _distribution(records, "sitio"),
@@ -324,7 +440,9 @@ def build_dashboard_data(
             "conservacion": _distribution(records, "conservacion")[:8],
         },
         "chemical_coverage": _chemical_coverage(records),
-        "chemical_summary": _chemical_summary(records, element_filter) if element_filter else [],
+        "chemical_summary": _chemical_summary(records, element_filter)
+        if element_filter
+        else [],
         "pathology_distribution": _pathology_distribution(records),
         "availability": [
             {"label": "Referencia", "value": total, "total": total},

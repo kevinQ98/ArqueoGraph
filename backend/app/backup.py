@@ -11,7 +11,15 @@ from .sqlite_migration import ensure_sqlite_sources
 
 
 def create_backup() -> Path:
-    """Genera una copia completa de la base SQLite normalizada actual."""
+    """
+    Crea una copia de seguridad de la base de datos SQLite actual.
+
+    Genera un nombre con timestamp y sufijo aleatorio, y guarda el archivo
+    en el directorio data/.
+
+    Returns:
+        Path: Ruta al archivo de respaldo.
+    """
     ensure_sqlite_sources()
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     random_suffix = secrets.token_hex(3)

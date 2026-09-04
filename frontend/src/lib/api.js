@@ -1,9 +1,28 @@
+/**
+ * Base URL de la API. Se puede sobrescribir con VITE_API_BASE.
+ * @constant {string}
+ */
 const API_BASE = import.meta.env.VITE_API_BASE || "http://127.0.0.1:8000";
 
+/**
+ * Construye una URL absoluta para un path de la API.
+ * @param {string} [path=""] - Ruta relativa (ej. "/dashboard/overview").
+ * @returns {string} URL completa.
+ */
 export function apiUrl(path = "") {
   return `${API_BASE}${path}`;
 }
 
+/**
+ * Obtiene los datos del dashboard con los filtros aplicados.
+ * @param {Object} params - Parámetros de consulta.
+ * @param {string} [params.sitio] - Nombre del sitio.
+ * @param {string} [params.sexo] - Sexo (femenino/masculino/indeterminado).
+ * @param {string} [params.edad] - Grupo etario (adulto/subadulto/indeterminado).
+ * @param {string} [params.elemento] - Elemento químico.
+ * @param {string} [params.patologia] - Nombre de patología.
+ * @returns {Promise<Object>} Datos del dashboard (KPIs, distribuciones, portales, etc.).
+ */
 export async function getDashboardOverview(params = {}) {
   const url = new URL(`${API_BASE}/dashboard/overview`);
   Object.entries(params).forEach(([key, value]) => {
@@ -16,6 +35,12 @@ export async function getDashboardOverview(params = {}) {
   return res.json();
 }
 
+/**
+ * Realiza una petición HTTP con manejo de errores unificado.
+ * @param {string} path - Ruta de la API.
+ * @param {Object} options - Opciones de fetch (method, headers, body, etc.).
+ * @returns {Promise<Object>} Respuesta JSON.
+ */
 async function request(path, options = {}) {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: {
@@ -31,6 +56,11 @@ async function request(path, options = {}) {
   return res.json();
 }
 
+/**
+ * Obtiene la lista de individuos con filtros opcionales.
+ * @param {Object} params - Filtros (sexo, sitio, estilo, estado, q).
+ * @returns {Promise<Array>} Lista de individuos.
+ */
 export async function getIndividuos(params = {}) {
   const url = new URL(`${API_BASE}/individuos`);
   Object.entries(params).forEach(([key, value]) => {
@@ -41,6 +71,11 @@ export async function getIndividuos(params = {}) {
   return res.json();
 }
 
+/**
+ * Obtiene las mediciones químicas con filtros.
+ * @param {Object} params - Filtros (elemento, sexo, edad, patologia, fuente, q).
+ * @returns {Promise<Array>} Lista de mediciones con datos del individuo.
+ */
 export async function getMediciones(params = {}) {
   const url = new URL(`${API_BASE}/mediciones`);
   Object.entries(params).forEach(([key, value]) => {
@@ -51,6 +86,11 @@ export async function getMediciones(params = {}) {
   return res.json();
 }
 
+/**
+ * Obtiene el grafo relacional (red) con filtros.
+ * @param {Object} params - Filtros (edad, sexo, patologia, fuente).
+ * @returns {Promise<Object>} Grafo con nodos y aristas.
+ */
 export async function getGraphRelational({
   edad = "",
   sexo = "",
@@ -67,6 +107,14 @@ export async function getGraphRelational({
   return res.json();
 }
 
+/**
+ * Obtiene el grafo de referencia de Morro 1 (nodo central + individuos).
+ * @param {string} sexo - Filtro de sexo.
+ * @param {string} edad - Filtro de edad.
+ * @param {string} patologia - Filtro de patología.
+ * @param {string} fuente - Fuente del sitio.
+ * @returns {Promise<Object>} Grafo de referencia.
+ */
 export async function getGraphMorroReference(sexo = "", edad = "", patologia = "", fuente = "") {
   const url = new URL(`${API_BASE}/graph/morro1/reference`);
   if (sexo) url.searchParams.set("sexo", sexo);
@@ -78,10 +126,22 @@ export async function getGraphMorroReference(sexo = "", edad = "", patologia = "
   return res.json();
 }
 
+/**
+ * Construye una URL para los endpoints de grafos de un sitio genérico.
+ * @param {string} fuente - ID del sitio.
+ * @param {string} suffix - Sufijo de la ruta (ej. "/reference", "/elements").
+ * @returns {URL} Objeto URL.
+ */
 function siteApiUrl(fuente, suffix = "") {
   return new URL(`${API_BASE}/graph/site/${encodeURIComponent(fuente)}${suffix}`);
 }
 
+/**
+ * Agrega parámetros de consulta a una URL.
+ * @param {URL} url - Objeto URL.
+ * @param {Object} params - Mapa de parámetros (valor vacío se omite).
+ * @returns {URL} URL con los parámetros añadidos.
+ */
 function addSearchParams(url, params = {}) {
   Object.entries(params).forEach(([key, value]) => {
     if (value !== undefined && value !== null && value !== "") {
@@ -91,6 +151,12 @@ function addSearchParams(url, params = {}) {
   return url;
 }
 
+/**
+ * Obtiene el grafo de referencia de un sitio genérico.
+ * @param {string} fuente - ID del sitio.
+ * @param {Object} filters - Filtros (sexo, edad, patologia, matriz, referencia).
+ * @returns {Promise<Object>} Grafo de referencia.
+ */
 export async function getSiteGraphReference(
   fuente,
   { sexo = "", edad = "", patologia = "", matriz = "", referencia = "" } = {},
@@ -101,6 +167,13 @@ export async function getSiteGraphReference(
   return res.json();
 }
 
+/**
+ * Obtiene el grafo de un elemento químico para un sitio genérico.
+ * @param {string} fuente - ID del sitio.
+ * @param {string} elemento - Nombre del elemento.
+ * @param {Object} filters - Filtros (sexo, edad, matriz, referencia).
+ * @returns {Promise<Object>} Grafo del elemento.
+ */
 export async function getSiteGraphElemento(
   fuente,
   elemento,
@@ -112,6 +185,12 @@ export async function getSiteGraphElemento(
   return res.json();
 }
 
+/**
+ * Obtiene el grafo de "Red Completa" (todos los elementos) para un sitio.
+ * @param {string} fuente - ID del sitio.
+ * @param {Object} filters - Filtros (sexo, edad, matriz, referencia).
+ * @returns {Promise<Object>} Grafo completo.
+ */
 export async function getSiteGraphElements(
   fuente,
   { sexo = "", edad = "", matriz = "", referencia = "" } = {},
@@ -122,6 +201,12 @@ export async function getSiteGraphElements(
   return res.json();
 }
 
+/**
+ * Obtiene el grafo de todas las patologías (nodos centrales).
+ * @param {string} fuente - ID del sitio.
+ * @param {Object} filters - Filtros (sexo, edad, matriz, referencia).
+ * @returns {Promise<Object>} Grafo de patologías.
+ */
 export async function getSiteGraphPatologias(
   fuente,
   { sexo = "", edad = "", matriz = "", referencia = "" } = {},
@@ -132,6 +217,13 @@ export async function getSiteGraphPatologias(
   return res.json();
 }
 
+/**
+ * Obtiene el grafo de una patología específica.
+ * @param {string} fuente - ID del sitio.
+ * @param {string} patologia - Nombre de la patología.
+ * @param {Object} filters - Filtros (sexo, edad, matriz, referencia).
+ * @returns {Promise<Object>} Grafo de la patología.
+ */
 export async function getSiteGraphPatologia(
   fuente,
   patologia,
@@ -143,6 +235,12 @@ export async function getSiteGraphPatologia(
   return res.json();
 }
 
+/**
+ * Obtiene las filas de la tabla de datos de un sitio (mediciones + metadatos).
+ * @param {string} fuente - ID del sitio.
+ * @param {Object} params - Filtros (sexo, edad, matriz, referencia, elemento, patologia).
+ * @returns {Promise<Array>} Filas de la tabla.
+ */
 export async function getSiteTableRows(fuente, params = {}) {
   const url = addSearchParams(siteApiUrl(fuente, "/table"), params);
   const res = await fetch(url);
@@ -150,6 +248,18 @@ export async function getSiteTableRows(fuente, params = {}) {
   return res.json();
 }
 
+/**
+ * Calcula el PCA de un sitio.
+ * @param {string} fuente - ID del sitio.
+ * @param {Object} params - Parámetros.
+ * @param {string[]} params.elements - Lista de elementos.
+ * @param {string} params.sexo - Filtro de sexo.
+ * @param {string} params.edad - Filtro de edad.
+ * @param {string} params.matriz - Filtro de matriz.
+ * @param {string} params.referencia - Filtro de referencia.
+ * @param {string} params.patologia - Filtro de patología.
+ * @returns {Promise<Object>} Resultado del PCA (puntos, loadings, varianza).
+ */
 export async function getSitePca(
   fuente,
   { elements = [], sexo = "", edad = "", matriz = "", referencia = "", patologia = "" } = {},
@@ -165,6 +275,12 @@ export async function getSitePca(
   return res.json();
 }
 
+/**
+ * Obtiene la relación completa de un caso (individuo + imágenes + mediciones + muestras + patologías + dataciones).
+ * @param {string} fuente - ID del sitio.
+ * @param {string} caseId - ID del individuo.
+ * @returns {Promise<Object>} Datos completos del caso.
+ */
 export async function getSiteCaseRelation(fuente, caseId) {
   const res = await fetch(`${API_BASE}/graph/site/${encodeURIComponent(fuente)}/case/${encodeURIComponent(caseId)}/relation`);
   if (!res.ok) throw new Error("Error cargando relación del sitio");
@@ -177,6 +293,12 @@ export async function getSiteMatrixOptions(fuente) {
   return res.json();
 }
 
+/**
+ * Obtiene el contexto analítico de un sitio (matrices, referencias, elementos disponibles).
+ * @param {string} fuente - ID del sitio.
+ * @param {Object} params - Filtros (matriz, referencia, sexo, edad, elemento, patologia).
+ * @returns {Promise<Object>} Contexto analítico.
+ */
 export async function getSiteAnalysisContext(fuente, params = {}) {
   const url = new URL(`${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/context`);
   addSearchParams(url, params);
@@ -185,6 +307,12 @@ export async function getSiteAnalysisContext(fuente, params = {}) {
   return res.json();
 }
 
+/**
+ * Obtiene la lista de muestras de un sitio con filtros.
+ * @param {string} fuente - ID del sitio.
+ * @param {Object} params - Filtros (matriz, referencia, sexo, edad, elemento, patologia, limit).
+ * @returns {Promise<Object>} Objeto con total y items (muestras).
+ */
 export async function getSiteSamples(fuente, params = {}) {
   const url = new URL(`${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/samples`);
   addSearchParams(url, params);
@@ -193,6 +321,12 @@ export async function getSiteSamples(fuente, params = {}) {
   return res.json();
 }
 
+/**
+ * Obtiene el detalle completo de una muestra (incluye análisis y mediciones).
+ * @param {string} fuente - ID del sitio.
+ * @param {string} sampleId - ID de la muestra.
+ * @returns {Promise<Object>} Detalle de la muestra.
+ */
 export async function getSiteSampleDetail(fuente, sampleId) {
   const res = await fetch(
     `${API_BASE}/analysis/site/${encodeURIComponent(fuente)}/sample/${encodeURIComponent(sampleId)}`,
@@ -304,6 +438,12 @@ export async function getAzapaCaseRelation(caseId) {
   return res.json();
 }
 
+/**
+ * Obtiene las opciones de filtros (sexos, edades, elementos, patologías, etc.) para un sitio.
+ * @param {Object} params - Filtro fuente.
+ * @param {string} [params.fuente] - ID del sitio.
+ * @returns {Promise<Object>} Opciones de filtros.
+ */
 export async function getFilterOptions(params = {}) {
   const url = new URL(`${API_BASE}/filters/options`);
   Object.entries(params).forEach(([key, value]) => {
@@ -373,6 +513,10 @@ export async function importDemo() {
   return loadDemoGuided();
 }
 
+/**
+ * Crea un respaldo de la base de datos SQLite.
+ * @returns {Promise<Object>} { archivo, ruta }.
+ */
 export async function createBackup() {
   const res = await fetch(`${API_BASE}/admin/backup`, { method: "POST" });
   if (!res.ok) {

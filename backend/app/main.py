@@ -38,14 +38,40 @@ from .importer import (
 from .sqlite_migration import ensure_sqlite_sources, migrate_json_sources_to_sqlite
 from .analytical_migration import analytical_model_audit, ensure_analytical_model
 from .analytical_service import build_analysis_context, get_sample_detail, list_samples
+
 try:
-    from backend.scripts.generate_prueba_test_from_morro import main as generate_prueba_test_csvs
+    from backend.scripts.generate_prueba_test_from_morro import (
+        main as generate_prueba_test_csvs,
+    )
 except ModuleNotFoundError:
-    from scripts.generate_prueba_test_from_morro import main as generate_prueba_test_csvs
+    from scripts.generate_prueba_test_from_morro import (
+        main as generate_prueba_test_csvs,
+    )
 from .schemas import IndividuoUpdate, MedicionQuimicaUpdate, EstadoUpdate
 from .dashboard_service import build_dashboard_data
 from .backup import create_backup
-from .graph_service import build_relational_graph, filter_individuos_by_patologia, build_relational_graph_by_patologia, build_relational_graph_all_patologias, build_azapa_reference_graph, build_azapa_element_graph, build_azapa_table_rows, get_azapa_available_elements, get_azapa_reference_sex_options, get_azapa_analysis_matriz_options, build_azapa_pca, build_morro1_reference_graph, build_morro1_element_graph, build_morro1_table_rows, build_morro1_pca, get_morro1_available_elements, get_morro1_reference_sex_options, get_morro1_reference_age_options, get_morro1_analysis_matriz_options, _load_azapa_reference_cases
+from .graph_service import (
+    build_relational_graph,
+    filter_individuos_by_patologia,
+    build_relational_graph_by_patologia,
+    build_relational_graph_all_patologias,
+    build_azapa_reference_graph,
+    build_azapa_element_graph,
+    build_azapa_table_rows,
+    get_azapa_available_elements,
+    get_azapa_reference_sex_options,
+    get_azapa_analysis_matriz_options,
+    build_azapa_pca,
+    build_morro1_reference_graph,
+    build_morro1_element_graph,
+    build_morro1_table_rows,
+    build_morro1_pca,
+    get_morro1_available_elements,
+    get_morro1_reference_sex_options,
+    get_morro1_reference_age_options,
+    get_morro1_analysis_matriz_options,
+    _load_azapa_reference_cases,
+)
 # resolve_azapa_case_relation NO EXISTE FUNCION
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -109,48 +135,60 @@ def _quality_score(total_issues: int, total_records: int) -> int:
     return max(0, 100 - penalty)
 
 
-def _next_steps(counts: dict, total_issues: int, images_on_disk: int, registered_images: int) -> list[dict]:
+def _next_steps(
+    counts: dict, total_issues: int, images_on_disk: int, registered_images: int
+) -> list[dict]:
     steps = []
     if counts["individuos"] == 0:
-        steps.append({
-            "id": "cargar_individuos",
-            "title": "Carga individuos",
-            "description": "Empieza con la demo o sube tu CSV de individuos.",
-            "action": "POST /app/actions/load-demo o POST /admin/import/individuos/csv",
-            "status": "pending",
-        })
+        steps.append(
+            {
+                "id": "cargar_individuos",
+                "title": "Carga individuos",
+                "description": "Empieza con la demo o sube tu CSV de individuos.",
+                "action": "POST /app/actions/load-demo o POST /admin/import/individuos/csv",
+                "status": "pending",
+            }
+        )
     if counts["mediciones"] == 0:
-        steps.append({
-            "id": "cargar_mediciones",
-            "title": "Carga mediciones químicas",
-            "description": "Las mediciones necesitan que los individuos existan antes.",
-            "action": "POST /app/actions/load-demo o POST /admin/import/mediciones/csv",
-            "status": "pending",
-        })
+        steps.append(
+            {
+                "id": "cargar_mediciones",
+                "title": "Carga mediciones químicas",
+                "description": "Las mediciones necesitan que los individuos existan antes.",
+                "action": "POST /app/actions/load-demo o POST /admin/import/mediciones/csv",
+                "status": "pending",
+            }
+        )
     if images_on_disk > registered_images:
-        steps.append({
-            "id": "sincronizar_imagenes",
-            "title": "Sincroniza imágenes copiadas por carpeta",
-            "description": "Hay archivos en disco que todavía no están registrados en SQLite.",
-            "action": "POST /admin/imagenes/sync",
-            "status": "pending",
-        })
+        steps.append(
+            {
+                "id": "sincronizar_imagenes",
+                "title": "Sincroniza imágenes copiadas por carpeta",
+                "description": "Hay archivos en disco que todavía no están registrados en SQLite.",
+                "action": "POST /admin/imagenes/sync",
+                "status": "pending",
+            }
+        )
     if counts["individuos"] > 0 and total_issues > 0:
-        steps.append({
-            "id": "curar_datos",
-            "title": "Revisa advertencias de curaduría",
-            "description": "Corrige campos vacíos y cambia estados a revisar/validado.",
-            "action": "Abrir pestaña Curaduría",
-            "status": "pending",
-        })
+        steps.append(
+            {
+                "id": "curar_datos",
+                "title": "Revisa advertencias de curaduría",
+                "description": "Corrige campos vacíos y cambia estados a revisar/validado.",
+                "action": "Abrir pestaña Curaduría",
+                "status": "pending",
+            }
+        )
     if counts["individuos"] > 0 and counts["mediciones"] > 0 and not steps:
-        steps.append({
-            "id": "explorar",
-            "title": "Explora el grafo y exporta respaldo",
-            "description": "Los datos están listos para visualización, clusters y exportación.",
-            "action": "Abrir Visualización o GET /admin/export/dataset.json",
-            "status": "ready",
-        })
+        steps.append(
+            {
+                "id": "explorar",
+                "title": "Explora el grafo y exporta respaldo",
+                "description": "Los datos están listos para visualización, clusters y exportación.",
+                "action": "Abrir Visualización o GET /admin/export/dataset.json",
+                "status": "ready",
+            }
+        )
     return steps
 
 
@@ -213,7 +251,9 @@ def _extract_patologias() -> list[str]:
         ]
 
 
-def _catalogo_momias_images_for_case(case_value: str, id_individuo: Optional[str] = None) -> list[dict]:
+def _catalogo_momias_images_for_case(
+    case_value: str, id_individuo: Optional[str] = None
+) -> list[dict]:
     normalized_target = _normalize_case_key(case_value)
     if id_individuo is None:
         with get_connection() as conn:
@@ -234,26 +274,31 @@ def _catalogo_momias_images_for_case(case_value: str, id_individuo: Optional[str
             if not full.exists() or not full.is_file():
                 continue
             image_id = _normalize_case_key(f"{id_individuo or case_value}_{full.name}")
-            rel_path_fixed = rel.replace('\\', '/')
-            images.append({
-                "id_imagen": image_id,
-                "id_individuo": id_individuo or case_value,
-                "filename_original": full.name,
-                "filename_saved": full.name,
-                "relative_path": rel_path_fixed,
-                "url": f"/files/imagenes/{rel_path_fixed}",
-                "content_type": mimetypes.guess_type(full.name)[0] or "image/jpeg",
-                "mime_type": mimetypes.guess_type(full.name)[0] or "image/jpeg",
-                "label": full.name,
-                "titulo": full.name,
-                "descripcion": f"Imagen vinculada desde catalogo_momias.json para {case_value}",
-                "tipo_imagen": "catalogo",
-                "fecha_imagen": None,
-                "estado": "validado",
-            })
+            rel_path_fixed = rel.replace("\\", "/")
+            images.append(
+                {
+                    "id_imagen": image_id,
+                    "id_individuo": id_individuo or case_value,
+                    "filename_original": full.name,
+                    "filename_saved": full.name,
+                    "relative_path": rel_path_fixed,
+                    "url": f"/files/imagenes/{rel_path_fixed}",
+                    "content_type": mimetypes.guess_type(full.name)[0] or "image/jpeg",
+                    "mime_type": mimetypes.guess_type(full.name)[0] or "image/jpeg",
+                    "label": full.name,
+                    "titulo": full.name,
+                    "descripcion": f"Imagen vinculada desde catalogo_momias.json para {case_value}",
+                    "tipo_imagen": "catalogo",
+                    "fecha_imagen": None,
+                    "estado": "validado",
+                }
+            )
     return images
 
-def resolve_azapa_case_relation(case_id: str, reference_path: Path, images_dir: Path) -> dict:
+
+def resolve_azapa_case_relation(
+    case_id: str, reference_path: Path, images_dir: Path
+) -> dict:
     """Devuelve la ficha de referencia de un caso AZAPA + sus imágenes locales,
     leyendo directamente la carpeta data/imagenes/imagenes_azapa140/{case_id}/.
     """
@@ -277,15 +322,17 @@ def resolve_azapa_case_relation(case_id: str, reference_path: Path, images_dir: 
         for path in sorted(case_dir.iterdir()):
             if _is_allowed_local_image_file(path):
                 rel = str(path.relative_to(IMAGES_DIR)).replace("\\", "/")
-                images.append({
-                    "id_imagen": f"{case_id}_{path.name}",
-                    "id_individuo": case_id,
-                    "filename_original": path.name,
-                    "relative_path": rel,
-                    "url": f"/files/imagenes/{rel}",
-                    "titulo": path.name,
-                    "mime_type": mimetypes.guess_type(path.name)[0] or "image/jpeg",
-                })
+                images.append(
+                    {
+                        "id_imagen": f"{case_id}_{path.name}",
+                        "id_individuo": case_id,
+                        "filename_original": path.name,
+                        "relative_path": rel,
+                        "url": f"/files/imagenes/{rel}",
+                        "titulo": path.name,
+                        "mime_type": mimetypes.guess_type(path.name)[0] or "image/jpeg",
+                    }
+                )
 
     return {
         "case_id": case_id,
@@ -294,11 +341,13 @@ def resolve_azapa_case_relation(case_id: str, reference_path: Path, images_dir: 
         "images_count": len(images),
     }
 
+
 def resolve_morro1_case_relation(case_id: str, images_dir: Path) -> dict:
     """Devuelve la ficha de referencia de un caso MORRO1 + sus imágenes locales,
     leyendo directamente la carpeta data/imagenes/imagenes_morro1/{case_id}/.
     """
     from .graph_service import _load_morro1_reference_cases
+
     cases = _load_morro1_reference_cases()
     case = next((c for c in cases if str(c.get("id") or "").strip() == case_id), None)
 
@@ -319,15 +368,17 @@ def resolve_morro1_case_relation(case_id: str, images_dir: Path) -> dict:
         for path in sorted(case_dir.iterdir()):
             if _is_allowed_local_image_file(path):
                 rel = str(path.relative_to(IMAGES_DIR)).replace("\\", "/")
-                images.append({
-                    "id_imagen": f"{case_id}_{path.name}",
-                    "id_individuo": case_id,
-                    "filename_original": path.name,
-                    "relative_path": rel,
-                    "url": f"/files/imagenes/{rel}",
-                    "titulo": path.name,
-                    "mime_type": mimetypes.guess_type(path.name)[0] or "image/jpeg",
-                })
+                images.append(
+                    {
+                        "id_imagen": f"{case_id}_{path.name}",
+                        "id_individuo": case_id,
+                        "filename_original": path.name,
+                        "relative_path": rel,
+                        "url": f"/files/imagenes/{rel}",
+                        "titulo": path.name,
+                        "mime_type": mimetypes.guess_type(path.name)[0] or "image/jpeg",
+                    }
+                )
 
     return {
         "case_id": case_id,
@@ -335,6 +386,7 @@ def resolve_morro1_case_relation(case_id: str, images_dir: Path) -> dict:
         "images": images,
         "images_count": len(images),
     }
+
 
 def _catalogo_momias_images_for_individuo(id_individuo: str) -> list[dict]:
     with get_connection() as conn:
@@ -367,15 +419,21 @@ def _extract_casos(payload) -> list:
     return []
 
 
-def _safe_upload_filename(filename: Optional[str], expected_extension: str = ".csv") -> str:
+def _safe_upload_filename(
+    filename: Optional[str], expected_extension: str = ".csv"
+) -> str:
     name = Path(filename or "").name.strip()
     if not name:
         raise HTTPException(status_code=400, detail="El archivo debe tener nombre")
     if name.startswith(".") or name.startswith("._"):
         raise HTTPException(status_code=400, detail="Nombre de archivo no permitido")
     if Path(name).suffix.lower() != expected_extension:
-        raise HTTPException(status_code=400, detail=f"El archivo debe ser {expected_extension}")
-    safe_stem = "".join(ch if ch.isalnum() or ch in {"-", "_"} else "_" for ch in Path(name).stem)
+        raise HTTPException(
+            status_code=400, detail=f"El archivo debe ser {expected_extension}"
+        )
+    safe_stem = "".join(
+        ch if ch.isalnum() or ch in {"-", "_"} else "_" for ch in Path(name).stem
+    )
     return f"{safe_stem}_{uuid.uuid4().hex[:8]}{expected_extension}"
 
 
@@ -396,10 +454,18 @@ def _write_csv_response(filename: str, rows: list[dict]) -> Response:
 def _table_counts(conn) -> dict:
     return {
         "sitios": conn.execute("SELECT COUNT(*) AS n FROM sitios").fetchone()["n"],
-        "individuos": conn.execute("SELECT COUNT(*) AS n FROM individuos").fetchone()["n"],
-        "mediciones": conn.execute("SELECT COUNT(*) AS n FROM mediciones_quimicas").fetchone()["n"],
-        "paleopatologias": conn.execute("SELECT COUNT(*) AS n FROM paleopatologias").fetchone()["n"],
-        "dataciones": conn.execute("SELECT COUNT(*) AS n FROM dataciones").fetchone()["n"],
+        "individuos": conn.execute("SELECT COUNT(*) AS n FROM individuos").fetchone()[
+            "n"
+        ],
+        "mediciones": conn.execute(
+            "SELECT COUNT(*) AS n FROM mediciones_quimicas"
+        ).fetchone()["n"],
+        "paleopatologias": conn.execute(
+            "SELECT COUNT(*) AS n FROM paleopatologias"
+        ).fetchone()["n"],
+        "dataciones": conn.execute("SELECT COUNT(*) AS n FROM dataciones").fetchone()[
+            "n"
+        ],
         "imagenes": conn.execute("SELECT COUNT(*) AS n FROM imagenes").fetchone()["n"],
     }
 
@@ -426,17 +492,24 @@ def admin_resumen():
     ensure_sqlite_sources()
     with get_connection() as conn:
         counts = _table_counts(conn)
-        individuos_estado = rows_to_dicts(conn.execute(
-            "SELECT estado, COUNT(*) AS n FROM individuos GROUP BY estado ORDER BY estado"
-        ).fetchall())
-        mediciones_estado = rows_to_dicts(conn.execute(
-            "SELECT estado, COUNT(*) AS n FROM mediciones_quimicas GROUP BY estado ORDER BY estado"
-        ).fetchall())
-        mediciones_elemento = rows_to_dicts(conn.execute(
-            "SELECT elemento, COUNT(*) AS n, AVG(concentracion) AS promedio FROM mediciones_quimicas GROUP BY elemento ORDER BY elemento"
-        ).fetchall())
-        imagenes_individuo = rows_to_dicts(conn.execute(
-            """
+        individuos_estado = rows_to_dicts(
+            conn.execute(
+                "SELECT estado, COUNT(*) AS n FROM individuos GROUP BY estado ORDER BY estado"
+            ).fetchall()
+        )
+        mediciones_estado = rows_to_dicts(
+            conn.execute(
+                "SELECT estado, COUNT(*) AS n FROM mediciones_quimicas GROUP BY estado ORDER BY estado"
+            ).fetchall()
+        )
+        mediciones_elemento = rows_to_dicts(
+            conn.execute(
+                "SELECT elemento, COUNT(*) AS n, AVG(concentracion) AS promedio FROM mediciones_quimicas GROUP BY elemento ORDER BY elemento"
+            ).fetchall()
+        )
+        imagenes_individuo = rows_to_dicts(
+            conn.execute(
+                """
             SELECT i.id_individuo, i.id_documento, COUNT(img.id_imagen) AS imagenes
             FROM individuos i
             LEFT JOIN imagenes img ON img.id_individuo = i.id_individuo
@@ -444,7 +517,8 @@ def admin_resumen():
             HAVING imagenes > 0
             ORDER BY imagenes DESC, i.id_documento
             """
-        ).fetchall())
+            ).fetchall()
+        )
 
     return {
         "version": APP_VERSION,
@@ -462,16 +536,19 @@ def app_overview():
     storage = _scan_image_storage()
     with get_connection() as conn:
         counts = _table_counts(conn)
-        elementos = rows_to_dicts(conn.execute(
-            """
+        elementos = rows_to_dicts(
+            conn.execute(
+                """
             SELECT elemento, COUNT(*) AS mediciones, ROUND(AVG(concentracion), 3) AS promedio
             FROM mediciones_quimicas
             GROUP BY elemento
             ORDER BY elemento
             """
-        ).fetchall())
-        ultimos_casos = rows_to_dicts(conn.execute(
-            """
+            ).fetchall()
+        )
+        ultimos_casos = rows_to_dicts(
+            conn.execute(
+                """
             SELECT
                 i.id_individuo,
                 i.id_documento,
@@ -486,7 +563,8 @@ def app_overview():
             ORDER BY i.updated_at DESC, i.id_documento
             LIMIT 6
             """
-        ).fetchall())
+            ).fetchall()
+        )
 
     total_records = counts["individuos"] + counts["mediciones"] + counts["imagenes"]
     registered_images = counts["imagenes"]
@@ -538,7 +616,11 @@ def app_load_demo(sync_images: bool = True):
 
 
 @app.get("/app/casos")
-def app_casos(q: Optional[str] = None, estado: Optional[str] = None, con_imagenes: Optional[bool] = None):
+def app_casos(
+    q: Optional[str] = None,
+    estado: Optional[str] = None,
+    con_imagenes: Optional[bool] = None,
+):
     sql = """
         SELECT
             i.*,
@@ -586,9 +668,15 @@ def app_casos(q: Optional[str] = None, estado: Optional[str] = None, con_imagene
             ]
             if not row.get(key)
         ]
-        row["elementos"] = sorted((row.get("elementos") or "").split(",")) if row.get("elementos") else []
+        row["elementos"] = (
+            sorted((row.get("elementos") or "").split(","))
+            if row.get("elementos")
+            else []
+        )
         row["faltantes"] = missing
-        row["estado_curaduria"] = "listo" if not missing and row["mediciones_count"] > 0 else "revisar"
+        row["estado_curaduria"] = (
+            "listo" if not missing and row["mediciones_count"] > 0 else "revisar"
+        )
     return rows
 
 
@@ -596,15 +684,17 @@ def app_casos(q: Optional[str] = None, estado: Optional[str] = None, con_imagene
 def app_caso_detalle(id_individuo: str):
     individuo = get_individuo(id_individuo)
     with get_connection() as conn:
-        mediciones = rows_to_dicts(conn.execute(
-            """
+        mediciones = rows_to_dicts(
+            conn.execute(
+                """
             SELECT *
             FROM mediciones_quimicas
             WHERE id_individuo = ?
             ORDER BY elemento, id_medicion
             """,
-            (id_individuo,),
-        ).fetchall())
+                (id_individuo,),
+            ).fetchall()
+        )
     imagenes = list_imagenes_individuo(id_individuo)
     return {
         "individuo": individuo,
@@ -638,7 +728,9 @@ def download_template(template_name: str):
         raise HTTPException(status_code=404, detail="Plantilla no encontrada")
     path = TEMPLATE_FILES[template_name]
     if not path.exists():
-        raise HTTPException(status_code=404, detail="Archivo de plantilla no existe en disco")
+        raise HTTPException(
+            status_code=404, detail="Archivo de plantilla no existe en disco"
+        )
     return FileResponse(path, media_type="text/csv", filename=template_name)
 
 
@@ -648,17 +740,41 @@ def export_dataset_json():
     with get_connection() as conn:
         payload = {
             "version": APP_VERSION,
-            "sitios": rows_to_dicts(conn.execute("SELECT * FROM sitios ORDER BY nombre").fetchall()),
-            "individuos": rows_to_dicts(conn.execute("SELECT * FROM individuos ORDER BY id_documento").fetchall()),
-            "mediciones": rows_to_dicts(conn.execute("SELECT * FROM mediciones_quimicas ORDER BY elemento, id_medicion").fetchall()),
-            "paleopatologias": rows_to_dicts(conn.execute("SELECT * FROM paleopatologias ORDER BY patologia, id_individuo").fetchall()),
-            "dataciones": rows_to_dicts(conn.execute("SELECT * FROM dataciones ORDER BY id_individuo").fetchall()),
-            "imagenes": rows_to_dicts(conn.execute("SELECT * FROM imagenes ORDER BY created_at DESC").fetchall()),
+            "sitios": rows_to_dicts(
+                conn.execute("SELECT * FROM sitios ORDER BY nombre").fetchall()
+            ),
+            "individuos": rows_to_dicts(
+                conn.execute(
+                    "SELECT * FROM individuos ORDER BY id_documento"
+                ).fetchall()
+            ),
+            "mediciones": rows_to_dicts(
+                conn.execute(
+                    "SELECT * FROM mediciones_quimicas ORDER BY elemento, id_medicion"
+                ).fetchall()
+            ),
+            "paleopatologias": rows_to_dicts(
+                conn.execute(
+                    "SELECT * FROM paleopatologias ORDER BY patologia, id_individuo"
+                ).fetchall()
+            ),
+            "dataciones": rows_to_dicts(
+                conn.execute(
+                    "SELECT * FROM dataciones ORDER BY id_individuo"
+                ).fetchall()
+            ),
+            "imagenes": rows_to_dicts(
+                conn.execute(
+                    "SELECT * FROM imagenes ORDER BY created_at DESC"
+                ).fetchall()
+            ),
         }
     return Response(
         content=json.dumps(payload, ensure_ascii=False, indent=2),
         media_type="application/json",
-        headers={"Content-Disposition": 'attachment; filename="arqueograph_dataset.json"'},
+        headers={
+            "Content-Disposition": 'attachment; filename="arqueograph_dataset.json"'
+        },
     )
 
 
@@ -693,7 +809,9 @@ def create_backup_endpoint():
     try:
         backup_path = create_backup()
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"No se pudo generar el respaldo: {exc}") from exc
+        raise HTTPException(
+            status_code=500, detail=f"No se pudo generar el respaldo: {exc}"
+        ) from exc
     return {
         "ok": True,
         "archivo": backup_path.name,
@@ -727,7 +845,9 @@ def reset_database(delete_images: bool = False):
 def import_individuos_demo():
     path = SAMPLE_DIR / "individuos_demo.csv"
     if not path.exists():
-        raise HTTPException(status_code=404, detail="No existe sample_data/individuos_demo.csv")
+        raise HTTPException(
+            status_code=404, detail="No existe sample_data/individuos_demo.csv"
+        )
     return import_individuos_csv(path)
 
 
@@ -735,7 +855,9 @@ def import_individuos_demo():
 def import_mediciones_demo():
     path = SAMPLE_DIR / "mediciones_quimicas_demo.csv"
     if not path.exists():
-        raise HTTPException(status_code=404, detail="No existe sample_data/mediciones_quimicas_demo.csv")
+        raise HTTPException(
+            status_code=404, detail="No existe sample_data/mediciones_quimicas_demo.csv"
+        )
     return import_mediciones_csv(path)
 
 
@@ -763,6 +885,19 @@ def import_mediciones_file(file: UploadFile = File(...)):
 
 @app.post("/admin/import/sitios/csv")
 def import_sitios_file(file: UploadFile = File(...)):
+    """
+    Endpoint para importar un archivo CSV de sitios.
+
+    Espera un archivo CSV con columnas según SITIOS_COLUMNS.
+    Valida que existan id_sitio y nombre.
+
+    Args:
+        file (UploadFile): Archivo CSV.
+
+    Returns:
+        dict: Resultado de la importación (inserted, updated, errors).
+    """
+
     dest = UPLOADS_DIR / _safe_upload_filename(file.filename)
     with dest.open("wb") as f:
         shutil.copyfileobj(file.file, f)
@@ -809,11 +944,26 @@ def import_imagenes_file(file: UploadFile = File(...)):
 def import_prueba_test_demo():
     ensure_sqlite_sources()
     with get_connection() as conn:
-        conn.execute("DELETE FROM imagenes WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
-        conn.execute("DELETE FROM dataciones WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
-        conn.execute("DELETE FROM paleopatologias WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
-        conn.execute("DELETE FROM mediciones_quimicas WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
-        conn.execute("DELETE FROM individuos WHERE lower(COALESCE(fuente, '')) = ?", ("prueba_test",))
+        conn.execute(
+            "DELETE FROM imagenes WHERE lower(COALESCE(fuente, '')) = ?",
+            ("prueba_test",),
+        )
+        conn.execute(
+            "DELETE FROM dataciones WHERE lower(COALESCE(fuente, '')) = ?",
+            ("prueba_test",),
+        )
+        conn.execute(
+            "DELETE FROM paleopatologias WHERE lower(COALESCE(fuente, '')) = ?",
+            ("prueba_test",),
+        )
+        conn.execute(
+            "DELETE FROM mediciones_quimicas WHERE lower(COALESCE(fuente, '')) = ?",
+            ("prueba_test",),
+        )
+        conn.execute(
+            "DELETE FROM individuos WHERE lower(COALESCE(fuente, '')) = ?",
+            ("prueba_test",),
+        )
         conn.execute("DELETE FROM sitios WHERE id_sitio = ?", ("prueba_test",))
 
     generate_prueba_test_csvs()
@@ -828,7 +978,9 @@ def import_prueba_test_demo():
     }
     missing = [name for name, path in files.items() if not path.exists()]
     if missing:
-        raise HTTPException(status_code=404, detail=f"Faltan CSV demo: {', '.join(missing)}")
+        raise HTTPException(
+            status_code=404, detail=f"Faltan CSV demo: {', '.join(missing)}"
+        )
     return {
         "sitios": import_sitios_csv(files["sitios"]),
         "individuos": import_individuos_csv(files["individuos"]),
@@ -862,19 +1014,23 @@ async def import_morro1_json(
     try:
         payload = json.loads(raw.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise HTTPException(status_code=400, detail=f"El archivo no es un JSON válido: {exc}") from exc
+        raise HTTPException(
+            status_code=400, detail=f"El archivo no es un JSON válido: {exc}"
+        ) from exc
 
     casos = _extract_casos(payload)
     if not casos:
         raise HTTPException(
             status_code=400,
             detail="El JSON debe ser una lista de casos, un objeto con la clave 'casos', "
-                   "o un objeto que contenga esa clave anidada un nivel más adentro (lista no vacía).",
+            "o un objeto que contenga esa clave anidada un nivel más adentro (lista no vacía).",
         )
 
     stored_name = _safe_upload_filename(file.filename, expected_extension=".json")
     dest_path = BASE_DIR / "data" / stored_name
-    dest_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    dest_path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
     register_uploaded_file(tipo, stored_name)
 
@@ -903,19 +1059,23 @@ async def import_azapa_json(
     try:
         payload = json.loads(raw.decode("utf-8"))
     except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-        raise HTTPException(status_code=400, detail=f"El archivo no es un JSON válido: {exc}") from exc
+        raise HTTPException(
+            status_code=400, detail=f"El archivo no es un JSON válido: {exc}"
+        ) from exc
 
     casos = _extract_casos(payload)
     if not casos:
         raise HTTPException(
             status_code=400,
             detail="El JSON debe ser una lista de casos, un objeto con la clave 'casos', "
-                   "o un objeto que contenga esa clave anidada un nivel más adentro (lista no vacía).",
+            "o un objeto que contenga esa clave anidada un nivel más adentro (lista no vacía).",
         )
 
     stored_name = _safe_upload_filename(file.filename, expected_extension=".json")
     dest_path = BASE_DIR / "data" / stored_name
-    dest_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    dest_path.write_text(
+        json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
 
     register_uploaded_file(tipo, stored_name)
 
@@ -925,8 +1085,6 @@ async def import_azapa_json(
         "archivo_guardado": stored_name,
         "casos_detectados": len(casos),
     }
-
-
 
     reference_path = BASE_DIR / "data" / "morro1_referencia.json"
     paleopatologia_path = BASE_DIR / "data" / "morro1_paleopatologia.json"
@@ -952,11 +1110,23 @@ async def import_azapa_json(
 @app.post("/admin/import/azapa")
 def import_azapa_master():
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
-    dataciones_path = BASE_DIR / "data" / "azapa140_dataciones_radiocarbono_Cassman_1997.json"
-    analisis_as_cabello_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json"
-    analisis_as_b_li_costilla_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json"
-    analisis_li_s_b_pb_as_cabello_ref_dulasiri_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json"
-    analisis_mn_costilla_path = BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json"
+    dataciones_path = (
+        BASE_DIR / "data" / "azapa140_dataciones_radiocarbono_Cassman_1997.json"
+    )
+    analisis_as_cabello_path = (
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_cabello.json"
+    )
+    analisis_as_b_li_costilla_path = (
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_As_B_Li_costilla.json"
+    )
+    analisis_li_s_b_pb_as_cabello_ref_dulasiri_path = (
+        BASE_DIR
+        / "data"
+        / "azapa140_analisis_quimicos_Li_S_B_Pb_As_cabello_ref_dulasiri.json"
+    )
+    analisis_mn_costilla_path = (
+        BASE_DIR / "data" / "azapa140_analisis_quimicos_Mn_costilla.json"
+    )
     result = import_azapa_master_data(
         reference_path=AZAPA_REFERENCE_PATH,
         dataciones_path=AZAPA_DATACIONES_PATH,
@@ -971,7 +1141,9 @@ def import_azapa_master():
         "dataciones_file": str(dataciones_path),
         "analisis_as_cabello_file": str(analisis_as_cabello_path),
         "analisis_as_b_li_costilla_file": str(analisis_as_b_li_costilla_path),
-        "analisis_li_s_b_pb_as_cabello_ref_dulasiri_file": str(analisis_li_s_b_pb_as_cabello_ref_dulasiri_path),
+        "analisis_li_s_b_pb_as_cabello_ref_dulasiri_file": str(
+            analisis_li_s_b_pb_as_cabello_ref_dulasiri_path
+        ),
         "analisis_mn_costilla_file": str(analisis_mn_costilla_path),
     }
 
@@ -1014,7 +1186,9 @@ def list_individuos(
 @app.get("/individuos/{id_individuo}")
 def get_individuo(id_individuo: str):
     with get_connection() as conn:
-        row = conn.execute("SELECT * FROM individuos WHERE id_individuo = ?", (id_individuo,)).fetchone()
+        row = conn.execute(
+            "SELECT * FROM individuos WHERE id_individuo = ?", (id_individuo,)
+        ).fetchone()
     if not row:
         raise HTTPException(status_code=404, detail="Individuo no encontrado")
     return dict(row)
@@ -1039,10 +1213,14 @@ def update_individuo(id_individuo: str, payload: IndividuoUpdate):
     params.append(id_individuo)
 
     with get_connection() as conn:
-        existing = conn.execute("SELECT 1 FROM individuos WHERE id_individuo = ?", (id_individuo,)).fetchone()
+        existing = conn.execute(
+            "SELECT 1 FROM individuos WHERE id_individuo = ?", (id_individuo,)
+        ).fetchone()
         if not existing:
             raise HTTPException(status_code=404, detail="Individuo no encontrado")
-        conn.execute(f"UPDATE individuos SET {', '.join(fields)} WHERE id_individuo = ?", params)
+        conn.execute(
+            f"UPDATE individuos SET {', '.join(fields)} WHERE id_individuo = ?", params
+        )
 
     return get_individuo(id_individuo)
 
@@ -1055,7 +1233,9 @@ def update_individuo_estado(id_individuo: str, payload: EstadoUpdate):
 @app.delete("/admin/individuos/{id_individuo}")
 def delete_individuo(id_individuo: str):
     with get_connection() as conn:
-        existing = conn.execute("SELECT 1 FROM individuos WHERE id_individuo = ?", (id_individuo,)).fetchone()
+        existing = conn.execute(
+            "SELECT 1 FROM individuos WHERE id_individuo = ?", (id_individuo,)
+        ).fetchone()
         if not existing:
             raise HTTPException(status_code=404, detail="Individuo no encontrado")
         conn.execute("DELETE FROM individuos WHERE id_individuo = ?", (id_individuo,))
@@ -1071,7 +1251,7 @@ def list_mediciones(
     patologia: Optional[str] = None,
     fuente: Optional[str] = None,
 ):
-    sql = '''
+    sql = """
         SELECT
             m.*,
             i.id_documento,
@@ -1085,7 +1265,7 @@ def list_mediciones(
         FROM mediciones_quimicas m
         JOIN individuos i ON i.id_individuo = m.id_individuo
         WHERE 1=1
-    '''
+    """
     params: list[str] = []
 
     if elemento:
@@ -1122,7 +1302,9 @@ def list_mediciones(
 @app.get("/mediciones/{id_medicion}")
 def get_medicion(id_medicion: str):
     with get_connection() as conn:
-        row = conn.execute("SELECT * FROM mediciones_quimicas WHERE id_medicion = ?", (id_medicion,)).fetchone()
+        row = conn.execute(
+            "SELECT * FROM mediciones_quimicas WHERE id_medicion = ?", (id_medicion,)
+        ).fetchone()
     if not row:
         raise HTTPException(status_code=404, detail="Medición no encontrada")
     return dict(row)
@@ -1136,16 +1318,27 @@ def update_medicion(id_medicion: str, payload: MedicionQuimicaUpdate):
 
     if "estado" in data and data["estado"] not in VALID_ESTADOS:
         raise HTTPException(status_code=400, detail="Estado inválido")
-    if "concentracion" in data and data["concentracion"] is not None and data["concentracion"] < 0:
-        raise HTTPException(status_code=400, detail="La concentración no puede ser negativa")
+    if (
+        "concentracion" in data
+        and data["concentracion"] is not None
+        and data["concentracion"] < 0
+    ):
+        raise HTTPException(
+            status_code=400, detail="La concentración no puede ser negativa"
+        )
 
     with get_connection() as conn:
-        existing = conn.execute("SELECT 1 FROM mediciones_quimicas WHERE id_medicion = ?", (id_medicion,)).fetchone()
+        existing = conn.execute(
+            "SELECT 1 FROM mediciones_quimicas WHERE id_medicion = ?", (id_medicion,)
+        ).fetchone()
         if not existing:
             raise HTTPException(status_code=404, detail="Medición no encontrada")
 
         if "id_individuo" in data and data["id_individuo"]:
-            individual = conn.execute("SELECT 1 FROM individuos WHERE id_individuo = ?", (data["id_individuo"],)).fetchone()
+            individual = conn.execute(
+                "SELECT 1 FROM individuos WHERE id_individuo = ?",
+                (data["id_individuo"],),
+            ).fetchone()
             if not individual:
                 raise HTTPException(status_code=400, detail="El id_individuo no existe")
 
@@ -1158,7 +1351,10 @@ def update_medicion(id_medicion: str, payload: MedicionQuimicaUpdate):
         fields.append("updated_at = CURRENT_TIMESTAMP")
         params.append(id_medicion)
 
-        conn.execute(f"UPDATE mediciones_quimicas SET {', '.join(fields)} WHERE id_medicion = ?", params)
+        conn.execute(
+            f"UPDATE mediciones_quimicas SET {', '.join(fields)} WHERE id_medicion = ?",
+            params,
+        )
 
     return get_medicion(id_medicion)
 
@@ -1171,10 +1367,14 @@ def update_medicion_estado(id_medicion: str, payload: EstadoUpdate):
 @app.delete("/admin/mediciones/{id_medicion}")
 def delete_medicion(id_medicion: str):
     with get_connection() as conn:
-        existing = conn.execute("SELECT 1 FROM mediciones_quimicas WHERE id_medicion = ?", (id_medicion,)).fetchone()
+        existing = conn.execute(
+            "SELECT 1 FROM mediciones_quimicas WHERE id_medicion = ?", (id_medicion,)
+        ).fetchone()
         if not existing:
             raise HTTPException(status_code=404, detail="Medición no encontrada")
-        conn.execute("DELETE FROM mediciones_quimicas WHERE id_medicion = ?", (id_medicion,))
+        conn.execute(
+            "DELETE FROM mediciones_quimicas WHERE id_medicion = ?", (id_medicion,)
+        )
     return {"ok": True, "deleted": id_medicion}
 
 
@@ -1184,25 +1384,76 @@ def auditoria_datos():
 
     with get_connection() as conn:
         individuos = rows_to_dicts(conn.execute("SELECT * FROM individuos").fetchall())
-        mediciones = rows_to_dicts(conn.execute("SELECT * FROM mediciones_quimicas").fetchall())
+        mediciones = rows_to_dicts(
+            conn.execute("SELECT * FROM mediciones_quimicas").fetchall()
+        )
 
     for i in individuos:
         if not i.get("sexo"):
-            issues.append({"tipo": "individuo", "id": i["id_individuo"], "severidad": "media", "mensaje": "Individuo sin sexo"})
+            issues.append(
+                {
+                    "tipo": "individuo",
+                    "id": i["id_individuo"],
+                    "severidad": "media",
+                    "mensaje": "Individuo sin sexo",
+                }
+            )
         if not i.get("edad"):
-            issues.append({"tipo": "individuo", "id": i["id_individuo"], "severidad": "media", "mensaje": "Individuo sin edad"})
+            issues.append(
+                {
+                    "tipo": "individuo",
+                    "id": i["id_individuo"],
+                    "severidad": "media",
+                    "mensaje": "Individuo sin edad",
+                }
+            )
         if not i.get("referencia_bibliografica"):
-            issues.append({"tipo": "individuo", "id": i["id_individuo"], "severidad": "baja", "mensaje": "Individuo sin referencia bibliográfica"})
+            issues.append(
+                {
+                    "tipo": "individuo",
+                    "id": i["id_individuo"],
+                    "severidad": "baja",
+                    "mensaje": "Individuo sin referencia bibliográfica",
+                }
+            )
         if i.get("estado") == "borrador":
-            issues.append({"tipo": "individuo", "id": i["id_individuo"], "severidad": "baja", "mensaje": "Individuo en estado borrador"})
+            issues.append(
+                {
+                    "tipo": "individuo",
+                    "id": i["id_individuo"],
+                    "severidad": "baja",
+                    "mensaje": "Individuo en estado borrador",
+                }
+            )
 
     for m in mediciones:
         if m.get("concentracion") is None:
-            issues.append({"tipo": "medicion", "id": m["id_medicion"], "severidad": "alta", "mensaje": "Medición sin concentración"})
+            issues.append(
+                {
+                    "tipo": "medicion",
+                    "id": m["id_medicion"],
+                    "severidad": "alta",
+                    "mensaje": "Medición sin concentración",
+                }
+            )
         elif m["concentracion"] < 0:
-            issues.append({"tipo": "medicion", "id": m["id_medicion"], "severidad": "alta", "mensaje": "Concentración negativa"})
+            issues.append(
+                {
+                    "tipo": "medicion",
+                    "id": m["id_medicion"],
+                    "severidad": "alta",
+                    "mensaje": "Concentración negativa",
+                }
+            )
         if not m.get("unidad"):
-            issues.append({"tipo": "medicion", "id": m["id_medicion"], "severidad": "media", "mensaje": "Medición sin unidad"})
+            issues.append(
+                {
+                    "tipo": "medicion",
+                    "id": m["id_medicion"],
+                    "severidad": "media",
+                    "mensaje": "Medición sin unidad",
+                }
+            )
     return {
         "total_issues": len(issues),
         "issues": issues,
@@ -1211,7 +1462,7 @@ def auditoria_datos():
 
 @app.get("/resumen/quimica")
 def resumen_quimica():
-    sql = '''
+    sql = """
         SELECT
             elemento,
             COUNT(*) AS n,
@@ -1221,31 +1472,58 @@ def resumen_quimica():
         FROM mediciones_quimicas
         GROUP BY elemento
         ORDER BY elemento
-    '''
+    """
     with get_connection() as conn:
         rows = conn.execute(sql).fetchall()
     return rows_to_dicts(rows)
 
 
 @app.get("/graph/elemento/{elemento}")
-def graph_by_elemento(elemento: str, edad: Optional[str] = None, caso: Optional[str] = None, sexo: Optional[str] = None, patologia: Optional[str] = None, fuente: Optional[str] = None):
-        with get_connection() as conn:
-            extra_images = []
-            if caso:
-                extra_images = _catalogo_momias_images_for_case(caso)
-            return build_relational_graph(conn, elemento=elemento, edad=edad, caso=caso, extra_imagenes=extra_images, sexo=sexo, patologia=patologia, fuente=fuente)
+def graph_by_elemento(
+    elemento: str,
+    edad: Optional[str] = None,
+    caso: Optional[str] = None,
+    sexo: Optional[str] = None,
+    patologia: Optional[str] = None,
+    fuente: Optional[str] = None,
+):
+    with get_connection() as conn:
+        extra_images = []
+        if caso:
+            extra_images = _catalogo_momias_images_for_case(caso)
+        return build_relational_graph(
+            conn,
+            elemento=elemento,
+            edad=edad,
+            caso=caso,
+            extra_imagenes=extra_images,
+            sexo=sexo,
+            patologia=patologia,
+            fuente=fuente,
+        )
 
 
 @app.get("/graph/patologia/{patologia}")
-def graph_by_patologia(patologia: str, edad: Optional[str] = None, sexo: Optional[str] = None, fuente: Optional[str] = None):
-        with get_connection() as conn:
-            return build_relational_graph_by_patologia(conn, patologia=patologia, edad=edad, sexo=sexo, fuente=fuente)
+def graph_by_patologia(
+    patologia: str,
+    edad: Optional[str] = None,
+    sexo: Optional[str] = None,
+    fuente: Optional[str] = None,
+):
+    with get_connection() as conn:
+        return build_relational_graph_by_patologia(
+            conn, patologia=patologia, edad=edad, sexo=sexo, fuente=fuente
+        )
 
 
 @app.get("/graph/patologias")
-def graph_all_patologias(edad: Optional[str] = None, sexo: Optional[str] = None, fuente: Optional[str] = None):
-        with get_connection() as conn:
-            return build_relational_graph_all_patologias(conn, edad=edad, sexo=sexo, fuente=fuente)
+def graph_all_patologias(
+    edad: Optional[str] = None, sexo: Optional[str] = None, fuente: Optional[str] = None
+):
+    with get_connection() as conn:
+        return build_relational_graph_all_patologias(
+            conn, edad=edad, sexo=sexo, fuente=fuente
+        )
 
 
 @app.get("/graph/relational")
@@ -1261,17 +1539,35 @@ def graph_relational(
         extra_images = []
         if caso:
             extra_images = _catalogo_momias_images_for_case(caso)
-        return build_relational_graph(conn, elemento=elemento, edad=edad, caso=caso, extra_imagenes=extra_images, sexo=sexo, patologia=patologia, fuente=fuente)
+        return build_relational_graph(
+            conn,
+            elemento=elemento,
+            edad=edad,
+            caso=caso,
+            extra_imagenes=extra_images,
+            sexo=sexo,
+            patologia=patologia,
+            fuente=fuente,
+        )
 
 
 @app.get("/graph/azapa/reference")
-def graph_azapa_reference(sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
+def graph_azapa_reference(
+    sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None
+):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
-    return build_azapa_reference_graph(reference_path=reference_path, sexo=sexo, edad=edad, matriz=matriz)
+    return build_azapa_reference_graph(
+        reference_path=reference_path, sexo=sexo, edad=edad, matriz=matriz
+    )
 
 
 @app.get("/graph/azapa/elemento/{elemento}")
-def graph_azapa_elemento(elemento: str, sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
+def graph_azapa_elemento(
+    elemento: str,
+    sexo: Optional[str] = None,
+    edad: Optional[str] = None,
+    matriz: Optional[str] = None,
+):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
     analysis_paths = AZAPA_ANALYSIS_PATHS
     return build_azapa_element_graph(
@@ -1285,7 +1581,9 @@ def graph_azapa_elemento(elemento: str, sexo: Optional[str] = None, edad: Option
 
 
 @app.get("/graph/azapa/elements")
-def graph_azapa_elements(sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None):
+def graph_azapa_elements(
+    sexo: Optional[str] = None, edad: Optional[str] = None, matriz: Optional[str] = None
+):
     reference_path = BASE_DIR / "data" / "azapa140_referencia.json"
     analysis_paths = AZAPA_ANALYSIS_PATHS
     return build_azapa_element_graph(
@@ -1307,7 +1605,9 @@ def graph_azapa_sex_options():
 @app.get("/graph/azapa/matrix-options")
 def graph_azapa_matrix_options():
     analysis_paths = AZAPA_ANALYSIS_PATHS
-    return {"matrices": get_azapa_analysis_matriz_options(analysis_paths=analysis_paths)}
+    return {
+        "matrices": get_azapa_analysis_matriz_options(analysis_paths=analysis_paths)
+    }
 
 
 @app.get("/graph/azapa/table")
@@ -1358,6 +1658,7 @@ def graph_azapa_case_relation(case_id: str):
 # ============================================================
 # FASE 3: filtros y grafos analíticos
 # ============================================================
+
 
 @app.get("/filters/options")
 def filter_options(fuente: Optional[str] = None):
@@ -1457,11 +1758,17 @@ def filter_options(fuente: Optional[str] = None):
                 ).fetchall()
             ]
     casos_catalogo = (
-        [r.get("id_documento") for r in _load_catalogo_momias() if r.get("id_documento")]
+        [
+            r.get("id_documento")
+            for r in _load_catalogo_momias()
+            if r.get("id_documento")
+        ]
         if not fuente_norm or fuente_norm == "morro1"
         else []
     )
-    casos = sorted(set(casos_documento + casos_id + casos_catalogo), key=lambda x: str(x).lower())
+    casos = sorted(
+        set(casos_documento + casos_id + casos_catalogo), key=lambda x: str(x).lower()
+    )
     with get_connection() as conn:
         if fuente_norm:
             patologias = [
@@ -1498,6 +1805,22 @@ def dashboard_overview(
     elemento: Optional[str] = None,
     patologia: Optional[str] = None,
 ):
+    """
+    Endpoint para el panel de control principal.
+
+    Devuelve KPIs, distribuciones, cobertura química, portales de sitios y casos.
+
+    Args:
+        sitio (Optional[str]): Filtrar por nombre de sitio.
+        sexo (Optional[str]): Filtrar por sexo.
+        edad (Optional[str]): Filtrar por edad.
+        elemento (Optional[str]): Filtrar por elemento químico.
+        patologia (Optional[str]): Filtrar por patología.
+
+    Returns:
+        dict: Datos agregados del dashboard.
+    """
+
     return build_dashboard_data(
         sitio=sitio,
         sexo=sexo,
@@ -1598,7 +1921,7 @@ def graph_similarity(
         if vals:
             avg = sum(vals) / len(vals)
             var = sum((v - avg) ** 2 for v in vals) / len(vals)
-            std = var ** 0.5
+            std = var**0.5
             stats[e] = {"avg": avg, "std": std if std > 0 else 1.0}
         else:
             stats[e] = {"avg": 0.0, "std": 1.0}
@@ -1617,18 +1940,20 @@ def graph_similarity(
     nodes = []
     for p in complete:
         label = p["id_individuo"]
-        nodes.append({
-            "id": p["id_individuo"],
-            "label": label,
-            "type": "individuo",
-            "sexo": p["sexo"],
-            "edad": p["edad"],
-            "sitio": p["sitio"],
-            "cementerio": p["cementerio"],
-            "estilo_momificacion": p["estilo_momificacion"],
-            "estado": p["estado"],
-            "mediciones": p["mediciones"],
-        })
+        nodes.append(
+            {
+                "id": p["id_individuo"],
+                "label": label,
+                "type": "individuo",
+                "sexo": p["sexo"],
+                "edad": p["edad"],
+                "sitio": p["sitio"],
+                "cementerio": p["cementerio"],
+                "estilo_momificacion": p["estilo_momificacion"],
+                "estado": p["estado"],
+                "mediciones": p["mediciones"],
+            }
+        )
 
     edges = []
     for i in range(len(complete)):
@@ -1636,17 +1961,19 @@ def graph_similarity(
             a = complete[i]
             b = complete[j]
             dist_sq = sum((x - y) ** 2 for x, y in zip(a["vector"], b["vector"]))
-            dist = dist_sq ** 0.5
+            dist = dist_sq**0.5
             similarity = 1 / (1 + dist)
             if similarity >= min_similarity:
-                edges.append({
-                    "source": a["id_individuo"],
-                    "target": b["id_individuo"],
-                    "label": "similitud_quimica",
-                    "similarity": round(similarity, 4),
-                    "distance": round(dist, 4),
-                    "elements": selected_elements,
-                })
+                edges.append(
+                    {
+                        "source": a["id_individuo"],
+                        "target": b["id_individuo"],
+                        "label": "similitud_quimica",
+                        "similarity": round(similarity, 4),
+                        "distance": round(dist, 4),
+                        "elements": selected_elements,
+                    }
+                )
 
     return {
         "mode": "similarity",
@@ -1658,10 +1985,10 @@ def graph_similarity(
     }
 
 
-
 # ============================================================
 # FASE 4: distancias, clustering jerárquico y exportación GraphML
 # ============================================================
+
 
 def _chemical_profiles(
     elements: Optional[str] = None,
@@ -1731,7 +2058,7 @@ def _chemical_profiles(
         if vals:
             avg = sum(vals) / len(vals)
             var = sum((v - avg) ** 2 for v in vals) / len(vals)
-            std = var ** 0.5
+            std = var**0.5
             stats[e] = {"avg": avg, "std": std if std > 0 else 1.0}
         else:
             stats[e] = {"avg": 0.0, "std": 1.0}
@@ -1770,7 +2097,12 @@ def _distance_matrix(profiles: list[dict]) -> list[list[float]]:
     return matrix
 
 
-def _cluster_distance(cluster_a: list[int], cluster_b: list[int], matrix: list[list[float]], linkage: str = "average") -> float:
+def _cluster_distance(
+    cluster_a: list[int],
+    cluster_b: list[int],
+    matrix: list[list[float]],
+    linkage: str = "average",
+) -> float:
     distances = [matrix[i][j] for i in cluster_a for j in cluster_b]
     if not distances:
         return 0.0
@@ -1798,7 +2130,9 @@ def _agglomerative_clusters(profiles: list[dict], k: int = 3, linkage: str = "av
             for idx_b in range(idx_a + 1, len(ids)):
                 a_id = ids[idx_a]
                 b_id = ids[idx_b]
-                dist = _cluster_distance(clusters[a_id], clusters[b_id], matrix, linkage)
+                dist = _cluster_distance(
+                    clusters[a_id], clusters[b_id], matrix, linkage
+                )
                 if best_distance is None or dist < best_distance:
                     best_distance = dist
                     best_pair = (a_id, b_id)
@@ -1808,14 +2142,16 @@ def _agglomerative_clusters(profiles: list[dict], k: int = 3, linkage: str = "av
 
         a_id, b_id = best_pair
         merged_members = clusters[a_id] + clusters[b_id]
-        merges.append({
-            "left": a_id,
-            "right": b_id,
-            "new_cluster": next_id,
-            "distance": round(float(best_distance), 6),
-            "size": len(merged_members),
-            "members": [profiles[i]["id_individuo"] for i in merged_members],
-        })
+        merges.append(
+            {
+                "left": a_id,
+                "right": b_id,
+                "new_cluster": next_id,
+                "distance": round(float(best_distance), 6),
+                "size": len(merged_members),
+                "members": [profiles[i]["id_individuo"] for i in merged_members],
+            }
+        )
 
         del clusters[a_id]
         del clusters[b_id]
@@ -1823,26 +2159,30 @@ def _agglomerative_clusters(profiles: list[dict], k: int = 3, linkage: str = "av
         next_id += 1
 
     cluster_list = []
-    for cluster_number, (cluster_id, members) in enumerate(sorted(clusters.items(), key=lambda item: min(item[1])), start=1):
+    for cluster_number, (cluster_id, members) in enumerate(
+        sorted(clusters.items(), key=lambda item: min(item[1])), start=1
+    ):
         cluster_profiles = [profiles[i] for i in members]
-        cluster_list.append({
-            "cluster_id": cluster_number,
-            "internal_id": cluster_id,
-            "size": len(members),
-            "members": [
-                {
-                    "id_individuo": p["id_individuo"],
-                    "id_documento": p["id_documento"],
-                    "numero_cuerpo": p["numero_cuerpo"],
-                    "sexo": p["sexo"],
-                    "edad": p["edad"],
-                    "sitio": p["sitio"],
-                    "estilo_momificacion": p["estilo_momificacion"],
-                    "mediciones": p["mediciones"],
-                }
-                for p in cluster_profiles
-            ],
-        })
+        cluster_list.append(
+            {
+                "cluster_id": cluster_number,
+                "internal_id": cluster_id,
+                "size": len(members),
+                "members": [
+                    {
+                        "id_individuo": p["id_individuo"],
+                        "id_documento": p["id_documento"],
+                        "numero_cuerpo": p["numero_cuerpo"],
+                        "sexo": p["sexo"],
+                        "edad": p["edad"],
+                        "sitio": p["sitio"],
+                        "estilo_momificacion": p["estilo_momificacion"],
+                        "mediciones": p["mediciones"],
+                    }
+                    for p in cluster_profiles
+                ],
+            }
+        )
 
     assignment = {}
     for cluster in cluster_list:
@@ -1915,7 +2255,9 @@ def analysis_clusters(
     if k < 1:
         raise HTTPException(status_code=400, detail="k debe ser mayor o igual a 1")
     if linkage not in {"average", "single", "complete"}:
-        raise HTTPException(status_code=400, detail="linkage debe ser average, single o complete")
+        raise HTTPException(
+            status_code=400, detail="linkage debe ser average, single o complete"
+        )
 
     data = _chemical_profiles(elements, sexo, estado)
     profiles = data["profiles"]
@@ -1933,11 +2275,13 @@ def analysis_clusters(
 
     k = min(k, len(profiles))
     result = _agglomerative_clusters(profiles, k, linkage)
-    result.update({
-        "elements": data["elements"],
-        "labels": [f"{p['id_documento']} / {p['numero_cuerpo']}" for p in profiles],
-        "ids": [p["id_individuo"] for p in profiles],
-    })
+    result.update(
+        {
+            "elements": data["elements"],
+            "labels": [f"{p['id_documento']} / {p['numero_cuerpo']}" for p in profiles],
+            "ids": [p["id_individuo"] for p in profiles],
+        }
+    )
     return result
 
 
@@ -1974,34 +2318,46 @@ def export_graphml(
         data = _chemical_profiles(elements, sexo, estado)
         profiles = data["profiles"]
         k = min(max(k, 1), max(len(profiles), 1))
-        clusters = _agglomerative_clusters(profiles, k, "average") if profiles else {"clusters": []}
+        clusters = (
+            _agglomerative_clusters(profiles, k, "average")
+            if profiles
+            else {"clusters": []}
+        )
 
         for cluster in clusters["clusters"]:
             cluster_node_id = f"cluster_{cluster['cluster_id']}"
-            nodes.append({
-                "id": cluster_node_id,
-                "label": f"Cluster {cluster['cluster_id']}",
-                "type": "cluster",
-                "size": cluster["size"],
-            })
+            nodes.append(
+                {
+                    "id": cluster_node_id,
+                    "label": f"Cluster {cluster['cluster_id']}",
+                    "type": "cluster",
+                    "size": cluster["size"],
+                }
+            )
             for member in cluster["members"]:
                 person_id = member["id_individuo"]
-                nodes.append({
-                    "id": person_id,
-                    "label": f"{member['id_documento']} / {member['numero_cuerpo']}",
-                    "type": "individuo",
-                    "sexo": member["sexo"],
-                    "edad": member["edad"],
-                    "estilo_momificacion": member["estilo_momificacion"],
-                })
-                edges.append({
-                    "source": person_id,
-                    "target": cluster_node_id,
-                    "label": "pertenece_a_cluster",
-                    "weight": 1,
-                })
+                nodes.append(
+                    {
+                        "id": person_id,
+                        "label": f"{member['id_documento']} / {member['numero_cuerpo']}",
+                        "type": "individuo",
+                        "sexo": member["sexo"],
+                        "edad": member["edad"],
+                        "estilo_momificacion": member["estilo_momificacion"],
+                    }
+                )
+                edges.append(
+                    {
+                        "source": person_id,
+                        "target": cluster_node_id,
+                        "label": "pertenece_a_cluster",
+                        "weight": 1,
+                    }
+                )
     else:
-        sim = graph_similarity(elements=elements, min_similarity=min_similarity, sexo=sexo, estado=estado)
+        sim = graph_similarity(
+            elements=elements, min_similarity=min_similarity, sexo=sexo, estado=estado
+        )
         nodes = sim["nodes"]
         edges = sim["edges"]
 
@@ -2011,8 +2367,12 @@ def export_graphml(
     graphml.append('  <key id="type" for="node" attr.name="type" attr.type="string"/>')
     graphml.append('  <key id="sexo" for="node" attr.name="sexo" attr.type="string"/>')
     graphml.append('  <key id="edad" for="node" attr.name="edad" attr.type="string"/>')
-    graphml.append('  <key id="weight" for="edge" attr.name="weight" attr.type="double"/>')
-    graphml.append('  <key id="similarity" for="edge" attr.name="similarity" attr.type="double"/>')
+    graphml.append(
+        '  <key id="weight" for="edge" attr.name="weight" attr.type="double"/>'
+    )
+    graphml.append(
+        '  <key id="similarity" for="edge" attr.name="similarity" attr.type="double"/>'
+    )
     graphml.append('  <graph id="ArqueoGraph" edgedefault="undirected">')
 
     seen = set()
@@ -2022,30 +2382,44 @@ def export_graphml(
             continue
         seen.add(node_id)
         graphml.append(f'    <node id="{_xml_escape(node_id)}">')
-        graphml.append(f'      <data key="label">{_xml_escape(node.get("label", node_id))}</data>')
-        graphml.append(f'      <data key="type">{_xml_escape(node.get("type", ""))}</data>')
-        graphml.append(f'      <data key="sexo">{_xml_escape(node.get("sexo", ""))}</data>')
-        graphml.append(f'      <data key="edad">{_xml_escape(node.get("edad", ""))}</data>')
-        graphml.append('    </node>')
+        graphml.append(
+            f'      <data key="label">{_xml_escape(node.get("label", node_id))}</data>'
+        )
+        graphml.append(
+            f'      <data key="type">{_xml_escape(node.get("type", ""))}</data>'
+        )
+        graphml.append(
+            f'      <data key="sexo">{_xml_escape(node.get("sexo", ""))}</data>'
+        )
+        graphml.append(
+            f'      <data key="edad">{_xml_escape(node.get("edad", ""))}</data>'
+        )
+        graphml.append("    </node>")
 
     for idx, edge in enumerate(edges):
-        weight = edge.get("similarity", edge.get("weight", edge.get("concentracion", 1)))
-        graphml.append(f'    <edge id="e{idx}" source="{_xml_escape(edge["source"])}" target="{_xml_escape(edge["target"])}">')
-        graphml.append(f'      <data key="label">{_xml_escape(edge.get("label", ""))}</data>')
+        weight = edge.get(
+            "similarity", edge.get("weight", edge.get("concentracion", 1))
+        )
+        graphml.append(
+            f'    <edge id="e{idx}" source="{_xml_escape(edge["source"])}" target="{_xml_escape(edge["target"])}">'
+        )
+        graphml.append(
+            f'      <data key="label">{_xml_escape(edge.get("label", ""))}</data>'
+        )
         graphml.append(f'      <data key="weight">{_xml_escape(weight)}</data>')
-        graphml.append(f'      <data key="similarity">{_xml_escape(edge.get("similarity", ""))}</data>')
-        graphml.append('    </edge>')
+        graphml.append(
+            f'      <data key="similarity">{_xml_escape(edge.get("similarity", ""))}</data>'
+        )
+        graphml.append("    </edge>")
 
-    graphml.append('  </graph>')
-    graphml.append('</graphml>')
+    graphml.append("  </graph>")
+    graphml.append("</graphml>")
 
     return Response(
         content="\n".join(graphml),
         media_type="application/graphml+xml",
         headers={"Content-Disposition": 'attachment; filename="arqueograph.graphml"'},
     )
-
-
 
 
 # ============================================================
@@ -2127,8 +2501,15 @@ def _sync_orphan_images(id_individuo: str) -> int:
                 tumba = str(case.get("tumba") or case.get("referencia") or "").strip()
                 if not tumba:
                     continue
-                if case_id == id_individuo or str(case.get("individuo") or "") == id_individuo:
-                    candidates = [IMAGES_DIR / "imagenes_morro1" / tumba, IMAGES_DIR / tumba, IMAGES_DIR / id_individuo / tumba]
+                if (
+                    case_id == id_individuo
+                    or str(case.get("individuo") or "") == id_individuo
+                ):
+                    candidates = [
+                        IMAGES_DIR / "imagenes_morro1" / tumba,
+                        IMAGES_DIR / tumba,
+                        IMAGES_DIR / id_individuo / tumba,
+                    ]
                     for candidate in candidates:
                         if candidate.exists() and candidate not in possible_dirs:
                             possible_dirs.append(candidate)
@@ -2157,9 +2538,7 @@ def _sync_orphan_images(id_individuo: str) -> int:
             (id_individuo,),
         ).fetchall()
         existing_rel = {r["relative_path"] for r in rows if r["relative_path"]}
-        existing_names = {
-            r["filename_saved"] for r in rows if r["filename_saved"]
-        } | {
+        existing_names = {r["filename_saved"] for r in rows if r["filename_saved"]} | {
             r["filename_guardado"] for r in rows if r["filename_guardado"]
         }
 
@@ -2237,18 +2616,24 @@ def _scan_image_storage() -> dict:
         # Si encontramos una carpeta de import legacy (imagenes_morro1), iteramos sus subcarpetas
         if folder.is_dir() and folder.name == "imagenes_morro1":
             for sub in sorted(folder.iterdir()):
-                if not sub.is_dir() or sub.name.startswith(".") or sub.name.startswith("._"):
+                if (
+                    not sub.is_dir()
+                    or sub.name.startswith(".")
+                    or sub.name.startswith("._")
+                ):
                     continue
                 image_files = []
                 ignored = 0
                 for path in sorted(sub.iterdir()):
                     if _is_allowed_local_image_file(path):
                         rel = str(path.relative_to(IMAGES_DIR)).replace("\\", "/")
-                        image_files.append({
-                            "filename": path.name,
-                            "size_bytes": path.stat().st_size,
-                            "relative_path": rel,
-                        })
+                        image_files.append(
+                            {
+                                "filename": path.name,
+                                "size_bytes": path.stat().st_size,
+                                "relative_path": rel,
+                            }
+                        )
                     elif path.is_file():
                         ignored += 1
                 files_total += len(image_files)
@@ -2265,18 +2650,24 @@ def _scan_image_storage() -> dict:
                     orphan_folders.append(sub.name)
             continue
 
-        if not folder.is_dir() or folder.name.startswith(".") or folder.name.startswith("._"):
+        if (
+            not folder.is_dir()
+            or folder.name.startswith(".")
+            or folder.name.startswith("._")
+        ):
             continue
         image_files = []
         ignored = 0
         for path in sorted(folder.iterdir()):
             if _is_allowed_local_image_file(path):
                 rel = str(path.relative_to(IMAGES_DIR)).replace("\\", "/")
-                image_files.append({
-                    "filename": path.name,
-                    "size_bytes": path.stat().st_size,
-                    "relative_path": rel,
-                })
+                image_files.append(
+                    {
+                        "filename": path.name,
+                        "size_bytes": path.stat().st_size,
+                        "relative_path": rel,
+                    }
+                )
             elif path.is_file():
                 ignored += 1
         files_total += len(image_files)
@@ -2321,12 +2712,21 @@ def sync_imagenes_desde_disco(id_individuo: Optional[str] = None):
         targets = []
         if IMAGES_DIR.exists():
             for folder in sorted(IMAGES_DIR.iterdir()):
-                if not folder.is_dir() or folder.name.startswith('.') or folder.name.startswith('._'):
+                if (
+                    not folder.is_dir()
+                    or folder.name.startswith(".")
+                    or folder.name.startswith("._")
+                ):
                     continue
                 # If we find a legacy container folder, include its subfolders
                 if folder.name == "imagenes_morro1":
                     for sub in sorted(folder.iterdir()):
-                        if sub.is_dir() and not sub.name.startswith('.') and not sub.name.startswith('._') and sub.name in known_ids:
+                        if (
+                            sub.is_dir()
+                            and not sub.name.startswith(".")
+                            and not sub.name.startswith("._")
+                            and sub.name in known_ids
+                        ):
                             targets.append(sub.name)
                     continue
                 if folder.name in known_ids:
@@ -2375,7 +2775,9 @@ def list_imagenes_individuo(id_individuo: str):
     catalog_images = _catalogo_momias_images_for_individuo(id_individuo)
 
     existing_paths = {img.get("relative_path") for img in db_images}
-    catalog_images = [img for img in catalog_images if img.get("relative_path") not in existing_paths]
+    catalog_images = [
+        img for img in catalog_images if img.get("relative_path") not in existing_paths
+    ]
 
     return db_images + catalog_images
 
@@ -2411,7 +2813,11 @@ async def upload_imagen_individuo(
             with dest.open("wb") as f:
                 shutil.copyfileobj(file.file, f)
 
-            mime_type = file.content_type or mimetypes.guess_type(dest.name)[0] or "application/octet-stream"
+            mime_type = (
+                file.content_type
+                or mimetypes.guess_type(dest.name)[0]
+                or "application/octet-stream"
+            )
             relative_path = f"{id_individuo}/{saved_name}"
 
             conn.execute(
@@ -2486,7 +2892,9 @@ def update_imagen(
 
     if not fields:
         with get_connection() as conn:
-            row = conn.execute("SELECT * FROM imagenes WHERE id_imagen = ?", (id_imagen,)).fetchone()
+            row = conn.execute(
+                "SELECT * FROM imagenes WHERE id_imagen = ?", (id_imagen,)
+            ).fetchone()
         if not row:
             raise HTTPException(status_code=404, detail="Imagen no encontrada")
         return _image_row_to_dict(row)
@@ -2495,12 +2903,18 @@ def update_imagen(
     params.append(id_imagen)
 
     with get_connection() as conn:
-        row = conn.execute("SELECT * FROM imagenes WHERE id_imagen = ?", (id_imagen,)).fetchone()
+        row = conn.execute(
+            "SELECT * FROM imagenes WHERE id_imagen = ?", (id_imagen,)
+        ).fetchone()
         if not row:
             raise HTTPException(status_code=404, detail="Imagen no encontrada")
 
-        conn.execute(f"UPDATE imagenes SET {', '.join(fields)} WHERE id_imagen = ?", params)
-        updated = conn.execute("SELECT * FROM imagenes WHERE id_imagen = ?", (id_imagen,)).fetchone()
+        conn.execute(
+            f"UPDATE imagenes SET {', '.join(fields)} WHERE id_imagen = ?", params
+        )
+        updated = conn.execute(
+            "SELECT * FROM imagenes WHERE id_imagen = ?", (id_imagen,)
+        ).fetchone()
 
     return _image_row_to_dict(updated)
 
@@ -2508,7 +2922,9 @@ def update_imagen(
 @app.delete("/admin/imagenes/{id_imagen}")
 def delete_imagen(id_imagen: str):
     with get_connection() as conn:
-        row = conn.execute("SELECT * FROM imagenes WHERE id_imagen = ?", (id_imagen,)).fetchone()
+        row = conn.execute(
+            "SELECT * FROM imagenes WHERE id_imagen = ?", (id_imagen,)
+        ).fetchone()
         if not row:
             raise HTTPException(status_code=404, detail="Imagen no encontrada")
 
@@ -2565,7 +2981,9 @@ def _morro_clone_id(value: Optional[str], source: str) -> Optional[str]:
 
 def _source_display_name(source: str) -> str:
     with get_connection() as conn:
-        row = conn.execute("SELECT nombre FROM sitios WHERE lower(id_sitio) = ?", (source,)).fetchone()
+        row = conn.execute(
+            "SELECT nombre FROM sitios WHERE lower(id_sitio) = ?", (source,)
+        ).fetchone()
     return row["nombre"] if row else source
 
 
@@ -2700,7 +3118,8 @@ def _build_source_table_rows(
             "matriz_codigo": row["matriz_codigo"],
             "matriz_nombre": row["matriz_nombre"],
             "matriz_categoria": row["matriz_categoria"],
-            "tipo_muestra_original": row["tipo_muestra_original"] or row["tipo_muestra"],
+            "tipo_muestra_original": row["tipo_muestra_original"]
+            or row["tipo_muestra"],
             "id_muestra": row["id_muestra"],
             "codigo_muestra": row["codigo_muestra"],
             "muestra_inferida": bool(row["muestra_inferida"]),
@@ -2740,9 +3159,7 @@ def _build_source_pca(
         patologia=patologia,
     )
     available = {
-        row["elemento"].lower(): row["elemento"]
-        for row in rows
-        if row.get("elemento")
+        row["elemento"].lower(): row["elemento"] for row in rows if row.get("elemento")
     }
     selected = []
     for raw in elements:
@@ -2777,12 +3194,16 @@ def _build_source_pca(
     for row in selected_rows:
         sample_id = str(row.get("id_muestra") or row.get("id_caso") or "")
         key = (sample_id, str(row.get("elemento") or ""))
-        contexts_by_sample_element.setdefault(key, set()).add((
-            str(row.get("id_referencia") or ""),
-            str(row.get("unidad") or ""),
-            str(row.get("matriz_codigo") or row.get("matriz") or ""),
-        ))
-    context_conflicts = [key for key, contexts in contexts_by_sample_element.items() if len(contexts) > 1]
+        contexts_by_sample_element.setdefault(key, set()).add(
+            (
+                str(row.get("id_referencia") or ""),
+                str(row.get("unidad") or ""),
+                str(row.get("matriz_codigo") or row.get("matriz") or ""),
+            )
+        )
+    context_conflicts = [
+        key for key, contexts in contexts_by_sample_element.items() if len(contexts) > 1
+    ]
     if context_conflicts:
         raise ValueError(
             "Hay mediciones repetidas de una misma muestra y elemento en referencias, matrices o unidades diferentes. "
@@ -2815,7 +3236,9 @@ def _build_source_pca(
         except (TypeError, ValueError):
             continue
         case_id = row.get("id_muestra") or row["id_caso"]
-        values_by_case.setdefault(case_id, {}).setdefault(row["elemento"], []).append(value)
+        values_by_case.setdefault(case_id, {}).setdefault(row["elemento"], []).append(
+            value
+        )
         metadata[case_id] = {
             "caso": row["caso"],
             "codigo_muestra": row.get("codigo_muestra") or "",
@@ -2824,25 +3247,40 @@ def _build_source_pca(
             "edad": row.get("edad") or "",
         }
     complete_cases = [
-        case_id for case_id, measures in values_by_case.items()
+        case_id
+        for case_id, measures in values_by_case.items()
         if all(measures.get(element) for element in selected)
     ]
-    complete_cases.sort(key=lambda case_id: (metadata[case_id]["caso"].lower(), metadata[case_id]["codigo_muestra"].lower()))
+    complete_cases.sort(
+        key=lambda case_id: (
+            metadata[case_id]["caso"].lower(),
+            metadata[case_id]["codigo_muestra"].lower(),
+        )
+    )
     if len(complete_cases) < 3:
-        raise ValueError("Se necesitan al menos tres casos con mediciones completas para los elementos seleccionados")
+        raise ValueError(
+            "Se necesitan al menos tres casos con mediciones completas para los elementos seleccionados"
+        )
 
-    matrix = np.asarray([
-        [float(np.mean(values_by_case[case_id][element])) for element in selected]
-        for case_id in complete_cases
-    ], dtype=float)
+    matrix = np.asarray(
+        [
+            [float(np.mean(values_by_case[case_id][element])) for element in selected]
+            for case_id in complete_cases
+        ],
+        dtype=float,
+    )
     deviations = matrix.std(axis=0)
     if any(np.isclose(deviations, 0.0)):
-        constants = [selected[i] for i, value in enumerate(deviations) if np.isclose(value, 0.0)]
-        raise ValueError("No se puede calcular el PCA: no hay variacion en " + ", ".join(constants))
+        constants = [
+            selected[i] for i, value in enumerate(deviations) if np.isclose(value, 0.0)
+        ]
+        raise ValueError(
+            "No se puede calcular el PCA: no hay variacion en " + ", ".join(constants)
+        )
     standardized = (matrix - matrix.mean(axis=0)) / deviations
     left, singular_values, components = np.linalg.svd(standardized, full_matrices=False)
     scores = left * singular_values
-    variances = (singular_values ** 2) / max(len(complete_cases) - 1, 1)
+    variances = (singular_values**2) / max(len(complete_cases) - 1, 1)
     explained = variances / float(variances.sum())
     return {
         "elements": selected,
@@ -2867,7 +3305,11 @@ def _build_source_pca(
             for index, case_id in enumerate(complete_cases)
         ],
         "loadings": [
-            {"elemento": element, "pc1": float(components[0, index]), "pc2": float(components[1, index])}
+            {
+                "elemento": element,
+                "pc1": float(components[0, index]),
+                "pc2": float(components[1, index]),
+            }
             for index, element in enumerate(selected)
         ],
         "explained_variance": {"pc1": float(explained[0]), "pc2": float(explained[1])},
@@ -2885,40 +3327,82 @@ def _build_source_pca(
         "analysis_context": {
             "matriz": {
                 "codigo": next(iter(matrix_codes), ""),
-                "nombre": next((row.get("matriz_nombre") for row in selected_rows if row.get("matriz_nombre")), ""),
+                "nombre": next(
+                    (
+                        row.get("matriz_nombre")
+                        for row in selected_rows
+                        if row.get("matriz_nombre")
+                    ),
+                    "",
+                ),
             },
             "referencia": {
                 "id_referencia": next(iter(reference_ids), ""),
-                "titulo": next((row.get("referencia_titulo") for row in selected_rows if row.get("referencia_titulo")), ""),
-                "cita": next((row.get("referencia_cita") for row in selected_rows if row.get("referencia_cita")), ""),
-            } if len(reference_ids) == 1 else None,
+                "titulo": next(
+                    (
+                        row.get("referencia_titulo")
+                        for row in selected_rows
+                        if row.get("referencia_titulo")
+                    ),
+                    "",
+                ),
+                "cita": next(
+                    (
+                        row.get("referencia_cita")
+                        for row in selected_rows
+                        if row.get("referencia_cita")
+                    ),
+                    "",
+                ),
+            }
+            if len(reference_ids) == 1
+            else None,
             "referencias": [
                 {
                     "id_referencia": reference_id,
-                    "titulo": next((
-                        row.get("referencia_titulo")
-                        for row in selected_rows
-                        if row.get("id_referencia") == reference_id
-                    ), ""),
-                    "cita": next((
-                        row.get("referencia_cita")
-                        for row in selected_rows
-                        if row.get("id_referencia") == reference_id
-                    ), ""),
+                    "titulo": next(
+                        (
+                            row.get("referencia_titulo")
+                            for row in selected_rows
+                            if row.get("id_referencia") == reference_id
+                        ),
+                        "",
+                    ),
+                    "cita": next(
+                        (
+                            row.get("referencia_cita")
+                            for row in selected_rows
+                            if row.get("id_referencia") == reference_id
+                        ),
+                        "",
+                    ),
                 }
                 for reference_id in sorted(reference_ids)
             ],
             "unidades": {
-                element: next(iter(units), "") for element, units in units_by_element.items()
+                element: next(iter(units), "")
+                for element, units in units_by_element.items()
             },
             "muestras": len(values_by_case),
-            "analisis": len({row.get("id_analisis") for row in selected_rows if row.get("id_analisis")}),
+            "analisis": len(
+                {
+                    row.get("id_analisis")
+                    for row in selected_rows
+                    if row.get("id_analisis")
+                }
+            ),
         },
-        "warnings": ([{
-            "code": "multiple_analytical_references",
-            "severity": "info",
-            "message": "El PCA integra elementos procedentes de referencias distintas sin promediar una misma variable entre ellas.",
-        }] if len(reference_ids) > 1 else []),
+        "warnings": (
+            [
+                {
+                    "code": "multiple_analytical_references",
+                    "severity": "info",
+                    "message": "El PCA integra elementos procedentes de referencias distintas sin promediar una misma variable entre ellas.",
+                }
+            ]
+            if len(reference_ids) > 1
+            else []
+        ),
     }
 
 
@@ -2933,19 +3417,25 @@ def _enrich_pca_with_pathologies(payload: dict, fuente: Optional[str]) -> dict:
     point_ids.discard("")
 
     with get_connection() as conn:
-        rows = rows_to_dicts(conn.execute(
-            """
+        rows = rows_to_dicts(
+            conn.execute(
+                """
             SELECT id_individuo, patologia, MAX(COALESCE(presente, 0)) AS presente
             FROM paleopatologias
             WHERE lower(COALESCE(fuente, '')) = ?
             GROUP BY id_individuo, patologia
             ORDER BY patologia, id_individuo
             """,
-            (source,),
-        ).fetchall())
+                (source,),
+            ).fetchall()
+        )
 
     pathology_options = sorted(
-        {str(row.get("patologia") or "").strip() for row in rows if row.get("patologia")},
+        {
+            str(row.get("patologia") or "").strip()
+            for row in rows
+            if row.get("patologia")
+        },
         key=str.casefold,
     )
     statuses_by_case: dict[str, dict[str, str]] = {}
@@ -2979,12 +3469,15 @@ def _source_case_relation(case_id: str, fuente: Optional[str]) -> dict:
         ).fetchone()
         if not individual:
             raise HTTPException(status_code=404, detail="Caso no encontrado")
-        images = rows_to_dicts(conn.execute(
-            "SELECT * FROM imagenes WHERE id_individuo = ? ORDER BY created_at DESC",
-            (case_id,),
-        ).fetchall())
-        measurements = rows_to_dicts(conn.execute(
-            """
+        images = rows_to_dicts(
+            conn.execute(
+                "SELECT * FROM imagenes WHERE id_individuo = ? ORDER BY created_at DESC",
+                (case_id,),
+            ).fetchall()
+        )
+        measurements = rows_to_dicts(
+            conn.execute(
+                """
             SELECT
                 m.*,
                 mu.id_muestra,
@@ -3012,8 +3505,9 @@ def _source_case_relation(case_id: str, fuente: Optional[str]) -> dict:
             WHERE m.id_individuo = ?
             ORDER BY mu.codigo_muestra, a.codigo_analisis, m.elemento
             """,
-            (case_id,),
-        ).fetchall())
+                (case_id,),
+            ).fetchall()
+        )
         sample_ids = [
             row["id_muestra"]
             for row in conn.execute(
@@ -3021,22 +3515,28 @@ def _source_case_relation(case_id: str, fuente: Optional[str]) -> dict:
                 (case_id,),
             ).fetchall()
         ]
-        pathologies = rows_to_dicts(conn.execute(
-            """
+        pathologies = rows_to_dicts(
+            conn.execute(
+                """
             SELECT *
             FROM paleopatologias
             WHERE id_individuo = ? AND presente = 1
             ORDER BY patologia
             """,
-            (case_id,),
-        ).fetchall())
-        datings = rows_to_dicts(conn.execute(
-            "SELECT * FROM dataciones WHERE id_individuo = ? ORDER BY fecha_bp",
-            (case_id,),
-        ).fetchall())
+                (case_id,),
+            ).fetchall()
+        )
+        datings = rows_to_dicts(
+            conn.execute(
+                "SELECT * FROM dataciones WHERE id_individuo = ? ORDER BY fecha_bp",
+                (case_id,),
+            ).fetchall()
+        )
     return {
         "case": dict(individual),
-        "images": [{**row, "url": f"/files/imagenes/{row['relative_path']}"} for row in images],
+        "images": [
+            {**row, "url": f"/files/imagenes/{row['relative_path']}"} for row in images
+        ],
         "measurements": measurements,
         "samples": [
             sample
@@ -3070,7 +3570,9 @@ def _assert_source_exists(source: str) -> None:
             (source, source),
         ).fetchone()
     if not exists:
-        raise HTTPException(status_code=404, detail=f"No existe el sitio/fuente: {source}")
+        raise HTTPException(
+            status_code=404, detail=f"No existe el sitio/fuente: {source}"
+        )
 
 
 def _source_individual_label(row: dict[str, Any]) -> str:
@@ -3338,7 +3840,9 @@ def _source_positive_pathology_rows(
         return rows_to_dicts(conn.execute(sql, params).fetchall())
 
 
-def _add_unique_node(nodes: list[dict[str, Any]], seen: set[str], node: dict[str, Any]) -> None:
+def _add_unique_node(
+    nodes: list[dict[str, Any]], seen: set[str], node: dict[str, Any]
+) -> None:
     node_id = node["id"]
     if node_id in seen:
         return
@@ -3369,20 +3873,26 @@ def _build_site_reference_graph(
     nodes: list[dict[str, Any]] = []
     edges: list[dict[str, Any]] = []
     seen: set[str] = set()
-    _add_unique_node(nodes, seen, {
-        "id": site_id,
-        "label": display_name,
-        "type": "patologia",
-        "patologia": display_name,
-        "fuente": source,
-    })
+    _add_unique_node(
+        nodes,
+        seen,
+        {
+            "id": site_id,
+            "label": display_name,
+            "type": "patologia",
+            "patologia": display_name,
+            "fuente": source,
+        },
+    )
     for row in individuals:
         _add_unique_node(nodes, seen, _source_individual_node(row))
-        edges.append({
-            "source": site_id,
-            "target": row["id_individuo"],
-            "label": "presenta",
-        })
+        edges.append(
+            {
+                "source": site_id,
+                "target": row["id_individuo"],
+                "label": "presenta",
+            }
+        )
     return {
         "mode": "reference",
         "nodes": nodes,
@@ -3415,7 +3925,11 @@ def _build_site_element_graph(
             referencia=referencia,
         )
 
-    selected_element = None if normalized_element in {"red_completa", "red completa", "redcompleta", "all"} else elemento
+    selected_element = (
+        None
+        if normalized_element in {"red_completa", "red completa", "redcompleta", "all"}
+        else elemento
+    )
     measurements = _source_measurement_rows(
         source,
         sexo=sexo,
@@ -3424,8 +3938,12 @@ def _build_site_element_graph(
         referencia=referencia,
         elemento=selected_element,
     )
-    individual_ids = {row["id_individuo"] for row in measurements if row.get("id_individuo")}
-    individuals = _source_individual_rows(source, sexo=sexo, edad=edad, ids=individual_ids)
+    individual_ids = {
+        row["id_individuo"] for row in measurements if row.get("id_individuo")
+    }
+    individuals = _source_individual_rows(
+        source, sexo=sexo, edad=edad, ids=individual_ids
+    )
     individuals_by_id = {row["id_individuo"]: row for row in individuals}
 
     nodes: list[dict[str, Any]] = []
@@ -3436,7 +3954,9 @@ def _build_site_element_graph(
         element_name = row.get("elemento")
         if not element_name:
             continue
-        meta = element_meta.setdefault(str(element_name), {"referencias": set(), "matrices": set()})
+        meta = element_meta.setdefault(
+            str(element_name), {"referencias": set(), "matrices": set()}
+        )
         if row.get("referencia_titulo"):
             meta["referencias"].add(str(row["referencia_titulo"]))
         if row.get("matriz_nombre") or row.get("tipo_muestra"):
@@ -3451,28 +3971,36 @@ def _build_site_element_graph(
             continue
         element_id = f"elemento:{element_name}"
         meta = element_meta.get(str(element_name), {})
-        _add_unique_node(nodes, seen, {
-            "id": element_id,
-            "label": element_name,
-            "type": "elemento",
-            "elemento": element_name,
-            "referencia_datos": " | ".join(sorted(meta.get("referencias", set()))) or None,
-            "matriz": " | ".join(sorted(meta.get("matrices", set()))) or None,
-        })
-        edges.append({
-            "source": person_id,
-            "target": element_id,
-            "label": "mide",
-            "elemento": element_name,
-            "concentracion": row.get("concentracion"),
-            "unidad": row.get("unidad") or "ppm",
-            "id_muestra": row.get("id_muestra"),
-            "codigo_muestra": row.get("codigo_muestra"),
-            "id_analisis": row.get("id_analisis"),
-            "id_referencia": row.get("id_referencia"),
-            "referencia_datos": row.get("referencia_titulo") or row.get("observaciones"),
-            "matriz": row.get("matriz_nombre") or row.get("tipo_muestra"),
-        })
+        _add_unique_node(
+            nodes,
+            seen,
+            {
+                "id": element_id,
+                "label": element_name,
+                "type": "elemento",
+                "elemento": element_name,
+                "referencia_datos": " | ".join(sorted(meta.get("referencias", set())))
+                or None,
+                "matriz": " | ".join(sorted(meta.get("matrices", set()))) or None,
+            },
+        )
+        edges.append(
+            {
+                "source": person_id,
+                "target": element_id,
+                "label": "mide",
+                "elemento": element_name,
+                "concentracion": row.get("concentracion"),
+                "unidad": row.get("unidad") or "ppm",
+                "id_muestra": row.get("id_muestra"),
+                "codigo_muestra": row.get("codigo_muestra"),
+                "id_analisis": row.get("id_analisis"),
+                "id_referencia": row.get("id_referencia"),
+                "referencia_datos": row.get("referencia_titulo")
+                or row.get("observaciones"),
+                "matriz": row.get("matriz_nombre") or row.get("tipo_muestra"),
+            }
+        )
     return {
         "mode": "relational",
         "nodes": nodes,
@@ -3482,7 +4010,9 @@ def _build_site_element_graph(
             "sitio": _source_display_name(source),
             "individuos": len(individuals),
             "mediciones": len(measurements),
-            "elementos": len({row.get("elemento") for row in measurements if row.get("elemento")}),
+            "elementos": len(
+                {row.get("elemento") for row in measurements if row.get("elemento")}
+            ),
         },
     }
 
@@ -3505,8 +4035,12 @@ def _build_site_pathology_graph(
         matriz=matriz,
         referencia=referencia,
     )
-    individual_ids = {row["id_individuo"] for row in pathology_rows if row.get("id_individuo")}
-    individuals = _source_individual_rows(source, sexo=sexo, edad=edad, ids=individual_ids)
+    individual_ids = {
+        row["id_individuo"] for row in pathology_rows if row.get("id_individuo")
+    }
+    individuals = _source_individual_rows(
+        source, sexo=sexo, edad=edad, ids=individual_ids
+    )
     individuals_by_id = {row["id_individuo"]: row for row in individuals}
 
     nodes: list[dict[str, Any]] = []
@@ -3517,23 +4051,29 @@ def _build_site_pathology_graph(
         if not pathology_name:
             continue
         pathology_id = f"patologia:{pathology_name}"
-        _add_unique_node(nodes, seen, {
-            "id": pathology_id,
-            "label": pathology_name,
-            "type": "patologia",
-            "patologia": pathology_name,
-        })
+        _add_unique_node(
+            nodes,
+            seen,
+            {
+                "id": pathology_id,
+                "label": pathology_name,
+                "type": "patologia",
+                "patologia": pathology_name,
+            },
+        )
         person_id = row.get("id_individuo")
         person = individuals_by_id.get(person_id)
         if not person:
             continue
         _add_unique_node(nodes, seen, _source_individual_node(person))
-        edges.append({
-            "source": pathology_id,
-            "target": person_id,
-            "label": "presenta",
-            "valor": row.get("valor"),
-        })
+        edges.append(
+            {
+                "source": pathology_id,
+                "target": person_id,
+                "label": "presenta",
+                "valor": row.get("valor"),
+            }
+        )
 
     return {
         "mode": "relational",
@@ -3542,7 +4082,9 @@ def _build_site_pathology_graph(
         "summary": {
             "fuente": source,
             "sitio": _source_display_name(source),
-            "patologias": len({row.get("patologia") for row in pathology_rows if row.get("patologia")}),
+            "patologias": len(
+                {row.get("patologia") for row in pathology_rows if row.get("patologia")}
+            ),
             "individuos": len(individuals),
         },
     }
@@ -3557,6 +4099,19 @@ def graph_site_reference(
     matriz: Optional[str] = None,
     referencia: Optional[str] = None,
 ):
+    """
+    Endpoint para obtener el grafo de referencia de un sitio.
+
+    Grafo simple: nodo central (sitio) y aristas hacia cada individuo.
+
+    Args:
+        fuente (str): Identificador del sitio.
+        Filtros opcionales: sexo, edad, patologia, matriz, referencia.
+
+    Returns:
+        dict: Grafo con 'nodes' y 'edges'.
+    """
+
     return _build_site_reference_graph(
         fuente,
         sexo=sexo,
@@ -3576,6 +4131,20 @@ def graph_site_elemento(
     matriz: Optional[str] = None,
     referencia: Optional[str] = None,
 ):
+    """
+    Endpoint para obtener el grafo de un elemento químico en un sitio.
+
+    Nodos: individuos y elementos. Aristas: "mide" con concentración.
+
+    Args:
+        fuente (str): Identificador del sitio.
+        elemento (str): Elemento químico a visualizar.
+        sexo, edad, matriz, referencia: Filtros opcionales.
+
+    Returns:
+        dict: Grafo relacional.
+    """
+
     return _build_site_element_graph(
         fuente,
         elemento=elemento,
@@ -3684,6 +4253,17 @@ def analysis_site_context(
     elemento: Optional[str] = None,
     patologia: Optional[str] = None,
 ):
+    """
+    Endpoint para obtener el contexto analítico de un sitio.
+
+    Args:
+        fuente (str): Identificador del sitio.
+        matriz, referencia, sexo, edad, elemento, patologia: Filtros opcionales.
+
+    Returns:
+        dict: Contexto analítico (ver build_analysis_context).
+    """
+
     source = _normalize_source(fuente)
     _assert_source_exists(source)
     return build_analysis_context(
@@ -3759,6 +4339,21 @@ def analysis_site_pca(
     referencia: Optional[str] = None,
     patologia: Optional[str] = None,
 ):
+    """
+    Endpoint para calcular el PCA de un sitio.
+
+    Args:
+        fuente (str): Identificador del sitio.
+        elements (str): Elementos separados por comas (ej. "Mn,As,Ba").
+        sexo, edad, matriz, referencia, patologia: Filtros opcionales.
+
+    Returns:
+        dict: Resultado del PCA con puntos, loadings, varianza explicada y contexto analítico.
+
+    Raises:
+        HTTPException 400: Si no hay al menos 3 elementos o 3 muestras completas.
+    """
+
     source = _normalize_source(fuente)
     _assert_source_exists(source)
     selected = [element.strip() for element in elements.split(",") if element.strip()]
@@ -3797,7 +4392,11 @@ def graph_morro1_elemento(
     fuente: Optional[str] = None,
 ):
     graph = build_morro1_element_graph(
-        elemento=elemento, analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz
+        elemento=elemento,
+        analysis_paths=MORRO1_ANALYSIS_PATHS,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
     )
     return _adapt_morro_graph_for_source(graph, fuente)
 
@@ -3810,7 +4409,11 @@ def graph_morro1_elements(
     fuente: Optional[str] = None,
 ):
     graph = build_morro1_element_graph(
-        elemento="red_completa", analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz
+        elemento="red_completa",
+        analysis_paths=MORRO1_ANALYSIS_PATHS,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
     )
     return _adapt_morro_graph_for_source(graph, fuente)
 
@@ -3849,9 +4452,15 @@ def graph_morro1_table(
     fuente: Optional[str] = None,
 ):
     if _normalize_source(fuente) != "morro1":
-        return _build_source_table_rows(fuente=fuente, sexo=sexo, edad=edad, matriz=matriz, elemento=elemento)
+        return _build_source_table_rows(
+            fuente=fuente, sexo=sexo, edad=edad, matriz=matriz, elemento=elemento
+        )
     return build_morro1_table_rows(
-        analysis_paths=MORRO1_ANALYSIS_PATHS, sexo=sexo, edad=edad, matriz=matriz, elemento=elemento
+        analysis_paths=MORRO1_ANALYSIS_PATHS,
+        sexo=sexo,
+        edad=edad,
+        matriz=matriz,
+        elemento=elemento,
     )
 
 
@@ -3872,6 +4481,7 @@ def analysis_morro1_pca(
         return _enrich_pca_with_pathologies(payload, fuente=source)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+
 
 @app.get("/graph/morro1/case/{case_id}/relation")
 def graph_morro1_case_relation(case_id: str, fuente: Optional[str] = None):

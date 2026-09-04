@@ -13,7 +13,11 @@ def _source(value: Optional[str]) -> str:
 
 def _values(rows: list[dict[str, Any]], key: str) -> list[str]:
     return sorted(
-        {str(row.get(key) or "").strip() for row in rows if str(row.get(key) or "").strip()},
+        {
+            str(row.get(key) or "").strip()
+            for row in rows
+            if str(row.get(key) or "").strip()
+        },
         key=str.casefold,
     )
 
@@ -68,11 +72,34 @@ def build_analysis_context(
     elemento: Optional[str] = None,
     patologia: Optional[str] = None,
 ) -> dict[str, Any]:
+    """
+    Construye el contexto analítico de un sitio con los filtros activos.
+
+    Devuelve:
+        - Matrices disponibles con sus alias, elementos, unidades y referencias.
+        - Referencias disponibles con matrices, elementos y unidades.
+        - Elementos con conteos de mediciones y unidades.
+        - Advertencias (muestras inferidas, conflictos de unidades).
+
+    Args:
+        fuente (str): Identificador del sitio (ej. "morro1").
+        matriz (Optional[str]): Filtrar por código de matriz.
+        referencia (Optional[str]): Filtrar por id_referencia.
+        sexo (Optional[str]): Filtrar por sexo del individuo.
+        edad (Optional[str]): Filtrar por edad del individuo.
+        elemento (Optional[str]): Filtrar por elemento químico.
+        patologia (Optional[str]): Filtrar por patología presente.
+
+    Returns:
+        dict: Contexto analítico con summary, elementos, matrices y referencias.
+    """
+
     ensure_analytical_model()
     source = _source(fuente)
     with get_connection() as conn:
-        matrix_rows = rows_to_dicts(conn.execute(
-            """
+        matrix_rows = rows_to_dicts(
+            conn.execute(
+                """
             SELECT
                 mx.*,
                 COUNT(DISTINCT mu.id_muestra) AS muestras,
@@ -88,11 +115,13 @@ def build_analysis_context(
             GROUP BY mx.id_matriz
             ORDER BY mx.nombre
             """,
-            (source,),
-        ).fetchall())
+                (source,),
+            ).fetchall()
+        )
         aliases_by_matrix: dict[str, list[str]] = defaultdict(list)
-        for row in rows_to_dicts(conn.execute(
-            """
+        for row in rows_to_dicts(
+            conn.execute(
+                """
             SELECT DISTINCT mu.id_matriz, me.tipo_muestra AS alias_original
             FROM muestras mu
             JOIN individuos i ON i.id_individuo = mu.id_individuo
@@ -102,14 +131,16 @@ def build_analysis_context(
               AND me.tipo_muestra IS NOT NULL
             ORDER BY me.tipo_muestra
             """,
-            (source,),
-        ).fetchall()):
+                (source,),
+            ).fetchall()
+        ):
             aliases_by_matrix[row["id_matriz"]].append(row["alias_original"])
 
         for matrix_row in matrix_rows:
             matrix_id = matrix_row["id_matriz"]
-            details = rows_to_dicts(conn.execute(
-                """
+            details = rows_to_dicts(
+                conn.execute(
+                    """
                 SELECT me.elemento, me.unidad, a.id_referencia
                 FROM muestras mu
                 JOIN individuos i ON i.id_individuo = mu.id_individuo
@@ -118,15 +149,17 @@ def build_analysis_context(
                 WHERE lower(COALESCE(mu.fuente, i.fuente, '')) = ?
                   AND mu.id_matriz = ?
                 """,
-                (source, matrix_id),
-            ).fetchall())
+                    (source, matrix_id),
+                ).fetchall()
+            )
             matrix_row["aliases"] = aliases_by_matrix.get(matrix_id, [])
             matrix_row["elementos"] = _values(details, "elemento")
             matrix_row["unidades"] = _values(details, "unidad")
             matrix_row["referencias"] = _values(details, "id_referencia")
 
-        reference_rows = rows_to_dicts(conn.execute(
-            """
+        reference_rows = rows_to_dicts(
+            conn.execute(
+                """
             SELECT
                 r.*,
                 COUNT(DISTINCT a.id_analisis) AS analisis,
@@ -142,11 +175,13 @@ def build_analysis_context(
             GROUP BY r.id_referencia
             ORDER BY r.titulo
             """,
-            (source,),
-        ).fetchall())
+                (source,),
+            ).fetchall()
+        )
         for reference_row in reference_rows:
-            details = rows_to_dicts(conn.execute(
-                """
+            details = rows_to_dicts(
+                conn.execute(
+                    """
                 SELECT DISTINCT mx.codigo AS matriz, me.elemento, me.unidad
                 FROM analisis_quimicos a
                 JOIN muestras mu ON mu.id_muestra = a.id_muestra
@@ -154,8 +189,9 @@ def build_analysis_context(
                 JOIN mediciones_quimicas me ON me.id_analisis = a.id_analisis
                 WHERE a.id_referencia = ?
                 """,
-                (reference_row["id_referencia"],),
-            ).fetchall())
+                    (reference_row["id_referencia"],),
+                ).fetchall()
+            )
             reference_row["matrices"] = _values(details, "matriz")
             reference_row["elementos"] = _values(details, "elemento")
             reference_row["unidades"] = _values(details, "unidad")
@@ -169,8 +205,9 @@ def build_analysis_context(
             elemento,
             patologia,
         )
-        summary = dict(conn.execute(
-            f"""
+        summary = dict(
+            conn.execute(
+                f"""
             SELECT
                 COUNT(DISTINCT mu.id_muestra) AS muestras,
                 COUNT(DISTINCT mu.id_individuo) AS individuos,
@@ -184,10 +221,12 @@ def build_analysis_context(
             LEFT JOIN mediciones_quimicas me ON me.id_analisis = a.id_analisis
             {filter_sql}
             """,
-            filter_params,
-        ).fetchone())
-        element_rows = rows_to_dicts(conn.execute(
-            f"""
+                filter_params,
+            ).fetchone()
+        )
+        element_rows = rows_to_dicts(
+            conn.execute(
+                f"""
             SELECT
                 me.elemento,
                 COUNT(DISTINCT me.id_medicion) AS mediciones,
@@ -202,8 +241,9 @@ def build_analysis_context(
             GROUP BY me.elemento
             ORDER BY me.elemento
             """,
-            filter_params,
-        ).fetchall())
+                filter_params,
+            ).fetchall()
+        )
         for element_row in element_rows:
             element_row["unidades"] = sorted(
                 {
@@ -225,8 +265,9 @@ def build_analysis_context(
             """,
             filter_params,
         ).fetchone()["n"]
-        unit_conflicts = rows_to_dicts(conn.execute(
-            f"""
+        unit_conflicts = rows_to_dicts(
+            conn.execute(
+                f"""
             SELECT
                 mu.id_muestra,
                 me.elemento,
@@ -241,25 +282,30 @@ def build_analysis_context(
             HAVING COUNT(DISTINCT lower(COALESCE(me.unidad, ''))) > 1
             ORDER BY mu.id_muestra, me.elemento
             """,
-            filter_params,
-        ).fetchall())
+                filter_params,
+            ).fetchall()
+        )
 
     warnings = []
     if inferred:
-        warnings.append({
-            "code": "inferred_samples",
-            "severity": "info",
-            "count": inferred,
-            "message": f"{inferred} muestras fueron reconstruidas desde mediciones historicas y requieren validar su codigo fisico.",
-        })
+        warnings.append(
+            {
+                "code": "inferred_samples",
+                "severity": "info",
+                "count": inferred,
+                "message": f"{inferred} muestras fueron reconstruidas desde mediciones historicas y requieren validar su codigo fisico.",
+            }
+        )
     if unit_conflicts:
-        warnings.append({
-            "code": "mixed_units",
-            "severity": "warning",
-            "count": len(unit_conflicts),
-            "message": "Existen combinaciones muestra-elemento con unidades distintas; no se promedian entre si.",
-            "items": unit_conflicts[:25],
-        })
+        warnings.append(
+            {
+                "code": "mixed_units",
+                "severity": "warning",
+                "count": len(unit_conflicts),
+                "message": "Existen combinaciones muestra-elemento con unidades distintas; no se promedian entre si.",
+                "items": unit_conflicts[:25],
+            }
+        )
     return {
         "fuente": source,
         "selected": {
@@ -289,6 +335,26 @@ def list_samples(
     limit: int = 500,
     sample_id: Optional[str] = None,
 ) -> dict[str, Any]:
+    """
+    Lista las muestras (muestras físicas) de un sitio, con filtros.
+
+    Cada muestra incluye su matriz, individuo asociado, análisis y mediciones.
+
+    Args:
+        fuente (str): Identificador del sitio.
+        matriz (Optional[str]): Filtrar por matriz.
+        referencia (Optional[str]): Filtrar por referencia.
+        sexo (Optional[str]): Filtrar por sexo del individuo.
+        edad (Optional[str]): Filtrar por edad.
+        elemento (Optional[str]): Filtrar por elemento.
+        patologia (Optional[str]): Filtrar por patología presente.
+        limit (int): Máximo de muestras a devolver.
+        sample_id (Optional[str]): Si se proporciona, solo devuelve esa muestra.
+
+    Returns:
+        dict: Total de muestras y lista de items con detalles.
+    """
+
     ensure_analytical_model()
     source = _source(fuente)
     sql = """
@@ -379,7 +445,9 @@ def list_samples(
                 """
                 analysis_params.append(elemento.strip().lower())
             analysis_sql += " ORDER BY a.dataset_origen, a.id_analisis"
-            analyses = rows_to_dicts(conn.execute(analysis_sql, analysis_params).fetchall())
+            analyses = rows_to_dicts(
+                conn.execute(analysis_sql, analysis_params).fetchall()
+            )
             for analysis in analyses:
                 analyses_by_sample[analysis["id_muestra"]].append(analysis)
             analysis_ids = [row["id_analisis"] for row in analyses]
@@ -394,12 +462,16 @@ def list_samples(
                     measurement_sql += " AND lower(COALESCE(elemento, '')) = ?"
                     measurement_params.append(elemento.strip().lower())
                 measurement_sql += " ORDER BY elemento, id_medicion"
-                measurements = rows_to_dicts(conn.execute(
-                    measurement_sql,
-                    measurement_params,
-                ).fetchall())
+                measurements = rows_to_dicts(
+                    conn.execute(
+                        measurement_sql,
+                        measurement_params,
+                    ).fetchall()
+                )
                 for measurement in measurements:
-                    measurements_by_analysis[measurement["id_analisis"]].append(measurement)
+                    measurements_by_analysis[measurement["id_analisis"]].append(
+                        measurement
+                    )
 
     items = []
     for row in sample_rows:
@@ -409,47 +481,53 @@ def list_samples(
             for analysis in analyses
             for measurement in measurements_by_analysis.get(analysis["id_analisis"], [])
         ]
-        items.append({
-            "id_muestra": row["id_muestra"],
-            "codigo_muestra": row["codigo_muestra"],
-            "tipo_muestra_original": row.get("tipo_muestra_original"),
-            "elemento_anatomico": row.get("elemento_anatomico"),
-            "lateralidad": row.get("lateralidad"),
-            "ubicacion_anatomica": row.get("ubicacion_anatomica"),
-            "fecha_muestreo": row.get("fecha_muestreo"),
-            "estado_conservacion": row.get("estado_conservacion"),
-            "observaciones": row.get("observaciones"),
-            "es_inferida": bool(row.get("es_inferida")),
-            "estado": row.get("estado"),
-            "matriz": {
-                "id_matriz": row["id_matriz"],
-                "codigo": row["matriz_codigo"],
-                "nombre": row["matriz_nombre"],
-                "categoria": row["matriz_categoria"],
-            },
-            "individuo": {
-                "id_individuo": row["id_individuo"],
-                "id_documento": row.get("id_documento"),
-                "numero_cuerpo": row.get("numero_cuerpo"),
-                "sexo": row.get("sexo"),
-                "edad": row.get("edad"),
-                "sitio": row.get("sitio"),
-            },
-            "analisis": len(analyses),
-            "mediciones": len(measurements),
-            "elementos": _values(measurements, "elemento"),
-            "unidades": _values(measurements, "unidad"),
-            "referencias": [
-                {"id_referencia": reference_id, "titulo": title}
-                for reference_id, title in sorted(
-                    {
-                        (analysis.get("id_referencia"), analysis.get("referencia_titulo"))
-                        for analysis in analyses if analysis.get("id_referencia")
-                    },
-                    key=lambda item: str(item[1] or "").casefold(),
-                )
-            ],
-        })
+        items.append(
+            {
+                "id_muestra": row["id_muestra"],
+                "codigo_muestra": row["codigo_muestra"],
+                "tipo_muestra_original": row.get("tipo_muestra_original"),
+                "elemento_anatomico": row.get("elemento_anatomico"),
+                "lateralidad": row.get("lateralidad"),
+                "ubicacion_anatomica": row.get("ubicacion_anatomica"),
+                "fecha_muestreo": row.get("fecha_muestreo"),
+                "estado_conservacion": row.get("estado_conservacion"),
+                "observaciones": row.get("observaciones"),
+                "es_inferida": bool(row.get("es_inferida")),
+                "estado": row.get("estado"),
+                "matriz": {
+                    "id_matriz": row["id_matriz"],
+                    "codigo": row["matriz_codigo"],
+                    "nombre": row["matriz_nombre"],
+                    "categoria": row["matriz_categoria"],
+                },
+                "individuo": {
+                    "id_individuo": row["id_individuo"],
+                    "id_documento": row.get("id_documento"),
+                    "numero_cuerpo": row.get("numero_cuerpo"),
+                    "sexo": row.get("sexo"),
+                    "edad": row.get("edad"),
+                    "sitio": row.get("sitio"),
+                },
+                "analisis": len(analyses),
+                "mediciones": len(measurements),
+                "elementos": _values(measurements, "elemento"),
+                "unidades": _values(measurements, "unidad"),
+                "referencias": [
+                    {"id_referencia": reference_id, "titulo": title}
+                    for reference_id, title in sorted(
+                        {
+                            (
+                                analysis.get("id_referencia"),
+                                analysis.get("referencia_titulo"),
+                            )
+                            for analysis in analyses
+                            if analysis.get("id_referencia")
+                        },
+                        key=lambda item: str(item[1] or "").casefold(),
+                    )
+                ],
+            }
+        )
     return {
         "fuente": source,
         "total": total,
@@ -458,30 +536,49 @@ def list_samples(
 
 
 def get_sample_detail(fuente: str, sample_id: str) -> dict[str, Any] | None:
+    """
+    Obtiene el detalle completo de una muestra física.
+
+    Incluye:
+        - Datos de la muestra (matriz, individuo, etc.)
+        - Lista de análisis con sus mediciones y referencias.
+
+    Args:
+        fuente (str): Identificador del sitio.
+        sample_id (str): ID de la muestra (id_muestra).
+
+    Returns:
+        dict | None: Detalle de la muestra o None si no existe.
+    """
+
     result = list_samples(fuente, limit=1, sample_id=sample_id)
     sample = result["items"][0] if result["items"] else None
     if not sample:
         return None
     with get_connection() as conn:
-        analyses = rows_to_dicts(conn.execute(
-            """
+        analyses = rows_to_dicts(
+            conn.execute(
+                """
             SELECT a.*, r.titulo AS referencia_titulo, r.cita, r.doi, r.url
             FROM analisis_quimicos a
             LEFT JOIN referencias_analiticas r ON r.id_referencia = a.id_referencia
             WHERE a.id_muestra = ?
             ORDER BY a.dataset_origen, a.id_analisis
             """,
-            (sample_id,),
-        ).fetchall())
+                (sample_id,),
+            ).fetchall()
+        )
         for analysis in analyses:
-            analysis["mediciones"] = rows_to_dicts(conn.execute(
-                """
+            analysis["mediciones"] = rows_to_dicts(
+                conn.execute(
+                    """
                 SELECT id_medicion, elemento, concentracion, unidad, estado
                 FROM mediciones_quimicas
                 WHERE id_analisis = ?
                 ORDER BY elemento, id_medicion
                 """,
-                (analysis["id_analisis"],),
-            ).fetchall())
+                    (analysis["id_analisis"],),
+                ).fetchall()
+            )
     sample["analisis_detalle"] = analyses
     return sample

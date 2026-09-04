@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronDown, DatabaseBackup, LayoutDashboard, Menu, Network, Settings, X } from "lucide-react";
+import { ChevronDown, DatabaseBackup, LayoutDashboard, Menu, Network, X } from "lucide-react";
 
 export default function Header({ view, onNavigate, onOpenSite, onBackup, backupStatus, sites = [], activeSite }) {
   const [siteMenuOpen, setSiteMenuOpen] = useState(false);

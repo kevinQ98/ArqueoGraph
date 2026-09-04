@@ -67,6 +67,15 @@ function signedValue(value) {
   return `${value >= 0 ? "+" : ""}${value.toFixed(2)}`;
 }
 
+/**
+ * Gráfico de PCA con proyección de puntos y vectores de carga.
+ * @param {Object} props
+ * @param {Object} props.data - Datos del PCA (points, loadings, explained_variance).
+ * @param {Function} props.onSelect - Callback al seleccionar un punto.
+ * @param {string} props.colorBy - "sexo" | "edad" | "patologia".
+ * @param {string} props.selectedPathology - Patología seleccionada para color.
+ * @returns {JSX.Element}
+ */
 export function PcaChart({ data, onSelect, colorBy = "sexo", selectedPathology = "" }) {
   const model = useMemo(() => {
     const points = data?.points || [];

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -294,29 +294,29 @@ export function AdminPanel() {
 
             {editing.type === "individuo" ? (
               <div className="formGrid">
-                <label>Caso<input value={editData.id_documento || ""} onChange={e => setEditData({...editData, id_documento: e.target.value})} /></label>
-                <label>Número cuerpo<input value={editData.numero_cuerpo || ""} onChange={e => setEditData({...editData, numero_cuerpo: e.target.value})} /></label>
-                <label>Sexo<input value={editData.sexo || ""} onChange={e => setEditData({...editData, sexo: e.target.value})} /></label>
-                <label>Edad<input value={editData.edad || ""} onChange={e => setEditData({...editData, edad: e.target.value})} /></label>
-                <label>Sitio<input value={editData.sitio || ""} onChange={e => setEditData({...editData, sitio: e.target.value})} /></label>
-                <label>Cementerio<input value={editData.cementerio || ""} onChange={e => setEditData({...editData, cementerio: e.target.value})} /></label>
-                <label>Cronología<input value={editData.cronologia || ""} onChange={e => setEditData({...editData, cronologia: e.target.value})} /></label>
-                <label>Estilo<input value={editData.estilo_momificacion || ""} onChange={e => setEditData({...editData, estilo_momificacion: e.target.value})} /></label>
-                <label className="wide">Referencia<input value={editData.referencia_bibliografica || ""} onChange={e => setEditData({...editData, referencia_bibliografica: e.target.value})} /></label>
-                <label>Estado<select value={editData.estado || "borrador"} onChange={e => setEditData({...editData, estado: e.target.value})}>{ESTADOS.map(e => <option key={e}>{e}</option>)}</select></label>
+                <label>Caso<input value={editData.id_documento || ""} onChange={e => setEditData({ ...editData, id_documento: e.target.value })} /></label>
+                <label>Número cuerpo<input value={editData.numero_cuerpo || ""} onChange={e => setEditData({ ...editData, numero_cuerpo: e.target.value })} /></label>
+                <label>Sexo<input value={editData.sexo || ""} onChange={e => setEditData({ ...editData, sexo: e.target.value })} /></label>
+                <label>Edad<input value={editData.edad || ""} onChange={e => setEditData({ ...editData, edad: e.target.value })} /></label>
+                <label>Sitio<input value={editData.sitio || ""} onChange={e => setEditData({ ...editData, sitio: e.target.value })} /></label>
+                <label>Cementerio<input value={editData.cementerio || ""} onChange={e => setEditData({ ...editData, cementerio: e.target.value })} /></label>
+                <label>Cronología<input value={editData.cronologia || ""} onChange={e => setEditData({ ...editData, cronologia: e.target.value })} /></label>
+                <label>Estilo<input value={editData.estilo_momificacion || ""} onChange={e => setEditData({ ...editData, estilo_momificacion: e.target.value })} /></label>
+                <label className="wide">Referencia<input value={editData.referencia_bibliografica || ""} onChange={e => setEditData({ ...editData, referencia_bibliografica: e.target.value })} /></label>
+                <label>Estado<select value={editData.estado || "borrador"} onChange={e => setEditData({ ...editData, estado: e.target.value })}>{ESTADOS.map(e => <option key={e}>{e}</option>)}</select></label>
               </div>
             ) : (
               <div className="formGrid">
-                <label>Individuo ID<input value={editData.id_individuo || ""} onChange={e => setEditData({...editData, id_individuo: e.target.value})} /></label>
-                <label>Elemento<input value={editData.elemento || ""} onChange={e => setEditData({...editData, elemento: e.target.value})} /></label>
-                <label>Concentración<input type="number" value={editData.concentracion || ""} onChange={e => setEditData({...editData, concentracion: e.target.value})} /></label>
-                <label>Unidad<input value={editData.unidad || ""} onChange={e => setEditData({...editData, unidad: e.target.value})} /></label>
-                <label>Tipo muestra<input value={editData.tipo_muestra || ""} onChange={e => setEditData({...editData, tipo_muestra: e.target.value})} /></label>
-                <label>Método<input value={editData.metodo || ""} onChange={e => setEditData({...editData, metodo: e.target.value})} /></label>
-                <label>Laboratorio<input value={editData.laboratorio || ""} onChange={e => setEditData({...editData, laboratorio: e.target.value})} /></label>
-                <label>Fecha<input value={editData.fecha || ""} onChange={e => setEditData({...editData, fecha: e.target.value})} /></label>
-                <label>Estado<select value={editData.estado || "borrador"} onChange={e => setEditData({...editData, estado: e.target.value})}>{ESTADOS.map(e => <option key={e}>{e}</option>)}</select></label>
-                <label className="wide">Observaciones<input value={editData.observaciones || ""} onChange={e => setEditData({...editData, observaciones: e.target.value})} /></label>
+                <label>Individuo ID<input value={editData.id_individuo || ""} onChange={e => setEditData({ ...editData, id_individuo: e.target.value })} /></label>
+                <label>Elemento<input value={editData.elemento || ""} onChange={e => setEditData({ ...editData, elemento: e.target.value })} /></label>
+                <label>Concentración<input type="number" value={editData.concentracion || ""} onChange={e => setEditData({ ...editData, concentracion: e.target.value })} /></label>
+                <label>Unidad<input value={editData.unidad || ""} onChange={e => setEditData({ ...editData, unidad: e.target.value })} /></label>
+                <label>Tipo muestra<input value={editData.tipo_muestra || ""} onChange={e => setEditData({ ...editData, tipo_muestra: e.target.value })} /></label>
+                <label>Método<input value={editData.metodo || ""} onChange={e => setEditData({ ...editData, metodo: e.target.value })} /></label>
+                <label>Laboratorio<input value={editData.laboratorio || ""} onChange={e => setEditData({ ...editData, laboratorio: e.target.value })} /></label>
+                <label>Fecha<input value={editData.fecha || ""} onChange={e => setEditData({ ...editData, fecha: e.target.value })} /></label>
+                <label>Estado<select value={editData.estado || "borrador"} onChange={e => setEditData({ ...editData, estado: e.target.value })}>{ESTADOS.map(e => <option key={e}>{e}</option>)}</select></label>
+                <label className="wide">Observaciones<input value={editData.observaciones || ""} onChange={e => setEditData({ ...editData, observaciones: e.target.value })} /></label>
               </div>
             )}
 

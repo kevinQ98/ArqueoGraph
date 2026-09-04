@@ -164,12 +164,24 @@ function SitePortal({ site, onOpen, onFilter }) {
   );
 }
 
+/**
+ * Panel principal del dashboard.
+ * Muestra KPIs, distribuciones, mapa, portales de sitios, tabla de casos y resúmenes.
+ * @param {Object} props
+ * @param {Function} props.onNavigate - Función para abrir un sitio.
+ * @returns {JSX.Element}
+ */
 export function DashboardPanel({ onNavigate }) {
   const [filters, setFilters] = useState(EMPTY_FILTERS);
   const [data, setData] = useState(null);
   const [status, setStatus] = useState("Cargando dashboard...");
   const [search, setSearch] = useState("");
 
+  /**
+   * Refresca los datos del dashboard con los filtros actuales.
+   * @param {Object} nextFilters - Filtros a aplicar.
+   * @returns {Promise<void>}
+   */
   async function refresh(nextFilters = filters) {
     setStatus("Actualizando visualizaciones...");
     try {
@@ -181,19 +193,31 @@ export function DashboardPanel({ onNavigate }) {
     }
   }
 
+  /**
+   * Actualiza un filtro específico.
+   * @param {string} field - Nombre del campo (sitio, sexo, edad, elemento, patologia).
+   * @param {string} value - Nuevo valor.
+   * @returns {void}
+   */
   function updateFilter(field, value) {
     setFilters((current) => ({ ...current, [field]: value }));
   }
 
+  /**
+   * Limpia todos los filtros y la búsqueda.
+   * @returns {void}
+   */
   function clearFilters() {
     setFilters(EMPTY_FILTERS);
     setSearch("");
   }
 
+  // Efecto: recargar cuando cambian los filtros.
   useEffect(() => {
     refresh(filters);
   }, [filters.sitio, filters.sexo, filters.edad, filters.elemento, filters.patologia]);
 
+  // Filtrado de casos por búsqueda libre.
   const visibleCases = useMemo(() => {
     const normalized = search.trim().toLowerCase();
     if (!normalized) return data?.cases || [];
@@ -228,100 +252,100 @@ export function DashboardPanel({ onNavigate }) {
       </aside>
 
       <div className="dashboardMain">
-      <section className="dashboardHero">
-        <div>
-          <p className="dashboardEyebrow"><LayoutDashboard size={15} /> ArqueoGraph 0.8 · Panel general</p>
-          <h2>Colección Bioarqueológica</h2>
-          <p>Consulta el estado general de la colección y accede a las interfaces especializadas de cada sitio.</p>
-        </div>
-        <div className="dashboardHeroActions">
-          <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md" onClick={() => refresh()}><RefreshCw size={16} /> Actualizar</button>
-          <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md" onClick={clearFilters} disabled={!activeFilterCount}><RotateCcw size={16} /> Limpiar filtros ({activeFilterCount})</button>
-        </div>
-      </section>
-
-      <section id="dashboard-filters" className="dashboardSlicers" aria-label="Segmentadores del dashboard">
-        <label>Sitio<select value={filters.sitio} onChange={(event) => updateFilter("sitio", event.target.value)}><option value="">Todos</option>{options.sitios.map((value) => <option key={value}>{value}</option>)}</select></label>
-        <label>Sexo<select value={filters.sexo} onChange={(event) => updateFilter("sexo", event.target.value)}><option value="">Todos</option>{options.sexos.map((value) => <option key={value}>{value}</option>)}</select></label>
-        <label>Edad<select value={filters.edad} onChange={(event) => updateFilter("edad", event.target.value)}><option value="">Todas</option>{options.edades.map((value) => <option key={value}>{value}</option>)}</select></label>
-        <label>Elemento<select value={filters.elemento} onChange={(event) => updateFilter("elemento", event.target.value)}><option value="">Todos</option>{options.elementos.map((value) => <option key={value}>{value}</option>)}</select></label>
-        <label>Paleopatología<select value={filters.patologia} onChange={(event) => updateFilter("patologia", event.target.value)}><option value="">Todas</option>{options.patologias.map((value) => <option key={value} value={value}>{readable(value)}</option>)}</select></label>
-      </section>
-
-      {status && <p className="dashboardStatus"><Activity size={16} /> {status}</p>}
-
-      <section className="dashboardKpis">
-        <KpiCard icon={Users} label="Individuos" value={kpis.individuos || 0} note="universo filtrado" tone="blue" />
-        <KpiCard icon={MapPinned} label="Sitios" value={kpis.sitios || 0} note="colecciones visibles" tone="green" />
-        <KpiCard icon={Bone} label="Patologías" value={kpis.con_patologia || 0} note="individuos positivos" tone="amber" />
-        <KpiCard icon={Beaker} label="Analizados" value={kpis.con_quimica || 0} note={`${kpis.cobertura_quimica_pct || 0}% de cobertura`} tone="violet" />
-        <KpiCard icon={ImageIcon} label="Con imágenes" value={kpis.con_imagenes || 0} note="carpetas asociadas" tone="green" />
-      </section>
-
-      <section id="dashboard-map" className="dashboardGrid dashboardGridTwo collectionOverviewGrid">
-        <Suspense fallback={<section className="dashboardVisual dashboardMapLoading">Cargando cartografía...</section>}>
-          <ArchaeologicalMap sites={data?.site_portals || []} selectedSite={filters.sitio} onSelectSite={(value) => updateFilter("sitio", value)} />
-        </Suspense>
-        <BarChart title="Individuos por contexto cultural" subtitle="Contextos disponibles; Morro 1 aún no posee esta clasificación." data={data?.distributions?.cultura} color="blue" />
-      </section>
-
-      <section className="dashboardGrid dashboardGridTwo">
-        <div className="dashboardGrid dashboardGridTwo dashboardNestedGrid">
-          <BarChart title="Distribución por sexo" subtitle="Clasificación normalizada." data={data?.distributions?.sexo} selected={filters.sexo} onSelect={(value) => updateFilter("sexo", value)} color="violet" />
-          <BarChart title="Grupos de edad" subtitle="Adulto, subadulto e indeterminado." data={data?.distributions?.edad} selected={filters.edad} onSelect={(value) => updateFilter("edad", value)} color="green" />
-        </div>
-        <AvailabilityChart rows={data?.availability} />
-      </section>
-
-      <section className="sitePortalSection">
-        <div className="sitePortalHeader"><div><h3>Explorar colecciones por sitio</h3><p>Accede a grafos, PCA, imágenes, tablas y filtros especializados.</p></div></div>
-        <div className="sitePortalGrid">
-          {(data?.site_portals || []).map((site) => <SitePortal key={site.sitio} site={site} onOpen={onNavigate} onFilter={(value) => updateFilter("sitio", value)} />)}
-        </div>
-      </section>
-
-      <section id="dashboard-chemistry" className="dashboardGrid dashboardGridTwo">
-        <BarChart title="Cobertura química" subtitle="Número de individuos con medición." data={data?.chemical_coverage} selected={filters.elemento} onSelect={(value) => updateFilter("elemento", value)} color="cyan" />
-        <ChemicalSummary rows={data?.chemical_summary} element={filters.elemento} />
-      </section>
-
-      <section id="dashboard-pathologies" className="dashboardGrid dashboardGridTwo">
-        <BarChart title="Paleopatologías" subtitle="Frecuencia de presencias positivas." data={data?.pathology_distribution} selected={filters.patologia} onSelect={(value) => updateFilter("patologia", value)} color="amber" formatLabels />
-        <BarChart title="Estado de conservación" subtitle="Ocho categorías más frecuentes." data={data?.distributions?.conservacion} color="rose" />
-      </section>
-
-      <section id="dashboard-cases" className="dashboardVisual dashboardCases">
-        <div className="dashboardTableHeader">
+        <section className="dashboardHero">
           <div>
-            <h3>Casos de la selección</h3>
-            <p>Se muestran hasta 100 casos devueltos por el dashboard.</p>
+            <p className="dashboardEyebrow"><LayoutDashboard size={15} /> ArqueoGraph 0.8 · Panel general</p>
+            <h2>Colección Bioarqueológica</h2>
+            <p>Consulta el estado general de la colección y accede a las interfaces especializadas de cada sitio.</p>
           </div>
-          <div className="dashboardSearch"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar caso, elemento o patología" /></div>
-        </div>
-        <div className="tableWrap">
-          <table>
-            <thead><tr><th>Caso</th><th>Sitio</th><th>Sexo</th><th>Edad</th><th>Elementos</th><th>Patologías</th><th>Imágenes</th></tr></thead>
-            <tbody>
-              {visibleCases.map((row) => (
-                <tr key={row.id}>
-                  <td><strong>{row.label}</strong><small className="dashboardCaseId">{row.id}</small></td>
-                  <td>{row.sitio}</td><td>{row.sexo}</td><td>{row.edad}</td>
-                  <td><div className="dashboardTags">{row.elementos.map((item) => <span key={item}>{item}</span>)}</div></td>
-                  <td>{row.patologias.length ? <span title={row.patologias.map(readable).join(", ")}>{row.patologias.length}</span> : "—"}</td>
-                  <td>{row.imagenes || "—"}</td>
-                </tr>
-              ))}
-              {!visibleCases.length && <tr><td colSpan="7" className="dashboardEmpty">No hay casos para esta selección.</td></tr>}
-            </tbody>
-          </table>
-        </div>
-      </section>
+          <div className="dashboardHeroActions">
+            <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md" onClick={() => refresh()}><RefreshCw size={16} /> Actualizar</button>
+            <button type="button" className="flex items-center gap-2 px-4 py-2 rounded-md" onClick={clearFilters} disabled={!activeFilterCount}><RotateCcw size={16} /> Limpiar filtros ({activeFilterCount})</button>
+          </div>
+        </section>
 
-      <section className="dashboardWarnings">
-        <Database size={18} />
-        <div><strong>Notas de interpretación</strong>{(data?.warnings || []).map((warning) => <p key={warning}>{warning}</p>)}</div>
-        <button type="button" className="secondary small" onClick={() => onNavigate?.("visualizacion")}>Abrir Morro 1</button>
-      </section>
+        <section id="dashboard-filters" className="dashboardSlicers" aria-label="Segmentadores del dashboard">
+          <label>Sitio<select value={filters.sitio} onChange={(event) => updateFilter("sitio", event.target.value)}><option value="">Todos</option>{options.sitios.map((value) => <option key={value}>{value}</option>)}</select></label>
+          <label>Sexo<select value={filters.sexo} onChange={(event) => updateFilter("sexo", event.target.value)}><option value="">Todos</option>{options.sexos.map((value) => <option key={value}>{value}</option>)}</select></label>
+          <label>Edad<select value={filters.edad} onChange={(event) => updateFilter("edad", event.target.value)}><option value="">Todas</option>{options.edades.map((value) => <option key={value}>{value}</option>)}</select></label>
+          <label>Elemento<select value={filters.elemento} onChange={(event) => updateFilter("elemento", event.target.value)}><option value="">Todos</option>{options.elementos.map((value) => <option key={value}>{value}</option>)}</select></label>
+          <label>Paleopatología<select value={filters.patologia} onChange={(event) => updateFilter("patologia", event.target.value)}><option value="">Todas</option>{options.patologias.map((value) => <option key={value} value={value}>{readable(value)}</option>)}</select></label>
+        </section>
+
+        {status && <p className="dashboardStatus"><Activity size={16} /> {status}</p>}
+
+        <section className="dashboardKpis">
+          <KpiCard icon={Users} label="Individuos" value={kpis.individuos || 0} note="universo filtrado" tone="blue" />
+          <KpiCard icon={MapPinned} label="Sitios" value={kpis.sitios || 0} note="colecciones visibles" tone="green" />
+          <KpiCard icon={Bone} label="Patologías" value={kpis.con_patologia || 0} note="individuos positivos" tone="amber" />
+          <KpiCard icon={Beaker} label="Analizados" value={kpis.con_quimica || 0} note={`${kpis.cobertura_quimica_pct || 0}% de cobertura`} tone="violet" />
+          <KpiCard icon={ImageIcon} label="Con imágenes" value={kpis.con_imagenes || 0} note="carpetas asociadas" tone="green" />
+        </section>
+
+        <section id="dashboard-map" className="dashboardGrid dashboardGridTwo collectionOverviewGrid">
+          <Suspense fallback={<section className="dashboardVisual dashboardMapLoading">Cargando cartografía...</section>}>
+            <ArchaeologicalMap sites={data?.site_portals || []} selectedSite={filters.sitio} onSelectSite={(value) => updateFilter("sitio", value)} />
+          </Suspense>
+          <BarChart title="Individuos por contexto cultural" subtitle="Contextos disponibles; Morro 1 aún no posee esta clasificación." data={data?.distributions?.cultura} color="blue" />
+        </section>
+
+        <section className="dashboardGrid dashboardGridTwo">
+          <div className="dashboardGrid dashboardGridTwo dashboardNestedGrid">
+            <BarChart title="Distribución por sexo" subtitle="Clasificación normalizada." data={data?.distributions?.sexo} selected={filters.sexo} onSelect={(value) => updateFilter("sexo", value)} color="violet" />
+            <BarChart title="Grupos de edad" subtitle="Adulto, subadulto e indeterminado." data={data?.distributions?.edad} selected={filters.edad} onSelect={(value) => updateFilter("edad", value)} color="green" />
+          </div>
+          <AvailabilityChart rows={data?.availability} />
+        </section>
+
+        <section className="sitePortalSection">
+          <div className="sitePortalHeader"><div><h3>Explorar colecciones por sitio</h3><p>Accede a grafos, PCA, imágenes, tablas y filtros especializados.</p></div></div>
+          <div className="sitePortalGrid">
+            {(data?.site_portals || []).map((site) => <SitePortal key={site.sitio} site={site} onOpen={onNavigate} onFilter={(value) => updateFilter("sitio", value)} />)}
+          </div>
+        </section>
+
+        <section id="dashboard-chemistry" className="dashboardGrid dashboardGridTwo">
+          <BarChart title="Cobertura química" subtitle="Número de individuos con medición." data={data?.chemical_coverage} selected={filters.elemento} onSelect={(value) => updateFilter("elemento", value)} color="cyan" />
+          <ChemicalSummary rows={data?.chemical_summary} element={filters.elemento} />
+        </section>
+
+        <section id="dashboard-pathologies" className="dashboardGrid dashboardGridTwo">
+          <BarChart title="Paleopatologías" subtitle="Frecuencia de presencias positivas." data={data?.pathology_distribution} selected={filters.patologia} onSelect={(value) => updateFilter("patologia", value)} color="amber" formatLabels />
+          <BarChart title="Estado de conservación" subtitle="Ocho categorías más frecuentes." data={data?.distributions?.conservacion} color="rose" />
+        </section>
+
+        <section id="dashboard-cases" className="dashboardVisual dashboardCases">
+          <div className="dashboardTableHeader">
+            <div>
+              <h3>Casos de la selección</h3>
+              <p>Se muestran hasta 100 casos devueltos por el dashboard.</p>
+            </div>
+            <div className="dashboardSearch"><Search size={16} /><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Buscar caso, elemento o patología" /></div>
+          </div>
+          <div className="tableWrap">
+            <table>
+              <thead><tr><th>Caso</th><th>Sitio</th><th>Sexo</th><th>Edad</th><th>Elementos</th><th>Patologías</th><th>Imágenes</th></tr></thead>
+              <tbody>
+                {visibleCases.map((row) => (
+                  <tr key={row.id}>
+                    <td><strong>{row.label}</strong><small className="dashboardCaseId">{row.id}</small></td>
+                    <td>{row.sitio}</td><td>{row.sexo}</td><td>{row.edad}</td>
+                    <td><div className="dashboardTags">{row.elementos.map((item) => <span key={item}>{item}</span>)}</div></td>
+                    <td>{row.patologias.length ? <span title={row.patologias.map(readable).join(", ")}>{row.patologias.length}</span> : "—"}</td>
+                    <td>{row.imagenes || "—"}</td>
+                  </tr>
+                ))}
+                {!visibleCases.length && <tr><td colSpan="7" className="dashboardEmpty">No hay casos para esta selección.</td></tr>}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section className="dashboardWarnings">
+          <Database size={18} />
+          <div><strong>Notas de interpretación</strong>{(data?.warnings || []).map((warning) => <p key={warning}>{warning}</p>)}</div>
+          <button type="button" className="secondary small" onClick={() => onNavigate?.("visualizacion")}>Abrir Morro 1</button>
+        </section>
       </div>
     </main>
   );
